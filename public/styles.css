@@ -1,0 +1,75 @@
+* {
+  font-family: Futura;
+}
+a {
+  color: #3377ff;
+  text-decoration: underline;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.header {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+.insides > div {
+  padding: 0.5rem;
+}
+
+.speechBubble {
+  border-color: black;
+  border-width: 3px;
+  max-width: 70%;
+  background-color: white;
+  border-radius: 100%;
+  padding: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-family: "Anime Ace 3 BB" "Comic Sans";
+}
+
+.insides {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.caption {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.comicSequence {
+  display: flex;
+  flex-direction: column;
+}
+.comicSequence > img {
+  margin-top: -2rem;
+}
+
+.comicSequence > :first-child {
+  margin-top: 0;
+}
+.bump-up-3 {
+  position: relative;
+  top: -3rem;
+}
+
+.bump-up-1 {
+  position: relative;
+  top: -1rem;
+}
+
+.comic {
+  image-rendering: crisp-edges;
+}
+.comic.right {
+  width: 70%;
+  align-self: flex-end;
+}
+.comic.full {
+  width: 100%;
+}
