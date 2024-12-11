@@ -93,8 +93,7 @@ export default function Page() {
   useEffect(() => {
     let map = new Map({
       container: "map",
-      style:
-        "https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
       zoom: zoomLevel,
       center: center,
     });
