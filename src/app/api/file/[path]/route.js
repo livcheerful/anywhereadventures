@@ -3,7 +3,7 @@ export async function GET(req, { params }) {
   const path = (await params).path;
   console.log(path);
   //   res.end(`path: ${path}`);
-  const r = await fetch(`http://localhost:3000/${path}`);
+  const r = await fetch(`https://anywhereadventures.vercel.app/:3000/${path}`);
   const file = await r.text();
   console.log(file);
   return Response.json({ html: file });
