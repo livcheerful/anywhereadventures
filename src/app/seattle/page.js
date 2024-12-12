@@ -15,12 +15,6 @@ const locationData = [
     html: "rizal.html",
     coordinates: [-122.31739583840579, 47.59551148591616],
   },
-  {
-    id: "SEA-03",
-    title: "Sinking Ship Parking Garage",
-    html: "sinkingship.html",
-    coordinates: [-122.33357, 47.60177],
-  },
 ];
 
 export default function Page() {
