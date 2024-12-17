@@ -107,11 +107,12 @@ export default function Page() {
   return (
     <div className="overflow-hidden h-screen flex flex-col md:flex-row">
       <div className="bg-slate-400 w-full h-screen " id="map">
-        <div
-          style={{ backgroundImage: "url(./paperbkgd.png)" }}
-          className={`absolute bg-cover top-0 left-0 w-full md:w-1/3 md:min-w-[30rem] pt-8 drop-shadow-2xl h-3/4 md:h-full bg-white overflow-y-scroll `}
-        >
-          {/* {!showingLocationId && (
+        {showingLocationId && (
+          <div
+            style={{ backgroundImage: "url(./paperbkgd.png)" }}
+            className={`absolute bg-cover top-0 left-0 w-full md:w-1/3 md:min-w-[30rem] pt-8 drop-shadow-2xl h-3/4 md:h-full bg-white overflow-y-scroll `}
+          >
+            {/* {!showingLocationId && (
             <div>
               <div>Anywhere Adventures</div>
               <div className="flex flex-row flex-wrap gap-3">
@@ -129,14 +130,13 @@ export default function Page() {
             </div>
           )}
           {showingLocationId && <div>Back</div>} */}
-          {showingLocationId && (
             <div
               id="content"
               ref={contentRef}
               dangerouslySetInnerHTML={{ __html: locationContent }}
             ></div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
