@@ -129,11 +129,13 @@ export default function Page() {
             </div>
           )}
           {showingLocationId && <div>Back</div>} */}
-          <div
-            id="content"
-            ref={contentRef}
-            dangerouslySetInnerHTML={{ __html: locationContent }}
-          ></div>
+          {showingLocationId && (
+            <div
+              id="content"
+              ref={contentRef}
+              dangerouslySetInnerHTML={{ __html: locationContent }}
+            ></div>
+          )}
         </div>
       </div>
     </div>
