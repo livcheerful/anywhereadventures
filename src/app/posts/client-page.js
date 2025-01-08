@@ -1,0 +1,24 @@
+"use client";
+import { useTina } from "tinacms/dist/react";
+import { PostQuery } from "../../../tina/__generated__/types";
+
+export default function Post(props) {
+  // data passes though in production mode and data is updated to the sidebar data in edit-mode
+  const { data } = useTina({
+    query: props.query,
+    variables: props.variables,
+    data: props.data,
+  });
+  console.log("in filename");
+  return (
+    <code>
+      <pre
+        style={{
+          backgroundColor: "lightgray",
+        }}
+      >
+        {JSON.stringify(data.post, null, 2)}
+      </pre>
+    </code>
+  );
+}
