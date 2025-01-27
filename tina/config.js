@@ -32,6 +32,7 @@ export default defineConfig({
         name: "post",
         label: "Posts",
         path: "content/posts",
+        format: "mdx",
         fields: [
           {
             type: "string",
@@ -40,11 +41,64 @@ export default defineConfig({
             isTitle: true,
             required: true,
           },
+          { type: "string", name: "slug", label: "Slug", required: false },
+          {
+            type: "string",
+            name: "location",
+            label: "Location",
+            list: true,
+            options: [
+              { value: "seattle", label: "Seattle" },
+              { value: "chicago", label: "Chicago" },
+            ],
+            required: false,
+          },
+          {
+            type: "object",
+            name: "coordinates",
+            label: "Coordinates",
+            fields: [
+              { label: "Longitude", name: "longitude", type: "number" },
+              { label: "Latitude", name: "latitude", type: "number" },
+            ],
+          },
+
           {
             type: "rich-text",
             name: "body",
             label: "Body",
             isBody: true,
+            templates: [
+              {
+                name: "Comic",
+                label: "Comic",
+                fields: [
+                  { name: "image", label: "Image", type: "string" },
+                  {
+                    name: "position",
+                    label: "Position",
+                    type: "string",
+                    options: [
+                      { value: "left", label: "Left" },
+                      { value: "right", label: "Right" },
+                    ],
+                  },
+                  {
+                    name: "speechBubbles",
+                    label: "Speech Bubbles",
+                    type: "object",
+                    list: true,
+                    fields: [
+                      {
+                        name: "text",
+                        label: "Text",
+                        type: "string",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         ],
         ui: {

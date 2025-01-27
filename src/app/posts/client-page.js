@@ -9,7 +9,6 @@ export default function Post(props) {
     variables: props.variables,
     data: props.data,
   });
-  console.log("in filename");
   return (
     <code>
       <pre
