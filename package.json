@@ -20,7 +20,6 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@tinacms/cli": "^1.8.0",
     "@types/node": "22.10.5",
     "eslint-config-next": "^14.2.22",
     "postcss": "^8",
