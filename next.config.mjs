@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
+import createMDX from "@next/mdx";
+
 const nextConfig = {
+  // Configure `pageExtensions` to include markdown and MDX files
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   reactStrictMode: false,
 };
 
-export default nextConfig;
+const withMDX = createMDX({});
+export default withMDX(nextConfig);

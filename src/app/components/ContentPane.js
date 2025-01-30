@@ -1,17 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { fetchPostsByLocation } from "../lib/tinaHelpers";
 import { useState, useEffect } from "react";
 import PostContent from "./PostContent";
 import { Map } from "maplibre-gl";
+
 export default function ContentPane({ slug, post }) {
   const router = useRouter();
   const [paneOpen, setPaneOpen] = useState(!!post || slug == "discover");
   const [exploringContent, setExploringContent] = useState(slug == "discover");
 
   const [allPosts, setAllPosts] = useState([]);
-
   useEffect(() => {
     console.log("Make a mpa");
     let map = new Map({
@@ -22,13 +21,6 @@ export default function ContentPane({ slug, post }) {
       interactive: false,
       attributionControl: false,
     });
-
-    const fetchPostList = async () => {
-      const p = await fetchPostsByLocation("seattle");
-      console.log(p);
-      setAllPosts(p);
-    };
-    fetchPostList();
   }, []);
   return (
     <div
@@ -58,20 +50,20 @@ export default function ContentPane({ slug, post }) {
               </div>
               Find content here
               <div className="w-full flex flex-row gap-2 overflow-x-scroll px-3 ">
-                {allPosts.map((p, i) => {
+                <div
+                  onClick={() => {
+                    router.push(`/${"sinking-ship"}`);
+                  }}
+                  key={0}
+                  className="shrink-0 h-[12rem] w-[17rem] bg-emerald-50"
+                >
+                  Sinking Ship
+                </div>
+                {/* {allPosts.map((p, i) => {
                   console.log(p);
                   return (
-                    <div
-                      onClick={() => {
-                        router.push(`/${p.node.slug}`);
-                      }}
-                      key={i}
-                      className="shrink-0 h-[12rem] w-[17rem] bg-emerald-50"
-                    >
-                      {p.node.title}
-                    </div>
                   );
-                })}
+                })} */}
               </div>
             </div>
           )}
