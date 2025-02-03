@@ -59,12 +59,26 @@ export default function ContentPane({ slug, post }) {
                 >
                   Sinking Ship
                 </div>
+
                 {/* {allPosts.map((p, i) => {
                   console.log(p);
                   return (
                   );
                 })} */}
               </div>
+              <label
+                for="cheese"
+                className="bg-slate-400 rounded-3xl p-5 drop-shadow-sm cursor-pointer"
+              >
+                Take a photo!
+              </label>
+              <input
+                id="cheese"
+                type="file"
+                accept="image/*, video/*"
+                className="hidden"
+                capture
+              />
             </div>
           )}
 
