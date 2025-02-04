@@ -33,7 +33,6 @@ export default function Page() {
       setTimeout(() => {
         console.log("snap!");
         filmStrip.push(snapPhoto());
-        console.log(filmStrip);
         setPhotoSources(filmStrip);
       }, 900);
     } else {
@@ -103,7 +102,9 @@ export default function Page() {
       </button>
       <div className="filmStrip w-[340px] relative">
         <div className="camera">
-          <video id="video">Video stream not available.</video>
+          <video webkit-playsinline id="video">
+            Video stream not available.
+          </video>
         </div>
         <canvas className="hidden" id="canvas" />
         <div className="output flex flex-col relative ">
