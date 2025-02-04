@@ -11,6 +11,7 @@ export default function ContentPane({ slug, post }) {
   const [exploringContent, setExploringContent] = useState(slug == "discover");
 
   const [allPosts, setAllPosts] = useState([]);
+
   useEffect(() => {
     console.log("Make a mpa");
     let map = new Map({
@@ -66,19 +67,6 @@ export default function ContentPane({ slug, post }) {
                   );
                 })} */}
               </div>
-              <label
-                for="cheese"
-                className="bg-slate-400 rounded-3xl p-5 drop-shadow-sm cursor-pointer"
-              >
-                Take a photo!
-              </label>
-              <input
-                id="cheese"
-                type="file"
-                accept="image/*, video/*"
-                className="hidden"
-                capture
-              />
             </div>
           )}
 
@@ -112,6 +100,15 @@ export default function ContentPane({ slug, post }) {
                   Add to Map
                 </div>
               </div>
+            </div>
+
+            <div
+              className="p-12 bg-slate-400"
+              onClick={() => {
+                router.push("/camera");
+              }}
+            >
+              Take a photo
             </div>
             {post && <PostContent post={post} />}
           </div>
