@@ -1,5 +1,55 @@
 "use client";
+
+import { useState } from "react";
+
 export default function Page() {
+  const [streaming, setStreaming] = useState(false);
+
+  const [width, setWidth] = useState(320);
+  const [height, setHeight] = useState(0);
+  const [photoSources, setPhotoSources] = useState(undefined);
+  function takePicture() {
+    const context = canvas.getContext("2d");
+    console.log("in take picture");
+    if (width && height) {
+      function snapPhoto() {
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(video, 0, 0, width, height);
+
+        const data = canvas.toDataURL("image/png");
+        return data;
+      }
+      const filmStrip = [];
+
+      setTimeout(() => {
+        console.log("snap!");
+        filmStrip.push(snapPhoto());
+      }, 300);
+      setTimeout(() => {
+        console.log("snap!");
+        filmStrip.push(snapPhoto());
+      }, 400);
+      setTimeout(() => {
+        console.log("snap!");
+        filmStrip.push(snapPhoto());
+        console.log(filmStrip);
+        setPhotoSources(filmStrip);
+      }, 900);
+    } else {
+      clearPhoto();
+    }
+  }
+
+  function clearPhoto() {
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#AAA";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    const data = canvas.toDataURL("image/png");
+    photo.setAttribute("src", data);
+  }
+
   async function getMedia(constraints) {
     console.log("in get media");
     let stream = null;
@@ -9,13 +59,13 @@ export default function Page() {
       "canplay",
       (ev) => {
         if (!streaming) {
-          height = (video.videoHeight / video.videoWidth) * width;
+          setHeight((video.videoHeight / video.videoWidth) * width);
 
           video.setAttribute("width", width);
           video.setAttribute("height", height);
           canvas.setAttribute("width", width);
           canvas.setAttribute("height", height);
-          streaming = true;
+          setStreaming(true);
         }
       },
       false
@@ -27,7 +77,6 @@ export default function Page() {
       video.srcObject = stream;
       video.play();
     } catch (err) {
-      /* handle the error */
       console.log("there is an error!");
       console.log(err);
     }
@@ -49,13 +98,39 @@ export default function Page() {
       >
         Give us permissions please
       </button>
-      <div class="camera">
-        <video id="video">Video stream not available.</video>
-        <button id="start-button">Take photo</button>
-      </div>
-      <canvas id="canvas"> </canvas>
-      <div class="output">
-        <img id="photo" alt="The screen capture will appear in this box." />
+      <button id="start-button" onClick={() => takePicture()}>
+        Take photo
+      </button>
+      <div className="filmStrip w-[340px] relative">
+        <div className="camera">
+          <video id="video">Video stream not available.</video>
+        </div>
+        <canvas className="hidden" id="canvas" />
+        <div className="output flex flex-col relative ">
+          {photoSources &&
+            photoSources.map((p, i) => {
+              return (
+                <img
+                  id="photo"
+                  key={i}
+                  alt="The screen capture will appear in this box."
+                  src={p}
+                  style={{ height: height }}
+                />
+              );
+            })}
+
+          <img
+            className="absolute top-0 left-0"
+            style={{ height: height * 3 }}
+            src="/film-left.png"
+          />
+          <img
+            className="absolute right-0 top-0"
+            style={{ height: height * 3 }}
+            src="/film-right.png"
+          />
+        </div>
       </div>
     </div>
   );
