@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Page() {
   const [streaming, setStreaming] = useState(false);
@@ -8,6 +8,11 @@ export default function Page() {
   const [width, setWidth] = useState(320);
   const [height, setHeight] = useState(0);
   const [photoSources, setPhotoSources] = useState(undefined);
+  useEffect(() => {
+    getMedia({
+      video: true,
+    });
+  }, []);
   function takePicture() {
     const context = canvas.getContext("2d");
     console.log("in take picture");
@@ -70,7 +75,6 @@ export default function Page() {
       false
     );
     const canvas = document.getElementById("canvas");
-    const photo = document.getElementById("photo");
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = stream;
@@ -82,34 +86,35 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <div>
-        This will be where the camera flow is. It can redirect back to your
-        page.
-      </div>
-      <button
-        onClick={() =>
-          getMedia({
-            video: true,
-          })
-        }
-        className="p-2 bg-slate-200"
-      >
-        Give us permissions please
-      </button>
-      <button id="start-button" onClick={() => takePicture()}>
-        Take photo
-      </button>
+    <div className="flex flex-col gap-3 m-2">
+      {photoSources ? (
+        <button
+          className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+          onClick={() => {
+            setPhotoSources(undefined);
+          }}
+        >
+          Retake
+        </button>
+      ) : (
+        <button
+          className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+          id="start-button"
+          onClick={() => takePicture()}
+        >
+          Take photo
+        </button>
+      )}
       <div className="filmStrip w-[340px] relative">
-        <div className="camera">
+        <div className={`${photoSources ? "hidden" : "visible"} camera`}>
           <video webkit-playsinline id="video">
             Video stream not available.
           </video>
         </div>
         <canvas className="hidden" id="canvas" />
-        <div className="output flex flex-col relative ">
-          {photoSources &&
-            photoSources.map((p, i) => {
+        {photoSources && (
+          <div className="output flex flex-col relative ">
+            {photoSources.map((p, i) => {
               return (
                 <img
                   id="photo"
@@ -121,17 +126,18 @@ export default function Page() {
               );
             })}
 
-          <img
-            className="absolute top-0 left-0"
-            style={{ height: height * 3 }}
-            src="/film-left.png"
-          />
-          <img
-            className="absolute right-0 top-0"
-            style={{ height: height * 3 }}
-            src="/film-right.png"
-          />
-        </div>
+            <img
+              className="absolute top-0 left-0"
+              style={{ height: height * 3 }}
+              src="/film-left.png"
+            />
+            <img
+              className="absolute right-0 top-0"
+              style={{ height: height * 3 }}
+              src="/film-right.png"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
