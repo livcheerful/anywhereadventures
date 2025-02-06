@@ -26,6 +26,13 @@ export default function Page() {
       ctx.drawImage(img, 0, index * height, width, height);
     });
 
+    const fl = document.getElementById("film-left");
+    const fr = document.getElementById("film-right");
+    ctx.drawImage(fl, 0, 0, (fl.width / fl.height) * height * 3, height * 3);
+
+    const scaledWidth = (fr.width / fr.height) * height * 3;
+    ctx.drawImage(fr, width - scaledWidth, 0, scaledWidth, height * 3);
+
     var img = canvas.current.toDataURL("image/png");
     return img;
   }
@@ -166,7 +173,7 @@ export default function Page() {
         {photoSource && (
           <div className="output flex flex-col relative w-fit">
             <img src={photoSource} />
-            <img
+            {/* <img
               className="absolute top-0 left-0"
               style={{ height: height * 3 }}
               src="film-left.png"
@@ -175,9 +182,23 @@ export default function Page() {
               className="absolute right-0 top-0"
               style={{ height: height * 3 }}
               src="film-right.png"
-            />
+            /> */}
           </div>
         )}
+      </div>
+      <div className="hidden">
+        <img
+          id="film-left"
+          className="absolute top-0 left-0"
+          style={{ height: height * 3 }}
+          src="film-left.png"
+        />
+        <img
+          id="film-right"
+          className="absolute right-0 top-0"
+          style={{ height: height * 3 }}
+          src="film-right.png"
+        />
       </div>
       {(showSayCheese || countdown) && (
         <div className="absolute z-10 w-full bg-white/50 h-full flex justify-center items-center">
