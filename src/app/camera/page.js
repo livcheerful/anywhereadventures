@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Page() {
   const [streaming, setStreaming] = useState(false);
@@ -10,6 +11,12 @@ export default function Page() {
   const [photoSource, setPhotoSource] = useState(undefined);
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
+
+  const searchParams = useSearchParams();
+  const refSlug = searchParams.get("refSlug");
+
+  const router = useRouter();
+
   const canvas = useRef(null);
   useEffect(() => {
     getMedia({
@@ -98,8 +105,8 @@ export default function Page() {
 
           video.setAttribute("width", width);
           video.setAttribute("height", height);
-          canvas.current.setAttribute("width", width);
-          canvas.current.setAttribute("height", height);
+          // canvas.current.setAttribute("width", width);
+          // canvas.current.setAttribute("height", height);
           setStreaming(true);
         }
       },
@@ -120,7 +127,7 @@ export default function Page() {
     <div className="flex flex-col relative">
       <div className="flex flex-row justify-center z-20 absolute bottom-0 w-full">
         {photoSource ? (
-          <div>
+          <div className="flex flex-row gap-2">
             <button
               className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
               onClick={() => {
@@ -130,6 +137,7 @@ export default function Page() {
               Retake
             </button>
             <button
+              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
               onClick={() => {
                 const dataURL = document
                   .getElementById("canvas")
@@ -144,6 +152,14 @@ export default function Page() {
               }}
             >
               Download
+            </button>
+            <button
+              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+              onClick={() => {
+                router.push(`/${refSlug}`);
+              }}
+            >
+              Back to reading
             </button>
           </div>
         ) : (

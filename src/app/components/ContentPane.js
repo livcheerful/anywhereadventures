@@ -105,7 +105,7 @@ export default function ContentPane({ slug, post }) {
             <div
               className="p-12 bg-slate-400"
               onClick={() => {
-                router.push("/camera");
+                router.push(`/camera?refSlug=${slug}`);
               }}
             >
               Take a photo
