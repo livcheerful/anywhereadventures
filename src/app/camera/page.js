@@ -107,7 +107,15 @@ export default function Page() {
       )}
       <div className="filmStrip w-[340px] relative">
         <div className={`${photoSources ? "hidden" : "visible"} camera`}>
-          <video webkit-playsinline id="video">
+          <video
+            webkit-playsinline
+            autoPlay
+            controls
+            playsInline
+            muted
+            loop
+            id="video"
+          >
             Video stream not available.
           </video>
         </div>
