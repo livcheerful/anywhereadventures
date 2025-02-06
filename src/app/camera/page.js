@@ -59,6 +59,7 @@ export default function Page() {
     let stream = null;
 
     const video = document.getElementById("video");
+    video.controls = false;
     video.addEventListener(
       "canplay",
       (ev) => {
