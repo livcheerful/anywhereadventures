@@ -31,7 +31,14 @@ export default function Page() {
   }
   function takePicture() {
     const context = canvas.current.getContext("2d");
-    console.log("in take picture");
+    function snapPhoto() {
+      const tempCanvas = document.createElement("canvas");
+      const tempCtx = tempCanvas.getContext("2d");
+      tempCanvas.width = video.videoWidth;
+      tempCanvas.height = video.videoHeight;
+      tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+      return tempCanvas;
+    }
     setCountdown("3");
     setTimeout(() => {
       setCountdown("2");
@@ -46,16 +53,13 @@ export default function Page() {
     if (width && height) {
       const filmStrip = [];
       setTimeout(() => {
-        console.log("snap!");
-        filmStrip.push(video);
+        filmStrip.push(snapPhoto());
       }, 3500);
       setTimeout(() => {
-        console.log("snap!");
-        filmStrip.push(video);
+        filmStrip.push(snapPhoto());
       }, 4000);
       setTimeout(() => {
-        console.log("snap!");
-        filmStrip.push(video);
+        filmStrip.push(snapPhoto());
         const stitched = stitchImages(filmStrip);
         setPhotoSource(stitched);
         setShowSayCheese(false);
