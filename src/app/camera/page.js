@@ -1,30 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Page() {
   const [streaming, setStreaming] = useState(false);
 
   const [width, setWidth] = useState(320);
   const [height, setHeight] = useState(0);
-  const [photoSources, setPhotoSources] = useState(undefined);
+  const [photoSource, setPhotoSource] = useState(undefined);
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
+  const canvas = useRef(null);
   useEffect(() => {
     getMedia({
       video: true,
     });
   }, []);
   function stitchImages(images) {
-    document.getElementById("canvas");
-    var ctx = c.getContext("2d");
+    canvas.current.width = width;
+    canvas.current.height = height * images.length;
 
-    images.forEach((i) => {
-      ctx.drawImage(i, 0, 0, width, height);
+    var ctx = canvas.current.getContext("2d");
+
+    images.forEach((img, index) => {
+      ctx.drawImage(img, 0, index * height, width, height);
     });
+
+    var img = canvas.current.toDataURL("image/png");
+    return img;
   }
   function takePicture() {
-    const context = canvas.getContext("2d");
+    const context = canvas.current.getContext("2d");
     console.log("in take picture");
     setCountdown("3");
     setTimeout(() => {
@@ -38,28 +44,20 @@ export default function Page() {
       setShowSayCheese(true);
     }, 3000);
     if (width && height) {
-      function snapPhoto() {
-        canvas.width = width;
-        canvas.height = height;
-        context.drawImage(video, 0, 0, width, height);
-
-        const data = canvas.toDataURL("image/png");
-        return data;
-      }
       const filmStrip = [];
-
       setTimeout(() => {
         console.log("snap!");
-        filmStrip.push(snapPhoto());
+        filmStrip.push(video);
       }, 3500);
       setTimeout(() => {
         console.log("snap!");
-        filmStrip.push(snapPhoto());
+        filmStrip.push(video);
       }, 4000);
       setTimeout(() => {
         console.log("snap!");
-        filmStrip.push(snapPhoto());
-        setPhotoSources(filmStrip);
+        filmStrip.push(video);
+        const stitched = stitchImages(filmStrip);
+        setPhotoSource(stitched);
         setShowSayCheese(false);
       }, 4500);
     } else {
@@ -68,11 +66,11 @@ export default function Page() {
   }
 
   function clearPhoto() {
-    const context = canvas.getContext("2d");
+    const context = canvas.current.getContext("2d");
     context.fillStyle = "#AAA";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, canvas.current.width, canvas.current.height);
 
-    const data = canvas.toDataURL("image/png");
+    const data = canvas.current.toDataURL("image/png");
   }
 
   async function getMedia(constraints) {
@@ -89,8 +87,8 @@ export default function Page() {
 
           video.setAttribute("width", width);
           video.setAttribute("height", height);
-          canvas.setAttribute("width", width);
-          canvas.setAttribute("height", height);
+          canvas.current.setAttribute("width", width);
+          canvas.current.setAttribute("height", height);
           setStreaming(true);
         }
       },
@@ -110,15 +108,33 @@ export default function Page() {
   return (
     <div className="flex flex-col relative">
       <div className="flex flex-row justify-center z-20 absolute bottom-0 w-full">
-        {photoSources ? (
-          <button
-            className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
-            onClick={() => {
-              setPhotoSources(undefined);
-            }}
-          >
-            Retake
-          </button>
+        {photoSource ? (
+          <div>
+            <button
+              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+              onClick={() => {
+                setPhotoSource(undefined);
+              }}
+            >
+              Retake
+            </button>
+            <button
+              onClick={() => {
+                const dataURL = document
+                  .getElementById("canvas")
+                  .toDataURL("image/png");
+                var a = document.createElement("a");
+                // Set the link to the image so that when clicked, the image begins downloading
+                a.href = dataURL;
+                // Specify the image filename
+                a.download = "canvas-download.png";
+                // Click on the link to set off download
+                a.click();
+              }}
+            >
+              Download
+            </button>
+          </div>
         ) : (
           <button
             className="p-4 w-12 h-12 outline-2 bg-white rounded-full drop-shadow-sm"
@@ -128,7 +144,7 @@ export default function Page() {
         )}
       </div>
       <div className="filmStrip relative">
-        <div className={`${photoSources ? "hidden" : "visible"} camera`}>
+        <div className={`${photoSource ? "hidden" : "visible"} camera`}>
           <video
             webkit-playsinline
             autoPlay
@@ -142,21 +158,10 @@ export default function Page() {
             Video stream not available.
           </video>
         </div>
-        <canvas className="hidden" id="canvas" />
-        {photoSources && (
+        <canvas className="hidden" id="canvas" ref={canvas} />
+        {photoSource && (
           <div className="output flex flex-col relative w-fit">
-            {photoSources.map((p, i) => {
-              return (
-                <img
-                  id="photo"
-                  key={i}
-                  alt="The screen capture will appear in this box."
-                  src={p}
-                  style={{ height: height }}
-                />
-              );
-            })}
-
+            <img src={photoSource} />
             <img
               className="absolute top-0 left-0"
               style={{ height: height * 3 }}
