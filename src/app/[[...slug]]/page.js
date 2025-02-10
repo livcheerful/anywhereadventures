@@ -1,10 +1,12 @@
 import Navbar from "../components/Navbar";
 import MainMap from "../components/Map";
 import ContentPane from "../components/ContentPane";
-import dynamic from "next/dynamic";
+import { allSlugs } from "../lib/MdxQueries";
+import { slugsToObj } from "../lib/DynamicImports";
 
 export async function generateStaticParams() {
-  const slugs = ["", "hello-world", "sinking-ship", "discover"];
+  const slugs = allSlugs;
+  slugs.push("", "discover");
   // Grab file
   const slugmap = slugs.map((s) => ({
     slug: [s],
@@ -12,11 +14,6 @@ export async function generateStaticParams() {
   console.log(slugmap);
   return slugmap;
 }
-
-const slugsToObj = {
-  "hello-world": dynamic(() => import("../content/hello-world.mdx")),
-  "sinking-ship": dynamic(() => import("../content/sinking-ship.mdx")),
-};
 
 export default async function Page({ params }) {
   const { slug } = await params;

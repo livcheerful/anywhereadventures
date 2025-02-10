@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import PostContent from "./PostContent";
 import { Map } from "maplibre-gl";
+import { seattleLocs } from "../lib/MdxQueries";
 
 export default function ContentPane({ slug, post }) {
   const router = useRouter();
@@ -49,17 +50,21 @@ export default function ContentPane({ slug, post }) {
               >
                 Back to my saved locations
               </div>
-              Find content here
+              Seattle Locations:
               <div className="w-full flex flex-row gap-2 overflow-x-scroll px-3 ">
-                <div
-                  onClick={() => {
-                    router.push(`/${"sinking-ship"}`);
-                  }}
-                  key={0}
-                  className="shrink-0 h-[12rem] w-[17rem] bg-emerald-50"
-                >
-                  Sinking Ship
-                </div>
+                {seattleLocs.map((l) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        router.push(`/${"sinking-ship"}`);
+                      }}
+                      key={0}
+                      className="shrink-0 h-[12rem] w-[17rem] bg-emerald-50"
+                    >
+                      {l.title}
+                    </div>
+                  );
+                })}
 
                 {/* {allPosts.map((p, i) => {
                   console.log(p);

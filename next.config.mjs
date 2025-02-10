@@ -7,6 +7,9 @@ export default (phase) => {
    */
   const nextConfig = {
     output: "export",
+    experimental: {
+      missingSuspenseWithCSRBailout: false,
+    },
     distDir: "out",
     // Configure `pageExtensions` to include markdown and MDX files
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
