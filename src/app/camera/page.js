@@ -120,6 +120,7 @@ export default function Page() {
     } catch (err) {
       console.log("there is an error!");
       console.log(err);
+      // NotReadableError: Could not start video source
     }
   }
 

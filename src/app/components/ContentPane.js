@@ -97,24 +97,25 @@ export default function ContentPane({ slug, post }) {
                   setPaneOpen(false);
                 }}
               ></div>
-              <div className="flex flex-col">
+              <div className="flex flex-col  gap-3">
                 <div className=" font-bold text-2xl">{post?.title}</div>
                 <div
                   className={`bg-slate-200 p-1 rounded-xl font-semibold text-center ${"bg-green-600"}`}
                 >
                   Add to Map
                 </div>
+
+                <div
+                  className="p-1 rounded-xl font-semibold text-center bg-slate-200"
+                  onClick={() => {
+                    router.push(`/camera?refSlug=${slug}`);
+                  }}
+                >
+                  Take a photo
+                </div>
               </div>
             </div>
 
-            <div
-              className="p-12 bg-slate-400"
-              onClick={() => {
-                router.push(`/camera?refSlug=${slug}`);
-              }}
-            >
-              Take a photo
-            </div>
             {post && <PostContent post={post} />}
           </div>
         </div>
