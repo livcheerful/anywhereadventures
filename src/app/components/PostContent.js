@@ -1,14 +1,16 @@
 "use client";
-import { MDXRemote } from "next-mdx-remote";
+
+import { MDXRemote } from "next-mdx-remote-client/rsc";
 import { MyMDXComponents } from "../../../mdx-components";
 
 export default function PostContent({ post }) {
-  console.log("POST!!!!!!!!!!!!!!!!!!!!!!!!!:=============================");
-  console.log(post.content);
+  console.log("-============================================================");
+  console.log(post);
+  console.log("-============================================================");
   return (
     <div>
       {post ? (
-        <MDXRemote {...post.content} components={MyMDXComponents} />
+        <MDXRemote source={post.content} components={MyMDXComponents} />
       ) : (
         <div>This is where the content will go</div>
       )}

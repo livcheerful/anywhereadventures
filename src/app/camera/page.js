@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [streaming, setStreaming] = useState(false);
@@ -12,9 +12,9 @@ export default function Page() {
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
 
-  const searchParams = useSearchParams();
-  const refSlug = searchParams.get("refSlug");
-
+  // const searchParams = useSearchParams();
+  // const refSlug = searchParams.get("refSlug");
+  const refSlug = "sinking-ship";
   const router = useRouter();
 
   const canvas = useRef(null);

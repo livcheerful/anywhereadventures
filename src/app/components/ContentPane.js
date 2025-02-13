@@ -14,7 +14,6 @@ export default function ContentPane({ slug, post }) {
   const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
-    console.log("Make a mpa");
     let map = new Map({
       container: "mini-map",
       style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
@@ -101,6 +100,9 @@ export default function ContentPane({ slug, post }) {
                 <div className=" font-bold text-2xl">{post?.title}</div>
                 <div
                   className={`bg-slate-200 p-1 rounded-xl font-semibold text-center ${"bg-green-600"}`}
+                  onClick={() => {
+                    console.log("we're gonna add this place to our map, yeah?");
+                  }}
                 >
                   Add to Map
                 </div>

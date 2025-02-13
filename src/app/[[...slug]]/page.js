@@ -4,7 +4,7 @@ import MainMap from "../components/Map";
 import ContentPane from "../components/ContentPane";
 import { allSlugs } from "../lib/MdxQueries";
 import { getAllPosts, getPostBySlug } from "../lib/postHelper";
-import { serialize } from "next-mdx-remote/serialize";
+import { serialize } from "next-mdx-remote-client/serialize";
 
 export async function generateStaticParams() {
   const slugs = allSlugs;
@@ -26,22 +26,15 @@ export default async function Page({ params }) {
   if (slug && slug != "discover") {
     postSlug = slug;
     post = getPostBySlug(postSlug[0]);
-    console.log(
-      "This is the post content before serialization:=================="
-    );
-    console.log(post.content);
-    serializedContent = await serialize(post.content);
+    serializedContent = await serialize({ source: post.content });
     post = { ...post, content: serializedContent };
-    console.log(
-      "and this is what it looks like after serialization=================="
-    );
-    console.log(post.content);
   }
 
   return (
     <div className="relative flex w-full overflow-hidden ">
       <Navbar />
       <MainMap />
+      {/* <ContentPane /> */}
       <ContentPane slug={slug} post={post} />
     </div>
   );
