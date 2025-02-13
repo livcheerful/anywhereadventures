@@ -8,8 +8,12 @@ export default function Comic({ image, position, speechBubbles }) {
       className={`flex ${position == "left" ? "flex-row" : "flex-row-reverse"}`}
     >
       <img src={image} className="h-comic" />
-      {speechBubbles?.map((sb) => {
-        return <div className="w-10 center">{sb.text}</div>;
+      {speechBubbles?.map((sb, i) => {
+        return (
+          <div key={i} className="w-10 center">
+            {sb.text}
+          </div>
+        );
       })}
     </div>
   );

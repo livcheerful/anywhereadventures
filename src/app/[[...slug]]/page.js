@@ -35,6 +35,7 @@ export default async function Page({ params }) {
       <Navbar />
       <MainMap />
       {/* <ContentPane /> */}
+      {/* <MDXProvider components={MyMDXComponents}></MDXProvider> */}
       <ContentPane slug={slug} post={post} />
     </div>
   );
