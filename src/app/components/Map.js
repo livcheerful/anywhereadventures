@@ -1,8 +1,25 @@
 "use client";
 import { Map } from "maplibre-gl";
 import { useEffect, useState } from "react";
-export default function MainMap() {
-  const [zoomLevel, setZoomLevel] = useState(11);
+import "maplibre-gl/dist/maplibre-gl.css";
+
+function AdventureMap(map) {
+  this.map = map;
+  this.tempLayers = [];
+  this.addTemporaryLayer = function (layer) {
+    layer.addTo(this.map);
+    this.tempLayers.push(layer);
+  };
+
+  this.removeAllTempLayers = function () {
+    this.tempLayers.forEach((tl) => {
+      this.map.removeLayer(tl);
+    });
+  };
+}
+
+export default function MainMap({ mapCB }) {
+  const [zoom, setZoom] = useState(11);
   const [center, setCenter] = useState([-122.341077, 47.619161]);
 
   const loadImages = async (map) => {
@@ -56,23 +73,15 @@ export default function MainMap() {
       },
     });
   };
+
   useEffect(() => {
-    console.log("VVN IN HERE");
     let map = new Map({
       container: "map",
       style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-      zoom: zoomLevel,
+      zoom: zoom,
       center: center,
     });
-    // map.on("load", () => {
-    //   addPins(map);
-    // });
-    // map.on("click", "locs", (e) => {
-    //   setShowingLocationId(e.features[0].properties.id);
-    //   setShowingLocationIndex(e.features[0].properties.index);
-    //   const itemIndex = e.features[0].properties.index;
-    //   loadFile(locationData[itemIndex].html);
-    // });
+    mapCB(new AdventureMap(map));
   }, []);
   return (
     <div className="w-full">

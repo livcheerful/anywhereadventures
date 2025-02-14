@@ -7,11 +7,13 @@ export default function Comic({ image, position, speechBubbles }) {
     <div
       className={`flex ${position == "left" ? "flex-row" : "flex-row-reverse"}`}
     >
-      <img src={image} className="h-comic" />
+      <img src={image} className="h-comic select-none" />
       {speechBubbles?.map((sb, i) => {
         return (
           <div key={i} className="w-10 center">
+            {/* line break code goes here */}
             {sb.text}
+            {/* {Also need to make the text bubble svg} */}
           </div>
         );
       })}

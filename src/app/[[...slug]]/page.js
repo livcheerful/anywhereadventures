@@ -1,10 +1,9 @@
 import { Suspense } from "react";
 import Navbar from "../components/Navbar";
-import MainMap from "../components/Map";
-import ContentPane from "../components/ContentPane";
 import { allSlugs } from "../lib/MdxQueries";
 import { getAllPosts, getPostBySlug } from "../lib/postHelper";
 import { serialize } from "next-mdx-remote-client/serialize";
+import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
   const slugs = allSlugs;
@@ -13,7 +12,6 @@ export async function generateStaticParams() {
   const slugmap = slugs.map((s) => ({
     slug: [s],
   }));
-  console.log(slugmap);
   return slugmap;
 }
 
@@ -33,10 +31,7 @@ export default async function Page({ params }) {
   return (
     <div className="relative flex w-full overflow-hidden ">
       <Navbar />
-      <MainMap />
-      {/* <ContentPane /> */}
-      {/* <MDXProvider components={MyMDXComponents}></MDXProvider> */}
-      <ContentPane slug={slug} post={post} />
+      <BasePage slug={postSlug} post={post}></BasePage>
     </div>
   );
 }

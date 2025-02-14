@@ -15,7 +15,6 @@ function getAllPosts() {
       ...data,
     };
   });
-  console.log(allPosts);
   return allPosts;
 }
 
@@ -25,7 +24,6 @@ function getAllPostsByLocation(posts, location) {
 
 const posts = getAllPosts();
 const seattleLocs = getAllPostsByLocation(posts, "Seattle");
-console.log(seattleLocs);
 
 const outputData = `
 // This is the dynamically generated file
@@ -34,16 +32,3 @@ export const allSlugs = ${JSON.stringify(posts.map((p) => p.slug))}
 `;
 
 fs.writeFileSync(`./src/app/lib/MdxQueries.js`, outputData, "utf8");
-const dynamicImportsData = `
-import dynamic from "next/dynamic";
-export const slugsToObj = {
-    ${posts.map(
-      (p) => `"${p.slug}": dynamic(()=>import("../content/${p.slug}.mdx"))`
-    )}
-}
-`;
-fs.writeFileSync(
-  `./src/app/lib/DynamicImports.js`,
-  dynamicImportsData,
-  "utf-8"
-);
