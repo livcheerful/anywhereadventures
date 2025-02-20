@@ -18,10 +18,9 @@ export default (phase) => {
       ? undefined
       : "https://livcheerful.github.io/anywhereadventures/",
 
-    ...(isDev && {
+    ...(!isDev && {
       async rewrites() {
         return [
-          // Catch-all rewrite to add prefix to any dynamic path in development
           {
             source: "/:path*",
             destination: `https://livcheerful.github.io/anywhereadventures/:path*`,
