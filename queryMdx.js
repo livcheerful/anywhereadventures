@@ -1,5 +1,7 @@
-const fs = require("fs");
-const matter = require("gray-matter");
+import { serialize } from "next-mdx-remote-client/serialize";
+import matter from "gray-matter";
+import * as fs from "fs";
+
 const postsDirectory = "./src/app/content";
 
 function getAllPosts() {
@@ -32,3 +34,16 @@ export const allSlugs = ${JSON.stringify(posts.map((p) => p.slug))}
 `;
 
 fs.writeFileSync(`./src/app/lib/MdxQueries.js`, outputData, "utf8");
+
+// For each MDX file, serialize it and write it to public so we can fetch it from the client.
+posts.forEach(async (mdx, idx) => {
+  // console.log(mdxRemote);
+  const serializedContent = await serialize({ source: mdx.content });
+
+  const post = { ...mdx, content: serializedContent };
+  fs.writeFileSync(
+    `./public/content/generated/${mdx.slug}.json`,
+    JSON.stringify(post),
+    "utf-8"
+  );
+});

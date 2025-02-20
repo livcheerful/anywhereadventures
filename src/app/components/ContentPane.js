@@ -5,65 +5,61 @@ import { useState, useEffect } from "react";
 import PostContent from "./PostContent";
 import { Map, Marker } from "maplibre-gl";
 import { seattleLocs } from "../lib/MdxQueries";
+import RiverFeed from "./RiverFeed";
+import ContentHeader from "./ContentHeader";
+import { updateRoute } from "../lib/routeHelpers";
+import { getAllSlugs, getAll, isAdded } from "../lib/storageHelpers";
 
 export default function ContentPane({ slug, post, mainMap }) {
   const router = useRouter();
-  const [paneOpen, setPaneOpen] = useState(!!post || slug == "discover");
-  const [exploringContent, setExploringContent] = useState(slug == "discover");
-
-  const [allPosts, setAllPosts] = useState([]);
-
+  const [currentSlug, setCurrentSlug] = useState(slug);
+  const [paneOpen, setPaneOpen] = useState(!!post || currentSlug == "discover");
+  const [exploringContent, setExploringContent] = useState(
+    currentSlug == "discover"
+  );
+  const [myLocationSlugs, setMyLocationSlugs] = useState(getAllSlugs());
   useEffect(() => {
-    console.log("This is my post:");
-    console.log(post);
-    let miniMap = new Map({
-      container: "mini-map",
-      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-      zoom: post?.zoom || 8,
-      center: post
-        ? [post.latlon[1], post.latlon[0]]
-        : [-122.341077, 47.619161],
-
-      interactive: false,
-      attributionControl: false,
+    const myLocations = getAll();
+    const arrayed = Object.keys(myLocations).map((slug) => {
+      return { slug: slug, ...myLocations[slug] };
     });
-    if (post) {
-      const pin = new Marker()
-        .setLngLat([post.latlon[1], post.latlon[0]])
-        .addTo(miniMap);
-    }
-  }, []);
-  useEffect(() => {}, [mainMap]);
+    mainMap?.updatePins(arrayed);
+  }, [mainMap, myLocationSlugs]);
 
   useEffect(() => {
-    if (!paneOpen) {
+    if (paneOpen) {
+      // mainMap?.removeAllTempLayers();
     }
   }, [paneOpen]);
 
-  function zoomToMainMap() {
-    console.log("Map clicked");
+  useEffect(() => {
+    setExploringContent(currentSlug == "discover");
+  }, [currentSlug]);
+
+  function zoomToMainMap(coords, zoom, setTempPin = false) {
     setPaneOpen(false);
     mainMap.map.flyTo({
-      center: [post.latlon[1], post.latlon[0]],
-      zoom: post.zoom,
+      center: coords,
+      zoom: zoom || 8,
       speed: 0.4,
     });
-    const tempPinOnMainMap = new Marker().setLngLat([
-      post.latlon[1],
-      post.latlon[0],
-    ]);
-    mainMap.addTemporaryLayer(tempPinOnMainMap);
+    if (setTempPin) {
+      const tempPinOnMainMap = new Marker({
+        color: "#FFFFFF",
+      }).setLngLat(coords);
+      const l = mainMap.addTemporaryLayer(tempPinOnMainMap);
+    }
   }
 
   return (
     <div
       className={`w-full ${
-        paneOpen ? "h-full " : "h-16"
+        paneOpen ? "h-4/5 " : "h-16"
       } bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear`}
       id="pane"
     >
       <div className="h-full">
-        <div className="w-full text-2xl font-bold fixed ">
+        <div className="w-full text-2xl font-bold fixed  z-10">
           <div
             className="bg-lime-200 h-8 p-2 text-xs font-bold"
             onClick={() => {
@@ -73,25 +69,35 @@ export default function ContentPane({ slug, post, mainMap }) {
         </div>
         <div className="w-full h-full flex overflow-y-scroll pt-10">
           {exploringContent && (
-            <div className="w-full">
+            <div className="w-full flex gap-2 flex-col">
               <div
+                className="p-2 bg-blue-200 rounded-lg"
                 onClick={() => {
-                  router.push("/");
+                  // router.replace("/", undefined, { shallow: true });
+                  setCurrentSlug(updateRoute("/"));
+                  setExploringContent(false);
                 }}
               >
                 Back to my saved locations
               </div>
+              <div className="p-2 rounded-md bg-emerald-200">
+                View on map. This button will show all locations on the map to
+                explore that way. myabe it shouldn't be a button, and show just
+                show on the map?
+              </div>
               Seattle Locations:
-              <div className="w-full flex flex-row gap-2 overflow-x-scroll px-3 ">
+              <div className="w-full flex flex-row gap-2 overflow-x-auto px-3 py-4">
                 {seattleLocs.map((l, k) => {
-                  console.log(l);
                   return (
                     <div
                       onClick={() => {
-                        router.push(`/${l.slug}`);
+                        router.replace(`/${l.slug}`);
                       }}
                       key={k}
-                      className="shrink-0 h-[12rem] w-[17rem] bg-emerald-50"
+                      className="shrink-0 h-[12rem] w-[17rem] bg-cover text-lg font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg p-3"
+                      style={{
+                        backgroundImage: `url(${l.cardImage})`,
+                      }}
                     >
                       {l.title}
                     </div>
@@ -100,56 +106,45 @@ export default function ContentPane({ slug, post, mainMap }) {
               </div>
             </div>
           )}
+          {!exploringContent && !currentSlug && (
+            <RiverFeed
+              zoomToMainMap={zoomToMainMap}
+              setCurrentSlug={setCurrentSlug}
+              myLocationSlugs={myLocationSlugs}
+              setMyLocationSlugs={setMyLocationSlugs}
+              setPaneOpen={setPaneOpen}
+            />
+          )}
 
           <div
             className={`pt-2 w-full ${
-              paneOpen && slug && slug != "discover" ? "visible" : "hidden"
+              paneOpen && currentSlug && currentSlug != "discover"
+                ? "visible"
+                : "hidden"
             }`}
           >
             <div
               className="bg-emerald-500 p-4 w-fit cursor-pointer"
               onClick={() => {
-                router.push("/discover");
+                router.replace("/discover");
+                mainMap.removeAllTempLayers();
               }}
             >
               Back
             </div>
-            <div className="flex flex-row gap-2 p-4 ">
-              <div
-                className={`w-[8rem] h-[10rem] bg-slate-400 `}
-                id="mini-map"
-                onClick={() => {
-                  zoomToMainMap();
-                }}
-              ></div>
-              <div className="flex flex-col  gap-3">
-                <div className=" font-bold text-2xl">{post?.title}</div>
-                <div
-                  className={`bg-slate-200 p-1 rounded-xl font-semibold text-center ${"bg-green-600"}`}
-                  onClick={() => {
-                    console.log("we're gonna add this place to our map, yeah?");
-                  }}
-                >
-                  Add to Map
-                </div>
-
-                <div
-                  className="p-1 rounded-xl font-semibold text-center bg-slate-200"
-                  onClick={() => {
-                    router.push(`/camera?refSlug=${slug}`);
-                  }}
-                >
-                  Take a photo
-                </div>
-              </div>
-            </div>
-
+            <ContentHeader
+              post={post}
+              zoomToMainMap={zoomToMainMap}
+              setMyLocationSlugs={setMyLocationSlugs}
+              isAdded={isAdded(currentSlug)}
+              setPaneOpen={setPaneOpen}
+            />
             {post && <PostContent post={post} />}
           </div>
         </div>
       </div>
       <div
-        className="w-16 h-16 bg-emerald-700 absolute rounded-full -top-8 right-2 cursor-pointer"
+        className="w-16 h-16 bg-emerald-700 absolute rounded-full -top-8 right-2 cursor-pointer  z-20"
         onClick={() => {
           setPaneOpen(true);
           setExploringContent(true);
@@ -158,7 +153,7 @@ export default function ContentPane({ slug, post, mainMap }) {
       ></div>
       {paneOpen && (
         <div
-          className="w-10 h-10 absolute -top-0 right-20 bg-emerald-700 text-white"
+          className="w-10 h-10 absolute -top-0 right-20 bg-emerald-700 text-white  z-20"
           onClick={() => {
             setPaneOpen(false);
           }}

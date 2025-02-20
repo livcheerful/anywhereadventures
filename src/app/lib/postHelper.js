@@ -26,8 +26,6 @@ export function getAllPosts() {
 }
 
 export function getPostBySlug(slug) {
-  console.log("In get post by slug!");
-  console.log(slug);
   const filePath = path.join(postsDirectory, `${slug}.mdx`);
   fs.readFileSync(filePath);
   const fileContents = fs.readFileSync(filePath, "utf8");
@@ -35,7 +33,7 @@ export function getPostBySlug(slug) {
   const { data, content } = matter(fileContents);
 
   return {
-    slug: filePath.replace(/\.mdx$/, ""),
+    slug: slug,
     content, // Only the content (no front matter)
     ...data, // Include front matter as needed for SEO or sorting
   };

@@ -21,17 +21,19 @@ export default async function Page({ params }) {
   let post;
   let serializedContent;
 
-  if (slug && slug != "discover") {
+  if (slug) {
     postSlug = slug;
-    post = getPostBySlug(postSlug[0]);
-    serializedContent = await serialize({ source: post.content });
-    post = { ...post, content: serializedContent };
+    if (slug != "discover") {
+      post = getPostBySlug(postSlug[0]);
+      serializedContent = await serialize({ source: post.content });
+      post = { ...post, content: serializedContent };
+    }
   }
 
   return (
     <div className="relative flex w-full overflow-hidden ">
       <Navbar />
-      <BasePage slug={postSlug} post={post}></BasePage>
+      <BasePage slug={postSlug ? postSlug[0] : ""} post={post}></BasePage>
     </div>
   );
 }

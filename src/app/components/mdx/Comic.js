@@ -1,7 +1,21 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 export default function Comic({ image, position, speechBubbles }) {
   // VVN TODO calculate bubble height and width based on text
   // VVN todo text centering helper
   // VVN TODO making svg bubble helper
+
+  const [brokenLines, setBrokenLines] = useState([]);
+
+  useEffect(() => {
+    speechBubbles.forEach((sb) => {
+      console.log("Line:");
+      console.log(sb.text);
+      console.log(sb.text.length);
+    });
+  }, []);
 
   return (
     <div
