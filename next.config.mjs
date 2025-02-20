@@ -15,7 +15,7 @@ export default (phase) => {
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
     reactStrictMode: false,
     assetPrefix: isDev ? undefined : "https://anywhereadventures.vercel.app/",
-    basePath: isDev ? undefined : "/anywhereadventures",
+    // basePath: isDev ? undefined : "/anywhereadventures",
   };
 
   const withMDX = createMDX({});
