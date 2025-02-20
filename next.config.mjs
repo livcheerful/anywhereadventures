@@ -14,7 +14,9 @@ export default (phase) => {
     // Configure `pageExtensions` to include markdown and MDX files
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
     reactStrictMode: false,
-    assetPrefix: isDev ? undefined : "https://livcheerful.github.io/anywhereadventures/",,
+    assetPrefix: isDev
+      ? undefined
+      : "https://livcheerful.github.io/anywhereadventures/",
     basePath: isDev ? undefined : "/anywhereadventures",
   };
 
