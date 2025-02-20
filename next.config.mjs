@@ -17,17 +17,6 @@ export default (phase) => {
     assetPrefix: isDev
       ? undefined
       : "https://livcheerful.github.io/anywhereadventures/",
-
-    ...(!isDev && {
-      async rewrites() {
-        return [
-          {
-            source: "/:path*",
-            destination: `https://livcheerful.github.io/anywhereadventures/:path*`,
-          },
-        ];
-      },
-    }),
   };
 
   const withMDX = createMDX({});
