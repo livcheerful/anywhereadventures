@@ -182,9 +182,10 @@ export default function Comic({
       <img src={image} className="h-comic select-none" />
       <div className="flex gap-2 flex-col">
         {brokenLines.map((bubbleLines, i) => {
-          const randomXOff = Math.floor(
-            (Math.random() * screenWidth * (1 - bubblePercentage)) / 2
-          );
+          // const randomXOff = Math.floor(
+          //   (Math.random() * screenWidth * (1 - bubblePercentage)) / 2
+          // );
+          const randomXOff = 0;
           const margin = 15;
           const bubbleWidth = bubbleWidths[i] || defaultBubbleWidth; // VVN TODO at some point fix bubbleWidths so they can be smaller if needed to fit the text
           const bubbleHeight = bubbleLines.length * charHeight + margin * 2;
