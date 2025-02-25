@@ -39,6 +39,7 @@ export default function LOCItem({ image, lcLink, caption }) {
               setDragging(false);
             }}
             onPointerMove={(e) => {
+              e.preventDefault();
               mouseHandler(e);
             }}
           >
