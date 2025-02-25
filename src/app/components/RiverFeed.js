@@ -33,6 +33,7 @@ export default function RiverFeed({
           <div key={i}>
             <ContentHeader
               post={c}
+              currentSlug={""}
               zoomToMainMap={zoomToMainMap}
               k={i}
               isAdded={true}

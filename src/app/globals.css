@@ -19,3 +19,10 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@font-face {
+  font-family: "AnimeAce";
+  src: url('/static/AnimeAce3BB_Regular.otf');
+  src: url('/static/AnimeAce3BB_Regular.otf') format('otf');
+}
+

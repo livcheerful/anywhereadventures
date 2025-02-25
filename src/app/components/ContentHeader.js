@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Map, Marker } from "maplibre-gl";
+import { useRouter } from "next/navigation";
 import {
   add as addToStorage,
   getAllSlugs,
@@ -8,12 +9,14 @@ import {
 } from "../lib/storageHelpers";
 export default function ContentHeader({
   post,
+  currentSlug,
   zoomToMainMap,
   setMyLocationSlugs,
   setPaneOpen,
   k = 0,
   isAdded = false,
 }) {
+  const router = useRouter();
   useEffect(() => {
     let miniMap = new Map({
       container: `mini-map-${k}`,

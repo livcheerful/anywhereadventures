@@ -134,6 +134,7 @@ export default function ContentPane({ slug, post, mainMap }) {
             </div>
             <ContentHeader
               post={post}
+              currentSlug={currentSlug}
               zoomToMainMap={zoomToMainMap}
               setMyLocationSlugs={setMyLocationSlugs}
               isAdded={isAdded(currentSlug)}
