@@ -6,25 +6,40 @@ export function useMDXComponents(components) {
     h1: ({ children }) => (
       <h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
     ),
-    h2: ({ children }) => <h2 className="">{children}VVIVIVNNSN</h2>,
+    h2: ({ children }) => <h2 className="">{children}</h2>,
     ...components,
   };
 }
 
 export const MyMDXComponents = {
-  h1: ({ children }) => <h1 className="p-2 text-4xl font-bold">{children}</h1>,
-  h2: ({ children }) => <h2 className="p-2 text-2xl font-bold">{children}</h2>,
-  p: ({ children }) => <div className="p-2">{children}</div>,
-  LOCItem: ({ image, lcLink, caption, children }) => {
-    return <LOCItem image={image} lcLink={lcLink} caption={caption} />;
+  h1: ({ children }) => <h1 className="p-2 text-2xl font-bold">{children}</h1>,
+  h2: ({ children }) => <h2 className="p-2 text-xl font-bold">{children}</h2>,
+  p: ({ children }) => <div className="p-2 py-4 font-medium ">{children}</div>,
+  LOCItem: ({ image, assetLink, linkOut, caption, children }) => {
+    return (
+      <LOCItem
+        image={image}
+        assetLink={assetLink}
+        linkOut={linkOut}
+        caption={caption}
+      />
+    );
   },
-  Comic: ({ speechBubbles, image, position, overlap, children }) => {
+  Comic: ({
+    speechBubbles,
+    image,
+    position,
+    overlap,
+    absoluteHeight,
+    children,
+  }) => {
     return (
       <Comic
         overlap={overlap}
         speechBubbles={speechBubbles}
         image={image}
         position={position}
+        absoluteHeight={absoluteHeight}
       ></Comic>
     );
   },

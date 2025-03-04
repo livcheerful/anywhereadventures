@@ -1,5 +1,4 @@
-const fs = require("fs");
-
+import * as fs from "fs";
 const defaultContent = `---
 title:
 location: [""]

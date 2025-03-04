@@ -5,14 +5,15 @@ import { useState, useEffect } from "react";
 let screenWidth = 390;
 const bubblePercentage = 0.5;
 const charwidth = 12;
-const charHeight = 24;
+let charHeight = 29;
 const lineLimit = (screenWidth * bubblePercentage) / charwidth;
 const defaultBubbleWidth = screenWidth * bubblePercentage;
 
 export default function Comic({
   image,
-  speechBubbles,
+  speechBubbles = [],
   overlap = 0,
+  absoluteHeight,
   position = "left",
 }) {
   // VVN TODO calculate bubble height and width based on text
@@ -20,6 +21,7 @@ export default function Comic({
   // VVN TODO making svg bubble helper
 
   const [brokenLines, setBrokenLines] = useState([]);
+  const [wordInfo, setWordInfo] = useState([]);
   const [bubbleWidths, setBubbleWidths] = useState(
     speechBubbles.map(() => defaultBubbleWidth)
   );
@@ -75,15 +77,63 @@ export default function Comic({
     };
   }
 
+  function estimateBubbleHeight(bl) {
+    let estHeight = 0;
+    for (let lineSetIdx = 0; lineSetIdx < bl.length; lineSetIdx++) {
+      const lineSet = bl[lineSetIdx];
+      estHeight += lineSet.length * (charHeight + 2);
+      estHeight += 10; // margin in bubble maybe
+      estHeight += 20; // gaps between bubbles maybe
+    }
+    console.log("estimated heigh is:");
+    console.log(estHeight);
+    return estHeight;
+  }
   useEffect(() => {
     const speechBubblesProcessed = [];
+    const processedWordInfo = [];
     const longestLines = [];
     speechBubbles.forEach((sb) => {
-      const words = sb.text.split(" ");
+      const comicLine = sb.text;
+
+      let words = comicLine.split(" ");
+
+      let unboldedWords = [];
+      let informedWords = [];
+      let inBold = false;
+      for (let i = 0; i < words.length; i++) {
+        // Check if the beginning of this is bolded
+        const startBoldRegExp = /^(\*\*)(\S+)/;
+        const endBoldRegExp = /(\S+)(?=\*\*$)/;
+        let match = words[i].match(startBoldRegExp);
+        let endMatch = words[i].match(endBoldRegExp);
+        if (match && endMatch) {
+          let removeEnd = match[2].match(endBoldRegExp);
+          unboldedWords.push(removeEnd[1]);
+          informedWords.push({ text: removeEnd[1], bold: true });
+        } else if (match) {
+          unboldedWords.push(match[2]);
+          informedWords.push({ text: match[2], bold: true });
+          inBold = true;
+        } else if (endMatch) {
+          unboldedWords.push(endMatch[1]);
+          informedWords.push({ text: endMatch[1], bold: true });
+          inBold = false;
+        } else if (inBold) {
+          unboldedWords.push(words[i]);
+          informedWords.push({ text: words[i], bold: true });
+        } else {
+          unboldedWords.push(words[i]);
+          informedWords.push({ text: words[i], bold: false });
+        }
+      }
+      console.log(informedWords);
+      processedWordInfo.push(informedWords);
+      words = unboldedWords;
       const wordlengths = words.map((w) => {
         return w.length;
       });
-      const midpoint = Math.floor(sb.text.length / 2);
+      const midpoint = Math.floor(comicLine.length / 2);
 
       let midWordIdx = 0;
       let sum = 0;
@@ -95,15 +145,25 @@ export default function Comic({
       });
       if (wordlengths.length - 1 > midWordIdx + 1) midWordIdx++;
 
+      // console.log("The mid word index is");
+      // console.log(midWordIdx);
+
       let currentLine = words[midWordIdx];
       let brokenLineStruct;
       let goingLeft = true;
       let leftIdx = midWordIdx - 1;
       let rightIdx = midWordIdx + 1;
       // VVN TODO need to add special case if there are only two words.
+      if (words.length == 1) {
+        brokenLineStruct = new WordListList(currentLine);
+        leftIdx = -1;
+        rightIdx = words.length;
+      }
 
       // If no characters will fit on a line, this loop stalls out.
       // VVNTODO add checks for that
+
+      if (leftIdx <= 0) goingLeft = false;
       while (leftIdx >= 0 || rightIdx < words.length) {
         if (goingLeft) {
           if (wordlengths[leftIdx] + currentLine.length < lineLimit) {
@@ -134,12 +194,20 @@ export default function Comic({
             currentLine = `${currentLine} ${words[rightIdx]}`;
             rightIdx++;
             if (rightIdx >= words.length) {
-              brokenLineStruct.postpend(currentLine);
+              if (!brokenLineStruct) {
+                brokenLineStruct = new WordListList(currentLine);
+              } else {
+                brokenLineStruct.postpend(currentLine);
+              }
               currentLine = "";
             }
           } else {
             // Commit this line
-            brokenLineStruct.postpend(currentLine);
+            if (!brokenLineStruct) {
+              brokenLineStruct = new WordListList(currentLine);
+            } else {
+              brokenLineStruct.postpend(currentLine);
+            }
             currentLine = "";
           }
         }
@@ -153,12 +221,12 @@ export default function Comic({
           longestLine = l.length;
         }
       });
-      console.log(`vvn longest line is: ${longestLine}`);
       longestLines.push(longestLine * charwidth);
       speechBubblesProcessed.push(lines);
     });
     setBubbleWidths(longestLines);
     setBrokenLines(speechBubblesProcessed);
+    setWordInfo(processedWordInfo);
   }, []);
 
   // useEffect(() => {
@@ -177,23 +245,43 @@ export default function Comic({
       className={`flex relative ${
         position == "right" ? "flex-row-reverse" : "flex-row"
       }`}
-      style={{ top: `-${overlap}px` }}
+      style={{
+        top: `-${overlap}px`,
+        height: overlap
+          ? absoluteHeight || `${estimateBubbleHeight(brokenLines) - overlap}px`
+          : "auto",
+      }}
     >
-      <img src={image} className="h-comic select-none" />
-      <div className="flex gap-2 flex-col">
+      {image ? (
+        <img
+          src={image}
+          className={` select-none  ${
+            position == "full" ? " w-full" : "h-comic"
+          }`}
+        />
+      ) : (
+        <div className={`w-16 h-16`}></div>
+      )}
+      <div className="flex gap-2 flex-col h-fit">
         {brokenLines.map((bubbleLines, i) => {
           // const randomXOff = Math.floor(
           //   (Math.random() * screenWidth * (1 - bubblePercentage)) / 2
           // );
           const randomXOff = 0;
           const margin = 15;
-          const bubbleWidth = bubbleWidths[i] || defaultBubbleWidth; // VVN TODO at some point fix bubbleWidths so they can be smaller if needed to fit the text
+          const bubbleWidth = bubbleWidths[i] || defaultBubbleWidth;
           const bubbleHeight = bubbleLines.length * charHeight + margin * 2;
           const bubbleWid = bubbleWidth / 2;
           const bubbleHei = bubbleHeight / 2;
           const bubbleDrop = 9;
-          const tailLength = 20;
-          const tailGap = 10;
+          const tailLength = image ? 20 : 0;
+          const tailGap = image ? 10 : 0;
+
+          const thisBubblesWordInfo = wordInfo[i];
+
+          console.log("this bubbles:");
+          console.log(thisBubblesWordInfo);
+          let wordIdx = 0;
           return (
             <div
               key={i}
@@ -258,7 +346,23 @@ export default function Comic({
                         className="bg-none block font-comic comicStyle"
                         key={j}
                       >
-                        {line}
+                        {line.split(" ").map((w, k) => {
+                          console.log(wordIdx);
+                          console.log(line.split(" "));
+                          console.log(thisBubblesWordInfo);
+                          if (w.length == 0) {
+                            return;
+                          }
+                          const currIdx = wordIdx++;
+                          if (
+                            thisBubblesWordInfo[currIdx] &&
+                            thisBubblesWordInfo[currIdx].bold
+                          ) {
+                            return <b className="px-1">{w}</b>;
+                          } else {
+                            return <span className="px-1">{w}</span>;
+                          }
+                        })}
                       </div>
                     );
                   })}

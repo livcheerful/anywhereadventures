@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-export default function LOCItem({ image, lcLink, caption }) {
+export default function LOCItem({ image, assetLink, linkOut, caption }) {
   const [itemOpen, setItemOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(2);
   const [diffPos, setDiffPos] = useState([0, 0]);
@@ -18,79 +18,22 @@ export default function LOCItem({ image, lcLink, caption }) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-2 pb-5">
-      {itemOpen && (
-        <div className="fixed w-full h-full bg-black/60 top-0 z-30 flex flex-col justify-center">
-          <div
-            className="bg-white absolute top-0 z-40"
-            onClick={() => {
-              setItemOpen(false);
-            }}
-          >
-            Close
-          </div>
-          <div
-            className=""
-            onPointerDown={(e) => {
-              e.preventDefault();
-              setDragging(true);
-            }}
-            onPointerUp={(e) => {
-              setDragging(false);
-            }}
-            onPointerMove={(e) => {
-              e.preventDefault();
-              mouseHandler(e);
-            }}
-          >
-            {lcLink ? (
-              <div></div>
-            ) : (
-              <div className="w-full max-h-1/3 overflow-clip">
-                <img
-                  className="select-none"
-                  src={image}
-                  style={{
-                    transform: `translate(${diffPos[0]}px,${diffPos[1]}px) scale(${zoomLevel})`,
-                  }}
-                  ref={openedImage}
-                ></img>
-              </div>
-            )}
-          </div>
-          <div className="absolute bottom-0 flex flex-row gap-2 p-3">
-            <div
-              className="bg-white p-3"
-              onClick={() => {
-                setZoomLevel(zoomLevel - 0.2);
-              }}
-            >
-              Zoom Out
-            </div>
-            <div
-              className="bg-white p-3"
-              onClick={() => {
-                setZoomLevel(zoomLevel + 0.2);
-              }}
-            >
-              ZoomIn
-            </div>
-            {lcLink && (
-              <div className="bg-white p-3">
-                <a href={lcLink}>Visit the source</a>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+    <div className="flex flex-col items-center gap-1 pb-5 relative">
       <img
         src={image}
         onClick={() => {
           // VVN start fetch of item
-          setItemOpen(true);
+          // setItemOpen(true);
         }}
       />
-      <div className="italic font-serif">{caption}</div>
+      {linkOut && (
+        <a href={linkOut}>
+          <div className="absolute right-2 top-0 bg-slate-100 p-2 drop-shadow-sm font-light">
+            source
+          </div>
+        </a>
+      )}
+      <div className="italic font-serif p-2">{caption}</div>
     </div>
   );
 }

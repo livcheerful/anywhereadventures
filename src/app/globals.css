@@ -17,7 +17,8 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Geneva, Tahoma, sans-serif;
+  line-height: 180%;
 }
 
 @font-face {
@@ -26,3 +27,7 @@ body {
   src: url('/static/AnimeAce3BB_Regular.otf') format('otf');
 }
 
+.mdx-post-content a {
+  color: rgb(19, 162, 228);
+  text-decoration: underline;
+}

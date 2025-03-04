@@ -130,7 +130,7 @@ export default function Page() {
         {photoSource ? (
           <div className="flex flex-row gap-2">
             <button
-              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
               onClick={() => {
                 setPhotoSource(undefined);
               }}
@@ -138,7 +138,7 @@ export default function Page() {
               Retake
             </button>
             <button
-              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
               onClick={() => {
                 const dataURL = document
                   .getElementById("canvas")
@@ -155,7 +155,7 @@ export default function Page() {
               Download
             </button>
             <button
-              className="p-4 bg-violet-200 rounded-lg drop-shadow-sm"
+              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
               onClick={() => {
                 router.push(`/${refSlug}`);
               }}
@@ -165,13 +165,20 @@ export default function Page() {
           </div>
         ) : (
           <button
-            className="p-4 w-12 h-12 outline-2 bg-white rounded-full drop-shadow-sm"
+            className="p-2 w-12 h-12 outline-2 bg-white rounded-full drop-shadow-sm"
             id="start-button"
             onClick={() => takePicture()}
-          ></button>
+          >
+            <div
+              className=" text-emerald-950 font-bold"
+              style={{ transform: "rotate(90deg)" }}
+            >
+              :)
+            </div>
+          </button>
         )}
       </div>
-      <div className="filmStrip relative">
+      <div className="filmStrip relative flex flex-col items-center ">
         <div className={`${photoSource ? "hidden" : "visible"} camera`}>
           <video
             webkit-playsinline
@@ -181,14 +188,14 @@ export default function Page() {
             muted
             loop
             id="video"
-            className="w-full"
+            className="w-full max-h-[30rem]"
           >
             Video stream not available.
           </video>
         </div>
         <canvas className="hidden" id="canvas" ref={canvas} />
         {photoSource && (
-          <div className="output flex flex-col relative w-fit">
+          <div className="output flex flex-col relative w-fit pt-2">
             <img src={photoSource} />
             {/* <img
               className="absolute top-0 left-0"
@@ -219,7 +226,7 @@ export default function Page() {
       </div>
       {(showSayCheese || countdown) && (
         <div className="absolute z-10 w-full bg-white/50 h-full flex justify-center items-center">
-          <div className="text-white font-black text-[10rem] ">
+          <div className="text-black font-bold text-[3rem] ">
             {countdown ? countdown : "say CHEEESE"}
           </div>
         </div>

@@ -41,17 +41,12 @@ export default function RiverFeed({
               setPaneOpen={setPaneOpen}
             />
             <PostContent post={c} />
+            {i < contentArray.length - 1 && (
+              <hr className="py-4 " style={{ color: "#FF2244" }}></hr>
+            )}
           </div>
         );
       })}
-      <div
-        className="p-2 bg-slate-100 cursor-pointer"
-        onClick={() => {
-          setCurrentSlug(updateRoute("/discover"));
-        }}
-      >
-        Get more places
-      </div>
     </div>
   );
 }
