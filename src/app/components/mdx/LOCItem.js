@@ -33,7 +33,7 @@ export default function LOCItem({ image, assetLink, linkOut, caption }) {
           </div>
         </a>
       )}
-      <div className="italic font-serif p-2">{caption}</div>
+      <div className="italic font-serif text-sm p-2">{caption}</div>
     </div>
   );
 }

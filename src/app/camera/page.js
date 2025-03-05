@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Page() {
   const [streaming, setStreaming] = useState(false);
@@ -12,9 +12,12 @@ export default function Page() {
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
 
-  // const searchParams = useSearchParams();
-  // const refSlug = searchParams.get("refSlug");
-  const refSlug = "sinking-ship";
+  const searchParams = useSearchParams();
+  const refSlug = searchParams.get("refSlug");
+  const cameraType = searchParams.get("type");
+  const frameImage = searchParams.get("frame");
+  const imagePlacement = searchParams.get("place");
+  const imageDimensions = searchParams.get("size");
   const router = useRouter();
 
   const canvas = useRef(null);
@@ -24,24 +27,89 @@ export default function Page() {
     });
   }, []);
   function stitchImages(images) {
-    canvas.current.width = width;
-    canvas.current.height = height * images.length;
+    switch (cameraType) {
+      case "stereograph":
+        const sf = document.getElementById("stereograph");
+        canvas.current.width = width * images.length;
+        canvas.current.height = (sf.height * width * 2) / sf.width;
+        var ctx = canvas.current.getContext("2d");
 
-    var ctx = canvas.current.getContext("2d");
+        images.forEach((img, index) => {
+          ctx.drawImage(img, index * width, 0, width, height);
+        });
 
-    images.forEach((img, index) => {
-      ctx.drawImage(img, 0, index * height, width, height);
-    });
+        ctx.drawImage(sf, 0, 0, width * 2, (sf.height * width * 2) / sf.width);
 
-    const fl = document.getElementById("film-left");
-    const fr = document.getElementById("film-right");
-    ctx.drawImage(fl, 0, 0, (fl.width / fl.height) * height * 3, height * 3);
+        var img = canvas.current.toDataURL("image/png");
+        return img;
+      case "newspaper":
+        const np = document.getElementById("newspaper");
+        canvas.current.width = np.width;
+        canvas.current.height = np.height;
+        var ctx = canvas.current.getContext("2d");
+        const placeCoords = imagePlacement.split(",");
+        const dimensions = imageDimensions.split(",");
 
-    const scaledWidth = (fr.width / fr.height) * height * 3;
-    ctx.drawImage(fr, width - scaledWidth, 0, scaledWidth, height * 3);
+        let photoWidth = width;
+        let photoHeight = height;
+        let centerShiftX = 0;
+        let centerShiftY = 0;
 
-    var img = canvas.current.toDataURL("image/png");
-    return img;
+        if (dimensions[0] < dimensions[1]) {
+          // portrait
+          // Which dimension we key on depends on who is smaller.
+          if (width / height < dimensions[0] / dimensions[1]) {
+            // Key on width
+            photoWidth = dimensions[0];
+            photoHeight = (dimensions[1] / dimensions[0]) * width;
+          } else {
+            photoHeight = dimensions[1];
+            photoWidth = (dimensions[1] / height) * width;
+            centerShiftX = (dimensions[1] - photoWidth / 2) * -1;
+          }
+        } else {
+          // Landscape
+        }
+
+        images.forEach((img, index) => {
+          ctx.drawImage(
+            img,
+            parseInt(placeCoords[0]) + centerShiftX,
+            parseInt(placeCoords[1]),
+            photoWidth,
+            photoHeight
+          );
+        });
+
+        ctx.drawImage(np, 0, 0, np.width, np.height);
+
+        var img = canvas.current.toDataURL("image/png");
+        return img;
+      default:
+        canvas.current.width = width;
+        canvas.current.height = height * images.length;
+        var ctx = canvas.current.getContext("2d");
+
+        images.forEach((img, index) => {
+          ctx.drawImage(img, 0, index * height, width, height);
+        });
+
+        const fl = document.getElementById("film-left");
+        const fr = document.getElementById("film-right");
+        ctx.drawImage(
+          fl,
+          0,
+          0,
+          (fl.width / fl.height) * height * 3,
+          height * 3
+        );
+
+        const scaledWidth = (fr.width / fr.height) * height * 3;
+        ctx.drawImage(fr, width - scaledWidth, 0, scaledWidth, height * 3);
+
+        var img = canvas.current.toDataURL("image/png");
+        return img;
+    }
   }
   function takePicture() {
     const context = canvas.current.getContext("2d");
@@ -66,20 +134,87 @@ export default function Page() {
     }, 3000);
     if (width && height) {
       const filmStrip = [];
-      setTimeout(() => {
-        filmStrip.push(snapPhoto());
-      }, 3500);
-      setTimeout(() => {
-        filmStrip.push(snapPhoto());
-      }, 4000);
-      setTimeout(() => {
-        filmStrip.push(snapPhoto());
-        const stitched = stitchImages(filmStrip);
-        setPhotoSource(stitched);
-        setShowSayCheese(false);
-      }, 4500);
+      switch (cameraType) {
+        case "stereograph":
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+          }, 3500);
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPhotoSource(stitched);
+            setShowSayCheese(false);
+          }, 3700);
+          break;
+        case "newspaper":
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPhotoSource(stitched);
+            setShowSayCheese(false);
+          }, 3500);
+          break;
+        default:
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+          }, 3500);
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+          }, 4000);
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPhotoSource(stitched);
+            setShowSayCheese(false);
+          }, 4500);
+          break;
+      }
     } else {
       clearPhoto();
+    }
+  }
+
+  function loadImageResources() {
+    switch (cameraType) {
+      case "stereograph":
+        return (
+          <div>
+            <img
+              id="stereograph"
+              className="absolute top-0 left-0"
+              style={{ width: width }}
+              src="/loc/camera-images/stereograph.png"
+            />
+          </div>
+        );
+      case "newspaper":
+        return (
+          <div>
+            <img
+              id="newspaper"
+              className="absolute top-0 left-0"
+              style={{ width: width }}
+              src={frameImage}
+            />
+          </div>
+        );
+      default:
+        return (
+          <div>
+            <img
+              id="film-left"
+              className="absolute top-0 left-0"
+              style={{ height: height * 3 }}
+              src="film-left.png"
+            />
+            <img
+              id="film-right"
+              className="absolute right-0 top-0"
+              style={{ height: height * 3 }}
+              src="film-right.png"
+            />
+          </div>
+        );
     }
   }
 
@@ -210,20 +345,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div className="hidden">
-        <img
-          id="film-left"
-          className="absolute top-0 left-0"
-          style={{ height: height * 3 }}
-          src="film-left.png"
-        />
-        <img
-          id="film-right"
-          className="absolute right-0 top-0"
-          style={{ height: height * 3 }}
-          src="film-right.png"
-        />
-      </div>
+      <div className="hidden">{loadImageResources()}</div>
       {(showSayCheese || countdown) && (
         <div className="absolute z-10 w-full bg-white/50 h-full flex justify-center items-center">
           <div className="text-black font-bold text-[3rem] ">

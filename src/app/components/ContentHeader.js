@@ -73,7 +73,13 @@ export default function ContentHeader({
         <div
           className="p-1 rounded-xl font-semibold text-center bg-slate-200 cursor-pointer"
           onClick={() => {
-            router.replace(`/camera?refSlug=${currentSlug}`);
+            router.replace(
+              `/camera?refSlug=${currentSlug}&type=${
+                post.cameraType || "kodak"
+              }&frame=${post.frameImage}&place=${post.imagePlacement}&size=${
+                post.imageDimensions
+              }`
+            );
           }}
         >
           Take a photo

@@ -99,12 +99,15 @@ export default function Comic({
       let words = comicLine.split(" ");
 
       let unboldedWords = [];
+      let unitalicizedWords = [];
       let informedWords = [];
       let inBold = false;
+      const startBoldRegExp = /^(\*\*)(\S+)/;
+      const endBoldRegExp = /(\S+)(?=\*\*$)/;
+      const startItalicRegExp = /^(\*)(\S+)/;
+      const endItalicRegExp = /(\S+)(?=\*$)/;
       for (let i = 0; i < words.length; i++) {
         // Check if the beginning of this is bolded
-        const startBoldRegExp = /^(\*\*)(\S+)/;
-        const endBoldRegExp = /(\S+)(?=\*\*$)/;
         let match = words[i].match(startBoldRegExp);
         let endMatch = words[i].match(endBoldRegExp);
         if (match && endMatch) {
@@ -127,9 +130,33 @@ export default function Comic({
           informedWords.push({ text: words[i], bold: false });
         }
       }
-      console.log(informedWords);
+
+      for (let i = 0; i < unboldedWords.length; i++) {
+        let match = unboldedWords[i].match(startItalicRegExp);
+        let endMatch = unboldedWords[i].match(endItalicRegExp);
+        console.log(match);
+        if (match && endMatch) {
+          let removeEnd = match[2].match(endItalicRegExp);
+          unitalicizedWords.push(removeEnd[1]);
+          informedWords[i].italic = true;
+        } else if (match) {
+          unitalicizedWords.push(match[2]);
+          informedWords[i].italic = true;
+          inBold = true;
+        } else if (endMatch) {
+          unitalicizedWords.push(endMatch[1]);
+          informedWords[i].italic = true;
+          inBold = false;
+        } else if (inBold) {
+          unitalicizedWords.push(unboldedWords[i]);
+          informedWords[i].italic = true;
+        } else {
+          unitalicizedWords.push(unboldedWords[i]);
+          informedWords[i].italic = false;
+        }
+      }
       processedWordInfo.push(informedWords);
-      words = unboldedWords;
+      words = unitalicizedWords;
       const wordlengths = words.map((w) => {
         return w.length;
       });
@@ -358,9 +385,21 @@ export default function Comic({
                             thisBubblesWordInfo[currIdx] &&
                             thisBubblesWordInfo[currIdx].bold
                           ) {
-                            return <b className="px-1">{w}</b>;
+                            if (thisBubblesWordInfo[currIdx].italic) {
+                              return (
+                                <b className="px-1">
+                                  <em>{w}</em>
+                                </b>
+                              );
+                            } else {
+                              return <b className="px-1">{w}</b>;
+                            }
                           } else {
-                            return <span className="px-1">{w}</span>;
+                            if (thisBubblesWordInfo[currIdx].italic) {
+                              return <em className="px-1">{w}</em>;
+                            } else {
+                              return <span className="px-1">{w}</span>;
+                            }
                           }
                         })}
                       </div>
