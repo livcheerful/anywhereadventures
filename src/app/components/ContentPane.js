@@ -59,7 +59,7 @@ export default function ContentPane({
   return (
     <div
       className={`w-full ${
-        paneOpen ? "h-4/5 " : "h-16"
+        paneOpen ? "h-4/5 " : "h-24"
       } bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear`}
       id="pane"
     >
