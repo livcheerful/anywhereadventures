@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { seattleByCategory } from "./MdxQueries";
 
 // Path to the posts directory
 const postsDirectory = "./src/app/content";

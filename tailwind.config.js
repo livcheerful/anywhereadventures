@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        limiter: "30rem",
+      },
       fontFamily: {
         comic: ["AnimeAce", "sans-serif"],
       },

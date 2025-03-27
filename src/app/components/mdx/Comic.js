@@ -85,8 +85,8 @@ export default function Comic({
       estHeight += 10; // margin in bubble maybe
       estHeight += 20; // gaps between bubbles maybe
     }
-    console.log("estimated heigh is:");
-    console.log(estHeight);
+    // console.log("estimated heigh is:");
+    // console.log(estHeight);
     return estHeight;
   }
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function Comic({
       for (let i = 0; i < unboldedWords.length; i++) {
         let match = unboldedWords[i].match(startItalicRegExp);
         let endMatch = unboldedWords[i].match(endItalicRegExp);
-        console.log(match);
+        // console.log(match);
         if (match && endMatch) {
           let removeEnd = match[2].match(endItalicRegExp);
           unitalicizedWords.push(removeEnd[1]);
@@ -269,7 +269,7 @@ export default function Comic({
 
   return (
     <div
-      className={`flex relative ${
+      className={`flex  relative ${
         position == "right" ? "flex-row-reverse" : "flex-row"
       }`}
       style={{
@@ -306,8 +306,8 @@ export default function Comic({
 
           const thisBubblesWordInfo = wordInfo[i];
 
-          console.log("this bubbles:");
-          console.log(thisBubblesWordInfo);
+          // console.log("this bubbles:");
+          // console.log(thisBubblesWordInfo);
           let wordIdx = 0;
           return (
             <div
@@ -341,7 +341,7 @@ export default function Comic({
                     } 0, -${bubbleWid} -${bubbleDrop}, -${bubbleWid} -${bubbleHei} c0 -${
                       bubbleHei - bubbleDrop
                     }, ${bubbleDrop} -${bubbleHei}, ${bubbleWid} -${bubbleHei}`}
-                    className="fill-white  z-40"
+                    className="fill-white  "
                   />
                 ) : (
                   <path
@@ -358,7 +358,7 @@ export default function Comic({
                     }, ${bubbleDrop} -${bubbleHei - tailGap}, ${bubbleWid} -${
                       bubbleHei - tailGap
                     }`}
-                    className="fill-white  z-40"
+                    className="fill-white  "
                   />
                 )}
               </svg>
@@ -374,9 +374,6 @@ export default function Comic({
                         key={j}
                       >
                         {line.split(" ").map((w, k) => {
-                          console.log(wordIdx);
-                          console.log(line.split(" "));
-                          console.log(thisBubblesWordInfo);
                           if (w.length == 0) {
                             return;
                           }
@@ -387,18 +384,30 @@ export default function Comic({
                           ) {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <b className="px-1">
+                                <b className="px-1" key={k}>
                                   <em>{w}</em>
                                 </b>
                               );
                             } else {
-                              return <b className="px-1">{w}</b>;
+                              return (
+                                <b className="px-1" key={k}>
+                                  {w}
+                                </b>
+                              );
                             }
                           } else {
                             if (thisBubblesWordInfo[currIdx].italic) {
-                              return <em className="px-1">{w}</em>;
+                              return (
+                                <em className="px-1" key={k}>
+                                  {w}
+                                </em>
+                              );
                             } else {
-                              return <span className="px-1">{w}</span>;
+                              return (
+                                <span className="px-1" key={k}>
+                                  {w}
+                                </span>
+                              );
                             }
                           }
                         })}

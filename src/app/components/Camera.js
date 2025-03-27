@@ -1,9 +1,14 @@
 "use client";
+
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-export default function Camera({ photoSource, setPhotoSource }) {
+import { gsap } from "gsap/gsap-core";
+export default function Camera({
+  picture,
+  setPicture,
+  kickoffSummaryAnimation,
+}) {
   const searchParams = useSearchParams();
-  const refSlug = searchParams.get("refSlug");
   const cameraType = searchParams.get("type");
   const frameImage = searchParams.get("frame");
   const imagePlacement = searchParams.get("place");
@@ -11,17 +16,36 @@ export default function Camera({ photoSource, setPhotoSource }) {
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
   const [streaming, setStreaming] = useState(false);
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(320);
+  const [height, setHeight] = useState(window.innerHeight);
+  const [width, setWidth] = useState(0);
   const canvas = useRef(null);
+
   useEffect(() => {
     getMedia({
       video: true,
     });
   }, []);
 
+  function flash() {
+    console.log("flash!");
+    const tl = gsap.timeline();
+    tl.fromTo(
+      "#white-background",
+      {
+        backgroundColor: "#FFFFFF99",
+      },
+      {
+        duration: 0.2,
+        backgroundColor: "#FFFFFFFF",
+      }
+    );
+    tl.to("#white-background", {
+      duration: 0.5,
+      backgroundColor: "#FFFFFF99",
+    });
+  }
+
   async function getMedia(constraints) {
-    console.log("in get media");
     let stream = null;
 
     const video = document.getElementById("video");
@@ -30,18 +54,16 @@ export default function Camera({ photoSource, setPhotoSource }) {
       "canplay",
       (ev) => {
         if (!streaming) {
-          setHeight((video.videoHeight / video.videoWidth) * width);
-
-          video.setAttribute("width", width);
+          const w = (video.videoWidth / video.videoHeight) * window.innerHeight;
+          setWidth(w);
+          video.style.maxWidth = "unset";
+          video.setAttribute("width", w);
           video.setAttribute("height", height);
-          // canvas.current.setAttribute("width", width);
-          // canvas.current.setAttribute("height", height);
           setStreaming(true);
         }
       },
       false
     );
-    const canvas = document.getElementById("canvas");
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = stream;
@@ -56,15 +78,29 @@ export default function Camera({ photoSource, setPhotoSource }) {
     switch (cameraType) {
       case "stereograph":
         const sf = document.getElementById("stereograph");
-        canvas.current.width = width * images.length;
-        canvas.current.height = (sf.height * width * 2) / sf.width;
         var ctx = canvas.current.getContext("2d");
 
+        let adjustedWidth = width;
+        let adjustedHeight = height;
+        if (width > height) {
+          adjustedWidth = (sf.width / 2 / sf.height) * height;
+        } else {
+          adjustedHeight = (sf.height / sf.width) * 2 * width;
+        }
+
+        canvas.current.width = adjustedWidth * images.length;
+        canvas.current.height = adjustedHeight;
         images.forEach((img, index) => {
-          ctx.drawImage(img, index * width, 0, width, height);
+          ctx.drawImage(
+            img,
+            index * adjustedWidth,
+            0,
+            adjustedWidth,
+            adjustedHeight
+          );
         });
 
-        ctx.drawImage(sf, 0, 0, width * 2, (sf.height * width * 2) / sf.width);
+        ctx.drawImage(sf, 0, 0, adjustedWidth * 2, adjustedHeight);
 
         var img = canvas.current.toDataURL("image/png");
         return img;
@@ -180,17 +216,7 @@ export default function Camera({ photoSource, setPhotoSource }) {
         );
     }
   }
-
-  function takePicture() {
-    const context = canvas.current.getContext("2d");
-    function snapPhoto() {
-      const tempCanvas = document.createElement("canvas");
-      const tempCtx = tempCanvas.getContext("2d");
-      tempCanvas.width = video.videoWidth;
-      tempCanvas.height = video.videoHeight;
-      tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-      return tempCanvas;
-    }
+  function startCountdown() {
     setCountdown("3");
     setTimeout(() => {
       setCountdown("2");
@@ -202,41 +228,74 @@ export default function Camera({ photoSource, setPhotoSource }) {
       setCountdown(undefined);
       setShowSayCheese(true);
     }, 3000);
+  }
+
+  function takePicture(fast = false) {
+    function snapPhoto() {
+      flash();
+      const tempCanvas = document.createElement("canvas");
+      const tempCtx = tempCanvas.getContext("2d");
+      tempCanvas.width = video.videoWidth;
+      tempCanvas.height = video.videoHeight;
+      tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+      return tempCanvas;
+    }
+
+    if (!fast) startCountdown();
     if (width && height) {
       const filmStrip = [];
       switch (cameraType) {
         case "stereograph":
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-          }, 3500);
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-            const stitched = stitchImages(filmStrip);
-            setPhotoSource(stitched);
-            setShowSayCheese(false);
-          }, 3700);
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+            },
+            fast ? 1 : 3500
+          );
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+              const stitched = stitchImages(filmStrip);
+              setPicture(stitched);
+              setShowSayCheese(false);
+            },
+            fast ? 2 : 3700
+          );
           break;
         case "newspaper":
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-            const stitched = stitchImages(filmStrip);
-            setPhotoSource(stitched);
-            setShowSayCheese(false);
-          }, 3500);
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+              const stitched = stitchImages(filmStrip);
+              setPicture(stitched);
+              setShowSayCheese(false);
+            },
+            fast ? 0 : 3500
+          );
           break;
         default:
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-          }, 3500);
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-          }, 4000);
-          setTimeout(() => {
-            filmStrip.push(snapPhoto());
-            const stitched = stitchImages(filmStrip);
-            setPhotoSource(stitched);
-            setShowSayCheese(false);
-          }, 4500);
+          // Film strip
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+            },
+            fast ? 0 : 3500
+          );
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+            },
+            fast ? 0 : 4000
+          );
+          setTimeout(
+            () => {
+              filmStrip.push(snapPhoto());
+              const stitched = stitchImages(filmStrip);
+              setPicture(stitched);
+              setShowSayCheese(false);
+            },
+            fast ? 0 : 4500
+          );
           break;
       }
     } else {
@@ -254,8 +313,8 @@ export default function Camera({ photoSource, setPhotoSource }) {
 
   return (
     <div>
-      <div className="filmStrip relative flex flex-col items-center ">
-        <div className={`${photoSource ? "hidden" : "visible"} camera`}>
+      <div className="filmStrip relative flex flex-col items-center overflow-hidden ">
+        <div className={`${picture ? "hidden" : "visible"} camera `}>
           <video
             webkit-playsinline
             autoPlay
@@ -264,39 +323,36 @@ export default function Camera({ photoSource, setPhotoSource }) {
             muted
             loop
             id="video"
-            className="w-full max-h-[30rem]"
+            className=" transform scale-x-[-1]"
           >
             Video stream not available.
           </video>
         </div>
         <canvas className="hidden" id="canvas" ref={canvas} />
-        {photoSource && (
-          <div className="output flex flex-col relative w-fit pt-2">
-            <img src={photoSource} />
-            {/* <img
-          className="absolute top-0 left-0"
-          style={{ height: height * 3 }}
-          src="film-left.png"
-        />
-        <img
-          className="absolute right-0 top-0"
-          style={{ height: height * 3 }}
-          src="film-right.png"
-        /> */}
-          </div>
-        )}
+        {/* Countdown Elements */}
         {(showSayCheese || countdown) && (
-          <div className="absolute z-10 w-full bg-white/50 h-full flex justify-center items-center">
+          <div
+            id="white-background"
+            className="absolute z-10 w-full  h-full flex justify-center items-center"
+            style={{ backgroundColor: "#FFFFFF99" }}
+          >
             <div className="text-black font-bold text-[3rem] ">
               {countdown ? countdown : "say CHEEESE"}
             </div>
           </div>
         )}
-        {!photoSource && (
+        {/* Shutter Button */}
+        {!picture && (
           <button
             className=" p-2 w-12 h-12 outline-2 bg-white rounded-full drop-shadow-sm absolute bottom-0"
             id="start-button"
-            onClick={() => takePicture()}
+            onClick={(e) => {
+              if (e.metaKey) {
+                takePicture(true);
+              } else {
+                takePicture();
+              }
+            }}
           >
             <div
               className=" text-emerald-950 font-bold absolute top-3 left-5"

@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-export default function LOCItem({ image, assetLink, linkOut, caption }) {
+
+import { saveLCItem } from "../../lib/storageHelpers";
+export default function LOCItem({ image, linkOut, caption }) {
   const [itemOpen, setItemOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(2);
   const [diffPos, setDiffPos] = useState([0, 0]);
   const [dragging, setDragging] = useState(false);
-  const openedImage = useRef();
 
   useEffect(() => {}, [itemOpen]);
 
@@ -26,13 +27,30 @@ export default function LOCItem({ image, assetLink, linkOut, caption }) {
           // setItemOpen(true);
         }}
       />
-      {linkOut && (
-        <a href={linkOut}>
-          <div className="absolute right-2 top-0 bg-slate-100 p-2 drop-shadow-sm font-light">
-            source
-          </div>
-        </a>
-      )}
+      <div className="absolute right-2 top-0 flex flex-row gap-2">
+        {linkOut && (
+          <a href={linkOut}>
+            <div className=" bg-slate-100 p-2 drop-shadow-sm font-light">
+              source
+            </div>
+          </a>
+        )}
+        <div
+          className="bg-slate-100 p-2 drop-shadow-sm font-light"
+          onClick={() => {
+            console.log("vivian location test");
+            console.log(window.location);
+            saveLCItem(
+              linkOut,
+              image,
+              caption,
+              window.location.pathname.substring(1)
+            );
+          }}
+        >
+          Save
+        </div>
+      </div>
       <div className="italic font-serif text-sm p-2">{caption}</div>
     </div>
   );
