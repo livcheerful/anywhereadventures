@@ -17,6 +17,13 @@ export default function LOCItem({ image, linkOut, caption }) {
 
   return (
     <div className="flex flex-col items-center gap-1 pb-5 relative">
+      <img
+        src={image}
+        onClick={() => {
+          // VVN start fetch of item
+          // setItemOpen(true);
+        }}
+      />
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut}>
@@ -34,7 +41,7 @@ export default function LOCItem({ image, linkOut, caption }) {
               caption,
               window.location.pathname.substring(1)
             );
-            startSaveAnim();
+            // startSaveAnim();
           }}
         >
           Save
