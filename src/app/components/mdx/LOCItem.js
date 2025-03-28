@@ -10,23 +10,13 @@ export default function LOCItem({ image, linkOut, caption }) {
 
   useEffect(() => {}, [itemOpen]);
 
-  function mouseHandler(e) {
-    // Check how many fingers are down
-    console.log("VVN touches:");
-    console.log(e.touches);
-    if (!dragging) return;
-    setDiffPos([e.movementX + diffPos[0], e.movementY + diffPos[1]]);
+  function startSaveAnim() {
+    const journalTab = document.getElementById();
+    // Animate from current position to new with a little shrinking situation.
   }
 
   return (
     <div className="flex flex-col items-center gap-1 pb-5 relative">
-      <img
-        src={image}
-        onClick={() => {
-          // VVN start fetch of item
-          // setItemOpen(true);
-        }}
-      />
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut}>
@@ -38,14 +28,13 @@ export default function LOCItem({ image, linkOut, caption }) {
         <div
           className="bg-slate-100 p-2 drop-shadow-sm font-light"
           onClick={() => {
-            console.log("vivian location test");
-            console.log(window.location);
             saveLCItem(
               linkOut,
               image,
               caption,
               window.location.pathname.substring(1)
             );
+            startSaveAnim();
           }}
         >
           Save

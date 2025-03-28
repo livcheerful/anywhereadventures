@@ -1,22 +1,20 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { gsap } from "gsap";
 
 import Camera from "../components/Camera";
 import StampCollector from "../components/StampCollector";
 import Navbar from "../components/Navbar";
+import BackToReadingButton from "./BackToReadingButton";
 
 export default function Page() {
   const [picture, setPicture] = useState(undefined);
   const [showMenuButtons, setShowMenuButtons] = useState(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const refSlug = searchParams.get("refSlug");
-  const slug = searchParams.get("locationId");
 
   function kickoffSummaryAnimation() {
     gsap.to("#picture", {
@@ -102,22 +100,14 @@ export default function Page() {
             >
               Download
             </button>
-            <button
-              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
-              onClick={() => {
-                console.log("Hello vivian");
-                router.push(`/${refSlug}`);
-              }}
-            >
-              Back to reading
-            </button>
+            <BackToReadingButton />
           </div>
         </div>
       )}
       {showMenuButtons && (
         <div className="absolute w-full" style={{ top: "30%" }}>
           <div className="absolute w-full" style={{ top: "-30px" }}>
-            <StampCollector slug={slug} />
+            <StampCollector />
           </div>
         </div>
       )}

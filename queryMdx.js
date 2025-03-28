@@ -6,7 +6,10 @@ import * as fs from "fs";
 const postsDirectory = "./src/app/content";
 
 function getAllPosts() {
-  const fileNames = fs.readdirSync(postsDirectory);
+  let fileNames = fs.readdirSync(postsDirectory);
+  fileNames = fileNames.filter((s) => {
+    return s != "meta.js";
+  });
 
   const allPosts = fileNames.map((fileName) => {
     const filePath = `${postsDirectory}/${fileName}`;

@@ -1,5 +1,6 @@
 import Comic from "./src/app/components/mdx/Comic";
 import LOCItem from "./src/app/components/mdx/LOCItem";
+import BigLink from "./src/app/components/mdx/BigLink";
 export function useMDXComponents(components) {
   return {
     // Allows customizing built-in components, e.g. to add styling.
@@ -24,6 +25,9 @@ export const MyMDXComponents = {
         caption={caption}
       />
     );
+  },
+  BigLink: ({ link, thumbnail, title, children }) => {
+    return <BigLink link={link} thumbnail={thumbnail} title={title} />;
   },
   Comic: ({
     speechBubbles,

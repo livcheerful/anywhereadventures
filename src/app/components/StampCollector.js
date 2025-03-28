@@ -3,7 +3,10 @@ import { useState, useEffect, use } from "react";
 import { gsap } from "gsap/gsap-core";
 import { saveStamp } from "../lib/storageHelpers";
 import { makeConfetti } from "../lib/animationHelpers";
-export default function StampCollector({ slug }) {
+import { useSearchParams } from "next/navigation";
+export default function StampCollector({}) {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("locationId");
   const [stampSvgs, setStampSvgs] = useState(new Map());
   const [stampPadString, setStampPadString] = useState("");
   const [stampList, setStampList] = useState([]);
