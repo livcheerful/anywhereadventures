@@ -25,12 +25,12 @@ export default function ScrapbookPage() {
 
   return (
     <div
-      className="overflow-clip overflow-y-scroll pl-16"
+      className="overflow-clip overflow-y-scroll pl-12"
       onScroll={() => {
         console.log("scrolling");
       }}
     >
-      <div className=" text-2xl font-bold p-2 pb-8">Scrapbook</div>
+      <div className=" text-2xl font-bold py-4">Scrapbook</div>
 
       {Object.keys(allItems).length == 0 && (
         <div>
