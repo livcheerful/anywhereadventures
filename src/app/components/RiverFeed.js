@@ -40,9 +40,8 @@ export default function RiverFeed({
             const slug = e.target.getAttribute("articleslug");
             const userKey = storageHelpers.getUserKey();
             // setTest(!test);
-            // updateRoute(`/watever?k=${userKey}`);
-            // updateRoute(`/${slug}?k=${userKey}`);
-            // setCurrentlyViewing(slug);
+            updateRoute(`/${slug}?k=${userKey}`);
+            setCurrentlyViewing(slug);
           }
         }
       },
