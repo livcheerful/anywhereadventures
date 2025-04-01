@@ -13,7 +13,7 @@ module.exports = {
         limiter: "30rem",
       },
       fontFamily: {
-        comic: ["AnimeAce", "sans-serif"],
+        vivian: ["var(--font-vivian)"],
       },
       colors: {
         background: "var(--background)",
