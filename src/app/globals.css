@@ -21,6 +21,14 @@ body {
   line-height: 180%;
 }
 
+@font-face {
+  font-family: "Vivian";
+  src: url('/static/Viviantesthand-Regular.otf');
+  src: url('/static/Viviantesthand-Regular.otf') format('otf');
+  font-weight: 300;
+  font-style: normal;
+}
+
 .mdx-post-content a {
   color: rgb(19, 162, 228);
   text-decoration: underline;
@@ -35,5 +43,5 @@ body {
 }
 
 .comicStyle {
-  font-family: "Comic Sans MS", "Comic Sans";
+  font-family: 'Vivian' ;
 }
