@@ -268,7 +268,6 @@ export default function ContentPane({
                 setMyLocationSlugs={setMyLocationSlugs}
                 isAdded={isAdded(localStorageKey, currentSlug)}
                 setPaneOpen={setPaneOpen}
-                useMiniMap={false}
               />
 
               <PostContent post={post} />

@@ -18,7 +18,6 @@ export default function ContentHeader({
   zoomToMainMap,
   setMyLocationSlugs,
   setPaneOpen,
-  useMiniMap = true,
   k = 0,
   isAdded = false,
   scrollRef,
@@ -68,37 +67,10 @@ export default function ContentHeader({
       }
     });
   }, [contentSlug]);
-  useEffect(() => {
-    if (!useMiniMap) return;
-    let miniMap = new Map({
-      container: `mini-map-${k}`,
-      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-      zoom: post?.zoom || 8,
-      center: post
-        ? [post.latlon[1], post.latlon[0]]
-        : [-122.341077, 47.619161],
-
-      interactive: false,
-      attributionControl: false,
-    });
-
-    if (post) {
-      const pin = makeNewMarker(unvisitedMapColor, post).addTo(miniMap);
-    }
-  }, [post]);
 
   return (
     <div id={`header-${contentSlug}`} className="-top-1  bg-white z-30 ">
       <div className={`flex flex-row gap-2  border-black border-2`}>
-        {useMiniMap && (
-          <div
-            className={`w-[6rem] h-[8rem] bg-slate-400 shrink-0`}
-            id={`mini-map-${k}`}
-            onClick={() => {
-              zoomToMainMap(post.latlon, post.zoom, !isAdded);
-            }}
-          ></div>
-        )}
         <div className="flex flex-col  gap-3 ">
           <div className=" font-bold text-2xl">{post?.title}</div>
         </div>
