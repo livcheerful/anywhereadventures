@@ -9,7 +9,7 @@ export default function DiscoverFeed({ setCurrentSlug }) {
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
   const router = useRouter();
   return (
-    <div className="w-full flex gap-2 flex-col overflow-x-hidden">
+    <div className="w-full h-fit flex gap-2 flex-col  ">
       <div id="explorePane" className=" flex flex-col p-2 gap-3 ">
         {seattleByCategory.map((category, ck) => {
           const isThisExpanded = expandedCategories.has(category.tag);

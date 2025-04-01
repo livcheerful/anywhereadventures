@@ -70,11 +70,18 @@ export default function ContentHeader({
 
   return (
     <div id={`header-${contentSlug}`} className="-top-1  bg-white z-30 ">
-      <div className={`flex flex-row gap-2  border-black border-2`}>
-        <div className="flex flex-col  gap-3 ">
+      <div
+        className={`flex flex-row gap-2 pt-16 pb-4 p-2 `}
+        style={{
+          backgroundSize: "cover",
+          backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,
+        }}
+      >
+        <div className="flex flex-col gap-3 pt-4">
           <div className=" font-bold text-2xl">{post?.title}</div>
         </div>
-        <div
+
+        {/* <div
           className={`${
             isAdded
               ? "font-normal bg-white text-slate-400 border-slate-200 border-2"
@@ -114,7 +121,7 @@ export default function ContentHeader({
           }}
         >
           LOG VISIT
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -212,7 +212,7 @@ export default function ContentPane({
   return (
     <div
       style={{ height: getPaneHeight() }}
-      className={`lg:w-limiter  bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
+      className={`md:w-limiter  bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
       id="pane"
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>

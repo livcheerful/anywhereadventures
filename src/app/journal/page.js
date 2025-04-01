@@ -55,10 +55,10 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-emerald-900 h-screen w-limiter">
+    <div className="bg-emerald-900 h-screen md:w-limiter">
       <Navbar />
       <div
-        className="fixed bottom-0 flex flex-col pt-2  w-limiter"
+        className="fixed bottom-0 flex flex-col pt-2  md:w-limiter"
         style={{ height: "95%" }}
       >
         <div className="shrink-0 flex flex-row overflow-x-auto gap-2 w-full px-2">

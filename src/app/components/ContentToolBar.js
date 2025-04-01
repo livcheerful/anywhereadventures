@@ -32,7 +32,7 @@ export default function ContentToolBar({
   };
   return (
     <div
-      className="lg:w-limiter  bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2"
+      className="md:w-limiter relative bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2"
       onClick={() => {
         setPaneOpen(true);
       }}
@@ -73,7 +73,7 @@ export default function ContentToolBar({
       <div className="absolute right-0 top-10 w-20 h-20 flex flex-col items-end gap-3">
         {exploringContent && currentSlug != "discover" && (
           <div
-            className=" bg-emerald-800 p-3 py-2 right-0  rounded-l-lg drop-shadow-md w-fit cursor-pointer text-sm text-white font-bold"
+            className="relative bg-emerald-800 p-3 py-2 right-0  rounded-l-lg drop-shadow-md w-fit cursor-pointer text-sm text-white font-bold"
             onClick={() => {
               //   router.replace("/discover");
               updateRoute("/discover");
