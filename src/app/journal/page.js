@@ -2,7 +2,9 @@
 import Navbar from "../components/Navbar";
 import ScrapbookPage from "../components/ScrapbookPage";
 import StampbookPage from "../components/StampbookPage";
+import MoreResearchPage from "../components/MoreResearchPage";
 import { useState, useEffect } from "react";
+
 export default function Page() {
   const [currentTab, setCurrentTab] = useState(0);
 
@@ -23,15 +25,7 @@ export default function Page() {
     {
       text: "Do more research",
       render: () => {
-        return (
-          <div>
-            <div>Make your own map of library items</div>
-            <div>
-              Can find items, write about them, and they get added to a map??
-            </div>
-            <div>Should you be able to share your map...</div>
-          </div>
-        );
+        return <MoreResearchPage />;
       },
     },
     {
@@ -63,7 +57,10 @@ export default function Page() {
   return (
     <div className="bg-emerald-900 h-screen">
       <Navbar />
-      <div className="fixed bottom-0 flex flex-col h-screen pt-2 w-full">
+      <div
+        className="fixed bottom-0 flex flex-col  pt-2 w-full"
+        style={{ height: "90%" }}
+      >
         <div className="shrink-0 flex flex-row overflow-x-auto gap-2 w-full px-2">
           {makeTabs()}
         </div>
