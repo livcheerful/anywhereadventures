@@ -25,8 +25,24 @@ body {
   font-family: "AnimeAce";
   src: url('/static/AnimeAce3BB_Regular.otf');
   src: url('/static/AnimeAce3BB_Regular.otf') format('otf');
+  font-weight: 300;
+  font-style: normal;
 }
 
+@font-face {
+  font-family: "AnimeAce";
+  src: url('/static/AnimeAce3BB_Italic.otf');
+  src: url('/static/AnimeAce3BB_Italic.otf') format('otf');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "AnimeAce";
+  src: url('/static/AnimeAce3BB_Bold.otf');
+  src: url('/static/AnimeAce3BB_Bold.otf') format('otf');
+  font-style: normal;
+  font-weight: 900;
+}
 .mdx-post-content a {
   color: rgb(19, 162, 228);
   text-decoration: underline;
