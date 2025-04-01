@@ -231,7 +231,7 @@ export default function ContentPane({
           />
         </div>
         <div
-          className="w-full h-full overflow-y-scroll flex flex-col z-10"
+          className="w-full h-full overflow-x-hidden overflow-y-scroll flex flex-col z-10"
           style={{ paddingTop: "30px" }}
           id="content-pane"
           onDrag={() => {

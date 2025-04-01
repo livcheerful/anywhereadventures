@@ -88,7 +88,7 @@ export default function ContentHeader({
   }, [post]);
 
   return (
-    <div id={`header-${contentSlug}`} className="sticky -top-1  bg-white z-30 ">
+    <div id={`header-${contentSlug}`} className="-top-1  bg-white z-30 ">
       <div className={`flex flex-row gap-2  border-black border-2`}>
         {useMiniMap && (
           <div

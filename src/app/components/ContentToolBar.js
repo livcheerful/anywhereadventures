@@ -32,7 +32,7 @@ export default function ContentToolBar({
   };
   return (
     <div
-      className="lg:w-limiter  bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  "
+      className="lg:w-limiter  bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2"
       onClick={() => {
         setPaneOpen(true);
       }}
