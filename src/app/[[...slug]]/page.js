@@ -31,7 +31,7 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="relative flex w-full overflow-hidden ">
+    <div className="relative flex w-full overflow-hidden">
       <Navbar slug={postSlug ? postSlug[0] : ""} />
       <Suspense>
         <BasePage slug={postSlug ? postSlug[0] : ""} post={post}></BasePage>

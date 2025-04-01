@@ -49,7 +49,12 @@ export default function BasePage({ slug, post }) {
   }
 
   return (
-    <div className="relative flex w-full overflow-hidden ">
+    <div
+      className="relative flex w-full overflow-hidden"
+      onDrag={(e) => {
+        e.preventDefault();
+      }}
+    >
       <MainMap mapCB={mapCB} mapClickHandler={mapClickHandler} />
       {exploringContent != undefined && (
         <ContentPane
