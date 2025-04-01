@@ -14,23 +14,24 @@ export default function BasePage({ slug, post }) {
 
   useEffect(() => {
     setExploringContent(true);
-    // let itIsMe = false;
-    // if (!userKey) {
-    //   itIsMe = false;
-    // } else {
-    //   itIsMe = isThisMe(userKey);
-    // }
-    // if (!userKey) {
-    //   setExploringContent(false);
-    //   return;
-    // }
-    // if (itIsMe) {
-    //   // Load the river feed
-    //   setExploringContent(false);
-    // } else {
-    //   // Load into that page
-    //   setExploringContent(true);
-    // }
+    if (slug == "") {
+      setExploringContent(false);
+    } else {
+      let itIsMe = false;
+      if (!userKey) {
+        setExploringContent(true);
+        return;
+      } else {
+        itIsMe = isThisMe(userKey);
+      }
+      if (itIsMe) {
+        // Load the river feed
+        setExploringContent(false);
+      } else {
+        // Load into that page
+        setExploringContent(true);
+      }
+    }
   }, []);
 
   function paneOpenHandler(s) {
