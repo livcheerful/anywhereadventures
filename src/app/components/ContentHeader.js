@@ -18,6 +18,7 @@ export default function ContentHeader({
   zoomToMainMap,
   setMyLocationSlugs,
   setPaneOpen,
+  useMiniMap = true,
   k = 0,
   isAdded = false,
   scrollRef,
@@ -68,6 +69,7 @@ export default function ContentHeader({
     });
   }, [contentSlug]);
   useEffect(() => {
+    if (!useMiniMap) return;
     let miniMap = new Map({
       container: `mini-map-${k}`,
       style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
@@ -87,58 +89,59 @@ export default function ContentHeader({
 
   return (
     <div id={`header-${contentSlug}`} className="sticky -top-1  bg-white z-30 ">
-      <div className={`flex flex-row gap-2 p-4 `}>
-        <div
-          className={`w-[8rem] h-[10rem] bg-slate-400 `}
-          id={`mini-map-${k}`}
-          onClick={() => {
-            zoomToMainMap(post.latlon, post.zoom, !isAdded);
-          }}
-        ></div>
-        <div className="flex flex-col  gap-3 flex-grow">
-          <div className=" font-bold text-2xl">{post?.title}</div>
+      <div className={`flex flex-row gap-2  border-black border-2`}>
+        {useMiniMap && (
           <div
-            className={`${
-              isAdded
-                ? "font-normal bg-white text-slate-400 border-slate-200 border-2"
-                : " font-semibold"
-            } active p-1 rounded-xl text-center cursor-pointer `}
-            style={{
-              background: isAdded
-                ? "#ffffff"
-                : " linear-gradient( var(--degree2),     var(--color2),     var(--color)   )",
-            }}
+            className={`w-[6rem] h-[8rem] bg-slate-400 shrink-0`}
+            id={`mini-map-${k}`}
             onClick={() => {
-              console.log("adding to map");
-              if (!isAdded) {
-                addToStorage(post.slug, post);
-                setMyLocationSlugs(getAllSlugs());
-              } else {
-                removeFromStorage(post.slug);
-                setMyLocationSlugs(getAllSlugs());
-              }
-
-              setPaneOpen(false);
               zoomToMainMap(post.latlon, post.zoom, !isAdded);
             }}
-          >
-            {isAdded ? "Remove" : "Add to my map"}
-          </div>
+          ></div>
+        )}
+        <div className="flex flex-col  gap-3 ">
+          <div className=" font-bold text-2xl">{post?.title}</div>
+        </div>
+        <div
+          className={`${
+            isAdded
+              ? "font-normal bg-white text-slate-400 border-slate-200 border-2"
+              : " font-semibold"
+          } active my-3 p-1 rounded-xl text-center cursor-pointer `}
+          style={{
+            background: isAdded
+              ? "#ffffff"
+              : " linear-gradient( var(--degree2),     var(--color2),     var(--color)   )",
+          }}
+          onClick={() => {
+            if (!isAdded) {
+              addToStorage(post.slug, post);
+              setMyLocationSlugs(getAllSlugs());
+            } else {
+              removeFromStorage(post.slug);
+              setMyLocationSlugs(getAllSlugs());
+            }
 
-          <div
-            className="p-1 rounded-xl font-semibold text-center bg-slate-200 cursor-pointer"
-            onClick={() => {
-              router.replace(
-                `/camera?locationId=${post.slug}&refSlug=${currentSlug}&type=${
-                  post.cameraType || "kodak"
-                }&frame=${post.frameImage}&place=${post.imagePlacement}&size=${
-                  post.imageDimensions
-                }`
-              );
-            }}
-          >
-            LOG VISIT
-          </div>
+            setPaneOpen(false);
+            zoomToMainMap(post.latlon, post.zoom, !isAdded);
+          }}
+        >
+          {isAdded ? "Remove" : "Add to my map"}
+        </div>
+
+        <div
+          className="p-1 my-3 rounded-xl font-semibold text-center bg-slate-200 cursor-pointer"
+          onClick={() => {
+            router.replace(
+              `/camera?locationId=${post.slug}&refSlug=${currentSlug}&type=${
+                post.cameraType || "kodak"
+              }&frame=${post.frameImage}&place=${post.imagePlacement}&size=${
+                post.imageDimensions
+              }`
+            );
+          }}
+        >
+          LOG VISIT
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 export default function BigLink({ link, thumbnail, title }) {
   console.log(link);
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center pb-4">
       <a href={link} className="">
         <div className="w-[15rem] h-[10rem] rounded-lg drop-shadow-lg">
           <div

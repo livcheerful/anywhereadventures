@@ -13,18 +13,24 @@ export default function BasePage({ slug, post }) {
   const userKey = searchParams.get("k");
 
   useEffect(() => {
-    const itIsMe = isThisMe(userKey);
-    if (!userKey) {
-      setExploringContent(false);
-      return;
-    }
-    if (itIsMe) {
-      // Load the river feed
-      setExploringContent(false);
-    } else {
-      // Load into that page
-      setExploringContent(true);
-    }
+    setExploringContent(true);
+    // let itIsMe = false;
+    // if (!userKey) {
+    //   itIsMe = false;
+    // } else {
+    //   itIsMe = isThisMe(userKey);
+    // }
+    // if (!userKey) {
+    //   setExploringContent(false);
+    //   return;
+    // }
+    // if (itIsMe) {
+    //   // Load the river feed
+    //   setExploringContent(false);
+    // } else {
+    //   // Load into that page
+    //   setExploringContent(true);
+    // }
   }, []);
 
   function paneOpenHandler(s) {

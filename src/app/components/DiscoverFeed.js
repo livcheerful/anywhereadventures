@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
 import { categoryInfo } from "../content/meta";
 import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import { updateRoute } from "../lib/routeHelpers";
 export default function DiscoverFeed({ setCurrentSlug }) {
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
+  const router = useRouter();
   return (
     <div className="w-full flex gap-2 flex-col overflow-x-hidden">
       <div id="explorePane" className=" flex flex-col p-2 gap-3 ">

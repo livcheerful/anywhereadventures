@@ -8,7 +8,7 @@ export default function PostContent({ post }) {
   // console.log(post);
   // console.log("-============================================================");
   return (
-    <div className="w-full mdx-post-content overflow-x-hidden z-10">
+    <div className="w-full mdx-post-content z-10 ">
       {post && <MDXClient {...post.content} components={MyMDXComponents} />}
     </div>
   );

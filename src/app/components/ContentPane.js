@@ -196,11 +196,11 @@ export default function ContentPane({
 
   function getPaneHeight() {
     if (!paneOpen) {
-      return "h-20";
+      return "20%";
     } else if (paneOpen && exploringContent) {
-      return "h-3/5";
+      return "70%";
     } else {
-      return "h-4/5";
+      return "90%";
     }
   }
 
@@ -211,13 +211,14 @@ export default function ContentPane({
 
   return (
     <div
-      className={`lg:w-limiter ${getPaneHeight()} bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
+      style={{ height: getPaneHeight() }}
+      className={`lg:w-limiter  bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
       id="pane"
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
 
-      <div className="h-full">
-        <div className="w-full text-2xl font-bold sticky  z-40">
+      <div className="h-full ">
+        <div className="w-full text-2xl font-bold fixed  z-40">
           <ContentToolBar
             setPaneOpen={setPaneOpen}
             exploringContent={exploringContent}
@@ -230,7 +231,8 @@ export default function ContentPane({
           />
         </div>
         <div
-          className="w-full h-full flex overflow-y-scroll z-10"
+          className="w-full h-full overflow-y-scroll flex flex-col z-10"
+          style={{ paddingTop: "30px" }}
           id="content-pane"
           onDrag={() => {
             setPaneOpen(true);
@@ -239,7 +241,7 @@ export default function ContentPane({
             setPaneOpen(true);
           }}
           onScroll={(e) => {
-            scrollValue.current = e.target.scrollTop;
+            // scrollValue.current = e.target.scrollTop;
           }}
         >
           {thumbnailView && <DiscoverFeed setCurrentSlug={setCurrentSlug} />}
@@ -266,6 +268,7 @@ export default function ContentPane({
                 setMyLocationSlugs={setMyLocationSlugs}
                 isAdded={isAdded(localStorageKey, currentSlug)}
                 setPaneOpen={setPaneOpen}
+                useMiniMap={false}
               />
 
               <PostContent post={post} />

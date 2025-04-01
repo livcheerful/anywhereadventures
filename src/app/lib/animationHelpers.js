@@ -4,13 +4,14 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 export function makeConfetti(element, x, y, amount) {
   for (let i = 0; i < amount; i++) {
     const div = document.createElement("div");
-    div.className = "confetti absolute";
+    div.className = "confetti fixed ";
     const xSpread = 20;
     const ySpread = 4;
     const width = 10;
     const height = 10;
     div.style.width = `${width}px`;
     div.style.height = `${height}px`;
+    div.style.zIndex = 1000;
     div.style.left = `${
       x + Math.random() * xSpread - xSpread / 2 - width / 2
     }px`;
@@ -46,7 +47,7 @@ export function makeConfetti(element, x, y, amount) {
           path: points,
         },
         ease: "none",
-        opacity: 0,
+        // opacity: 0,
         duration: timeSteps * 0.08,
         x: 100,
         onComplete: () => {
