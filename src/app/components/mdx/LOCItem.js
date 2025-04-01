@@ -42,7 +42,7 @@ export default function LOCItem({ image, linkOut, caption }) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-1 pb-5 relative">
+    <div className="flex flex-col items-center gap-1 pb-3 relative">
       <img
         src={image}
         id={`lcitem-${image}`}

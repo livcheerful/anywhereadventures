@@ -13,9 +13,13 @@ export function useMDXComponents(components) {
 }
 
 export const MyMDXComponents = {
-  h1: ({ children }) => <h1 className="p-2 text-xl font-bold">{children}</h1>,
-  h2: ({ children }) => <h2 className="p-2 text-lg font-bold">{children}</h2>,
-  p: ({ children }) => <div className="p-2 py-4 font-medium ">{children}</div>,
+  h1: ({ children }) => (
+    <h1 className="pb-1 px-2 text-xl font-bold">{children}</h1>
+  ),
+  h2: ({ children }) => (
+    <h2 className="pb-1 px-2 text-lg font-bold">{children}</h2>
+  ),
+  p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
   LOCItem: ({ image, assetLink, linkOut, caption, children }) => {
     return (
       <LOCItem

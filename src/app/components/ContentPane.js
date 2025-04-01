@@ -198,7 +198,7 @@ export default function ContentPane({
     if (!paneOpen) {
       return "20%";
     } else if (paneOpen && exploringContent) {
-      return "70%";
+      return "80%";
     } else {
       return "90%";
     }
