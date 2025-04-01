@@ -33,18 +33,18 @@ export default function ContentHeader({
       function randomHaze() {
         let deg = gsap.utils.random(25, 115);
         let deg2 = gsap.utils.random(218, 320);
-        gsap.to(".active", {
-          duration: 1,
-          "--degree": `${deg}deg`,
-          "--degree2": `${deg2}deg`,
-          "--color":
-            "rgb(random(0,155,100), random(1,255,0), random(155,0,1), 0.5)",
-          "--color2":
-            "rgb(random(0,155,100), random(1,255,0), random(155,0,1), 0.56)",
-          ease: "none",
-          yoyo: true,
-          onComplete: randomHaze,
-        });
+        // gsap.to(".active", {
+        //   duration: 1,
+        //   "--degree": `${deg}deg`,
+        //   "--degree2": `${deg2}deg`,
+        //   "--color":
+        //     "rgb(random(0,155,100), random(1,255,0), random(155,0,1), 0.5)",
+        //   "--color2":
+        //     "rgb(random(0,155,100), random(1,255,0), random(155,0,1), 0.56)",
+        //   ease: "none",
+        //   yoyo: true,
+        //   onComplete: randomHaze,
+        // });
       }
       randomHaze();
     }
