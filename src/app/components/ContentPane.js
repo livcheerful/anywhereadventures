@@ -234,7 +234,8 @@ export default function ContentPane({
           className="w-full h-full overflow-x-hidden overflow-y-scroll flex flex-col z-10"
           style={{ paddingTop: "30px" }}
           id="content-pane"
-          onDrag={() => {
+          onDrag={(e) => {
+            e.preventDefault();
             setPaneOpen(true);
           }}
           onClick={() => {
