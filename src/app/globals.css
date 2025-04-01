@@ -23,8 +23,8 @@ body {
 
 @font-face {
   font-family: "Vivian";
-  src: url('/static/Viviantesthand-Regular.otf');
-  src: url('/static/Viviantesthand-Regular.otf') format('otf');
+  src: url('/static/Viviantesthand-Regular.ttf');
+  src: url('/static/Viviantesthand-Regular.ttf') format('ttf');
   font-weight: 300;
   font-style: normal;
 }
@@ -42,6 +42,6 @@ body {
    fill: #ff2233;
 }
 
-* {
+.comicStyle {
   font-family: 'Vivian' ;
 }
