@@ -25,7 +25,7 @@ export default function ScrapbookPage() {
 
   return (
     <div
-      className="overflow-clip overflow-y-scroll pl-12"
+      className="overflow-clip pl-12 pr-2"
       onScroll={() => {
         console.log("scrolling");
       }}

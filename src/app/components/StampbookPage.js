@@ -73,7 +73,8 @@ export default function StampbookPage() {
 
   return (
     <div className="flex flex-col items-center pt-4">
-      <div className="grid ">
+      <div className="font-bold">Visit each location and collect stamps</div>
+      <div className="grid gap-2">
         {slugs &&
           slugs.map((slug, i) => {
             const postInfo = slugToSvgIdAndPostInfo.get(slug);
