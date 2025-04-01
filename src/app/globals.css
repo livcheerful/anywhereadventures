@@ -21,13 +21,6 @@ body {
   line-height: 180%;
 }
 
-@font-face {
-  font-family: "Vivian";
-  src: url('/static/Viviantesthand-Regular.ttf');
-  src: url('/static/Viviantesthand-Regular.ttf') format('ttf');
-  font-weight: 300;
-  font-style: normal;
-}
 
 .mdx-post-content a {
   color: rgb(19, 162, 228);
@@ -40,8 +33,4 @@ body {
 }
 .pinned {
    fill: #ff2233;
-}
-
-.comicStyle {
-  font-family: 'Vivian' ;
 }

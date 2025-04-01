@@ -369,7 +369,7 @@ export default function Comic({
                 <div className="flex flex-col items-center bg-none absolute comicArea ">
                   {bubbleLines.map((line, j) => {
                     return (
-                      <div className="bg-none block comicStyle" key={j}>
+                      <div className="bg-none block font-vivian" key={j}>
                         {line.split(" ").map((w, k) => {
                           if (w.length == 0) {
                             return;
@@ -381,13 +381,13 @@ export default function Comic({
                           ) {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <b className="px-1 comicStyle" key={k}>
+                                <b className="px-1 font-vivian " key={k}>
                                   <em>{w}</em>
                                 </b>
                               );
                             } else {
                               return (
-                                <b className="px-1 comicStyle" key={k}>
+                                <b className="px-1 font-vivian " key={k}>
                                   {w}
                                 </b>
                               );
@@ -395,13 +395,13 @@ export default function Comic({
                           } else {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <em className="px-1 comicStyle" key={k}>
+                                <em className="px-1 font-vivian" key={k}>
                                   {w}
                                 </em>
                               );
                             } else {
                               return (
-                                <span className="px-1 comicStyle" key={k}>
+                                <span className="px-1 font-vivian" key={k}>
                                   {w}
                                 </span>
                               );
