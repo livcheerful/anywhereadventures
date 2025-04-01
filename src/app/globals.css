@@ -55,3 +55,7 @@ body {
 .pinned {
    fill: #ff2233;
 }
+
+.comicStyle {
+  font-family: 'AnimeAce' 'Comic Sans';
+}
