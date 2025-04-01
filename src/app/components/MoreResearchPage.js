@@ -3,7 +3,7 @@ import Comic from "./mdx/Comic";
 
 export default function MoreResearchPage() {
   return (
-    <div className="pl-16 pt-4">
+    <div className="pl-16 pt-4 overflow-x-hidden">
       <div>
         <Comic
           position="right"
