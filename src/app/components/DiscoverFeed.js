@@ -31,11 +31,7 @@ export default function DiscoverFeed({ setCurrentSlug }) {
                   </div>
                 </div>
               )}
-              <div
-                className={`flex flex-row ${
-                  isThisExpanded ? " flex-wrap" : "overflow-x-auto"
-                } gap-2`}
-              >
+              <div className={`flex flex-row overflow-x-auto gap-2`}>
                 {category.posts.map((l, k) => {
                   return (
                     <div
@@ -45,11 +41,7 @@ export default function DiscoverFeed({ setCurrentSlug }) {
                         setCurrentSlug(l.slug);
                       }}
                       key={k}
-                      className={`${
-                        isThisExpanded
-                          ? "shrink grow max-w-3/5 w-1/3"
-                          : "shrink-0 w-3/5 "
-                      } h-[10rem] bg-cover text-md font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg flex flex-col items-end`}
+                      className={`shrink-0 w-3/5  h-[10rem] bg-cover text-md font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg flex flex-col items-end`}
                       style={{
                         backgroundImage: `url(${l.cardImage})`,
                       }}
