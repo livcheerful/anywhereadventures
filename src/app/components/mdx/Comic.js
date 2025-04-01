@@ -369,10 +369,7 @@ export default function Comic({
                 <div className="flex flex-col items-center bg-none absolute comicArea ">
                   {bubbleLines.map((line, j) => {
                     return (
-                      <div
-                        className="bg-none block font-comic comicStyle"
-                        key={j}
-                      >
+                      <div className="bg-none block comicStyle" key={j}>
                         {line.split(" ").map((w, k) => {
                           if (w.length == 0) {
                             return;
