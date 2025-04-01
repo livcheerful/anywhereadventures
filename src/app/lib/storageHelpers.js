@@ -65,6 +65,16 @@ export function getAllLCItems() {
   return saved;
 }
 
+export function removeLCItem(lcItem) {
+  const locs = getAll(itemsStorageKey);
+
+  delete locs[lcItem];
+  if (typeof window !== "undefined");
+  localStorage.setItem(itemsStorageKey, JSON.stringify(locs));
+
+  return locs;
+}
+
 export function saveLCItem(lcItem, image, caption, slug) {
   const locs = getAll(itemsStorageKey);
   if (!isAdded(itemsStorageKey, lcItem)) {

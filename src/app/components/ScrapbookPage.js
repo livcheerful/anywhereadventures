@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getAllLCItems } from "../lib/storageHelpers";
+import { getAllLCItems, removeLCItem } from "../lib/storageHelpers";
 
 export default function ScrapbookPage() {
   const [allItems, setAllItems] = useState(getAllLCItems());
@@ -25,12 +25,27 @@ export default function ScrapbookPage() {
 
   return (
     <div
-      className="overflow-clip overflow-y-scroll"
+      className="overflow-clip overflow-y-scroll pl-16"
       onScroll={() => {
         console.log("scrolling");
       }}
     >
       <div className=" text-2xl font-bold p-2 pb-8">Scrapbook</div>
+
+      {Object.keys(allItems).length == 0 && (
+        <div>
+          <div>
+            This is where your saved items from the Library of Congress will go.
+            Collect them to explore more for later.
+          </div>
+          <div>
+            Why not go{" "}
+            <a className=" text-blue-600 underline" href="/discover">
+              discover some new stories?
+            </a>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col gap-16">
         {Object.keys(allItems).map((link, k) => {
           const thisItem = allItems[link];
@@ -41,6 +56,15 @@ export default function ScrapbookPage() {
                 style={{ ...randomTwist(20) }}
               >
                 <img src={thisItem.image} />
+                <div
+                  onClick={() => {
+                    removeLCItem(link);
+                    setAllItems(getAllLCItems());
+                  }}
+                  className="bg-white -rotate-6 drop-shadow-md rounded-full absolute top-0 -left-3 p-3 outline-2 outline-slate-500 cursor-pointer"
+                >
+                  x
+                </div>
                 <div
                   className="absolute right-5 rotate-3 top-3  p-2 font-black drop-shadow-lg"
                   style={{ ...randomTwist(10), ...randomColor() }}
