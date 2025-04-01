@@ -381,13 +381,13 @@ export default function Comic({
                           ) {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <b className="px-1 font-vivian " key={k}>
+                                <b className="px-1 font-mono " key={k}>
                                   <em>{w}</em>
                                 </b>
                               );
                             } else {
                               return (
-                                <b className="px-1 font-vivian " key={k}>
+                                <b className="px-1 font-mono " key={k}>
                                   {w}
                                 </b>
                               );
@@ -395,13 +395,13 @@ export default function Comic({
                           } else {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <em className="px-1 font-vivian" key={k}>
+                                <em className="px-1 font-mono" key={k}>
                                   {w}
                                 </em>
                               );
                             } else {
                               return (
-                                <span className="px-1 font-vivian" key={k}>
+                                <span className="px-1 font-mono" key={k}>
                                   {w}
                                 </span>
                               );
