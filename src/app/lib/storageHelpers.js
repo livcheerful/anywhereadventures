@@ -98,6 +98,11 @@ export function getStamps() {
   return stampsSoFar;
 }
 
+export function getNumberOfStamps() {
+  const stamps = getStamps();
+  return Object.keys(stamps).length;
+}
+
 export function saveStamp(stampList) {
   const stampsSoFar = getAll(stampKey);
   console.log(stampsSoFar);

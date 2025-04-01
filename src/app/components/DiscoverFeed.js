@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { categoryInfo } from "../content/meta";
 import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import { updateRoute } from "../lib/routeHelpers";
+import { add as addToStorage } from "../lib/storageHelpers";
 export default function DiscoverFeed({ setCurrentSlug }) {
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
   const router = useRouter();
@@ -31,7 +32,9 @@ export default function DiscoverFeed({ setCurrentSlug }) {
                   </div>
                 </div>
               )}
-              <div className={`flex flex-row overflow-x-auto gap-2`}>
+              <div
+                className={`flex flex-row overflow-x-auto gap-4 pt-6 pb-4 drop-shadow-lg`}
+              >
                 {category.posts.map((l, k) => {
                   return (
                     <div
@@ -46,6 +49,16 @@ export default function DiscoverFeed({ setCurrentSlug }) {
                         backgroundImage: `url(${l.cardImage})`,
                       }}
                     >
+                      <div
+                        className="absolute -right-3 -top-3 w-10 h-10 rounded-full bg-green-500 text-white flex flex-col items-center justify-center"
+                        onClick={(e) => {
+                          console.log(l);
+                          e.stopPropagation();
+                          addToStorage(l.slug, l);
+                        }}
+                      >
+                        +
+                      </div>
                       <div className="bg-white/80 w-full px-2 py-1 ">
                         {l.title}
                       </div>

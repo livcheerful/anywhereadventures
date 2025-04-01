@@ -1,5 +1,5 @@
 "use client";
-import { getAllSlugs } from "../lib/storageHelpers";
+import { getAllSlugs, getNumberOfStamps } from "../lib/storageHelpers";
 import { updateRoute } from "../lib/routeHelpers";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -23,11 +23,15 @@ export default function ContentToolBar({
         <div className="flex flex-row gap-2 pl-16">
           <div>{`YOUR LOCATIONS:`}</div>
           <div>{Object.keys(getAllSlugs()).length} saved</div>
-          <div>0 visited</div>
+          <div>{getNumberOfStamps() || 0} visited</div>
         </div>
       );
     } else if (exploringContent && currentSlug == "discover") {
-      return <div className="flex flex-row gap-2 pl-16">Find new places</div>;
+      return (
+        <div className="flex flex-row gap-2 pl-16">
+          Find places to add to your map
+        </div>
+      );
     }
   };
   return (
