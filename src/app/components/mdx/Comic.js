@@ -282,9 +282,11 @@ export default function Comic({
       {image ? (
         <img
           src={image}
-          className={` select-none  ${
+          className={`relative select-none ${
+            position == "right" && "-right-3"
+          } ${position == "left" && "-left-3"}  ${
             position == "full" ? " w-full" : "h-comic"
-          }`}
+          } `}
         />
       ) : (
         <div className={`w-16 h-16`}></div>

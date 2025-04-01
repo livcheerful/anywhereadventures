@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import MainMap from "./Map";
 import ContentPane from "./ContentPane";
 import { useState, useEffect } from "react";
+import { updateRoute } from "../lib/routeHelpers";
 import { isThisMe } from "../lib/storageHelpers";
 export default function BasePage({ slug, post }) {
   const [mainMap, setMainMap] = useState(undefined);
@@ -30,6 +31,8 @@ export default function BasePage({ slug, post }) {
       } else {
         // Load into that page
         setExploringContent(true);
+        // Also update the URL to remove the user's key
+        updateRoute(`/${slug}`);
       }
     }
   }, []);
