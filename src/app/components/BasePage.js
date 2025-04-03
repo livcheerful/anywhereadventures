@@ -9,7 +9,7 @@ import { isThisMe, getAllSlugs, getAllContent } from "../lib/storageHelpers";
 export default function BasePage({ slug }) {
   const [mainMap, setMainMap] = useState(undefined);
   const [paneOpen, setPaneOpen] = useState(true);
-  const [isNewUser, setIsNewUser] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(false);
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
 
   const [currentSlug, setCurrentSlug] = useState(slug);

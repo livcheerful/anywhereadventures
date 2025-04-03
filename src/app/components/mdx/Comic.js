@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 let screenWidth = 390;
 const bubblePercentage = 0.5;
-const charwidth = 12;
+const charwidth = 11;
 let charHeight = 29;
 const lineLimit = (screenWidth * bubblePercentage) / charwidth;
 const defaultBubbleWidth = screenWidth * bubblePercentage;
@@ -297,7 +297,7 @@ export default function Comic({
           //   (Math.random() * screenWidth * (1 - bubblePercentage)) / 2
           // );
           const randomXOff = 0;
-          const margin = 15;
+          const margin = 8;
           const bubbleWidth = bubbleWidths[i] || defaultBubbleWidth;
           const bubbleHeight = bubbleLines.length * charHeight + margin * 2;
           const bubbleWid = bubbleWidth / 2;
@@ -322,7 +322,7 @@ export default function Comic({
               }}
             >
               <svg
-                className="absolute stroke-[4] stroke-black"
+                className="absolute stroke-[2] stroke-black"
                 width={bubbleWidth + tailLength + 4}
                 height={bubbleHeight + 4}
                 strokeLinecap="round"
@@ -383,13 +383,13 @@ export default function Comic({
                           ) {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <b className="px-1 font-mono " key={k}>
+                                <b className="px-1 font-mono text-sm" key={k}>
                                   <em>{w}</em>
                                 </b>
                               );
                             } else {
                               return (
-                                <b className="px-1 font-mono " key={k}>
+                                <b className="px-1 font-mono text-sm" key={k}>
                                   {w}
                                 </b>
                               );
@@ -397,13 +397,16 @@ export default function Comic({
                           } else {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <em className="px-1 font-mono" key={k}>
+                                <em className="px-1 font-mono text-sm" key={k}>
                                   {w}
                                 </em>
                               );
                             } else {
                               return (
-                                <span className="px-1 font-mono" key={k}>
+                                <span
+                                  className="px-1 font-mono text-sm"
+                                  key={k}
+                                >
                                   {w}
                                 </span>
                               );
