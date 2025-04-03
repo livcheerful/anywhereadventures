@@ -2,17 +2,26 @@
 import { useSearchParams } from "next/navigation";
 import MainMap from "./Map";
 import ContentPane from "./ContentPane";
+import WelcomeScreen from "./WelcomeScreen";
 import { useState, useEffect } from "react";
 import { updateRoute } from "../lib/routeHelpers";
-import { isThisMe } from "../lib/storageHelpers";
-export default function BasePage({ slug, post }) {
+import { isThisMe, getAllSlugs, getAllContent } from "../lib/storageHelpers";
+export default function BasePage({ slug }) {
   const [mainMap, setMainMap] = useState(undefined);
   const [paneOpen, setPaneOpen] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(true);
+  const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
 
+  const [currentSlug, setCurrentSlug] = useState(slug);
   const [exploringContent, setExploringContent] = useState(undefined);
+  const [post, setPost] = useState();
   const searchParams = useSearchParams();
   const userKey = searchParams.get("k");
 
+  const [myLocationSlugs, setMyLocationSlugs] = useState(getAllSlugs());
+  function finishWelcome() {
+    setShowingWelcomeScreen(false);
+  }
   useEffect(() => {
     setExploringContent(true);
     if (slug == "") {
@@ -55,17 +64,32 @@ export default function BasePage({ slug, post }) {
         e.preventDefault();
       }}
     >
-      <MainMap mapCB={mapCB} mapClickHandler={mapClickHandler} />
+      <MainMap
+        mapCB={mapCB}
+        mapClickHandler={mapClickHandler}
+        post={post}
+        slug={currentSlug}
+        exploringContent={exploringContent}
+        myLocations={getAllContent()}
+      />
       {exploringContent != undefined && (
         <ContentPane
           slug={slug}
-          post={post}
           mainMap={mainMap}
           paneOpen={paneOpen}
           setPaneOpen={paneOpenHandler}
           exploringContent={exploringContent}
           setExploringContent={setExploringContent}
+          currentSlug={currentSlug}
+          setCurrentSlug={setCurrentSlug}
+          post={post}
+          setPost={setPost}
+          myLocationSlugs={myLocationSlugs}
+          setMyLocationSlugs={setMyLocationSlugs}
         />
+      )}
+      {showingWelcomeScreen && (
+        <WelcomeScreen onFinishWelcoming={finishWelcome} />
       )}
     </div>
   );

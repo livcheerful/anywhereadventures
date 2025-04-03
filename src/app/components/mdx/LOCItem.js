@@ -12,30 +12,28 @@ export default function LOCItem({ image, linkOut, caption }) {
 
   useEffect(() => {}, [itemOpen]);
 
-  function startSaveAnim() {
-    const journalTab = document.getElementById("navbar-journal-tab");
-    const journalTabBox = journalTab.getBoundingClientRect();
+  function startSaveAnim(e) {
+    // const journalTab = document.getElementById("navbar-journal-tab");
+    // const journalTabBox = journalTab.getBoundingClientRect();
     const ogImage = document.getElementById(`lcitem-${image}`);
     // Animate from current position to new with a little shrinking situation.
     const resourceCpy = document.createElement("img");
     resourceCpy.src = image;
     resourceCpy.style.zIndex = 100;
-    resourceCpy.className = "fixed ";
+    resourceCpy.className = "absolute";
 
     ogImage.parentElement.appendChild(resourceCpy);
 
-    const tl = gsap.timeline();
-
     setTimeout(() => {
+      const tl = gsap.timeline();
       tl.to(resourceCpy, {
-        duration: 2,
+        duration: 1,
         width: "30%",
-        rotate: -20,
-        left: 0,
-        top: `${journalTabBox.y}`,
+        rotate: -360,
+        scale: 0.2,
         onComplete: () => {
+          // makeConfetti(resourceCpy.parentElement, 0, 15, 4);
           resourceCpy.remove();
-          makeConfetti(journalTab, journalTabBox.x, journalTabBox.y, 4);
         },
       });
     }, 10);
@@ -62,8 +60,14 @@ export default function LOCItem({ image, linkOut, caption }) {
         <div
           className="bg-slate-100 p-2 drop-shadow-sm font-light"
           onClick={(e) => {
-            makeConfetti(e.target.parentElement, e.clientX, e.clientY, 10);
-            startSaveAnim();
+            makeConfetti(
+              e.target.parentElement,
+              e.clientX,
+              e.clientY,
+              10,
+              "💥"
+            );
+            startSaveAnim(e);
             saveLCItem(
               linkOut,
               image,

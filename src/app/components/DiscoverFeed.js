@@ -6,7 +6,7 @@ import { categoryInfo } from "../content/meta";
 import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import { updateRoute } from "../lib/routeHelpers";
 import { add as addToStorage } from "../lib/storageHelpers";
-export default function DiscoverFeed({ setCurrentSlug }) {
+export default function DiscoverFeed({ zoomToMainMap, setCurrentSlug }) {
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
   const router = useRouter();
   return (
@@ -42,6 +42,8 @@ export default function DiscoverFeed({ setCurrentSlug }) {
                         // router.replace(`/${l.slug}`);
                         updateRoute(`/${l.slug}`);
                         setCurrentSlug(l.slug);
+                        // Update map view to zoom to this
+                        zoomToMainMap(l.latlon, l.zoom || 10);
                       }}
                       key={k}
                       className={`shrink-0 w-3/5  h-[10rem] bg-cover text-md font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg flex flex-col items-end`}

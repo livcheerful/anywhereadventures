@@ -20,7 +20,7 @@ import {
   isAdded,
   localStorageKey,
 } from "../lib/storageHelpers";
-import { makeNewMarker } from "../components/Map";
+import { makeNewMarker, shiftUp } from "../components/Map";
 import { categoryInfo } from "../content/meta";
 import {
   unvisitedMapColor,
@@ -48,12 +48,15 @@ export default function ContentPane({
   setPaneOpen,
   exploringContent,
   setExploringContent,
+  currentSlug,
+  setCurrentSlug,
+  post,
+  setPost,
+  myLocationSlugs,
+  setMyLocationSlugs,
 }) {
   const router = useRouter();
-  const [post, setPost] = useState();
   const [viewAsGrid, setViewAsGrid] = useState(false);
-  const [currentSlug, setCurrentSlug] = useState(slug);
-  const [myLocationSlugs, setMyLocationSlugs] = useState(getAllSlugs());
   const [thumbnailView, setThumbnailView] = useState(
     exploringContent == true && currentSlug == "discover"
   );
@@ -147,11 +150,6 @@ export default function ContentPane({
   }, [mainMap, currentSlug]);
 
   useEffect(() => {
-    const myLocations = getAllContent();
-    mainMap?.updatePins(myLocations);
-  }, [mainMap, myLocationSlugs]);
-
-  useEffect(() => {
     // Fetch all the relevant pins.
     // Add them to the map
     // Filter the places in our column based on it?
@@ -178,20 +176,8 @@ export default function ContentPane({
     }
   }, [exploringContent, mainMap]);
 
-  function zoomToMainMap(coords, zoom, setTempPin = false) {
-    console.log("Vivian in zoom to main map");
+  function zoomToMainMap() {
     setPaneOpen(false);
-    mainMap.map.flyTo({
-      center: [coords[1], coords[0]],
-      zoom: zoom || 8,
-      speed: 0.4,
-    });
-    if (setTempPin) {
-      const tempPinOnMainMap = makeNewMarker(unvisitedMapColor, {
-        latlon: coords,
-      });
-      const l = mainMap.addTemporaryLayer(tempPinOnMainMap);
-    }
   }
 
   function getPaneHeight() {
@@ -220,6 +206,7 @@ export default function ContentPane({
       <div className="h-full ">
         <div className="w-full text-2xl font-bold fixed  z-40">
           <ContentToolBar
+            post={post}
             setPaneOpen={setPaneOpen}
             exploringContent={exploringContent}
             setExploringContent={setExploringContent}
@@ -245,7 +232,12 @@ export default function ContentPane({
             // scrollValue.current = e.target.scrollTop;
           }}
         >
-          {thumbnailView && <DiscoverFeed setCurrentSlug={setCurrentSlug} />}
+          {thumbnailView && (
+            <DiscoverFeed
+              zoomToMainMap={zoomToMainMap}
+              setCurrentSlug={setCurrentSlug}
+            />
+          )}
           {!exploringContent && (
             <RiverFeed
               setExploringContent={setExploringContent}

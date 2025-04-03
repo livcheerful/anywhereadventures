@@ -1,16 +1,17 @@
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-export function makeConfetti(element, x, y, amount) {
+export function makeConfetti(element, x, y, amount = 10, emoji = "🌼") {
   for (let i = 0; i < amount; i++) {
     const div = document.createElement("div");
     div.className = "confetti fixed ";
     const xSpread = 20;
     const ySpread = 4;
-    const width = 10;
-    const height = 10;
+    const width = 20;
+    const height = 20;
     div.style.width = `${width}px`;
     div.style.height = `${height}px`;
+    div.style.fontSize = `30px`;
     div.style.zIndex = 1000;
     div.style.left = `${
       x + Math.random() * xSpread - xSpread / 2 - width / 2
@@ -19,7 +20,7 @@ export function makeConfetti(element, x, y, amount) {
       y + Math.random() * ySpread - ySpread / 2 - height / 2
     }px`;
 
-    const fluur = document.createTextNode("🌼");
+    const fluur = document.createTextNode(emoji);
     div.appendChild(fluur);
     element.appendChild(div);
   }

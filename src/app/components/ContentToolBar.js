@@ -1,9 +1,18 @@
 "use client";
-import { getAllSlugs, getNumberOfStamps } from "../lib/storageHelpers";
+import {
+  getAllSlugs,
+  getNumberOfStamps,
+  isAdded,
+  localStorageKey,
+  add as addToStorage,
+  remove as removeFromStorage,
+} from "../lib/storageHelpers";
 import { updateRoute } from "../lib/routeHelpers";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { makeConfetti } from "../lib/animationHelpers";
+import { useEffect, useState } from "react";
 export default function ContentToolBar({
+  post,
   setPaneOpen,
   exploringContent,
   setExploringContent,
@@ -16,6 +25,17 @@ export default function ContentToolBar({
   const router = useRouter();
 
   const noSavedLocations = !exploringContent && getAllSlugs().length == 0;
+  const [shouldShowAddToMapButton, setShouldShowAddToMapButton] = useState(
+    exploringContent && currentSlug != "discover"
+  );
+
+  useEffect(() => {
+    setShouldShowAddToMapButton(exploringContent && currentSlug != "discover");
+  });
+
+  const [isLocAdded, setIsLocAdded] = useState(
+    isAdded(localStorageKey, currentSlug)
+  );
 
   const toolTipText = () => {
     if (!exploringContent) {
@@ -74,6 +94,30 @@ export default function ContentToolBar({
         </svg>
       </div>
 
+      {shouldShowAddToMapButton && (
+        <div
+          className="absolute bg-emerald-500 p-3 rounded-lg bottom-10 right-0 cursor-pointer"
+          onClick={(e) => {
+            if (!isLocAdded) {
+              addToStorage(currentSlug, post);
+            } else {
+              removeFromStorage(currentSlug);
+            }
+
+            if (!isLocAdded)
+              makeConfetti(
+                e.target.parentElement,
+                e.clientX,
+                e.clientY,
+                15,
+                "⭐️"
+              );
+            setIsLocAdded(!isLocAdded);
+          }}
+        >
+          {isLocAdded ? "Remove" : "Add to my map"}
+        </div>
+      )}
       <div className="absolute right-0 top-10 w-20 h-20 flex flex-col items-end gap-3">
         {exploringContent && currentSlug != "discover" && (
           <div
@@ -87,6 +131,7 @@ export default function ContentToolBar({
             Back
           </div>
         )}
+
         {!exploringContent && currentSlug == "" && (
           <div
             className=" bg-emerald-800 p-3 py-2 right-0  rounded-l-lg drop-shadow-md w-fit cursor-pointer text-sm text-white font-bold"
