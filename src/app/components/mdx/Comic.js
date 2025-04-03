@@ -285,7 +285,7 @@ export default function Comic({
           className={`relative select-none ${
             position == "right" && "-right-3"
           } ${position == "left" && "-left-3"}  ${
-            position == "full" ? " w-full" : "h-comic"
+            position == "full" ? " w-full" : "w-comic h-fit"
           } `}
         />
       ) : (
