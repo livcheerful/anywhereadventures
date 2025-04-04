@@ -1,19 +1,112 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { useRouter } from "next/navigation";
 import { categoryInfo } from "../content/meta";
 import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import { updateRoute } from "../lib/routeHelpers";
 import { add as addToStorage } from "../lib/storageHelpers";
-export default function DiscoverFeed({ zoomToMainMap, setCurrentSlug }) {
+import { registerNewIO } from "../lib/intersectionObserverHelper";
+import { makeNewMarker } from "../components/Map";
+import {
+  unvisitedMapColor,
+  unopinionatedMapColor,
+  excitingMapColor,
+} from "../lib/constants";
+export default function DiscoverFeed({
+  zoomToMainMap,
+  setCurrentSlug,
+  currentSlug,
+  exploringContent,
+  mainMap,
+}) {
+  function getPostsByCategory(category) {
+    for (let i = 0; i < seattleByCategory.length; i++) {
+      if (seattleByCategory[i].tag == category)
+        return seattleByCategory[i].posts;
+    }
+  }
+
+  function getPostBySlug(slug) {
+    for (let i = 0; i < seattleLocs.length; i++) {
+      if (seattleLocs[i].slug == slug) return seattleLocs[i];
+    }
+  }
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
   const router = useRouter();
+  const ioRef = useRef();
+
+  // Register Intersection Observer
+  useEffect(() => {
+    console.log("tryig to register an intersection observer");
+    if (!mainMap) return;
+    if (ioRef.current) {
+      if (!currentSlug || currentSlug == "") {
+        // Unregister IO
+        console.log("Need to unregister");
+      }
+      return;
+    }
+    if (!exploringContent) return;
+
+    // For individual cards, highlight pin
+    ioRef.current = registerNewIO(
+      document.getElementsByClassName("ind-card"),
+      document.getElementById("#explorePane"),
+      (entries) => {
+        for (let entryIdx = 0; entryIdx < entries.length; entries++) {
+          const justScrolledInElem = entries[entryIdx].target;
+          const cardSlug = justScrolledInElem.getAttribute("cardslug");
+          if (
+            entries[entryIdx].isIntersecting &&
+            entries[entryIdx].intersectionRatio == 1
+          ) {
+            const postInView = getPostBySlug(cardSlug);
+
+            const m = makeNewMarker(excitingMapColor, postInView, router, true);
+            mainMap.addLayer(m, cardSlug);
+          } else {
+            mainMap.removeLayerGroup(cardSlug);
+          }
+        }
+      }
+    );
+
+    // For each category, highlight pins
+    registerNewIO(
+      document.getElementsByClassName("category-row-header"),
+      document.getElementById("#explorePane"),
+      (entries) => {
+        console.log("intersecting! hello");
+        for (let entryIdx = 0; entryIdx < entries.length; entries++) {
+          const justScrolledInElem = entries[entryIdx].target;
+          const category = justScrolledInElem.getAttribute("categoryname");
+          const catMetaInfo = categoryInfo[category];
+          if (
+            entries[entryIdx].isIntersecting &&
+            entries[entryIdx].intersectionRatio == 1
+          ) {
+            const postsInView = getPostsByCategory(category);
+            postsInView.forEach((p) => {
+              const m = makeNewMarker(
+                catMetaInfo?.pinColor || excitingMapColor,
+                p,
+                router,
+                true
+              );
+              mainMap.addLayer(m, category);
+            });
+          } else {
+            mainMap.removeLayerGroup(category);
+          }
+        }
+      }
+    );
+  }, [mainMap, currentSlug]);
   return (
     <div className="w-full h-fit flex gap-2 flex-col  ">
       <div id="explorePane" className=" flex flex-col p-2 gap-3 ">
         {seattleByCategory.map((category, ck) => {
-          const isThisExpanded = expandedCategories.has(category.tag);
           const categoryMeta = categoryInfo[category.tag];
           return (
             <div className="category-row" key={ck}>
@@ -23,15 +116,13 @@ export default function DiscoverFeed({ zoomToMainMap, setCurrentSlug }) {
               >
                 {category.tag.toUpperCase()}
               </div>
-              {isThisExpanded && (
-                <div className="p-3">
-                  {categoryMeta && <div>{categoryMeta?.description}</div>}
+              <div className="p-3">
+                {categoryMeta && <div>{categoryMeta?.description}</div>}
 
-                  <div className="bg-emerald-400 text-white font-bold p-2 rounded-lg ">
-                    Add all to map
-                  </div>
+                <div className="bg-emerald-400 text-white font-bold p-2 rounded-lg ">
+                  Add all to map
                 </div>
-              )}
+              </div>
               <div
                 className={`flex flex-row overflow-x-auto gap-4 pt-6 pb-4 drop-shadow-lg`}
               >
@@ -68,43 +159,6 @@ export default function DiscoverFeed({ zoomToMainMap, setCurrentSlug }) {
                   );
                 })}
               </div>
-              <div className="w-full flex flex-col items-center pt-3">
-                <div
-                  onClick={() => {
-                    const eC = new Map(expandedCategories);
-                    if (isThisExpanded) {
-                      // Remove it
-                      eC.delete(category.tag);
-                    } else {
-                      eC.set(category.tag, true);
-                    }
-                    setExpandedCateogires(eC);
-                  }}
-                  className="cursor-pointer text-slate-500 flex flex-col items-center"
-                >
-                  <div className="text-xs font-normal">
-                    {isThisExpanded ? "COLLAPSE" : "EXPAND"}
-                  </div>
-                  <div className="w-3 stroke-slate-500 stroke-2">
-                    {isThisExpanded ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                      >
-                        <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                      >
-                        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                      </svg>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <hr className="m-2"></hr>
             </div>
           );
         })}

@@ -20,26 +20,13 @@ import {
   isAdded,
   localStorageKey,
 } from "../lib/storageHelpers";
-import { makeNewMarker, shiftUp } from "../components/Map";
+import { makeNewMarker } from "../components/Map";
 import { categoryInfo } from "../content/meta";
 import {
   unvisitedMapColor,
   unopinionatedMapColor,
   excitingMapColor,
 } from "../lib/constants";
-import { registerNewIO } from "../lib/intersectionObserverHelper";
-
-function getPostsByCategory(category) {
-  for (let i = 0; i < seattleByCategory.length; i++) {
-    if (seattleByCategory[i].tag == category) return seattleByCategory[i].posts;
-  }
-}
-
-function getPostBySlug(slug) {
-  for (let i = 0; i < seattleLocs.length; i++) {
-    if (seattleLocs[i].slug == slug) return seattleLocs[i];
-  }
-}
 
 export default function ContentPane({
   slug,
@@ -60,7 +47,6 @@ export default function ContentPane({
   const [thumbnailView, setThumbnailView] = useState(
     exploringContent == true && currentSlug == "discover"
   );
-  const ioRef = useRef();
   const scrollValue = useRef();
 
   useEffect(() => {
@@ -80,74 +66,6 @@ export default function ContentPane({
   useEffect(() => {
     if (mainMap && !exploringContent) mainMap.removeAllTempLayers();
   }, [mainMap, exploringContent]);
-
-  // Register Intersection Observer
-  useEffect(() => {
-    if (!mainMap) return;
-    if (ioRef.current) {
-      if (slug == "") {
-        // Unregister IO
-        console.log("Need to unregister");
-      }
-      return;
-    }
-    if (!exploringContent) return;
-
-    // For individual cards, highlight pin
-    ioRef.current = registerNewIO(
-      document.getElementsByClassName("ind-card"),
-      document.getElementById("#explorePane"),
-      (entries) => {
-        for (let entryIdx = 0; entryIdx < entries.length; entries++) {
-          const justScrolledInElem = entries[entryIdx].target;
-          const cardSlug = justScrolledInElem.getAttribute("cardslug");
-          if (
-            entries[entryIdx].isIntersecting &&
-            entries[entryIdx].intersectionRatio == 1
-          ) {
-            const postInView = getPostBySlug(cardSlug);
-
-            const m = makeNewMarker(excitingMapColor, postInView, router, true);
-            mainMap.addLayer(m, cardSlug);
-          } else {
-            mainMap.removeLayerGroup(cardSlug);
-          }
-        }
-      }
-    );
-
-    console.log("VVn in contentpane");
-    // For each category, highlight pins
-    registerNewIO(
-      document.getElementsByClassName("category-row-header"),
-      document.getElementById("#explorePane"),
-      (entries) => {
-        console.log("intersecting! hello");
-        for (let entryIdx = 0; entryIdx < entries.length; entries++) {
-          const justScrolledInElem = entries[entryIdx].target;
-          const category = justScrolledInElem.getAttribute("categoryname");
-          const catMetaInfo = categoryInfo[category];
-          if (
-            entries[entryIdx].isIntersecting &&
-            entries[entryIdx].intersectionRatio == 1
-          ) {
-            const postsInView = getPostsByCategory(category);
-            postsInView.forEach((p) => {
-              const m = makeNewMarker(
-                catMetaInfo?.pinColor || excitingMapColor,
-                p,
-                router,
-                true
-              );
-              mainMap.addLayer(m, category);
-            });
-          } else {
-            mainMap.removeLayerGroup(category);
-          }
-        }
-      }
-    );
-  }, [mainMap, currentSlug]);
 
   useEffect(() => {
     // Fetch all the relevant pins.
@@ -234,7 +152,10 @@ export default function ContentPane({
         >
           {thumbnailView && (
             <DiscoverFeed
+              mainMap={mainMap}
+              currentSlug={currentSlug}
               zoomToMainMap={zoomToMainMap}
+              exploringContent={exploringContent}
               setCurrentSlug={setCurrentSlug}
             />
           )}
