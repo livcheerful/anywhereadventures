@@ -14,6 +14,7 @@ export default function Comic({
   speechBubbles = [],
   overlap = 0,
   absoluteHeight,
+  caption,
   position = "left",
 }) {
   // VVN TODO calculate bubble height and width based on text
@@ -269,28 +270,62 @@ export default function Comic({
 
   return (
     <div
-      className={`flex  relative ${
+      className={`flex  relative ${overlap ? "" : "pb-3"} ${
         position == "right" ? "flex-row-reverse" : "flex-row"
       }`}
       style={{
         top: `-${overlap}px`,
         height: overlap
-          ? absoluteHeight || `${estimateBubbleHeight(brokenLines) - overlap}px`
-          : "auto",
+          ? `${absoluteHeight}px` ||
+            `${estimateBubbleHeight(brokenLines) - overlap}px`
+          : "auto ",
       }}
     >
-      {image ? (
-        <img
-          src={image}
-          className={`relative select-none ${
-            position == "right" && "-right-3"
-          } ${position == "left" && "-left-3"}  ${
-            position == "full" ? " w-full" : "w-comic h-fit"
-          } `}
-        />
-      ) : (
-        <div className={`w-16 h-16`}></div>
-      )}
+      <div
+        className={`relative flex flex-col select-none   ${
+          position == "full" && " w-full"
+        } ${position != "full" && image != undefined ? "w-comic" : "w-10"} `}
+      >
+        {image ? (
+          <img
+            src={image}
+            className={`${position == "right" && "-right-3"} ${
+              position == "left" && "-left-3"
+            }`}
+          />
+        ) : (
+          <div className={``}></div>
+        )}
+
+        {caption && (
+          <div className="flex flex-row items-start z-20 px-2 italic text-center text-xs">
+            <svg
+              className={` stroke-black stroke-[1] fill-none w-[15rem]`}
+              viewBox="0 0 24 24"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              markerEnd="url(#arrow)"
+            >
+              <defs>
+                <marker
+                  className="fill-black"
+                  id="arrow"
+                  viewBox="0 0 10 10"
+                  refX="5"
+                  refY="5"
+                  markerWidth="3"
+                  markerHeight="3"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z" />
+                </marker>
+              </defs>
+              <path d={`m20 20 c-5 0 -13 -10 -8 -17  `}></path>
+            </svg>
+            <div className="bg-white/90">{caption}</div>
+          </div>
+        )}
+      </div>
       <div className="flex gap-2 flex-col h-fit">
         {brokenLines.map((bubbleLines, i) => {
           // const randomXOff = Math.floor(
@@ -371,7 +406,7 @@ export default function Comic({
                 <div className="flex flex-col items-center bg-none absolute comicArea ">
                   {bubbleLines.map((line, j) => {
                     return (
-                      <div className="bg-none block font-vivian" key={j}>
+                      <div className="bg-none font-mono block " key={j}>
                         {line.split(" ").map((w, k) => {
                           if (w.length == 0) {
                             return;
@@ -383,13 +418,13 @@ export default function Comic({
                           ) {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <b className="px-1 font-mono text-sm" key={k}>
+                                <b className="px-1 text-sm" key={k}>
                                   <em>{w}</em>
                                 </b>
                               );
                             } else {
                               return (
-                                <b className="px-1 font-mono text-sm" key={k}>
+                                <b className="px-1  text-sm" key={k}>
                                   {w}
                                 </b>
                               );
@@ -397,16 +432,13 @@ export default function Comic({
                           } else {
                             if (thisBubblesWordInfo[currIdx].italic) {
                               return (
-                                <em className="px-1 font-mono text-sm" key={k}>
+                                <em className="px-1 text-sm" key={k}>
                                   {w}
                                 </em>
                               );
                             } else {
                               return (
-                                <span
-                                  className="px-1 font-mono text-sm"
-                                  key={k}
-                                >
+                                <span className="px-1 text-sm" key={k}>
                                   {w}
                                 </span>
                               );

@@ -198,6 +198,7 @@ export default function MainMap({
     setMainMap(myMap);
   }, []);
 
+  // update map view
   useEffect(() => {
     if (!mainMap) return;
 
@@ -206,10 +207,10 @@ export default function MainMap({
       console.log(myLocations);
       if (myLocations == undefined) return;
       const c = centerOfPoints(myLocations);
+      mainMap.updatePins(myLocations);
       // zoomToPlace(c, zoom, false);
     } else {
       if (slug == "discover") {
-        console.log("VVN SEE THIS????");
         zoomToPlace([center[1], center[0]], zoom, false);
       } else {
         if (!post) return;

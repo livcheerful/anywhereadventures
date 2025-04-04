@@ -52,13 +52,13 @@ export default function LOCItem({ image, linkOut, caption }) {
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut}>
-            <div className=" bg-slate-100 p-2 drop-shadow-sm font-light">
+            <div className=" relative cursor-pointer  bg-emerald-800 p-2  -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
               source
             </div>
           </a>
         )}
         <div
-          className="bg-slate-100 p-2 drop-shadow-sm font-light"
+          className="font-bold cursor-pointer relative bg-emerald-800 p-2  -top-1 drop-shadow-lg  text-white rounded-b-lg"
           onClick={(e) => {
             makeConfetti(
               e.target.parentElement,
@@ -76,7 +76,7 @@ export default function LOCItem({ image, linkOut, caption }) {
             );
           }}
         >
-          Save
+          save
         </div>
       </div>
       <div className="italic font-serif text-sm p-2">{caption}</div>

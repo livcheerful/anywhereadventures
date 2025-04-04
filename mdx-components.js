@@ -39,6 +39,7 @@ export const MyMDXComponents = {
     position,
     overlap,
     absoluteHeight,
+    caption,
     children,
   }) => {
     return (
@@ -48,6 +49,7 @@ export const MyMDXComponents = {
         image={image}
         position={position}
         absoluteHeight={absoluteHeight}
+        caption={caption}
       ></Comic>
     );
   },
