@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       width: {
         limiter: "30rem",
+        comic: "8rem",
       },
       fontFamily: {
         vivian: ["var(--font-vivian)"],
@@ -31,7 +32,6 @@ module.exports = {
         "t-3xl": "0 -35px 60px -15px rgba(0, 0, 0, 0.3)",
       },
       height: { comic: "12rem" },
-      width: { comic: "8rem" },
     },
   },
   plugins: [],

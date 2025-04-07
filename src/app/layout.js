@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className="">
       <body className={`${vivianFont.variable} antialiased`}>
-        <div className="md:w-limiter">{children}</div>
+        <div className="md:w-limiter w-limiter">{children}</div>
 
         <div
           className={`absolute top-0 right-0 w-fit invisible lg:visible -z-10`}
