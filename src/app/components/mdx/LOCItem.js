@@ -41,24 +41,16 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
 
   return (
     <div className="flex flex-col items-center gap-1 pb-3 relative">
-      <img
-        src={image}
-        id={`lcitem-${image}`}
-        alt={alt}
-        onClick={() => {
-          // VVN start fetch of item
-          // setItemOpen(true);
-        }}
-      />
+      <img src={image} id={`lcitem-${image}`} alt={alt} />
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut}>
-            <div className=" relative cursor-pointer  bg-emerald-800 p-2  -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
+            <button className=" relative cursor-pointer  bg-emerald-800 p-2  -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
               source
-            </div>
+            </button>
           </a>
         )}
-        <div
+        <button
           className="font-bold cursor-pointer relative bg-emerald-800 p-2  -top-1 drop-shadow-lg  text-white rounded-b-lg"
           onClick={(e) => {
             makeConfetti(
@@ -78,7 +70,7 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
           }}
         >
           save
-        </div>
+        </button>
       </div>
       <div className="italic font-serif text-sm p-2">{caption}</div>
     </div>
