@@ -20,13 +20,14 @@ export const MyMDXComponents = {
     <h2 className="pb-1 px-2 text-lg font-bold">{children}</h2>
   ),
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
-  LOCItem: ({ image, assetLink, linkOut, caption, children }) => {
+  LOCItem: ({ image, assetLink, linkOut, caption, alt, children }) => {
     return (
       <LOCItem
         image={image}
         assetLink={assetLink}
         linkOut={linkOut}
         caption={caption}
+        alt={alt}
       />
     );
   },
@@ -38,6 +39,7 @@ export const MyMDXComponents = {
     image,
     position,
     overlap,
+    alt,
     absoluteHeight,
     caption,
     children,
@@ -47,6 +49,7 @@ export const MyMDXComponents = {
         overlap={overlap}
         speechBubbles={speechBubbles}
         image={image}
+        alt={alt}
         position={position}
         absoluteHeight={absoluteHeight}
         caption={caption}

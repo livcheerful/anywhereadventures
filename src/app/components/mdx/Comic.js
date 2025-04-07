@@ -14,6 +14,7 @@ export default function Comic({
   speechBubbles = [],
   overlap = 0,
   absoluteHeight,
+  alt,
   caption,
   position = "left",
 }) {
@@ -289,6 +290,7 @@ export default function Comic({
         {image ? (
           <img
             src={image}
+            alt={alt}
             className={`${position == "right" && "-right-3"} ${
               position == "left" && "-left-3"
             }`}

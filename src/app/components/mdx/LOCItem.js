@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { makeConfetti } from "../../lib/animationHelpers";
 import { saveLCItem } from "../../lib/storageHelpers";
-export default function LOCItem({ image, linkOut, caption }) {
+export default function LOCItem({ image, linkOut, caption, alt }) {
   const [itemOpen, setItemOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(2);
   const [diffPos, setDiffPos] = useState([0, 0]);
@@ -44,6 +44,7 @@ export default function LOCItem({ image, linkOut, caption }) {
       <img
         src={image}
         id={`lcitem-${image}`}
+        alt={alt}
         onClick={() => {
           // VVN start fetch of item
           // setItemOpen(true);
