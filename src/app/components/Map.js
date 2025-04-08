@@ -6,6 +6,7 @@ import {
   NavigationControl,
   LngLatBounds,
 } from "maplibre-gl";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { unvisitedMapColor } from "../lib/constants";
@@ -33,6 +34,31 @@ export function shiftUp(lat, lon, zoom) {
     default:
   }
   return { lon: lon, lat: lat - shiftValue };
+}
+
+function makeStampPopup(l, router) {
+  console.log(l);
+  const locationPopup = new Popup();
+  const innerHtmlContent = `<div style="color : black;">
+          <h4 class="h4Class">${l.title} </h4> </div>`;
+
+  const divElement = document.createElement("div");
+  const btn = document.createElement("div");
+  divElement.innerHTML = innerHtmlContent;
+  divElement.appendChild(btn);
+  btn.innerHTML = `<button class="btn btn-success btn-simple text-black" >Collect Stamp</button>`;
+  // btn.className = 'btn';
+  // VVN TODO see if we have collection a stamp for it or not
+  btn.addEventListener("click", () => {
+    // Navigate to camera page
+    router.replace(
+      `/camera?locationId=${l.slug}&type=${l.cameraType || "kodak"}&frame=${
+        l.frameImage
+      }&place=${l.imagePlacement}&size=${l.imageDimensions}`
+    );
+  });
+  locationPopup.setDOMContent(divElement);
+  return locationPopup;
 }
 
 function makePopup(l, callback) {
@@ -101,7 +127,7 @@ function AdventureMap(map, router) {
     l.remove();
   };
 
-  this.updatePins = function (locs) {
+  this.updatePins = function (locs, router) {
     // Remove all the current pins.
     for (const slugToDelete of this.currentLayers.keys()) {
       this.currentLayers.delete(slugToDelete);
@@ -114,7 +140,7 @@ function AdventureMap(map, router) {
         locs[slug].latlon
       );
       pin.color = "#5a32a8";
-      const locationPopup = makePopup(locs[slug]);
+      const locationPopup = makeStampPopup(locs[slug], router);
 
       pin.setPopup(locationPopup);
       const layer = pin.addTo(this.map);
@@ -207,7 +233,7 @@ export default function MainMap({
       console.log(myLocations);
       if (myLocations == undefined) return;
       const c = centerOfPoints(myLocations);
-      mainMap.updatePins(myLocations);
+      mainMap.updatePins(myLocations, router);
       // zoomToPlace(c, zoom, false);
     } else {
       if (slug == "discover") {

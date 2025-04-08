@@ -41,6 +41,10 @@ export function add(slug, content) {
     locs[slug] = {
       latlon: [content.latlon[1], content.latlon[0]],
       timeAdded: new Date(),
+      title: content.title,
+      cameraType: content.cameraType || "kodak",
+      frameImage: content.frameImage,
+      slug: content.slug,
     };
 
     if (typeof window !== "undefined")

@@ -1,123 +1,66 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter } from "next/navigation";
-
-import { gsap } from "gsap";
-
+import { useEffect, useState, Suspense } from "react";
 import Camera from "../components/Camera";
-import StampCollector from "../components/StampCollector";
-import Navbar from "../components/Navbar";
-import BackToReadingButton from "./BackToReadingButton";
+import Scrapbook from "../components/Scrapbook";
 
-export default function Page() {
+const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
+
+export default function Page({}) {
+  const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
+  const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
-  const [showMenuButtons, setShowMenuButtons] = useState(false);
 
-  const router = useRouter();
-
-  function kickoffSummaryAnimation() {
-    gsap.to("#picture", {
-      duration: 1,
-      position: "absolute",
-      top: "10px",
-      left: "-19px",
-      rotate: "-25deg",
-      scale: 0.9,
-      onComplete: () => {
-        setShowMenuButtons(true);
-      },
-    });
+  async function checkPermissions(cb) {
+    const permissions = await navigator.permissions.query({ name: "camera" });
+    cb(permissions);
   }
+
   useEffect(() => {
     if (picture) {
-      gsap.fromTo(
-        "#picture",
-        { scale: 0.1 },
-        {
-          position: "absolute",
-          top: "50%",
-          duration: 1,
-          rotate: 720,
-          scale: 1.4,
-          onComplete: () => {
-            setTimeout(() => {
-              kickoffSummaryAnimation();
-            }, 1000);
-          },
-        }
-      );
+      const canvas = document.querySelector("#scrapbookPlayground");
+      canvas.style.width =
+        window.innerWidth < 480 ? `${window.innerWidth}px` : "480px";
+      canvas.style.height = `${window.innerHeight}px`;
+      console.log(canvas);
     }
   }, [picture]);
-
+  useEffect(() => {
+    checkPermissions((res) => {
+      setCameraPermissionState(res.state);
+    });
+    return () => {
+      // localstream.getTracks()[0].stop();
+      // need to unregister the camera when navigating away from the page
+    };
+  }, []);
   return (
-    <div
-      className="flex flex-col relative w-screen h-screen overflow-hidden"
-      style={{
-        background: `url("/loc/sba-journal-blank.jpg")`,
-        backgroundSize: "cover",
-      }}
-    >
-      {/* Show the photo strip */}
-      {picture && (
-        <div
-          id="picture"
-          className="output flex flex-col relative w-fit max-w-[15rem] max-h-[15rem]"
-        >
-          <img className="" src={picture} />
-        </div>
-      )}
-      {showMenuButtons && (
-        <div className="w-full h-screen">
-          <Navbar />
-          <div
-            className="w-fit flex flex-col gap-2 right-4 absolute "
-            style={{ top: "10px" }}
-          >
-            <button
-              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
-              onClick={() => {
-                setShowMenuButtons(false);
-                setPicture(undefined);
-              }}
-            >
-              Retake
-            </button>
-            <button
-              className="py-3 px-2 h-fit bg-emerald-200 hover:bg-emerald-400 font-bold text-emerald-800 rounded-lg drop-shadow-lg"
-              onClick={() => {
-                const dataURL = document
-                  .getElementById("canvas")
-                  .toDataURL("image/png");
-                var a = document.createElement("a");
-                // Set the link to the image so that when clicked, the image begins downloading
-                a.href = dataURL;
-                // Specify the image filename
-                a.download = "canvas-download.png";
-                // Click on the link to set off download
-                a.click();
-              }}
-            >
-              Download
-            </button>
-            <BackToReadingButton />
+    <div className="h-screen w-screen md:w-limiter bg-black">
+      {cameraPermissionState == "prompt" && !haveShownHelp && (
+        <div className="w-full h-full bg-white/85 flex flex-col items-center justify-center">
+          <div className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2">
+            <div>Take a picture. Decorate it. Download it. Yay!</div>
+            <div className="w-full flex flex-col items-center">
+              <button
+                onClick={() => {
+                  setHaveShownHelp(true);
+                }}
+                className="bg-white rounded-lg p-2"
+              >
+                Alright
+              </button>
+            </div>
           </div>
         </div>
       )}
-      {showMenuButtons && (
-        <div className="absolute w-full" style={{ top: "30%" }}>
-          <div className="absolute w-full" style={{ top: "-30px" }}>
-            <StampCollector />
-          </div>
-        </div>
+
+      {((cameraPermissionState == "prompt" && haveShownHelp) ||
+        cameraPermissionState == "granted") && (
+        <Suspense>
+          <Camera picture={picture} setPicture={setPicture} />
+        </Suspense>
       )}
-      <Suspense>
-        <Camera
-          picture={picture}
-          setPicture={setPicture}
-          kickoffSummaryAnimation={kickoffSummaryAnimation}
-        />
-      </Suspense>
+      {picture && <Scrapbook picture={picture} />}
     </div>
   );
 }

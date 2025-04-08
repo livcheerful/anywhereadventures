@@ -27,7 +27,6 @@ export default function Camera({
   }, []);
 
   function flash() {
-    console.log("flash!");
     const tl = gsap.timeline();
     tl.fromTo(
       "#white-background",
@@ -65,6 +64,7 @@ export default function Camera({
       false
     );
     try {
+      console.log(navigator.mediaDevices);
       stream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = stream;
       video.play();
@@ -230,9 +230,8 @@ export default function Camera({
     }, 3000);
   }
 
-  function takePicture(fast = false) {
+  function takePicture() {
     function snapPhoto() {
-      flash();
       const tempCanvas = document.createElement("canvas");
       const tempCtx = tempCanvas.getContext("2d");
       tempCanvas.width = video.videoWidth;
@@ -241,61 +240,45 @@ export default function Camera({
       return tempCanvas;
     }
 
-    if (!fast) startCountdown();
     if (width && height) {
       const filmStrip = [];
       switch (cameraType) {
         case "stereograph":
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-            },
-            fast ? 1 : 3500
-          );
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-              const stitched = stitchImages(filmStrip);
-              setPicture(stitched);
-              setShowSayCheese(false);
-            },
-            fast ? 2 : 3700
-          );
+          console.log("in stereograph");
+          setTimeout(() => {
+            flash();
+            filmStrip.push(snapPhoto());
+          }, 5);
+          setTimeout(() => {
+            flash();
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPicture(stitched);
+            setShowSayCheese(false);
+          }, 200);
           break;
         case "newspaper":
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-              const stitched = stitchImages(filmStrip);
-              setPicture(stitched);
-              setShowSayCheese(false);
-            },
-            fast ? 0 : 3500
-          );
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPicture(stitched);
+            setShowSayCheese(false);
+          }, 5);
           break;
         default:
           // Film strip
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-            },
-            fast ? 0 : 3500
-          );
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-            },
-            fast ? 0 : 4000
-          );
-          setTimeout(
-            () => {
-              filmStrip.push(snapPhoto());
-              const stitched = stitchImages(filmStrip);
-              setPicture(stitched);
-              setShowSayCheese(false);
-            },
-            fast ? 0 : 4500
-          );
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+          }, 5);
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+          }, 500);
+          setTimeout(() => {
+            filmStrip.push(snapPhoto());
+            const stitched = stitchImages(filmStrip);
+            setPicture(stitched);
+            setShowSayCheese(false);
+          }, 1000);
           break;
       }
     } else {
@@ -316,7 +299,7 @@ export default function Camera({
       <div className="filmStrip relative flex flex-col items-center overflow-hidden ">
         <div className={`${picture ? "hidden" : "visible"} camera `}>
           <video
-            webkit-playsinline
+            webkit-playsinline="true"
             autoPlay
             controls
             playsInline
