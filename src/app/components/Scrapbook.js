@@ -10,15 +10,9 @@ function ScrapbookElem(type, htmlElem, id, z) {
   this.id = id;
   this.elem = htmlElem;
 
-  console.log(this.id);
   Draggable.create(htmlElem, { bounds: "#scrapbookPlayground" });
-  // htmlElem.addEventListener("drag", (e) => {
-  //   e.stopPropagation();
-  //   console.log(e);
-  //   if (!this.dragProps) {
-  //     this.dragProps = { mouseOffsetX: 0, mouseOffsety: 0 }; // Offset of mouse from top left on initial drag
-  //   }
-  // });
+  htmlElem.style.left = window.innerWidth / 2;
+  htmlElem.style.right = window.innerHeight / 2;
 }
 
 function ScrapbookPage() {
@@ -26,13 +20,14 @@ function ScrapbookPage() {
   this.elements = []; // array for now, maybe diff structure in future
   this.numElems = 0;
 
-  this.addNewSticker = function (img) {
+  this.addNewSticker = function (img, size) {
     const placeItHere = document.querySelector("#scrapbookPlayground");
     const imgDiv = document.createElement("img");
     imgDiv.id = `sticker-${this.numElems}`;
     imgDiv.src = img;
+    imgDiv.className = "absolute";
     imgDiv.style.zIndex = this.topZ;
-    imgDiv.style.width = "100px";
+    imgDiv.style.width = `${size}px`;
     imgDiv.style.top = "0";
 
     const stick = new ScrapbookElem(
@@ -68,9 +63,12 @@ export default function Scrapbook({ picture }) {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-y-hidden">
       {picture && (
-        <div id="picture" className="output flex flex-col relative w-full ">
+        <div
+          id="picture"
+          className="output flex flex-col relative w-full h-full"
+        >
           <img className="" src={picture} />
         </div>
       )}
@@ -118,9 +116,10 @@ export default function Scrapbook({ picture }) {
               {stickers.map((item, i) => {
                 return (
                   <div
-                    className="w-1/3"
+                    key={i}
+                    style={{ width: "200px" }}
                     onClick={(e) => {
-                      scrapbookPage.addNewSticker(item.image);
+                      scrapbookPage.addNewSticker(item.image, 200);
                       setShowStickerModal(false);
                       e.stopPropagation();
                     }}
