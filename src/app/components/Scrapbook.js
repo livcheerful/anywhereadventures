@@ -10,7 +10,7 @@ function ScrapbookElem(type, htmlElem, id, z) {
   this.id = id;
   this.elem = htmlElem;
 
-  Draggable.create(htmlElem, { bounds: "#scrapbookPlayground" });
+  Draggable.create(htmlElem);
   htmlElem.style.left = window.innerWidth / 2;
   htmlElem.style.right = window.innerHeight / 2;
 }
@@ -76,7 +76,7 @@ export default function Scrapbook({ picture }) {
 
       <div
         id="scrapbookPlayground"
-        className="w-full h-full top-0 left-0 absolute"
+        className="w-full h-full top-0 left-0 absolute overflow-clip"
       ></div>
       {picture && (
         <div className="text-white absolute bottom-0 p-2 h-fit">
@@ -106,12 +106,12 @@ export default function Scrapbook({ picture }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 384 512"
               onClick={(e) => {
-                console.log("VVn stop it");
                 e.stopPropagation();
               }}
             >
               <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
             </svg>
+            <div>Small</div>
             <div className="flex flex-row flex-wrap gap-2">
               {stickers.map((item, i) => {
                 return (
@@ -120,6 +120,24 @@ export default function Scrapbook({ picture }) {
                     style={{ width: "200px" }}
                     onClick={(e) => {
                       scrapbookPage.addNewSticker(item.image, 200);
+                      setShowStickerModal(false);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <img src={item.image} />
+                  </div>
+                );
+              })}
+            </div>
+            <div>Large</div>
+            <div className="flex flex-row flex-wrap gap-2">
+              {stickers.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                    style={{ width: "400px" }}
+                    onClick={(e) => {
+                      scrapbookPage.addNewSticker(item.image, 400);
                       setShowStickerModal(false);
                       e.stopPropagation();
                     }}
