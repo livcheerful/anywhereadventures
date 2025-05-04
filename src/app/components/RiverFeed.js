@@ -86,7 +86,9 @@ export default function RiverFeed({
                     }
                   }}
                 >
-                  <div className="bg-white/80 w-full px-2 py-1 ">{c.title}</div>
+                  <div className="bg-white/80 w-full px-2 py-1 dark:text-black ">
+                    {c.title}
+                  </div>
                 </div>
               );
             })}

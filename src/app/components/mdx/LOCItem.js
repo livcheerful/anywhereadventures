@@ -44,14 +44,14 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
       <img src={image} id={`lcitem-${image}`} alt={alt} />
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
-          <a href={linkOut}>
-            <button className=" relative cursor-pointer  bg-emerald-800 p-2  -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
+          <a href={linkOut} target="_blank" rel="noopener noreferrer">
+            <button className=" relative cursor-pointer  bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
               source
             </button>
           </a>
         )}
         <button
-          className="font-bold cursor-pointer relative bg-emerald-800 p-2  -top-1 drop-shadow-lg  text-white rounded-b-lg"
+          className="font-bold cursor-pointer relative bg-emerald-800 p-2 -top-1 drop-shadow-lg text-white rounded-b-lg"
           onClick={(e) => {
             makeConfetti(
               e.target.parentElement,

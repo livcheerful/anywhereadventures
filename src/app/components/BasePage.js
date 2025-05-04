@@ -110,6 +110,7 @@ export default function BasePage({ slug }) {
           setPost={setPost}
           myLocationSlugs={myLocationSlugs}
           setMyLocationSlugs={setMyLocationSlugs}
+          setShowingWelcomeScreen={setShowingWelcomeScreen}
         />
       )}
       {showingWelcomeScreen && (

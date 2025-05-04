@@ -1,4 +1,5 @@
 "use client";
+import Navbar from "../components/Navbar";
 import {
   getAllSlugs,
   numberOfPages,
@@ -18,9 +19,11 @@ export default function ContentToolBar({
   setExploringContent,
   currentSlug,
   setCurrentSlug,
+  setMyLocationSlugs,
   mainMap,
   viewAsGrid,
   setViewAsGrid,
+  setShowingWelcomeScreen,
 }) {
   const router = useRouter();
 
@@ -110,6 +113,14 @@ export default function ContentToolBar({
           {isLocAdded ? "Remove" : "Add to my map"}
         </div>
       )}
+
+      <div className="absolute right-3 bottom-8">
+        <Navbar
+          setMyLocationSlugs={setMyLocationSlugs}
+          slug={currentSlug}
+          setShowingWelcomeScreen={setShowingWelcomeScreen}
+        />
+      </div>
       <div className="absolute right-0 top-10 w-20 h-20 flex flex-col items-end gap-3">
         {exploringContent && currentSlug != "discover" && (
           <div
@@ -124,16 +135,16 @@ export default function ContentToolBar({
           </div>
         )}
 
-        {!exploringContent && currentSlug == "" && (
+        {/* {!exploringContent && currentSlug == "" && (
           <div
-            className=" bg-emerald-800 p-3 py-2 right-0  rounded-l-lg drop-shadow-md w-fit cursor-pointer text-sm text-white font-bold"
+            className=" bg-emerald-800 p-3 py-2 right-0  rounded-l-lg drop-shadow-md w-fit cursor-pointer text-sm text-white font-bold "
             onClick={() => {
               setViewAsGrid(!viewAsGrid);
             }}
           >
             {viewAsGrid ? "Feed" : "Grid"}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

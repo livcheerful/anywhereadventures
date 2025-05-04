@@ -12,6 +12,17 @@ const userIdKey = "userId";
 const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
 
+export function clearAll() {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(localStorageKey);
+    localStorage.removeItem(itemsStorageKey);
+    localStorage.removeItem(scrapbookPageKey);
+    localStorage.removeItem(userIdKey);
+    localStorage.removeItem(stampKey);
+    localStorage.removeItem(homeLocationKey);
+  }
+}
+
 function getAll(key) {
   let saved;
   if (typeof window !== "undefined") {

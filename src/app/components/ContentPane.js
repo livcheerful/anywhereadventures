@@ -41,6 +41,7 @@ export default function ContentPane({
   chosenLocation,
   myLocationSlugs,
   setMyLocationSlugs,
+  setShowingWelcomeScreen,
 }) {
   const router = useRouter();
   const [viewAsGrid, setViewAsGrid] = useState(false);
@@ -131,7 +132,9 @@ export default function ContentPane({
             setCurrentSlug={setCurrentSlug}
             mainMap={mainMap}
             viewAsGrid={viewAsGrid}
+            setMyLocationSlugs={setMyLocationSlugs}
             setViewAsGrid={setViewAsGrid}
+            setShowingWelcomeScreen={setShowingWelcomeScreen}
           />
         </div>
         <div
