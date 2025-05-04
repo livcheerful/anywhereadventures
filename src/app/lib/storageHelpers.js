@@ -14,7 +14,6 @@ const homeLocationKey = "homeLoc";
 
 function getAll(key) {
   let saved;
-
   if (typeof window !== "undefined") {
     saved = localStorage.getItem(key);
   } else {
@@ -74,8 +73,9 @@ export function removeLCItem(lcItem) {
   const locs = getAll(itemsStorageKey);
 
   delete locs[lcItem];
-  if (typeof window !== "undefined");
-  localStorage.setItem(itemsStorageKey, JSON.stringify(locs));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(itemsStorageKey, JSON.stringify(locs));
+  }
 
   return locs;
 }
@@ -92,8 +92,8 @@ export function savePage(slug, imgData, date) {
   const pages = getAll(scrapbookPageKey);
 
   pages[slug] = { image: imgData, date: date };
-
-  localStorage.setItem(scrapbookPageKey, JSON.stringify(pages));
+  if (typeof window !== "undefined")
+    localStorage.setItem(scrapbookPageKey, JSON.stringify(pages));
 }
 
 export function saveLCItem(lcItem, image, caption, slug) {
@@ -131,35 +131,44 @@ export function saveStamp(stampList) {
     const currStamp = stampList[i];
     stampsSoFar[currStamp.slug] = stampList[i];
   }
-  localStorage.setItem(stampKey, JSON.stringify(stampsSoFar));
+  if (typeof window != "undefined")
+    localStorage.setItem(stampKey, JSON.stringify(stampsSoFar));
 }
 
 // A randomly assigned number saved in localStorage to differentiate devices from each other
 // This way if someone sends a URL to someone else, it'll know whether to load the full page or just their feed...maybe
 function giveUserKey() {
   const userKey = Math.random() * 10000;
-  localStorage.setItem(userIdKey, userKey);
+  if (typeof window != "undefined") localStorage.setItem(userIdKey, userKey);
   return userKey;
 }
 
 export function isThisMe(refKey) {
-  const storedUser = localStorage.getItem(userIdKey);
-  if (!storedUser || storedUser != refKey) return false;
-  return true;
+  if (typeof window != "undefined") {
+    const storedUser = localStorage.getItem(userIdKey);
+    if (!storedUser || storedUser != refKey) return false;
+    return true;
+  }
 }
 
 export function getUserKey() {
-  let storedUser = localStorage.getItem(userIdKey);
-  if (!storedUser) {
-    storedUser = giveUserKey();
+  if (typeof window != "undefined") {
+    let storedUser = localStorage.getItem(userIdKey);
+    if (!storedUser) {
+      storedUser = giveUserKey();
+    }
+    return storedUser;
   }
-  return storedUser;
 }
 
 export function setHomeLocation(locName) {
-  localStorage.setItem(homeLocationKey, locName);
+  if (typeof window != "undefined") {
+    localStorage.setItem(homeLocationKey, locName);
+  }
 }
 
 export function getHomeLocation() {
-  return localStorage.getItem(homeLocationKey);
+  if (typeof window != "undefined") {
+    return localStorage.getItem(homeLocationKey);
+  }
 }
