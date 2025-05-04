@@ -1,19 +1,11 @@
 export const tagsByCity = {
-  seattle: ["infrastructure", "bridges", "downtown", "university"],
-};
-
-// multiiple pages to view places by
-export const journeyCollections = {
-  seattle: [
-    { title: "neighborhood", tagsIncluded: ["downtown", "capitol hill"] },
-    { title: "theme", tagsIncluded: ["mayors", "bridges"] },
-    // default always add a "browse all locations"
-  ],
-  sewy: [],
-  chicago: [],
+  seattle: ["infrastructure", "olmsted", "bridges", "downtown"],
 };
 
 export const categoryInfo = {
+  olmsted: {
+    description: "Seattle has one of the best preserved Olmsted Parks systems.",
+  },
   bridges: { pinColor: "#f29100", description: "Seattle is a city of hills." },
   infrastructure: {
     pinColor: "#f29100",

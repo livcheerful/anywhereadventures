@@ -13,7 +13,6 @@ import ContentToolBar from "./ContentToolBar";
 import DiscoverFeed from "./DiscoverFeed";
 
 // Helpers
-import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import {
   getAllContent,
   getAllSlugs,
@@ -39,6 +38,7 @@ export default function ContentPane({
   setCurrentSlug,
   post,
   setPost,
+  chosenLocation,
   myLocationSlugs,
   setMyLocationSlugs,
 }) {
@@ -72,7 +72,7 @@ export default function ContentPane({
     // Add them to the map
     // Filter the places in our column based on it?
     if (mainMap && exploringContent) {
-      const shortList = seattleLocs.map((l) => {
+      const shortList = chosenLocation.locs.map((l) => {
         return {
           latlon: l.latlon,
           slug: l.slug,
@@ -82,6 +82,7 @@ export default function ContentPane({
       });
 
       shortList.forEach((l) => {
+        console.log(l);
         const tempPinOnMainMap = makeNewMarker(
           unopinionatedMapColor,
           l,
@@ -116,12 +117,11 @@ export default function ContentPane({
   return (
     <div
       style={{ height: getPaneHeight() }}
-      className={`md:w-limiter  bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
+      className={`md:w-limiter w-screen bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
       id="pane"
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
-
-      <div className="h-full ">
+      <div className="h-full w-full">
         <div className="w-full text-2xl font-bold fixed  z-40">
           <ContentToolBar
             post={post}
@@ -136,7 +136,7 @@ export default function ContentPane({
           />
         </div>
         <div
-          className="w-full h-full overflow-x-hidden overflow-y-scroll flex flex-col z-10"
+          className="w-full h-full overflow-x-hidden overflow-y-auto flex flex-col z-10"
           style={{ paddingTop: "30px" }}
           id="content-pane"
           onDrag={(e) => {
@@ -152,6 +152,7 @@ export default function ContentPane({
         >
           {thumbnailView && (
             <DiscoverFeed
+              chosenLocation={chosenLocation}
               mainMap={mainMap}
               currentSlug={currentSlug}
               zoomToMainMap={zoomToMainMap}

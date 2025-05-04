@@ -16,6 +16,7 @@ export default function Comic({
   absoluteHeight,
   alt,
   caption,
+  size = "M",
   position = "left",
 }) {
   // VVN TODO calculate bubble height and width based on text
@@ -269,6 +270,28 @@ export default function Comic({
   //   setBubbleWidths(reactiveWidths);
   // }, [brokenLines]);
 
+  function imagePosition() {
+    if (position == "right") return "-right-3";
+    if (position == "left") return "-left-3";
+    if (position == "center") return "left-1/2";
+  }
+
+  function imageWidth() {
+    if (position == "full") {
+      return "w-full";
+    }
+    if (image == undefined) {
+      return "w-10";
+    }
+    switch (size) {
+      case "S":
+        return "w-sComic";
+      case "M":
+        return "w-comic";
+      case "L":
+        return "w-lComic";
+    }
+  }
   return (
     <div
       className={`flex  relative ${overlap ? "" : "pb-3"} ${
@@ -282,52 +305,41 @@ export default function Comic({
           : "auto ",
       }}
     >
-      <div
-        className={`relative flex flex-col select-none   ${
-          position == "full" && " w-full"
-        } ${position != "full" && image != undefined ? "w-comic" : "w-10"} `}
-      >
-        {image ? (
-          <img
-            src={image}
-            alt={alt}
-            className={`${position == "right" && "-right-3"} ${
-              position == "left" && "-left-3"
-            }`}
-          />
-        ) : (
-          <div className={``}></div>
-        )}
+      {image && (
+        <div className={`relative flex flex-col select-none  ${imageWidth()}`}>
+          <img src={image} alt={alt} />
+          {caption && (
+            <div className="relative flex flex-row items-start z-20  italic text-center text-xs">
+              <svg
+                className={` absolute stroke-black stroke-[1] fill-none w-[2rem] grow-0 shrink-0 -top-5`}
+                viewBox="0 0 24 24"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                markerEnd="url(#arrow)"
+              >
+                <defs>
+                  <marker
+                    className="fill-black"
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="3"
+                    markerHeight="3"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                  </marker>
+                </defs>
+                <path d={`m20 20 c-5 0 -13 -10 -8 -17  `}></path>
+              </svg>
+              <div className="bg-white/90 px-8">{caption}</div>
+            </div>
+          )}
+        </div>
+      )}
+      <div className={`${position != "full" && "h-comic"}`}></div>
 
-        {caption && (
-          <div className="flex flex-row items-start z-20 px-2 italic text-center text-xs">
-            <svg
-              className={` stroke-black stroke-[1] fill-none w-[15rem]`}
-              viewBox="0 0 24 24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              markerEnd="url(#arrow)"
-            >
-              <defs>
-                <marker
-                  className="fill-black"
-                  id="arrow"
-                  viewBox="0 0 10 10"
-                  refX="5"
-                  refY="5"
-                  markerWidth="3"
-                  markerHeight="3"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M 0 0 L 10 5 L 0 10 z" />
-                </marker>
-              </defs>
-              <path d={`m20 20 c-5 0 -13 -10 -8 -17  `}></path>
-            </svg>
-            <div className="bg-white/90">{caption}</div>
-          </div>
-        )}
-      </div>
       <div className="flex gap-2 flex-col h-fit">
         {brokenLines.map((bubbleLines, i) => {
           // const randomXOff = Math.floor(

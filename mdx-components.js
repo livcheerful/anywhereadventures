@@ -19,6 +19,8 @@ export const MyMDXComponents = {
   h2: ({ children }) => (
     <h2 className="pb-1 px-2 text-lg font-bold">{children}</h2>
   ),
+  li: ({ children }) => <li className="list-disc">{children}</li>,
+  ul: ({ children }) => <ul className="list-disc">{children}</ul>,
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
   LOCItem: ({ image, assetLink, linkOut, caption, alt, children }) => {
     return (
@@ -42,6 +44,7 @@ export const MyMDXComponents = {
     alt,
     absoluteHeight,
     caption,
+    size,
     children,
   }) => {
     return (
@@ -53,6 +56,7 @@ export const MyMDXComponents = {
         position={position}
         absoluteHeight={absoluteHeight}
         caption={caption}
+        size={size}
       ></Comic>
     );
   },

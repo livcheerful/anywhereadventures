@@ -32,6 +32,7 @@ function splitPostsByCategory(posts, location) {
   // For each category
   const allTags = tagsByCity[location.toLowerCase()];
   const byCategory = [];
+  if (!allTags) return byCategory;
   allTags.forEach((tag) => {
     const tagGroup = [];
     posts.forEach((post) => {
@@ -48,13 +49,31 @@ function splitPostsByCategory(posts, location) {
 
 const posts = getAllPosts();
 const seattleLocs = getAllPostsByLocation(posts, "Seattle");
-const byCategory = splitPostsByCategory(seattleLocs, "Seattle");
+const seattleByCategory = splitPostsByCategory(seattleLocs, "Seattle");
+
+const chicagoLocs = getAllPostsByLocation(posts, "Chicago");
+const chicagoByCategory = splitPostsByCategory(chicagoLocs, "Chicago");
+
+const seWYLocs = getAllPostsByLocation(posts, "SEWY");
+const seWYByCategory = splitPostsByCategory(seWYLocs, "SEWY");
+
+const allPostsByCategory = [
+  ...seattleByCategory,
+  ...chicagoByCategory,
+  ...seWYByCategory,
+];
 
 const outputData = `
 // This is the dynamically generated file
-export const seattleLocs = ${JSON.stringify(seattleLocs, null, 2)};
 export const allSlugs = ${JSON.stringify(posts.map((p) => p.slug))}
-export const seattleByCategory=${JSON.stringify(byCategory)}
+export const allLocs = ${JSON.stringify(posts)}
+export const allByCategory = ${JSON.stringify(allPostsByCategory)}
+export const seattleLocs = ${JSON.stringify(seattleLocs, null, 2)};
+export const seattleByCategory=${JSON.stringify(seattleByCategory)}
+export const seWYLocs = ${JSON.stringify(seWYLocs, null, 2)}
+export const seWYByCategory=${JSON.stringify(seWYByCategory)}
+export const chicagoByCategory=${JSON.stringify(chicagoByCategory)}
+export const chicagoLocs = ${JSON.stringify(chicagoLocs, null, 2)}
 `;
 
 fs.writeFileSync(`./src/app/lib/MdxQueries.js`, outputData, "utf8");

@@ -7,9 +7,10 @@
 export const localStorageKey = "savedLocations";
 
 const itemsStorageKey = "savedItems";
-
+const scrapbookPageKey = "scrapbook";
 const userIdKey = "userId";
 const stampKey = "stamps";
+const homeLocationKey = "homeLoc";
 
 function getAll(key) {
   let saved;
@@ -79,6 +80,22 @@ export function removeLCItem(lcItem) {
   return locs;
 }
 
+export function getAllPages() {
+  return getAll(scrapbookPageKey);
+}
+
+export function numberOfPages() {
+  return Object.keys(getAllPages()).length;
+}
+
+export function savePage(slug, imgData, date) {
+  const pages = getAll(scrapbookPageKey);
+
+  pages[slug] = { image: imgData, date: date };
+
+  localStorage.setItem(scrapbookPageKey, JSON.stringify(pages));
+}
+
 export function saveLCItem(lcItem, image, caption, slug) {
   const locs = getAll(itemsStorageKey);
   if (!isAdded(itemsStorageKey, lcItem)) {
@@ -137,4 +154,12 @@ export function getUserKey() {
     storedUser = giveUserKey();
   }
   return storedUser;
+}
+
+export function setHomeLocation(locName) {
+  localStorage.setItem(homeLocationKey, locName);
+}
+
+export function getHomeLocation() {
+  return localStorage.getItem(homeLocationKey);
 }

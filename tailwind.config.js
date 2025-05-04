@@ -11,7 +11,9 @@ module.exports = {
     extend: {
       width: {
         limiter: "30rem",
+        sComic: "6rem",
         comic: "8rem",
+        lComic: "12rem",
       },
       fontFamily: {
         vivian: ["var(--font-vivian)"],

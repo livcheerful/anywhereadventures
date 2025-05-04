@@ -1,16 +1,22 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import MainMap from "./Map";
+import MainMap, { shiftUp } from "./Map";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
 import { useState, useEffect } from "react";
 import { updateRoute } from "../lib/routeHelpers";
-import { isThisMe, getAllSlugs, getAllContent } from "../lib/storageHelpers";
+import { locationData, savedLocationToObj } from "../lib/locationHelpers";
+import {
+  isThisMe,
+  getAllSlugs,
+  getAllContent,
+  getHomeLocation,
+} from "../lib/storageHelpers";
 export default function BasePage({ slug }) {
   const [mainMap, setMainMap] = useState(undefined);
-  const [paneOpen, setPaneOpen] = useState(true);
-  const [isNewUser, setIsNewUser] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
+  const [paneOpen, setPaneOpen] = useState(!isNewUser);
 
   const [currentSlug, setCurrentSlug] = useState(slug);
   const [exploringContent, setExploringContent] = useState(undefined);
@@ -18,10 +24,24 @@ export default function BasePage({ slug }) {
   const searchParams = useSearchParams();
   const userKey = searchParams.get("k");
 
+  const [savedLocation, setSavedLocation] = useState(getHomeLocation());
+  const [chosenLocation, setChosenLocation] = useState(
+    savedLocationToObj(savedLocation) || locationData.all
+  );
+
   const [myLocationSlugs, setMyLocationSlugs] = useState(getAllSlugs());
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
+
+  useEffect(() => {
+    if (savedLocation && !chosenLocation) {
+      const locObj = savedLocationToObj(savedLocation);
+      setChosenLocation(locObj);
+      mainMap?.flyTo(locObj.center, locObj.zoom);
+    }
+  }, [savedLocation, mainMap]);
+
   useEffect(() => {
     setExploringContent(true);
     if (slug == "") {
@@ -47,7 +67,6 @@ export default function BasePage({ slug }) {
   }, []);
 
   function paneOpenHandler(s) {
-    console.log("Vivian in pane open handler");
     setPaneOpen(s);
   }
   function mapCB(m) {
@@ -64,16 +83,21 @@ export default function BasePage({ slug }) {
         e.preventDefault();
       }}
     >
-      <MainMap
-        mapCB={mapCB}
-        mapClickHandler={mapClickHandler}
-        post={post}
-        slug={currentSlug}
-        exploringContent={exploringContent}
-        myLocations={getAllContent()}
-      />
+      {
+        <MainMap
+          mapCB={mapCB}
+          mapClickHandler={mapClickHandler}
+          post={post}
+          slug={currentSlug}
+          exploringContent={exploringContent}
+          myLocations={getAllContent()}
+          initialCenter={chosenLocation?.center}
+          initialZoom={chosenLocation?.zoom}
+        />
+      }
       {exploringContent != undefined && (
         <ContentPane
+          chosenLocation={chosenLocation}
           slug={slug}
           mainMap={mainMap}
           paneOpen={paneOpen}
@@ -89,7 +113,11 @@ export default function BasePage({ slug }) {
         />
       )}
       {showingWelcomeScreen && (
-        <WelcomeScreen onFinishWelcoming={finishWelcome} />
+        <WelcomeScreen
+          onFinishWelcoming={finishWelcome}
+          setChosenLocation={setChosenLocation}
+          mainMap={mainMap}
+        />
       )}
     </div>
   );

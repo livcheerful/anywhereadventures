@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 
 import { useRouter } from "next/navigation";
 import { categoryInfo } from "../content/meta";
-import { seattleLocs, seattleByCategory } from "../lib/MdxQueries";
 import { updateRoute } from "../lib/routeHelpers";
 import { add as addToStorage } from "../lib/storageHelpers";
 import { registerNewIO } from "../lib/intersectionObserverHelper";
@@ -18,18 +17,20 @@ export default function DiscoverFeed({
   setCurrentSlug,
   currentSlug,
   exploringContent,
+  chosenLocation,
   mainMap,
 }) {
   function getPostsByCategory(category) {
-    for (let i = 0; i < seattleByCategory.length; i++) {
-      if (seattleByCategory[i].tag == category)
-        return seattleByCategory[i].posts;
+    const byCat = chosenLocation.byCategory;
+    for (let i = 0; i < byCat.length; i++) {
+      if (byCat[i].tag == category) return byCat[i].posts;
     }
   }
 
   function getPostBySlug(slug) {
-    for (let i = 0; i < seattleLocs.length; i++) {
-      if (seattleLocs[i].slug == slug) return seattleLocs[i];
+    const locs = chosenLocation.locs;
+    for (let i = 0; i < locs.length; i++) {
+      if (locs[i].slug == slug) return locs[i];
     }
   }
   const [expandedCategories, setExpandedCateogires] = useState(new Map());
@@ -106,64 +107,74 @@ export default function DiscoverFeed({
   return (
     <div className="w-full h-fit flex gap-2 flex-col  ">
       <div id="explorePane" className=" flex flex-col p-2 gap-3 ">
-        {seattleByCategory.map((category, ck) => {
-          const categoryMeta = categoryInfo[category.tag];
-          return (
-            <div className="category-row" key={ck}>
-              <div
-                className="text-xl font-bold pb-2 category-row-header"
-                categoryname={category.tag}
-              >
-                {category.tag.toUpperCase()}
-              </div>
-              <div className="p-3">
-                {categoryMeta && <div>{categoryMeta?.description}</div>}
-
-                <div className="bg-emerald-400 text-white font-bold p-2 rounded-lg ">
-                  Add all to map
+        {chosenLocation.byCategory &&
+          chosenLocation.byCategory.map((category, ck) => {
+            const categoryMeta = categoryInfo[category.tag];
+            return (
+              <div className="category-row pb-3" key={ck}>
+                <div
+                  className="text-xl font-bold pb-2 category-row-header"
+                  categoryname={category.tag}
+                >
+                  {category.tag.toUpperCase()}
                 </div>
-              </div>
-              <div
-                className={`flex flex-row overflow-x-auto gap-4 pt-6 pb-4 drop-shadow-lg`}
-              >
-                {category.posts.map((l, k) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        // router.replace(`/${l.slug}`);
-                        updateRoute(`/${l.slug}`);
-                        setCurrentSlug(l.slug);
-                        // Update map view to zoom to this
-                        zoomToMainMap(l.latlon, l.zoom || 10);
-                      }}
-                      key={k}
-                      className={`shrink-0 w-3/5  h-[10rem] bg-cover text-md font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg flex flex-col items-end`}
-                      style={{
-                        backgroundImage: `url(${l.cardImage})`,
-                      }}
-                    >
+                <div className="">
+                  {categoryMeta && <div>{categoryMeta?.description}</div>}
+
+                  <div
+                    className="bg-emerald-400 text-white font-bold p-2 rounded-lg cursor-pointer"
+                    onClick={() => {
+                      console.log("adding all");
+                      category.posts.forEach((p) => {
+                        console.log(p);
+                        addToStorage(p.slug, p);
+                      });
+                    }}
+                  >
+                    Add all to map
+                  </div>
+                </div>
+                <div
+                  className={`flex flex-row overflow-x-auto gap-4 pt-6 pb-4 drop-shadow-lg`}
+                >
+                  {category.posts.map((l, k) => {
+                    return (
                       <div
-                        className="absolute -right-3 -top-3 w-10 h-10 rounded-full bg-green-500 text-white flex flex-col items-center justify-center"
-                        onClick={(e) => {
-                          console.log(l);
-                          e.stopPropagation();
-                          addToStorage(l.slug, l);
+                        onClick={() => {
+                          // router.replace(`/${l.slug}`);
+                          updateRoute(`/${l.slug}`);
+                          setCurrentSlug(l.slug);
+                          // Update map view to zoom to this
+                          zoomToMainMap(l.latlon, l.zoom || 10);
+                        }}
+                        key={k}
+                        className={`shrink-0 w-3/5  h-[10rem] bg-cover text-md font-extrabold cursor-pointer bg-slate-200 drop-shadow-md rounded-lg flex flex-col items-end`}
+                        style={{
+                          backgroundImage: `url(${l.cardImage})`,
                         }}
                       >
-                        +
+                        <div
+                          className="absolute -right-3 -top-3 w-10 h-10 rounded-full bg-green-500 text-white flex flex-col items-center justify-center"
+                          onClick={(e) => {
+                            console.log(l);
+                            e.stopPropagation();
+                            addToStorage(l.slug, l);
+                          }}
+                        >
+                          +
+                        </div>
+                        <div className="bg-white/80 w-full px-2 py-1 ">
+                          {l.title}
+                        </div>
                       </div>
-                      <div className="bg-white/80 w-full px-2 py-1 ">
-                        {l.title}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-        <div className="text-xl p-3 font-bold ">All Seattle Stories:</div>
-        {seattleLocs.map((l, k) => {
+            );
+          })}
+        <div className="text-xl p-3 font-bold ">All Stories:</div>
+        {chosenLocation.locs.map((l, k) => {
           return (
             <div
               onClick={() => {

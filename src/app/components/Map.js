@@ -37,7 +37,6 @@ export function shiftUp(lat, lon, zoom) {
 }
 
 function makeStampPopup(l, router) {
-  console.log(l);
   const locationPopup = new Popup();
   const innerHtmlContent = `<div style="color : black;">
           <h4 class="h4Class">${l.title} </h4> </div>`;
@@ -98,6 +97,16 @@ function AdventureMap(map, router) {
   this.tempLayers = [];
 
   this.groups = new Map();
+
+  this.flyTo = function (center, zoom, shift = true) {
+    this.map.flyTo({
+      center: shift
+        ? shiftUp(center[1], center[0], zoom || 13)
+        : { lat: center[1], lon: center[0] },
+      zoom: zoom || 8,
+      speed: 0.4,
+    });
+  };
 
   this.addLayer = function (layer, group) {
     const l = layer.addTo(this.map);
@@ -167,9 +176,11 @@ export default function MainMap({
   slug,
   exploringContent,
   myLocations,
+  initialCenter = [-122.341077, 47.519161],
+  initialZoom = 11,
 }) {
-  const [zoom, setZoom] = useState(11);
-  const [center, setCenter] = useState([-122.341077, 47.519161]);
+  const [zoom, setZoom] = useState(initialZoom);
+  const [center, setCenter] = useState(initialCenter);
   const [mainMap, setMainMap] = useState(undefined);
 
   const router = useRouter();
@@ -230,7 +241,6 @@ export default function MainMap({
 
     if (!exploringContent) {
       // Only have the pins for the places we saved
-      console.log(myLocations);
       if (myLocations == undefined) return;
       const c = centerOfPoints(myLocations);
       mainMap.updatePins(myLocations, router);

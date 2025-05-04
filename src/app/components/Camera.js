@@ -16,14 +16,25 @@ export default function Camera({
   const [showSayCheese, setShowSayCheese] = useState(false);
   const [countdown, setCountdown] = useState(false);
   const [streaming, setStreaming] = useState(false);
-  const [height, setHeight] = useState(window.innerHeight);
+  const [height, setHeight] = useState();
   const [width, setWidth] = useState(0);
   const canvas = useRef(null);
+
+  function snapPhoto() {
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCanvas.width = video.videoWidth;
+    tempCanvas.height = video.videoHeight;
+    tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+    return tempCanvas;
+  }
 
   useEffect(() => {
     getMedia({
       video: true,
     });
+
+    // setTakePictureCb(snapPhoto);
   }, []);
 
   function flash() {
@@ -48,23 +59,26 @@ export default function Camera({
     let stream = null;
 
     const video = document.getElementById("video");
+
+    const cameraScreen = document.getElementById("cameraScreen");
     video.controls = false;
     video.addEventListener(
       "canplay",
       (ev) => {
         if (!streaming) {
-          const w = (video.videoWidth / video.videoHeight) * window.innerHeight;
+          const w =
+            (video.videoWidth / video.videoHeight) *
+            cameraScreen.getBoundingClientRect().height;
           setWidth(w);
-          video.style.maxWidth = "unset";
-          video.setAttribute("width", w);
-          video.setAttribute("height", height);
+          // video.style.maxWidth = "unset";
+          video.setAttribute("width", "500px");
+          video.setAttribute("height", "100px");
           setStreaming(true);
         }
       },
       false
     );
     try {
-      console.log(navigator.mediaDevices);
       stream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = stream;
       video.play();
@@ -231,15 +245,6 @@ export default function Camera({
   }
 
   function takePicture() {
-    function snapPhoto() {
-      const tempCanvas = document.createElement("canvas");
-      const tempCtx = tempCanvas.getContext("2d");
-      tempCanvas.width = video.videoWidth;
-      tempCanvas.height = video.videoHeight;
-      tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-      return tempCanvas;
-    }
-
     if (width && height) {
       const filmStrip = [];
       switch (cameraType) {
@@ -323,27 +328,6 @@ export default function Camera({
               {countdown ? countdown : "say CHEEESE"}
             </div>
           </div>
-        )}
-        {/* Shutter Button */}
-        {!picture && (
-          <button
-            className=" p-2 w-12 h-12 outline-2 bg-white rounded-full drop-shadow-sm absolute bottom-0"
-            id="start-button"
-            onClick={(e) => {
-              if (e.metaKey) {
-                takePicture(true);
-              } else {
-                takePicture();
-              }
-            }}
-          >
-            <div
-              className=" text-emerald-950 font-bold absolute top-3 left-5"
-              style={{ transform: "rotate(90deg)" }}
-            >
-              :)
-            </div>
-          </button>
         )}
       </div>
       <div className="hidden">{loadImageResources()}</div>

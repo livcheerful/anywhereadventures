@@ -1,7 +1,7 @@
 "use client";
 import {
   getAllSlugs,
-  getNumberOfStamps,
+  numberOfPages,
   isAdded,
   localStorageKey,
   add as addToStorage,
@@ -43,7 +43,7 @@ export default function ContentToolBar({
         <div className="flex flex-row gap-2 pl-16">
           <div>{`YOUR LOCATIONS:`}</div>
           <div>{Object.keys(getAllSlugs()).length} saved</div>
-          <div>{getNumberOfStamps() || 0} visited</div>
+          <div>{numberOfPages() || 0} visited</div>
         </div>
       );
     } else if (exploringContent && currentSlug == "discover") {
