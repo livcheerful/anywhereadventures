@@ -104,7 +104,12 @@ function ScrapbookPage(picture) {
   };
 }
 
-export default function Scrapbook({ reel, slug, onFinishedScrapbooking }) {
+export default function Scrapbook({
+  reel,
+  slug,
+  onFinishedScrapbooking,
+  setProcessPhotos,
+}) {
   const [showStickerModal, setShowStickerModal] = useState(false);
   const [currentTool, setCurrentTool] = useState();
   const [stickers, setStickers] = useState([]);
@@ -112,6 +117,12 @@ export default function Scrapbook({ reel, slug, onFinishedScrapbooking }) {
   const [scrapbookPage, setScrapbookPage] = useState(new ScrapbookPage());
 
   const itemsOnWheel = [
+    {
+      title: "Back to Camera",
+      onClickHandler: () => {
+        setProcessPhotos(false);
+      },
+    },
     {
       title: "Save",
       onClickHandler: () => {
@@ -132,7 +143,6 @@ export default function Scrapbook({ reel, slug, onFinishedScrapbooking }) {
         setShowStickerModal(true);
       },
     },
-    { title: "Stamp", onClickHandler: () => {} },
     {
       title: "Finish",
       onClickHandler: () => {

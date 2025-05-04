@@ -54,13 +54,13 @@ export default function Camera({
     getMedia({
       video: {
         facingMode: {
-          exact: "environment",
+          exact: cameraDirection,
         },
       },
     });
 
     // setTakePictureCb(snapPhoto);
-  }, []);
+  }, [cameraDirection]);
 
   useEffect(() => {
     // turnVideo(handleVideo(cameraDirection));

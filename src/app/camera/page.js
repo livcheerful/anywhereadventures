@@ -22,7 +22,7 @@ export default function Page({}) {
   const [showSummaryPage, setShowSummaryPage] = useState(false);
   const [collageImage, setCollageImage] = useState(undefined);
   const [locationId, setLocationId] = useState();
-  const [cameraDirectionIdx, setCameraDirectionIdx] = useState(1); // can be user or environment
+  const [cameraDirectionIdx, setCameraDirectionIdx] = useState(0); // can be user or environment
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const router = useRouter();
   console.log(haveShownHelp);
@@ -267,6 +267,7 @@ export default function Page({}) {
           reel={reel}
           slug={locationId}
           onFinishedScrapbooking={onFinishedScrapbooking}
+          setProcessPhotos={setProcessPhotos}
         />
       )}
       {showSummaryPage && (
