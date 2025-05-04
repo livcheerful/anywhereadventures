@@ -12,8 +12,8 @@ const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://devel
 
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
-  const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
-  // const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
+  // const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
+  const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -91,7 +91,7 @@ export default function Page({}) {
     };
   }, []);
   return (
-    <div className="relative h-dvh w-screen md:w-limiter bg-slate-300 overflow-hidden">
+    <div className="relative h-dvh w-screen md:w-limiter bg-black overflow-hidden">
       <Suspense>
         <SearchParamHandler
           paramsToFetch={["refSlug", "locationId"]}
