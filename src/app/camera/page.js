@@ -114,7 +114,7 @@ export default function Page({}) {
                 onClick={() => {
                   setHaveShownHelp(true);
                 }}
-                className="bg-white  font-bold rounded-lg p-2"
+                className="bg-white  font-bold rounded-lg p-2 py-4"
               >
                 START
               </button>
