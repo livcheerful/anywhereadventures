@@ -6,13 +6,14 @@ import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
 import { useRouter } from "next/navigation";
-import { savePage } from "../lib/storageHelpers";
+import { savePage, numberOfPages } from "../lib/storageHelpers";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
+  // const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -22,6 +23,7 @@ export default function Page({}) {
   const [locationId, setLocationId] = useState();
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const router = useRouter();
+  console.log(haveShownHelp);
 
   function onFinishedScrapbooking(imagedata) {
     console.log(`imagedata ${imagedata}`);
@@ -97,18 +99,28 @@ export default function Page({}) {
         />
       </Suspense>
       {cameraPermissionState == "prompt" && !haveShownHelp && (
-        <div className="w-full h-full bg-white/85 flex flex-col items-center justify-center">
-          <div className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2">
-            <div>Take a picture. Decorate it. Download it. Yay!</div>
+        <div className="absolute w-full h-full bg-white/85 flex flex-col items-center justify-center z-20">
+          <div
+            className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2  text-black "
+            style={{ maxWidth: "80%" }}
+          >
+            <div className="font-bold text-lg">Explore the area</div>
+            <div>
+              Fill up your camera roll with photos and then collage and save
+              your page to your journal
+            </div>
             <div className="w-full flex flex-col items-center">
               <button
                 onClick={() => {
                   setHaveShownHelp(true);
                 }}
-                className="bg-white rounded-lg p-2"
+                className="bg-white  font-bold rounded-lg p-2"
               >
-                Alright
+                START
               </button>
+              <a href="/" className="underline">
+                Back to reading
+              </a>
             </div>
           </div>
         </div>

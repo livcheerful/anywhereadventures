@@ -165,12 +165,6 @@ export default function Scrapbook({ reel, slug, onFinishedScrapbooking }) {
   useEffect(() => {
     new Draggable("#scrapbook-tool-wheel", {
       type: "rotation",
-      liveSnap: {
-        rotation: function (value) {
-          //snap to the closest increment of 10.
-          return Math.round(value / 30) * 30;
-        },
-      },
     });
   });
 
