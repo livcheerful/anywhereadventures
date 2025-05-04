@@ -89,7 +89,7 @@ export default function Page({}) {
     };
   }, []);
   return (
-    <div className="relative h-screen w-screen md:w-limiter bg-slate-300 overflow-hidden">
+    <div className="relative h-dvh w-screen md:w-limiter bg-slate-300 overflow-hidden">
       <Suspense>
         <SearchParamHandler
           paramsToFetch={["refSlug", "locationId"]}

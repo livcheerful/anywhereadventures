@@ -55,7 +55,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-emerald-900 h-screen md:w-limiter">
+    <div className="bg-emerald-900 h-dvh md:w-limiter">
       <Navbar />
       <div
         className="fixed bottom-0 flex flex-col pt-2  md:w-limiter"

@@ -276,7 +276,7 @@ export default function MainMap({
         mapClickHandler();
       }}
     >
-      <div className="bg-slate-800 w-full h-screen" id="map"></div>
+      <div className="bg-slate-800 w-full h-dvh" id="map"></div>
     </div>
   );
 }
