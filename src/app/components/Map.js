@@ -176,6 +176,7 @@ export default function MainMap({
   slug,
   exploringContent,
   myLocations,
+  fullscreen,
   initialCenter = [-122.341077, 47.519161],
   initialZoom = 11,
 }) {
@@ -191,7 +192,6 @@ export default function MainMap({
 
   function centerOfPoints(points) {
     if (points.length == 0) return center;
-    if (points.length == 1) return points[0];
     let llb = new LngLatBounds();
     for (let i = 0; i < points.length; i++) {
       llb.extend([points[i][0], points[i][1]]);
@@ -208,6 +208,15 @@ export default function MainMap({
 
     setLocationContent(`<style>${css.html}</style>\n${html.html}`);
   };
+
+  useEffect(() => {
+    if (!mainMap) return;
+    if (!fullscreen) {
+      mainMap.map.dragPan.disable();
+    } else {
+      mainMap.map.dragPan.enable();
+    }
+  }, [mainMap, fullscreen]);
 
   useEffect(() => {
     let map = new MapLibre({

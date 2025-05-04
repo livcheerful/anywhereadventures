@@ -89,6 +89,7 @@ export default function BasePage({ slug }) {
           mapClickHandler={mapClickHandler}
           post={post}
           slug={currentSlug}
+          fullscreen={!paneOpen}
           exploringContent={exploringContent}
           myLocations={getAllContent()}
           initialCenter={chosenLocation?.center}
