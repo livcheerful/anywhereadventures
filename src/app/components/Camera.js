@@ -340,7 +340,9 @@ export default function Camera({
             muted
             loop
             id="video"
-            className=" transform scale-x-[-1]"
+            className={` transform ${
+              cameraDirection == "user" ? "scale-x-[-1]" : ""
+            }`}
           >
             Video stream not available.
           </video>
