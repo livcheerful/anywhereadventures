@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { savePage, numberOfPages } from "../lib/storageHelpers";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
+const cameraDirectionStates = ["user", "environment"];
 
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
@@ -21,6 +22,7 @@ export default function Page({}) {
   const [showSummaryPage, setShowSummaryPage] = useState(false);
   const [collageImage, setCollageImage] = useState(undefined);
   const [locationId, setLocationId] = useState();
+  const [cameraDirectionIdx, setCameraDirectionIdx] = useState(0); // can be user or environment
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const router = useRouter();
   console.log(haveShownHelp);
@@ -49,6 +51,14 @@ export default function Page({}) {
       text: "Reset Camera",
       onClick: () => {
         setReel([]);
+      },
+    },
+    {
+      text: "Swap Camera",
+      onClick: () => {
+        setCameraDirectionIdx(
+          cameraDirectionIdx + (1 % cameraDirectionStates.length)
+        );
       },
     },
   ];
@@ -146,7 +156,11 @@ export default function Page({}) {
             {((cameraPermissionState == "prompt" && haveShownHelp) ||
               cameraPermissionState == "granted") && (
               <Suspense>
-                <Camera picture={picture} setPicture={setPicture} />
+                <Camera
+                  picture={picture}
+                  setPicture={setPicture}
+                  cameraDirection={cameraDirectionStates[cameraDirectionIdx]}
+                />
               </Suspense>
             )}
             {showMenu && (

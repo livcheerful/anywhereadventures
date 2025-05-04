@@ -7,6 +7,7 @@ export default function Camera({
   picture,
   setPicture,
   kickoffSummaryAnimation,
+  cameraDirection,
 }) {
   const searchParams = useSearchParams();
   const cameraType = searchParams.get("type");
@@ -28,14 +29,42 @@ export default function Camera({
     tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
     return tempCanvas;
   }
-
+  function handleVideo(cameraFacing) {
+    const constraints = {
+      video: {
+        facingMode: {
+          exact: cameraFacing,
+        },
+      },
+    };
+    return constraints;
+  }
+  function turnVideo(constraints) {
+    let video;
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      video = document.createElement("video");
+      video.srcObject = stream;
+      video.play();
+      video.onloadeddata = () => {
+        ctx.height = video.videoHeight;
+      };
+    });
+  }
   useEffect(() => {
     getMedia({
-      video: true,
+      video: {
+        facingMode: {
+          exact: "environment",
+        },
+      },
     });
 
     // setTakePictureCb(snapPhoto);
   }, []);
+
+  useEffect(() => {
+    // turnVideo(handleVideo(cameraDirection));
+  }, [cameraDirection]);
 
   function flash() {
     const tl = gsap.timeline();
