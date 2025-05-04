@@ -29,27 +29,6 @@ export default function Camera({
     tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
     return tempCanvas;
   }
-  function handleVideo(cameraFacing) {
-    const constraints = {
-      video: {
-        facingMode: {
-          exact: cameraFacing,
-        },
-      },
-    };
-    return constraints;
-  }
-  function turnVideo(constraints) {
-    let video;
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      video = document.createElement("video");
-      video.srcObject = stream;
-      video.play();
-      video.onloadeddata = () => {
-        ctx.height = video.videoHeight;
-      };
-    });
-  }
   useEffect(() => {
     getMedia({
       video: {
@@ -58,12 +37,6 @@ export default function Camera({
         },
       },
     });
-
-    // setTakePictureCb(snapPhoto);
-  }, [cameraDirection]);
-
-  useEffect(() => {
-    // turnVideo(handleVideo(cameraDirection));
   }, [cameraDirection]);
 
   function flash() {
@@ -114,6 +87,10 @@ export default function Camera({
     } catch (err) {
       console.log("there is an error!");
       console.log(err);
+      console.log("Sad :(");
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      video.play();
       // NotReadableError: Could not start video source
     }
   }

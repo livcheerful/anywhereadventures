@@ -13,8 +13,8 @@ const cameraDirectionStates = ["user", "environment"];
 
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
-  // const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
-  const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
+  const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
+  // const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -25,7 +25,6 @@ export default function Page({}) {
   const [cameraDirectionIdx, setCameraDirectionIdx] = useState(0); // can be user or environment
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const router = useRouter();
-  console.log(haveShownHelp);
 
   function onFinishedScrapbooking(imagedata) {
     console.log(`imagedata ${imagedata}`);
@@ -45,12 +44,14 @@ export default function Page({}) {
       text: "Back to map",
       onClick: () => {
         router.push("/");
+        setShowMenu(false);
       },
     },
     {
       text: "Reset Camera",
       onClick: () => {
         setReel([]);
+        setShowMenu(false);
       },
     },
     {
@@ -59,6 +60,7 @@ export default function Page({}) {
         setCameraDirectionIdx(
           cameraDirectionIdx + (1 % cameraDirectionStates.length)
         );
+        setShowMenu(false);
       },
     },
   ];
@@ -70,7 +72,6 @@ export default function Page({}) {
 
   useEffect(() => {
     const pageStickers = document.querySelectorAll(`.refImage`);
-    console.log(pageStickers);
     const list = [];
     for (let i = 0; i < pageStickers.length; i++) {
       const linkOut = pageStickers[i].getAttribute("linkout");
@@ -95,10 +96,6 @@ export default function Page({}) {
     checkPermissions((res) => {
       setCameraPermissionState(res.state);
     });
-    return () => {
-      // localstream.getTracks()[0].stop();
-      // need to unregister the camera when navigating away from the page
-    };
   }, []);
   return (
     <div className="relative h-dvh w-screen md:w-limiter bg-black overflow-hidden">
@@ -208,13 +205,13 @@ export default function Page({}) {
               }}
             ></div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <div className=" text-4xl p-3 w-16 text-center h-16 bg-white text-red-800 rounded-full  ">
               {5 - reel.length}
             </div>
             {reel.length == 5 && (
               <div
-                className="bg-white p-2 rounded-full cursor-pointer"
+                className="bg-white p-2 rounded-full cursor-pointer text-black"
                 onClick={() => {
                   setProcessPhotos(true);
                 }}

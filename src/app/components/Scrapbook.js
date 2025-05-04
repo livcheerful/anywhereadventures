@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { getAllLCItems } from "../lib/storageHelpers";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
-
+import SearchParamHandler from "./SearchParamHandler";
 function ScrapbookElem(type, htmlElem, id, z) {
   htmlElem.className = "cursor-pointer";
   this.type = type;
@@ -184,7 +184,10 @@ export default function Scrapbook({
       <div
         className="w-full md:w-limiter flex flex-col items-center fixed z-20"
         id="scrapbook-tool-wheel"
-        style={{ bottom: `-${(width / 4) * 3}px` }}
+        style={{
+          bottom: `-${(width / 4) * 3}px`,
+          transform: `rotate(-120deg)`,
+        }}
       >
         <svg
           viewBox={`0 0 ${width} ${width}`}
@@ -258,7 +261,7 @@ export default function Scrapbook({
             setShowStickerModal(false);
           }}
         >
-          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-scroll">
+          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-scroll dark:text-black">
             <svg
               className="w-4 "
               xmlns="http://www.w3.org/2000/svg"
