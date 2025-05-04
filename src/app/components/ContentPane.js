@@ -57,7 +57,6 @@ export default function ContentPane({
 
       setPost(f);
     }
-    console.log("VVN update it's thumbnail view :)");
     setThumbnailView(exploringContent == true && currentSlug == "discover");
     if (currentSlug == "discover" || currentSlug == "") return;
     fetchPost();
@@ -158,6 +157,8 @@ export default function ContentPane({
               zoomToMainMap={zoomToMainMap}
               exploringContent={exploringContent}
               setCurrentSlug={setCurrentSlug}
+              myLocationSlugs={myLocationSlugs}
+              setMyLocationSlugs={setMyLocationSlugs}
             />
           )}
           {!exploringContent && (

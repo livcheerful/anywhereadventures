@@ -28,9 +28,9 @@ export default function WelcomeScreen({
   }
   const lines = [
     <div>Welcome to Anywhere Adventures! {generateNextButton()}</div>,
-    <div className="w-full h-full top-0 left-0 absolute z-20 flex flex-col items-center justify-center">
+    <div className="w-full h-full top-0 left-0 absolute z-20 flex flex-col items-center ">
       <div className=" font-bold">Choose your location:</div>
-      <div className="flex flex-row gap-2 overflow-x-auto font-bold text-white">
+      <div className="flex flex-col gap-2  overflow-x-auto font-bold text-white">
         {Object.keys(locationData).map((lName, k) => {
           const l = locationData[lName];
           return (
@@ -67,10 +67,10 @@ export default function WelcomeScreen({
     <div className="w-full h-full absolute top-0 left-0 bg-white/90 z-30">
       <div
         className="absolute top-0 left-0 z-40"
-        style={{ width: "30rem", height: "40rem" }}
+        style={{ width: "100%", height: "100%" }}
       >
         <div
-          className="absolute flex-grow w-full h-full flex flex-col items-center justify-center top-0 left-0 -rotate-6 "
+          className="absolute flex-grow w-full h-full flex flex-col items-center pt-16 px-4 top-0 left-0 -rotate-6 "
           style={{
             backgroundImage: `url(/paperAnim.png)`,
             backgroundSize: "contain",
@@ -78,7 +78,7 @@ export default function WelcomeScreen({
           }}
         >
           {welcomeTextState != undefined && (
-            <div className="text-black text-lg p-16 font-bold -rotate-2">
+            <div className="text-black text-lg p-16 font-bold -rotate-2 h-full">
               <div>{lines[welcomeTextState]}</div>
             </div>
           )}

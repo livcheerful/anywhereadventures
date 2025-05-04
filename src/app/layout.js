@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <div className="md:w-limiter">{children}</div>
 
         <div
-          className={`absolute top-0 right-0 w-fit invisible lg:visible -z-10`}
+          className={`absolute top-0 right-0 w-fit invisible lg:visible -z-10 dark:text-black`}
         >
           <Comic
             speechBubbles={[

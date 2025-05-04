@@ -120,7 +120,7 @@ export default function RiverFeed({
               <path d={`m20 20 c-5 0 -13 -10 -13 -17 `}></path>
             </svg>
 
-            <div className="pr-8 pt-10 font-bold -rotate-12  relative top-4 -left-6">
+            <div className="pr-8 pt-10 font-bold -rotate-12  relative top-4 -left-6 dark:text-black">
               <div>You don't have any locations saved to your map yet!</div>
               <div>Add new stories by exploring.</div>
             </div>

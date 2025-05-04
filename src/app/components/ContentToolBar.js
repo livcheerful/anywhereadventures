@@ -38,25 +38,17 @@ export default function ContentToolBar({
   );
 
   const toolTipText = () => {
-    if (!exploringContent) {
-      return (
-        <div className="flex flex-row gap-2 pl-16">
-          <div>{`YOUR LOCATIONS:`}</div>
-          <div>{Object.keys(getAllSlugs()).length} saved</div>
-          <div>{numberOfPages() || 0} visited</div>
-        </div>
-      );
-    } else if (exploringContent && currentSlug == "discover") {
-      return (
-        <div className="flex flex-row gap-2 pl-16">
-          Find places to add to your map
-        </div>
-      );
-    }
+    return (
+      <div className="flex flex-row gap-2 pl-16">
+        <div>{`YOUR LOCATIONS:`}</div>
+        <div>{Object.keys(getAllSlugs()).length} saved</div>
+        <div>{numberOfPages() || 0} visited</div>
+      </div>
+    );
   };
   return (
     <div
-      className="md:w-limiter relative bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2"
+      className="md:w-limiter relative bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2 dark:text-black"
       onClick={() => {
         setPaneOpen(true);
       }}

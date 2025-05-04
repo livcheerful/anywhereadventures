@@ -4,7 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { categoryInfo } from "../content/meta";
 import { updateRoute } from "../lib/routeHelpers";
-import { add as addToStorage } from "../lib/storageHelpers";
+import {
+  add as addToStorage,
+  getAllSlugs,
+  remove as removeFromStorage,
+} from "../lib/storageHelpers";
 import { registerNewIO } from "../lib/intersectionObserverHelper";
 import { makeNewMarker } from "../components/Map";
 import {
@@ -12,6 +16,7 @@ import {
   unopinionatedMapColor,
   excitingMapColor,
 } from "../lib/constants";
+import { makeConfetti } from "../lib/animationHelpers";
 export default function DiscoverFeed({
   zoomToMainMap,
   setCurrentSlug,
@@ -19,6 +24,8 @@ export default function DiscoverFeed({
   exploringContent,
   chosenLocation,
   mainMap,
+  myLocationSlugs,
+  setMyLocationSlugs,
 }) {
   function getPostsByCategory(category) {
     const byCat = chosenLocation.byCategory;
@@ -104,8 +111,22 @@ export default function DiscoverFeed({
       }
     );
   }, [mainMap, currentSlug]);
+
+  function areAllCategorySlugsSaved(category) {
+    let doWeHave = true;
+    category.posts.forEach((post) => {
+      const doesItHave = myLocationSlugs.find((s) => {
+        return s == post.slug;
+      });
+      if (!doesItHave) {
+        doWeHave = false;
+      }
+    });
+
+    return doWeHave;
+  }
   return (
-    <div className="w-full h-fit flex gap-2 flex-col  ">
+    <div className="w-full h-fit flex gap-2 flex-col  dark:text-black">
       <div id="explorePane" className=" flex flex-col p-2 gap-3 ">
         {chosenLocation.byCategory &&
           chosenLocation.byCategory.map((category, ck) => {
@@ -120,23 +141,34 @@ export default function DiscoverFeed({
                 </div>
                 <div className="">
                   {categoryMeta && <div>{categoryMeta?.description}</div>}
-
-                  <div
-                    className="bg-emerald-400 text-white font-bold p-2 rounded-lg cursor-pointer"
-                    onClick={() => {
-                      console.log("adding all");
-                      category.posts.forEach((p) => {
-                        console.log(p);
-                        addToStorage(p.slug, p);
-                      });
-                    }}
-                  >
-                    Add all to map
-                  </div>
                 </div>
                 <div
                   className={`flex flex-row overflow-x-auto gap-4 pt-6 pb-4 drop-shadow-lg`}
                 >
+                  <div
+                    className={`${
+                      areAllCategorySlugsSaved(category)
+                        ? "bg-slate-200 fill-slate-400 text-slate-400 transition-colors"
+                        : "bg-green-500 text-white fill-white transition-colors"
+                    }  font-bold p-2 rounded-lg cursor-pointer shrink-0 w-12 flex flex-col justify-center`}
+                    onClick={(e) => {
+                      category.posts.forEach((p) => {
+                        addToStorage(p.slug, p);
+                      });
+                      setMyLocationSlugs(getAllSlugs());
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                    </svg>
+                    <div className=" text-sm text-center pt-2 font-bold">
+                      {" "}
+                      ALL
+                    </div>
+                  </div>
                   {category.posts.map((l, k) => {
                     return (
                       <div
@@ -153,16 +185,31 @@ export default function DiscoverFeed({
                           backgroundImage: `url(${l.cardImage})`,
                         }}
                       >
-                        <div
-                          className="absolute -right-3 -top-3 w-10 h-10 rounded-full bg-green-500 text-white flex flex-col items-center justify-center"
-                          onClick={(e) => {
-                            console.log(l);
-                            e.stopPropagation();
-                            addToStorage(l.slug, l);
-                          }}
-                        >
-                          +
-                        </div>
+                        {myLocationSlugs.find((e) => {
+                          return e == l.slug;
+                        }) ? (
+                          <div
+                            className=" transition-colors absolute -right-3 -top-3 w-10 h-10 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeFromStorage(l.slug);
+                              setMyLocationSlugs(getAllSlugs());
+                            }}
+                          >
+                            -
+                          </div>
+                        ) : (
+                          <div
+                            className="transition-colors absolute -right-3 -top-3 w-10 h-10 rounded-full bg-green-500 text-white flex flex-col items-center justify-center"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToStorage(l.slug, l);
+                              setMyLocationSlugs(getAllSlugs());
+                            }}
+                          >
+                            +
+                          </div>
+                        )}
                         <div className="bg-white/80 w-full px-2 py-1 ">
                           {l.title}
                         </div>
@@ -170,6 +217,7 @@ export default function DiscoverFeed({
                     );
                   })}
                 </div>
+                <hr></hr>
               </div>
             );
           })}

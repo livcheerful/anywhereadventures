@@ -69,7 +69,10 @@ export default function ContentHeader({
   }, [contentSlug]);
 
   return (
-    <div id={`header-${contentSlug}`} className="-top-1  bg-white z-30 ">
+    <div
+      id={`header-${contentSlug}`}
+      className="-top-1  bg-white z-30 dark:text-black"
+    >
       <div
         className={`flex flex-row gap-2 pt-16 pb-4 p-2 `}
         style={{

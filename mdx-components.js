@@ -14,7 +14,7 @@ export function useMDXComponents(components) {
 
 export const MyMDXComponents = {
   h1: ({ children }) => (
-    <h1 className="pb-1 px-2 text-xl font-bold">{children}</h1>
+    <h1 className="pb-1 px-2 text-xl font-bold ">{children}</h1>
   ),
   h2: ({ children }) => (
     <h2 className="pb-1 px-2 text-lg font-bold">{children}</h2>
