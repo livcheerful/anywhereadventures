@@ -42,7 +42,7 @@ export default function ContentToolBar({
 
   const toolTipText = () => {
     return (
-      <div className="flex flex-row gap-2 pl-16">
+      <div className="flex flex-row gap-2">
         <div>{`YOUR LOCATIONS:`}</div>
         <div>{Object.keys(getAllSlugs()).length} saved</div>
         <div>{numberOfPages() || 0} visited</div>
@@ -57,12 +57,7 @@ export default function ContentToolBar({
       }}
     >
       {toolTipText()}
-      <div
-        className={` ${
-          noSavedLocations && "animate-ping"
-        } w-14 h-14 bg-emerald-300 absolute rounded-full -top-4 left-2 `}
-      ></div>
-      <div
+      {/* <div
         className="w-14 h-14 bg-emerald-800 absolute rounded-full -top-4 left-2 cursor-pointer flex flex-col items-center justify-center drop-shadow-xl"
         onClick={() => {
           setExploringContent(!exploringContent);
@@ -87,7 +82,7 @@ export default function ContentToolBar({
         >
           <path d={`m12 2 l0 20 m-10 -10 l20 0`}></path>
         </svg>
-      </div>
+      </div> */}
 
       {shouldShowAddToMapButton && (
         <div
@@ -114,13 +109,6 @@ export default function ContentToolBar({
         </div>
       )}
 
-      <div className="absolute right-3 bottom-8">
-        <Navbar
-          setMyLocationSlugs={setMyLocationSlugs}
-          slug={currentSlug}
-          setShowingWelcomeScreen={setShowingWelcomeScreen}
-        />
-      </div>
       <div className="absolute right-0 top-10 w-20 h-20 flex flex-col items-end gap-3">
         {exploringContent && currentSlug != "discover" && (
           <div

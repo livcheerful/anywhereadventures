@@ -1,14 +1,70 @@
 export const tagsByCity = {
-  seattle: ["infrastructure", "olmsted", "bridges", "downtown"],
+  seattle: [
+    "architects",
+    "names",
+    "looking up",
+    "olmsted",
+    "downtown",
+    "north seattle",
+    "central district",
+    "cap hill",
+    "west seattle",
+    "light rail",
+    "walk",
+  ],
 };
 
 export const categoryInfo = {
-  olmsted: {
-    description: "Seattle has one of the best preserved Olmsted Parks systems.",
-  },
-  bridges: { pinColor: "#f29100", description: "Seattle is a city of hills." },
-  infrastructure: {
+  names: {
     pinColor: "#f29100",
-    description: "Roads, bridges, sidewalks, and the in betweens",
+    brochureColor: "#d1f7cd",
+    title: "In honor of...",
+    description:
+      "Parks, streets, benches -- so many things in Seattle are named after people. Learn about these Seattle historical figures through these locations.",
+  },
+  architects: {
+    pinColor: "#d970ff",
+    brochureColor: "#d1f7cd",
+    title: "Seattle Architect Guide",
+    description:
+      "These architects designed the look of our city today. Visit their creations and learn to start recognizing their work around town.",
+  },
+  "looking up": {
+    pinColor: "#f29100",
+    brochureColor: "#fff4d6",
+    title: "Seattle Up Above",
+    description:
+      "Look up! What will you see? Maybe the name of a building, a terrace you wouldn't have seen, or a walrus.",
+  },
+  olmsted: {
+    title: "The Olmsted Parks of Seattle",
+    brochureColor: "#d1f7cd",
+    pinColor: "#49FF65",
+    description:
+      "In 1903, as Seattle was experiencing a growth spurt, city leaders decided that Seattle needed a comprehensive park system. They hired the Olmsted Brothers Firm, the best in the country, to travel to the city and design a plan that would take advantage of the natural beauty of the land. Most of Seattle's parks today were envisioned by John Olmsted. Learn how they were designed.",
+  },
+
+  walk: {
+    title: "Walking Paths",
+    brochureColor: "#d1f7cd",
+    description:
+      "Take the same path as someone before or experience a park with new information. These locations aren't just one spot, but a journey.",
+  },
+
+  "light rail": { title: "Along the Light Rail" },
+  downtown: { title: "Downtown Seattle" },
+
+  "north seattle": {
+    title: "Above the Cut",
+  },
+
+  "central district": {
+    title: "Central District",
+  },
+  "cap hill": {
+    title: "Capitol Hill",
+  },
+  "west seattle": {
+    title: "West Seattle",
   },
 };

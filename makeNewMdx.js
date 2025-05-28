@@ -1,11 +1,17 @@
 import * as fs from "fs";
 const defaultContent = `---
 title:
+locationTitle:
+address:
 location: [""]
 latlon: []
-zoom: 8
+neighborhood:
+zoom: 15
 tags: [""]
-cardImage: ""
+cardImage: "/placeholderThumbnail.png"
+stampName:
+photoPrompt:
+blurb:
 ---
 `;
 

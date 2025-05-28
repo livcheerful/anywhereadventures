@@ -221,7 +221,7 @@ export default function MainMap({
   useEffect(() => {
     let map = new MapLibre({
       container: "map",
-      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+      style: "https://geoserveis.icgc.cat/contextmaps/icgc_ombra_fosca.json",
       zoom: zoom,
       center: center,
       attributionControl: false,

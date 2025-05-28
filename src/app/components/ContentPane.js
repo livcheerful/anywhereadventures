@@ -45,6 +45,7 @@ export default function ContentPane({
 }) {
   const router = useRouter();
   const [viewAsGrid, setViewAsGrid] = useState(false);
+  const [paneHeight, setPaneHeight] = useState(getPaneHeight());
   const [thumbnailView, setThumbnailView] = useState(
     exploringContent == true && currentSlug == "discover"
   );
@@ -64,7 +65,7 @@ export default function ContentPane({
   }, [currentSlug]);
 
   useEffect(() => {
-    if (mainMap && !exploringContent) mainMap.removeAllTempLayers();
+    // if (mainMap && !exploringContent) mainMap.removeAllTempLayers();
   }, [mainMap, exploringContent]);
 
   useEffect(() => {
@@ -95,11 +96,19 @@ export default function ContentPane({
     }
   }, [exploringContent, mainMap]);
 
-  function zoomToMainMap() {
+  useEffect(() => {
+    console.log("pane height changed");
+    setPaneHeight(getPaneHeight());
+  }, [paneOpen]);
+
+  function zoomToMainMap(center, zoom) {
+    console.log("VVN trying to set pane closed?");
     setPaneOpen(false);
+    mainMap.flyTo(center, zoom, false);
   }
 
   function getPaneHeight() {
+    console.log("In get pane height");
     if (!paneOpen) {
       return "20%";
     } else if (paneOpen && exploringContent) {
@@ -112,11 +121,10 @@ export default function ContentPane({
   function showContent() {
     return currentSlug && currentSlug != "discover";
   }
-  console.log(currentSlug);
 
   return (
     <div
-      style={{ height: getPaneHeight() }}
+      style={{ height: paneHeight }}
       className={`md:w-limiter w-screen bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
       id="pane"
     >
@@ -152,18 +160,6 @@ export default function ContentPane({
             // scrollValue.current = e.target.scrollTop;
           }}
         >
-          {thumbnailView && (
-            <DiscoverFeed
-              chosenLocation={chosenLocation}
-              mainMap={mainMap}
-              currentSlug={currentSlug}
-              zoomToMainMap={zoomToMainMap}
-              exploringContent={exploringContent}
-              setCurrentSlug={setCurrentSlug}
-              myLocationSlugs={myLocationSlugs}
-              setMyLocationSlugs={setMyLocationSlugs}
-            />
-          )}
           {!exploringContent && (
             <RiverFeed
               setExploringContent={setExploringContent}
@@ -176,21 +172,6 @@ export default function ContentPane({
               setViewAsGrid={setViewAsGrid}
               scrollRef={scrollValue}
             />
-          )}
-
-          {exploringContent && !thumbnailView && post && (
-            <div className={` w-full ${showContent() ? "visible" : "hidden"}`}>
-              <ContentHeader
-                post={post}
-                currentSlug={currentSlug}
-                zoomToMainMap={zoomToMainMap}
-                setMyLocationSlugs={setMyLocationSlugs}
-                isAdded={isAdded(localStorageKey, currentSlug)}
-                setPaneOpen={setPaneOpen}
-              />
-
-              <PostContent post={post} />
-            </div>
           )}
         </div>
       </div>

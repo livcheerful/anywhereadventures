@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import MainMap, { shiftUp } from "./Map";
+import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
 import { useState, useEffect } from "react";
@@ -84,19 +85,21 @@ export default function BasePage({ slug }) {
       }}
     >
       {
-        <MainMap
+        <MyMap
           mapCB={mapCB}
           mapClickHandler={mapClickHandler}
           post={post}
-          slug={currentSlug}
           fullscreen={!paneOpen}
           exploringContent={exploringContent}
           myLocations={getAllContent()}
           initialCenter={chosenLocation?.center}
           initialZoom={chosenLocation?.zoom}
+          defaultLocation={chosenLocation}
+          setExploringContent={setExploringContent}
+          chosenLocation={chosenLocation}
         />
       }
-      {exploringContent != undefined && (
+      {exploringContent != undefined && exploringContent == false && (
         <ContentPane
           chosenLocation={chosenLocation}
           slug={slug}

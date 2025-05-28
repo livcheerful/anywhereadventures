@@ -65,7 +65,7 @@ function ScrapbookPage(picture) {
 
     const dataURL = document
       .getElementById("scrapbookCanvas")
-      .toDataURL("image/jpeg", 0.7);
+      .toDataURL("image/jpeg", 0.9);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     return dataURL;
   };

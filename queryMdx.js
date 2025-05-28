@@ -6,17 +6,46 @@ import * as fs from "fs";
 const postsDirectory = "./src/app/content";
 
 function getAllPosts() {
-  let fileNames = fs.readdirSync(postsDirectory);
-  fileNames = fileNames.filter((s) => {
-    return s != "meta.js";
-  });
+  function recurseFiles(folder, prepend) {
+    let fileNames = fs.readdirSync(folder);
+    fileNames = fileNames.filter((s) => {
+      return s != "meta.js";
+    });
 
-  const allPosts = fileNames.map((fileName) => {
-    const filePath = `${postsDirectory}/${fileName}`;
+    let folderNames = fileNames.filter((name) => {
+      return name.indexOf(".") < 0;
+    });
+
+    fileNames = fileNames.filter((name) => {
+      return name.indexOf(".") >= 0;
+    });
+
+    let fileObj = fileNames.map((f) => {
+      return { slug: f, path: `${prepend}/${f}` };
+    });
+
+    folderNames.forEach((file) => {
+      fileObj.push(
+        ...recurseFiles(
+          `${folder}/${file}`,
+          prepend ? `${prepend}/${file}` : file
+        )
+      );
+    });
+    return fileObj;
+  }
+
+  let fileObj = recurseFiles(postsDirectory, "");
+  console.log(`SEATTLE FILE NAMES [${fileObj.length}]:`);
+  console.log(fileObj);
+
+  const allPosts = fileObj.map((fileObj) => {
+    const filePath = `${postsDirectory}/${fileObj.path}`;
     const fileContents = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(fileContents);
     return {
-      slug: fileName.replace(/\.mdx$/, ""),
+      slug: fileObj.slug.replace(/\.mdx$/, ""),
+      path: fileObj.path,
       content,
       ...data,
     };

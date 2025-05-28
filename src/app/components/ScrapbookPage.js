@@ -51,17 +51,6 @@ export default function ScrapbookPage() {
           </div>
         </div>
       )}
-      <div className="flex flex-row overflow-x-auto pb-20 gap-4">
-        {Object.keys(allPages).map((slug, k) => {
-          const page = allPages[slug];
-          console.log(page);
-          return (
-            <div key={k} className="max-w-[300px] shrink-0">
-              <img src={page.image} />
-            </div>
-          );
-        })}
-      </div>
 
       <div className="flex flex-col gap-16">
         {Object.keys(allItems).map((link, k) => {

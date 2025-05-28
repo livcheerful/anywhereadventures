@@ -6,6 +6,9 @@ import {
   getAllPages,
 } from "../lib/storageHelpers";
 import { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import BigLink from "../components/mdx/BigLink";
+import Comic from "../components/mdx/Comic";
 
 export default function Page() {
   const [allItems, setAllItems] = useState(getAllLCItems());
@@ -26,7 +29,7 @@ export default function Page() {
           }}
         ></div>
         <div
-          className="w-full shrink-0 h-dvh snap-start flex flex-col  p-2 text-black"
+          className="w-full shrink-0 h-dvh snap-start flex flex-col pl-8 p-2 text-black"
           style={{
             backgroundImage: "url(/tempnotebookpage.jpg)",
             backgroundSize: "cover",
@@ -39,6 +42,7 @@ export default function Page() {
             const post = allContent[slug];
             return (
               <a
+                key={k}
                 href={`#page-${k}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -54,11 +58,34 @@ export default function Page() {
               </a>
             );
           })}
+
+          <a
+            href={`#explore`}
+            onClick={(e) => {
+              e.preventDefault();
+              const page = document.querySelector(`#explore`);
+              page.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            <div className="flex flex-row gap-2 text-md font-bold">
+              Explore the library more
+            </div>
+          </a>
+          <a
+            href={`#about`}
+            onClick={(e) => {
+              e.preventDefault();
+              const page = document.querySelector(`#about`);
+              page.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            <div>About the project</div>
+          </a>
         </div>
+
         {Object.keys(allContent).map((slug, k) => {
           const post = allContent[slug];
           const page = allPages[slug];
-          console.log(post);
           if (!page) {
             // gotta collect still
           }
@@ -79,6 +106,76 @@ export default function Page() {
             </div>
           );
         })}
+        <div
+          className="w-full shrink-0 snap-start flex flex-col items-center justify-around h-dvh overflow-y-auto text-black"
+          style={{
+            backgroundImage: `url(/tempnotebookpage.jpg)`,
+            backgroundSize: "cover",
+          }}
+        >
+          <div id="explore" className="text-black text-lg font-bold p-2 w-fit">
+            Explore the Library more
+          </div>
+          <div>
+            <Comic
+              position="right"
+              image="/comics/Vivian.png"
+              speechBubbles={[
+                {
+                  text: "If you want to find cool items in the Library of Congress yourself, you can try out these research guides!",
+                },
+              ]}
+            />
+          </div>
+          <div className="flex flex-row flex-wrap gap-2">
+            <BigLink
+              link="https://guides.loc.gov/architecture-design-engineering-collections"
+              thumbnail="/placeholderThumbnail.png"
+              title="Architecture, Design and Engineering Collections"
+            />
+            <BigLink
+              link="https://guides.loc.gov/illinois-state-guide"
+              thumbnail="/placeholderThumbnail.png"
+              title="Illinois State Research Guide"
+            />
+            <BigLink
+              link="https://guides.loc.gov/washington-state-guide"
+              thumbnail="/placeholderThumbnail.png"
+              title="Washington State Research Guide"
+            />
+            <BigLink
+              link="https://guides.loc.gov/wyoming-state-guide"
+              thumbnail="/placeholderThumbnail.png"
+              title="Wyoming State Research Guide"
+            />
+          </div>
+          <div>
+            <Comic
+              position="right"
+              image="/comics/Vivian.png"
+              speechBubbles={[
+                {
+                  text: "These were made by Library of Congress staff, and are a great starting point.",
+                },
+              ]}
+            />
+          </div>
+        </div>
+        <div
+          id="about"
+          className="w-full shrink-0 snap-start flex flex-col items-center justify-around"
+          style={{
+            backgroundImage: `url(/tempnotebookpage.jpg)`,
+            backgroundSize: "cover",
+          }}
+        >
+          <div className=" text-black text-lg font-bold bg-white p-2 w-fit">
+            About the project
+          </div>
+        </div>
+      </div>
+      <div className="fixed bg-white bottom-0 left-10 text-black">
+        <Navbar />
       </div>
     </div>
   );

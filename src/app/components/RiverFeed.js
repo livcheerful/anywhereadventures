@@ -3,6 +3,7 @@ import { updateRoute } from "../lib/routeHelpers";
 import { useEffect, useRef, useState } from "react";
 import PostContent from "./PostContent";
 import ContentHeader from "./ContentHeader";
+import { getMdx } from "../lib/clientPostHelper";
 import * as storageHelpers from "../lib/storageHelpers";
 
 import { registerNewIO } from "../lib/intersectionObserverHelper";
@@ -49,18 +50,11 @@ export default function RiverFeed({
     );
     ioRef.current = io;
   }, [contentArray]);
-  async function getMdx(locations) {
-    const ca = [];
-    for (const l of locations) {
-      const file = await fetch(`/content/generated/${l}.json`);
-      const f = await file.json();
-      ca.push(f);
-    }
-    setContentArray(ca);
-  }
   useEffect(() => {
     const locSlugs = storageHelpers.getAllSlugs();
-    getMdx(locSlugs);
+    getMdx(locSlugs, (res) => {
+      setContentArray(res);
+    });
   }, [myLocationSlugs]);
   return (
     <div id="river-feed">
@@ -145,6 +139,11 @@ export default function RiverFeed({
               scrollRef={scrollRef}
             />
             <PostContent post={c} />
+            <div className="w-full p-2">
+              <button className="w-full bg-emerald-300 rounded-lg font-black p-2 ">
+                Capture Visit
+              </button>
+            </div>
             {i < contentArray.length - 1 && (
               <hr className="py-4 " style={{ color: "#FF2244" }}></hr>
             )}

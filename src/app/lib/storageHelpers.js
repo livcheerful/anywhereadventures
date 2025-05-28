@@ -99,8 +99,18 @@ export function numberOfPages() {
   return Object.keys(getAllPages()).length;
 }
 
+export function hasLocationBeenVisited(slug) {
+  return !!getPage(slug);
+}
+
+export function getPage(slug) {
+  const pages = getAllPages();
+
+  return pages[slug];
+}
+
 export function savePage(slug, imgData, date) {
-  const pages = getAll(scrapbookPageKey);
+  const pages = getAllPages();
 
   pages[slug] = { image: imgData, date: date };
   if (typeof window !== "undefined")

@@ -17,22 +17,10 @@ export async function generateStaticParams() {
 export default async function Page({ params }) {
   const { slug } = await params;
   let postSlug;
-  let post;
-  let serializedContent;
-
-  if (slug) {
-    postSlug = slug;
-    if (slug != "discover") {
-      post = getPostBySlug(postSlug[0]);
-      serializedContent = await serialize({ source: post.content });
-      post = { ...post, content: serializedContent };
-    }
-  }
-
   return (
     <div className="relative flex w-full overflow-hidden">
       <Suspense>
-        <BasePage slug={postSlug ? postSlug[0] : ""} post={post}></BasePage>
+        <BasePage slug={postSlug ? postSlug[0] : ""}></BasePage>
       </Suspense>
     </div>
   );

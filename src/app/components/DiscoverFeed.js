@@ -11,11 +11,6 @@ import {
 } from "../lib/storageHelpers";
 import { registerNewIO } from "../lib/intersectionObserverHelper";
 import { makeNewMarker } from "../components/Map";
-import {
-  unvisitedMapColor,
-  unopinionatedMapColor,
-  excitingMapColor,
-} from "../lib/constants";
 import { makeConfetti } from "../lib/animationHelpers";
 export default function DiscoverFeed({
   zoomToMainMap,
@@ -71,7 +66,7 @@ export default function DiscoverFeed({
           ) {
             const postInView = getPostBySlug(cardSlug);
 
-            const m = makeNewMarker(excitingMapColor, postInView, router, true);
+            const m = makeNewMarker("#ff70f1", postInView, router, true);
             mainMap.addLayer(m, cardSlug);
           } else {
             mainMap.removeLayerGroup(cardSlug);
@@ -97,7 +92,7 @@ export default function DiscoverFeed({
             const postsInView = getPostsByCategory(category);
             postsInView.forEach((p) => {
               const m = makeNewMarker(
-                catMetaInfo?.pinColor || excitingMapColor,
+                catMetaInfo?.pinColor || "#ff70f1",
                 p,
                 router,
                 true
@@ -137,9 +132,9 @@ export default function DiscoverFeed({
                   className="text-xl font-bold pb-2 category-row-header"
                   categoryname={category.tag}
                 >
-                  {category.tag.toUpperCase()}
+                  {categoryMeta?.title || category.tag}
                 </div>
-                <div className="">
+                <div className="text-sm italic">
                   {categoryMeta && <div>{categoryMeta?.description}</div>}
                 </div>
                 <div
