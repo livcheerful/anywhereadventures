@@ -5,6 +5,19 @@ import interact from "interactjs";
 
 import { getAllLCItems } from "../lib/storageHelpers";
 
+function dragMoveListener(event) {
+  var target = event.target;
+  // keep the dragged position in the data-x/data-y attributes
+  var x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
+  var y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
+
+  // translate the element
+  target.style.transform = "translate(" + x + "px, " + y + "px)";
+
+  // update the posiion attributes
+  target.setAttribute("data-x", x);
+  target.setAttribute("data-y", y);
+}
 function ScrapbookElem(type, htmlElem, id, z) {
   htmlElem.className = "cursor-pointer";
   this.type = type;
@@ -29,6 +42,11 @@ function ScrapbookElem(type, htmlElem, id, z) {
       },
     },
   });
+  var angleScale = {
+    angle: 0,
+    scale: 1,
+  };
+  var resetTimeout;
   sticker.gesturable({
     listeners: {
       start(event) {
@@ -42,7 +60,7 @@ function ScrapbookElem(type, htmlElem, id, z) {
         var currentAngle = event.angle + angleScale.angle;
         var currentScale = event.scale * angleScale.scale;
 
-        scaleElement.style.transform =
+        htmlElem.style.transform =
           "rotate(" + currentAngle + "deg)" + "scale(" + currentScale + ")";
 
         // uses the dragMoveListener from the draggable demo above
@@ -200,7 +218,6 @@ export default function Scrapbook({
     // get all saved LC items
     const lcItems = getAllLCItems();
     setStickers(Object.values(lcItems));
-    gsap.registerPlugin(Draggable);
 
     reel.forEach((image, i) => {
       scrapbookPage.addNewSticker(image, 300);
@@ -283,7 +300,6 @@ export default function Scrapbook({
     );
   }
 
-  console.log(scrapbookPage);
   return (
     <div className="overflow-y-hidden z-30">
       {reel && (
@@ -293,7 +309,7 @@ export default function Scrapbook({
 
       <div
         id="scrapbookPlayground"
-        className="w-full h-full top-0 left-0 absolute overflow-clip z-10"
+        className="w-full h-full top-0 left-0 absolute overflow-clip z-10 touch-none select-none"
       ></div>
       {reel && (
         <div className="text-white absolute bottom-0  h-fit">
@@ -327,13 +343,14 @@ export default function Scrapbook({
                     key={`myStickers-${i}`}
                     style={{ width: "200px" }}
                     onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
                       scrapbookPage.addNewPageSticker(
                         item.image,
                         200,
                         item.linkOut
                       );
                       setShowStickerModal(false);
-                      e.stopPropagation();
                     }}
                   >
                     <img src={item.image} />
@@ -341,7 +358,7 @@ export default function Scrapbook({
                 );
               })}
             </div>
-            <div className=" p-2 text-lg font-bold">Small</div>
+            <div className=" p-2 text-lg font-bold">Your Stickers</div>
             <div className="flex flex-row flex-wrap gap-2">
               {stickers.map((item, i) => {
                 return (
@@ -349,27 +366,10 @@ export default function Scrapbook({
                     key={i}
                     style={{ width: "200px" }}
                     onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
                       scrapbookPage.addNewSticker(item.image, 200);
                       setShowStickerModal(false);
-                      e.stopPropagation();
-                    }}
-                  >
-                    <img src={item.image} />
-                  </div>
-                );
-              })}
-            </div>
-            <div className="p-2 text-lg font-bold">Large</div>
-            <div className="flex flex-row flex-wrap gap-2">
-              {stickers.map((item, i) => {
-                return (
-                  <div
-                    key={i}
-                    style={{ width: "400px" }}
-                    onClick={(e) => {
-                      scrapbookPage.addNewSticker(item.image, 400);
-                      setShowStickerModal(false);
-                      e.stopPropagation();
                     }}
                   >
                     <img src={item.image} />
