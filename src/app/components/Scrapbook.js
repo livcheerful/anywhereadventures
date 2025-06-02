@@ -25,9 +25,12 @@ function ScrapbookElem(type, htmlElem, id, z) {
   this.id = id;
   this.elem = htmlElem;
 
-  // Draggable.create(htmlElem);
   const sticker = interact(htmlElem);
   const position = { x: 0, y: 0 };
+  var angleScale = {
+    angle: 0,
+    scale: 1,
+  };
   sticker.draggable({
     // make the element fire drag events
     listeners: {
@@ -42,36 +45,21 @@ function ScrapbookElem(type, htmlElem, id, z) {
       },
     },
   });
-  var angleScale = {
-    angle: 0,
-    scale: 1,
-  };
-  var resetTimeout;
   sticker.gesturable({
     listeners: {
       start(event) {
         angleScale.angle -= event.angle;
 
-        clearTimeout(resetTimeout);
         scaleElement.classList.remove("reset");
       },
       move(event) {
-        // document.body.appendChild(new Text(event.scale))
         var currentAngle = event.angle + angleScale.angle;
         var currentScale = event.scale * angleScale.scale;
 
         htmlElem.style.transform =
           "rotate(" + currentAngle + "deg)" + "scale(" + currentScale + ")";
 
-        // uses the dragMoveListener from the draggable demo above
         dragMoveListener(event);
-      },
-      end(event) {
-        angleScale.angle = angleScale.angle + event.angle;
-        angleScale.scale = angleScale.scale * event.scale;
-
-        resetTimeout = setTimeout(reset, 1000);
-        scaleElement.classList.add("reset");
       },
     },
   });
