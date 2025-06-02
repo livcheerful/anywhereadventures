@@ -33,7 +33,9 @@ export function ScrapbookElem(type, htmlElem, id, z) {
     listeners: {
       start: (event) => {},
       move: (event) => {
-        this.scale = this.scale * event.scale;
+        const zoomSensitivity = 0.15; // lower = slower zoom
+        const deltaScale = (event.scale - 1) * zoomSensitivity;
+        this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
         this.y += event.delta.y;
         updateTransform();
