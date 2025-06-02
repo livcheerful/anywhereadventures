@@ -49,6 +49,12 @@ export default function Camera({
       backgroundColor: "#FFFFFF99",
     });
   }
+  useEffect(() => {
+    const w = Math.min(window.innerWidth - 10, 400);
+    const h = w / aspectRatio;
+    setWidth(w);
+    setHeight(h);
+  }, []);
 
   async function getMedia(constraints) {
     let stream = null;
@@ -63,8 +69,8 @@ export default function Camera({
         if (!streaming) {
           const w = cameraScreen.getBoundingClientRect().width;
 
-          setWidth(w);
-          setHeight(w / aspectRatio);
+          // setWidth(w);
+          // setHeight(w / aspectRatio);
           setStreaming(true);
         }
       },
@@ -129,7 +135,14 @@ export default function Camera({
       <div className="hidden">{loadImageResources()}</div>
       <div className="filmStrip  overflow-hidden">
         <div
-          className={`${picture ? "hidden" : "visible"} camera overflow-clip `}
+          id="videoWrapper"
+          className={`${
+            picture ? "hidden" : "visible"
+          } camera overflow-clip flex flex-col items-center justify-center `}
+          style={{
+            width: `${width}px`,
+            height: `${height}px`,
+          }}
         >
           <video
             webkit-playsinline="true"
@@ -142,10 +155,6 @@ export default function Camera({
             className={` transform ${
               cameraDirection == "user" ? "scale-x-[-1]" : ""
             }`}
-            style={{
-              width: `${400}px`,
-              height: `${300}px`,
-            }}
           >
             Video stream not available.
           </video>

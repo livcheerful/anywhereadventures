@@ -12,11 +12,10 @@ import { getMdx } from "../lib/clientPostHelper";
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 const cameraDirectionStates = ["user", "environment"];
 
-const aspectRatio = 3 / 2;
+const aspectRatio = 4 / 2;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
-  // const [haveShownHelp, setHaveShownHelp] = useState(numberOfPages() > 0); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -272,15 +271,40 @@ export default function Page({}) {
                 const newPhotos = Array.from(reel);
 
                 function snapPhoto() {
+                  const videoWrapper = document.getElementById("videoWrapper");
+                  const destinationWidth =
+                    videoWrapper.getBoundingClientRect().width;
+                  const destinationHeight =
+                    videoWrapper.getBoundingClientRect().height;
+                  console.log(videoWrapper);
                   const video = document.getElementById("video");
+                  const videoDimensions = video.width / video.height;
+
+                  let sourceX = 0,
+                    sourceY = 0,
+                    sourceWidth = video.videoWidth,
+                    sourceHeight = video.videoHeight;
+                  if (videoDimensions > aspectRatio) {
+                    // Too Wide
+                    sourceWidth = video.videoHeight * aspectRatio;
+                    sourceX = (video.videoWidth - sourceWidth) / 2;
+                  } else {
+                    // Too Tall
+                    sourceHeight = video.videoWidth / aspectRatio;
+                    sourceY = (video.videoHeight - sourceHeight) / 2;
+                  }
                   const tempCanvas = document.createElement("canvas");
                   const tempCtx = tempCanvas.getContext("2d");
-                  tempCanvas.width = video.videoWidth;
-                  tempCanvas.height = video.videoWidth / aspectRatio;
+                  tempCanvas.width = destinationWidth;
+                  tempCanvas.height = destinationHeight;
                   tempCtx.drawImage(
                     video,
+                    sourceX,
+                    sourceY,
+                    sourceWidth,
+                    sourceHeight,
+                    0, // Where to draw on canvas, X
                     0,
-                    video.videoHeight / 2 - tempCanvas.height / 2,
                     tempCanvas.width,
                     tempCanvas.height
                   );
