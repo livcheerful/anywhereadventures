@@ -12,7 +12,7 @@ import { getMdx } from "../lib/clientPostHelper";
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 const cameraDirectionStates = ["user", "environment"];
 
-const aspectRatio = 1 / 1;
+const aspectRatio = 3 / 2;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
@@ -112,7 +112,7 @@ export default function Page({}) {
   return (
     <div className="relative h-dvh w-screen md:w-limiter bg-white overflow-hidden">
       <div
-        className="w-full right-0 h-1/3 flex flex-col-reverse items-end gap-2 "
+        className="w-full right-0 h-1/4 flex flex-col-reverse items-end gap-2 "
         style={{
           backgroundImage: `url(${mdx?.cameraImage || mdx?.cardImage})`,
           backgroundSize: "cover",
@@ -175,7 +175,7 @@ export default function Page({}) {
       )}
       {!processPhotos && (
         <div className=" w-full flex flex-row  pl-2 ">
-          <div className="absolute" style={{ width: "45%", bottom: "70%" }}>
+          <div className="absolute" style={{ width: "45%", bottom: "80%" }}>
             <FilmReel snapshots={reel} />
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function Page({}) {
 
       <div
         className="absolute w-full flex flex-col bottom-0  bg-gray-300 "
-        style={{ height: "65%" }}
+        style={{ height: "75%" }}
       >
         <div
           className="bg-gray-400 w-full top-0  relative"
