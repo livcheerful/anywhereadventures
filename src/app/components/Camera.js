@@ -138,10 +138,10 @@ export default function Camera({
           id="videoWrapper"
           className={`${
             picture ? "hidden" : "visible"
-          } camera overflow-clip flex flex-col items-center justify-center `}
+          } camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
-            width: `${width}px`,
-            height: `${height}px`,
+            width: `${300}px`,
+            aspectRatio: "4 / 2",
           }}
         >
           <video
