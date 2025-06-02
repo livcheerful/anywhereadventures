@@ -12,7 +12,7 @@ import { getMdx } from "../lib/clientPostHelper";
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 const cameraDirectionStates = ["user", "environment"];
 
-const aspectRatio = 4 / 2;
+const aspectRatio = 16 / 9;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
@@ -126,7 +126,7 @@ export default function Page({}) {
             <div className="text-xs">{mdx?.prompt || "Take pictures"}</div>
           </div>
         </div>
-        <div className="w-1/2 font-mono flex flex-col gap-2 pr-2">
+        <div className="w-1/2 font-mono flex flex-col gap-2 pr-2 ">
           {reel.map((picture, i) => {
             return (
               <div

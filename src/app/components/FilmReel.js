@@ -2,7 +2,7 @@ export default function FilmReel({ snapshots }) {
   return (
     <div className="relative w-full flex flex-col bottom-0 ">
       <div className="px-4 pr-8">
-        <div className="flex flex-col w-full bg-black">
+        <div className="flex flex-col w-full bg-black pt-2">
           {snapshots.map((snapshot, i) => {
             return (
               <img

@@ -140,7 +140,7 @@ export default function Camera({
             picture ? "hidden" : "visible"
           } w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
-            aspectRatio: "4 / 2",
+            aspectRatio: aspectRatio,
           }}
         >
           <video
