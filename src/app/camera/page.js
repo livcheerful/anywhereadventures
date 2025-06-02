@@ -12,6 +12,7 @@ import { getMdx } from "../lib/clientPostHelper";
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 const cameraDirectionStates = ["user", "environment"];
 
+const aspectRatio = 3 / 2;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
@@ -270,16 +271,15 @@ export default function Page({}) {
                 const newPhotos = Array.from(reel);
 
                 function snapPhoto() {
-                  console.log("snap photo");
                   const video = document.getElementById("video");
                   const tempCanvas = document.createElement("canvas");
                   const tempCtx = tempCanvas.getContext("2d");
                   tempCanvas.width = video.videoWidth;
-                  tempCanvas.height = video.videoHeight;
+                  tempCanvas.height = video.videoWidth / aspectRatio;
                   tempCtx.drawImage(
                     video,
                     0,
-                    0,
+                    video.videoHeight / 2 - tempCanvas.height / 2,
                     tempCanvas.width,
                     tempCanvas.height
                   );
