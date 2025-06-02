@@ -138,9 +138,8 @@ export default function Camera({
           id="videoWrapper"
           className={`${
             picture ? "hidden" : "visible"
-          } camera overflow-hidden relative flex flex-col items-center justify-center `}
+          } w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
-            width: `${300}px`,
             aspectRatio: "4 / 2",
           }}
         >
