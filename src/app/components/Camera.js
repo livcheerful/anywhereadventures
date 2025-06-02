@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { gsap } from "gsap/gsap-core";
 export default function Camera({
+  aspectRatio,
   picture,
   setPicture,
   kickoffSummaryAnimation,
@@ -60,10 +61,10 @@ export default function Camera({
       "canplay",
       (ev) => {
         if (!streaming) {
-          const w =
-            (video.videoWidth / video.videoHeight) *
-            cameraScreen.getBoundingClientRect().height;
+          const w = cameraScreen.getBoundingClientRect().width;
+
           setWidth(w);
+          setHeight(w / aspectRatio);
           setStreaming(true);
         }
       },
@@ -139,6 +140,10 @@ export default function Camera({
             className={` transform ${
               cameraDirection == "user" ? "scale-x-[-1]" : ""
             }`}
+            style={{
+              width: `${400}px`,
+              height: `${300}px`,
+            }}
           >
             Video stream not available.
           </video>

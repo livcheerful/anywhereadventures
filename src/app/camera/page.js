@@ -12,7 +12,7 @@ import { getMdx } from "../lib/clientPostHelper";
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
 const cameraDirectionStates = ["user", "environment"];
 
-const aspectRatio = 3 / 2;
+const aspectRatio = 1 / 1;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
   const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
@@ -216,6 +216,7 @@ export default function Page({}) {
                 cameraPermissionState == "granted") && (
                 <Suspense>
                   <Camera
+                    aspectRatio={aspectRatio}
                     picture={picture}
                     setPicture={setPicture}
                     cameraDirection={cameraDirectionStates[cameraDirectionIdx]}
