@@ -31,7 +31,7 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
         }}
       ></div>
       <PinJournal page={getPage(mdx.slug)} />
-      <PinCamera />
+      <PinCamera mdx={mdx} />
       <div className="absolute flex flex-col w-4/5 p-5 bg-white drop-shadow-2xl border-2 border-gray-900 ">
         <button
           onClick={() => {

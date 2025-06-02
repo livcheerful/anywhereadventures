@@ -14,7 +14,6 @@ import {
   getHomeLocation,
 } from "../lib/storageHelpers";
 export default function BasePage({ slug }) {
-  const [mainMap, setMainMap] = useState(undefined);
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
   const [paneOpen, setPaneOpen] = useState(!isNewUser);
@@ -30,6 +29,14 @@ export default function BasePage({ slug }) {
     savedLocationToObj(savedLocation) || locationData.all
   );
 
+  const [mainMap, setMainMap] = useState(undefined);
+  // Elements to control map
+  const [viewingPin, setViewingPin] = useState(undefined);
+  const [mapState, setMapState] = useState("myMap"); // Could also be in "Explore state"
+  const [viewingExploreCategory, setViewingExploreCategory] =
+    useState(undefined);
+  const [brochureViewOpen, setBrochureViewOpen] = useState(false);
+  const [myLocations, setMyLocations] = useState(getAllContent());
   const [myLocationSlugs, setMyLocationSlugs] = useState(getAllSlugs());
   function finishWelcome() {
     setShowingWelcomeScreen(false);
@@ -67,14 +74,19 @@ export default function BasePage({ slug }) {
     }
   }, []);
 
-  function paneOpenHandler(s) {
-    setPaneOpen(s);
-  }
   function mapCB(m) {
     setMainMap(m);
   }
   function mapClickHandler() {
     setPaneOpen(false);
+  }
+
+  function openMapExploreToBrochure(tagName) {
+    setPaneOpen(false);
+    setMapState("explore");
+    setExploringContent(true);
+    setViewingExploreCategory(tagName);
+    setBrochureViewOpen(true);
   }
 
   return (
@@ -88,15 +100,21 @@ export default function BasePage({ slug }) {
         <MyMap
           mapCB={mapCB}
           mapClickHandler={mapClickHandler}
-          post={post}
-          fullscreen={!paneOpen}
-          exploringContent={exploringContent}
-          myLocations={getAllContent()}
+          chosenLocation={chosenLocation}
+          myLocations={myLocations}
+          setMyLocations={setMyLocations}
           initialCenter={chosenLocation?.center}
           initialZoom={chosenLocation?.zoom}
           defaultLocation={chosenLocation}
           setExploringContent={setExploringContent}
-          chosenLocation={chosenLocation}
+          viewingPin={viewingPin}
+          setViewingPin={setViewingPin}
+          mapState={mapState}
+          setMapState={setMapState}
+          viewingExploreCategory={viewingExploreCategory}
+          setViewingExploreCategory={setViewingExploreCategory}
+          brochureViewOpen={brochureViewOpen}
+          setBrochureViewOpen={setBrochureViewOpen}
         />
       }
       {exploringContent != undefined && exploringContent == false && (
@@ -105,7 +123,7 @@ export default function BasePage({ slug }) {
           slug={slug}
           mainMap={mainMap}
           paneOpen={paneOpen}
-          setPaneOpen={paneOpenHandler}
+          setPaneOpen={setPaneOpen}
           exploringContent={exploringContent}
           setExploringContent={setExploringContent}
           currentSlug={currentSlug}
@@ -115,6 +133,8 @@ export default function BasePage({ slug }) {
           myLocationSlugs={myLocationSlugs}
           setMyLocationSlugs={setMyLocationSlugs}
           setShowingWelcomeScreen={setShowingWelcomeScreen}
+          setViewingPin={setViewingPin}
+          openMapExploreToBrochure={openMapExploreToBrochure}
         />
       )}
       {showingWelcomeScreen && (

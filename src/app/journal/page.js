@@ -9,11 +9,42 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import BigLink from "../components/mdx/BigLink";
 import Comic from "../components/mdx/Comic";
+import JournalPage from "../components/JournalPage";
+import { categoryInfo } from "../content/meta";
 
 export default function Page() {
   const [allItems, setAllItems] = useState(getAllLCItems());
   const [allContent, setAllSlugs] = useState(getAllContent());
   const [allPages, setAllPages] = useState(getAllPages());
+
+  const [categories, setCategories] = useState(
+    transformSavedLocationsToCategories()
+  );
+
+  function transformSavedLocationsToCategories() {
+    console.log("VVN gather categories from locations");
+    const gatheredCategoriesMap = new Map();
+    for (let index in Object.keys(allContent)) {
+      const slug = Object.keys(allContent)[index];
+      const mdx = allContent[slug];
+      // console.log(mdx);
+      mdx.tags.forEach((tag, i) => {
+        // console.log(tag);
+        if (!gatheredCategoriesMap.has(tag)) {
+          gatheredCategoriesMap.set(tag, { tag: tag, locations: [] });
+        }
+
+        const soFar = gatheredCategoriesMap.get(tag);
+        const addAnother = Array.from(soFar.locations);
+        addAnother.push(mdx);
+        gatheredCategoriesMap.set(tag, {
+          ...soFar,
+          locations: addAnother,
+        });
+      });
+    }
+    return gatheredCategoriesMap;
+  }
 
   return (
     <div className="h-dvh md:w-limiter bg-white overflow-y-hidden">
@@ -83,7 +114,32 @@ export default function Page() {
           </a>
         </div>
 
-        {Object.keys(allContent).map((slug, k) => {
+        {categories.values().map((category, i) => {
+          const catMeta = categoryInfo[category.tag];
+          const numberPerPage = 4;
+          const numOfPagesNeeded = Math.ceil(
+            category.locations.length / numberPerPage
+          );
+          const pages = [];
+          for (let i = 0; i < numOfPagesNeeded; i++) {
+            const base = i * numberPerPage;
+            pages.push(
+              <div key={i} className="w-full h-full shrink-0">
+                <JournalPage
+                  category={category}
+                  categoryMeta={catMeta}
+                  locations={category.locations.slice(
+                    base,
+                    base + numberPerPage
+                  )}
+                />
+              </div>
+            );
+          }
+          return pages;
+        })}
+
+        {/* {Object.keys(allContent).map((slug, k) => {
           const post = allContent[slug];
           const page = allPages[slug];
           if (!page) {
@@ -172,10 +228,7 @@ export default function Page() {
           <div className=" text-black text-lg font-bold bg-white p-2 w-fit">
             About the project
           </div>
-        </div>
-      </div>
-      <div className="fixed bg-white bottom-0 left-10 text-black">
-        <Navbar />
+        </div> */}
       </div>
     </div>
   );

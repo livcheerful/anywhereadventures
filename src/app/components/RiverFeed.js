@@ -2,7 +2,9 @@
 import { updateRoute } from "../lib/routeHelpers";
 import { useEffect, useRef, useState } from "react";
 import PostContent from "./PostContent";
-import ContentHeader from "./ContentHeader";
+import StickyHeader from "./StickyHeader";
+import PhotoPrompt from "./PhotoPrompt";
+import UnstickyHeader from "./UnstickyHeader";
 import { getMdx } from "../lib/clientPostHelper";
 import * as storageHelpers from "../lib/storageHelpers";
 
@@ -12,12 +14,13 @@ export default function RiverFeed({
   setCurrentSlug,
   setExploringContent,
   myLocationSlugs,
-  zoomToMainMap,
+  focusOnPin,
   setMyLocationSlugs,
   setPaneOpen,
   viewAsGrid,
   setViewAsGrid,
   scrollRef,
+  openMapExploreToBrochure,
 }) {
   const [contentArray, setContentArray] = useState(undefined);
   const [currentlyViewing, setCurrentlyViewing] = useState("");
@@ -127,22 +130,27 @@ export default function RiverFeed({
         return (
           <div key={i} className="article" articleslug={c.slug}>
             <div className="h-1 article-io-spacer"></div>
-            <ContentHeader
+            <StickyHeader
               post={c}
               currentSlug={""}
               contentSlug={c.slug}
-              zoomToMainMap={zoomToMainMap}
+              focusOnPin={focusOnPin}
               k={i}
               isAdded={true}
               setMyLocationSlugs={setMyLocationSlugs}
               setPaneOpen={setPaneOpen}
               scrollRef={scrollRef}
             />
+            <UnstickyHeader
+              post={c}
+              openMapExploreToBrochure={openMapExploreToBrochure}
+            />
             <PostContent post={c} />
-            <div className="w-full p-2">
-              <button className="w-full bg-emerald-300 rounded-lg font-black p-2 ">
-                Capture Visit
-              </button>
+            <div className="w-full p-4">
+              <PhotoPrompt
+                mdx={c}
+                visited={storageHelpers.hasLocationBeenVisited(c.slug)}
+              />
             </div>
             {i < contentArray.length - 1 && (
               <hr className="py-4 " style={{ color: "#FF2244" }}></hr>

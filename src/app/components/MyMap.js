@@ -49,6 +49,16 @@ function MapManager(map, router) {
   this.currentLayers = new Map(); // Stores latlong -> layerid
   this.exploreMarkers = new Map(); // Not MapLibre map, the CS object Map
 
+  // Returns the pin from currentlayers
+  this.getPinFromSlug = function (slug) {
+    this.currentLayers.get(slug);
+  };
+
+  this.deleteExploreMarkerFromSlug = function (slugToDelete) {
+    this.exploreMarkers.get(slugToDelete).remove();
+    this.exploreMarkers.delete(slugToDelete);
+  };
+
   this.deleteAllPins = function () {
     for (const slugToDelete of this.currentLayers.keys()) {
       this.currentLayers.get(slugToDelete).remove();
@@ -57,9 +67,7 @@ function MapManager(map, router) {
   };
 
   this.deleteAllExploreMarkers = function () {
-    console.log("VVN in delete all explore marker");
     for (const slug of this.exploreMarkers.keys()) {
-      console.log(slug);
       this.exploreMarkers.get(slug).remove();
       this.exploreMarkers.delete(slug);
     }
@@ -139,26 +147,32 @@ export default function MyMap({
   mapCB,
   mapClickHandler,
   myLocations,
+  setMyLocations,
   defaultLocation,
   setExploringContent,
+  viewingPin,
+  setViewingPin,
   chosenLocation,
+  mapState,
+  setMapState,
+  viewingExploreCategory,
+  setViewingExploreCategory,
+  brochureViewOpen,
+  setBrochureViewOpen,
 }) {
   const router = useRouter();
   const [zoom, setZoom] = useState(defaultLocation.zoom);
   const [center, setCenter] = useState(defaultLocation.center);
   const [mapManager, setMapManager] = useState();
-  const [mapState, setMapState] = useState("myMap"); // Could also be in "Explore state"
-  const [viewingPin, setViewingPin] = useState(undefined);
   const [viewingExplorePin, setViewingExplorePin] = useState(undefined);
-  const [brochureViewOpen, setBrochureViewOpen] = useState(false);
   const [viewingBrochureIndex, setViewingBrochureIndex] = useState(0);
-  const [viewingExploreCategory, setViewingExploreCategory] =
-    useState(undefined);
   const exploreMapMouseHandler = useCallback(() => {
     console.log("close!");
     setViewingExplorePin(undefined);
     handleCloseBrochureView();
   }, [setViewingExplorePin, brochureViewOpen]);
+
+  function updateExploreMarkers() {}
 
   // Initialize
   useEffect(() => {
@@ -187,7 +201,28 @@ export default function MyMap({
     mapCB(myMap);
     setMapManager(myMap);
   }, []);
+  function addExploreMarkerWithAnims(location) {
+    mapManager.addExploreMarker(
+      location.slug,
+      location.latlon,
+      location.cameraImage || location.cardImage,
+      (marker) => {
+        setViewingExploreCategory(undefined);
+        setBrochureViewOpen(false);
+        mapManager.flyTo(
+          [location.latlon[1], location.latlon[0]],
+          location.zoom
+        );
 
+        mapManager.map.dragPan.disable();
+
+        mapManager.map.once("moveend", () => {
+          setViewingExplorePin({ mdx: location, marker: marker });
+          mapManager.map.dragPan.enable();
+        });
+      }
+    );
+  }
   // Update Map State
   useEffect(() => {
     if (!mapManager) return;
@@ -226,26 +261,7 @@ export default function MyMap({
         const location = chosenLocation.locs[i];
 
         if (myLocations[location.slug] == undefined) {
-          mapManager.addExploreMarker(
-            location.slug,
-            location.latlon,
-            location.cardImage,
-            (marker) => {
-              setViewingExploreCategory(undefined);
-              setBrochureViewOpen(false);
-              mapManager.flyTo(
-                [location.latlon[1], location.latlon[0]],
-                location.zoom
-              );
-
-              mapManager.map.dragPan.disable();
-
-              mapManager.map.once("moveend", () => {
-                setViewingExplorePin({ mdx: location, marker: marker });
-                mapManager.map.dragPan.enable();
-              });
-            }
-          );
+          addExploreMarkerWithAnims(location);
         }
       }
 
@@ -253,7 +269,7 @@ export default function MyMap({
       mapManager.map.on("click", exploreMapMouseHandler);
       mapManager.map.on("dragstart", exploreMapMouseHandler);
     }
-  }, [mapState]);
+  }, [mapState, mapManager]);
 
   useEffect(() => {
     if (!mapManager) return;
@@ -354,6 +370,9 @@ export default function MyMap({
         <MapExploreMarker
           mdx={viewingExplorePin.mdx}
           marker={viewingExplorePin.marker}
+          mapManager={mapManager}
+          addExploreMarkerWithAnims={addExploreMarkerWithAnims}
+          setMyLocations={setMyLocations}
           exploreCategoryClickHander={exploreCategoryClickHander}
           setViewingExplorePin={setViewingExplorePin}
         />
@@ -371,6 +390,11 @@ export default function MyMap({
           viewingBrochureIndex={viewingBrochureIndex}
           setViewingBrochureIndex={setViewingBrochureIndex}
         />
+      )}
+      {mapState == "explore" && (
+        <div className="absolute w-1/3 top-2 left-12 bg-white p-2 border-2 text-gray-900 border-gray-900 font-bold drop-shadow-xl">
+          Discover new locations to add to your map
+        </div>
       )}
     </div>
   );

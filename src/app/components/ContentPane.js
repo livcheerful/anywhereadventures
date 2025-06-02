@@ -8,7 +8,7 @@ import { Map, Marker, Popup } from "maplibre-gl";
 // Components
 import PostContent from "./PostContent";
 import RiverFeed from "./RiverFeed";
-import ContentHeader from "./ContentHeader";
+import ContentHeader from "./StickyHeader";
 import ContentToolBar from "./ContentToolBar";
 import DiscoverFeed from "./DiscoverFeed";
 
@@ -41,7 +41,9 @@ export default function ContentPane({
   chosenLocation,
   myLocationSlugs,
   setMyLocationSlugs,
+  setViewingPin,
   setShowingWelcomeScreen,
+  openMapExploreToBrochure,
 }) {
   const router = useRouter();
   const [viewAsGrid, setViewAsGrid] = useState(false);
@@ -51,77 +53,38 @@ export default function ContentPane({
   );
   const scrollValue = useRef();
 
-  useEffect(() => {
-    // Get Post based on slug
-    async function fetchPost() {
-      const file = await fetch(`/content/generated/${currentSlug}.json`);
-      const f = await file.json();
-
-      setPost(f);
-    }
-    setThumbnailView(exploringContent == true && currentSlug == "discover");
-    if (currentSlug == "discover" || currentSlug == "") return;
-    fetchPost();
-  }, [currentSlug]);
-
-  useEffect(() => {
-    // if (mainMap && !exploringContent) mainMap.removeAllTempLayers();
-  }, [mainMap, exploringContent]);
-
-  useEffect(() => {
-    // Fetch all the relevant pins.
-    // Add them to the map
-    // Filter the places in our column based on it?
-    if (mainMap && exploringContent) {
-      const shortList = chosenLocation.locs.map((l) => {
-        return {
-          latlon: l.latlon,
-          slug: l.slug,
-          title: l.title,
-          cardImage: l.cardImage,
-        };
-      });
-
-      shortList.forEach((l) => {
-        console.log(l);
-        const tempPinOnMainMap = makeNewMarker(
-          unopinionatedMapColor,
-          l,
-          router,
-          true
-        );
-        tempPinOnMainMap.addClassName("pinned");
-        mainMap?.addTemporaryLayer(tempPinOnMainMap);
-      });
-    }
-  }, [exploringContent, mainMap]);
-
-  useEffect(() => {
-    console.log("pane height changed");
-    setPaneHeight(getPaneHeight());
-  }, [paneOpen]);
-
-  function zoomToMainMap(center, zoom) {
-    console.log("VVN trying to set pane closed?");
+  function focusOnPin(slug, post) {
+    console.log("VVN in focusOnPin()");
     setPaneOpen(false);
-    mainMap.flyTo(center, zoom, false);
+    const pin = mainMap.getPinFromSlug(slug);
+    console.log(pin);
+    mainMap.flyTo([post.latlon[1], post.latlon[0]], post.zoom, true);
+    setViewingPin({ mdx: post, pin: pin });
   }
 
   function getPaneHeight() {
-    console.log("In get pane height");
     if (!paneOpen) {
       return "20%";
-    } else if (paneOpen && exploringContent) {
-      return "80%";
     } else {
       return "90%";
     }
   }
 
-  function showContent() {
-    return currentSlug && currentSlug != "discover";
-  }
+  // useEffect(() => {
+  //   // Get Post based on slug
+  //   async function fetchPost() {
+  //     const file = await fetch(`/content/generated/${currentSlug}.json`);
+  //     const f = await file.json();
 
+  //     setPost(f);
+  //   }
+  //   if (currentSlug == "discover" || currentSlug == "") return;
+  //   fetchPost();
+  // }, [currentSlug]);
+
+  useEffect(() => {
+    setPaneHeight(getPaneHeight());
+  }, [paneOpen]);
   return (
     <div
       style={{ height: paneHeight }}
@@ -156,14 +119,11 @@ export default function ContentPane({
           onClick={() => {
             setPaneOpen(true);
           }}
-          onScroll={(e) => {
-            // scrollValue.current = e.target.scrollTop;
-          }}
         >
           {!exploringContent && (
             <RiverFeed
               setExploringContent={setExploringContent}
-              zoomToMainMap={zoomToMainMap}
+              focusOnPin={focusOnPin}
               setCurrentSlug={setCurrentSlug}
               myLocationSlugs={myLocationSlugs}
               setMyLocationSlugs={setMyLocationSlugs}
@@ -171,6 +131,7 @@ export default function ContentPane({
               viewAsGrid={viewAsGrid}
               setViewAsGrid={setViewAsGrid}
               scrollRef={scrollValue}
+              openMapExploreToBrochure={openMapExploreToBrochure}
             />
           )}
         </div>

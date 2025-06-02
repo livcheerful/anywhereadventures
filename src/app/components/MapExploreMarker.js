@@ -1,9 +1,19 @@
 import { categoryInfo } from "../content/meta";
+import gsap from "gsap";
+import {
+  add as addToStorage,
+  getAllContent,
+  isLocationAdded,
+  remove as removeFromStorage,
+} from "../lib/storageHelpers";
 
 export default function MapExploreMarker({
   mdx,
   marker,
+  setMyLocations,
   exploreCategoryClickHander,
+  addExploreMarkerWithAnims,
+  mapManager,
   setViewingExplorePin,
 }) {
   return (
@@ -38,16 +48,32 @@ export default function MapExploreMarker({
           )}, ${mdx.latlon[1].toFixed(4)}`}</div>
         </div>
         {mdx.blurb && <div className="pt-2 text-gray-600">{mdx.blurb}</div>}
-
-        <button
-          className=" text-center py-2 my-2 rounded-full border-2 border-gray-300 bg-white"
-          onClick={() => {
-            // VVN TODO add location
-            console.log("VVN add location");
-          }}
-        >
-          <div className="font-bold text-gray-500 ">Add location</div>
-        </button>
+        {isLocationAdded(mdx.slug) ? (
+          <button
+            className=" text-center py-2 my-2 rounded-full border-2 border-gray-300 bg-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              removeFromStorage(mdx.slug, mdx);
+              addExploreMarkerWithAnims(mdx);
+              setMyLocations(getAllContent());
+            }}
+          >
+            <div className="font-bold text-gray-500 ">Remove location</div>
+          </button>
+        ) : (
+          <button
+            className=" text-center py-2 my-2 rounded-full border-2 border-gray-300 bg-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              gsap.to(marker, { scale: 1 });
+              addToStorage(mdx.slug, mdx);
+              mapManager.deleteExploreMarkerFromSlug(mdx.slug);
+              setMyLocations(getAllContent());
+            }}
+          >
+            <div className="font-bold text-gray-500 ">Add location</div>
+          </button>
+        )}
         {mdx.tags && (
           <div>
             <div className=" text-center font-mono text-gray-800 font-bold pt-3">

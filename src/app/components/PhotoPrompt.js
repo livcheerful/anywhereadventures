@@ -1,4 +1,5 @@
 export default function PhotoPrompt({ mdx, visited }) {
+  const genericPhotoPromptText = "Take some photos";
   return (
     <div className="relative bg-amber-300 border-2 border-gray-900 -m-2 mt-4 p-4 overflow-clip ">
       {visited ? (
@@ -21,7 +22,10 @@ export default function PhotoPrompt({ mdx, visited }) {
             </div>
           </div>
           <div className="w-full flex flex-col items-center pt-4">
-            <a href={`/camera`} className=" underline text-gray-900/50 text-sm">
+            <a
+              href={`/camera?locationId=${mdx.slug}`}
+              className=" underline text-gray-900/50 text-sm"
+            >
               retake your photos
             </a>
           </div>
@@ -31,10 +35,12 @@ export default function PhotoPrompt({ mdx, visited }) {
           <div className="text-xs w-full text-center text-amber-500 font-black">
             PHOTO PROMPT
           </div>
-          <div className="font-bold text-md">{mdx.photoPrompt}</div>
+          <div className="font-bold text-md">
+            {mdx.photoPrompt || genericPhotoPromptText}
+          </div>
           <div className="flex flex-col items-center pt-2">
             <a
-              href={`/camera`}
+              href={`/camera?locationId=${mdx.slug}`}
               className="border-gray-900 border-2 text-black bg-white px-4 py-2 font-black text-sm rounded-full"
             >
               LOG VISIT

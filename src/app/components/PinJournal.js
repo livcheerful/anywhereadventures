@@ -12,7 +12,7 @@ export default function PinJournal({ page }) {
   return (
     <div
       id="journalPage"
-      className="w-[23rem] h-[30rem] absolute bg-white drop-shadow-2xl"
+      className="w-[15rem] h-[30rem] absolute bg-white drop-shadow-2xl"
       style={{ transform: `rotate(20deg)`, bottom: "20%", right: "-12rem" }}
     >
       <a href="/journal">

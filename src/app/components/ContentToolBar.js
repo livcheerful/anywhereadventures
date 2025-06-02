@@ -51,7 +51,7 @@ export default function ContentToolBar({
   };
   return (
     <div
-      className="md:w-limiter relative bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-slate-800 border-t-2 dark:text-black"
+      className="md:w-limiter relative bg-lime-200 h-8 p-2 text-xs font-bold flex flex-row gap-2  border-t-gray-800 border-t-2  dark:text-black"
       onClick={() => {
         setPaneOpen(true);
       }}

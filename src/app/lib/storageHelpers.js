@@ -46,6 +46,10 @@ export function remove(slug) {
     localStorage.setItem(localStorageKey, JSON.stringify(locs));
 }
 
+export function isLocationAdded(slug) {
+  return isAdded(localStorageKey, slug);
+}
+
 export function add(slug, content) {
   const locs = getAll(localStorageKey);
   if (!isAdded(localStorageKey, slug)) {
@@ -56,6 +60,9 @@ export function add(slug, content) {
       cameraType: content.cameraType || "kodak",
       frameImage: content.frameImage,
       slug: content.slug,
+      tags: content.tags,
+      locationTitle: content.locationTitle,
+      neighborhood: content.neighborhood,
     };
 
     if (typeof window !== "undefined")
@@ -110,6 +117,7 @@ export function getPage(slug) {
 }
 
 export function savePage(slug, imgData, date) {
+  console.log(`in savePage(), slug: [${slug}]`);
   const pages = getAllPages();
 
   pages[slug] = { image: imgData, date: date };

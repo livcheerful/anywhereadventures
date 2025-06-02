@@ -8,6 +8,7 @@ latlon: []
 neighborhood:
 zoom: 15
 tags: [""]
+cameraImage: "/placeholderThumbnail.png"
 cardImage: "/placeholderThumbnail.png"
 stampName:
 photoPrompt:
