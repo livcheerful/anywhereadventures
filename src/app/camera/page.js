@@ -208,10 +208,10 @@ export default function Page({}) {
         {/* Camera Screen */}
         <div className="p-2 ">
           <div
-            className=" bg-white rounded-lg flex flex-col justify-center items-center overflow-clip"
+            className=" bg-gray-500 rounded-lg flex flex-col justify-center items-center overflow-clip"
             id="cameraScreen"
           >
-            <div className="p-2 bg-gray-600 w-fit h-fit">
+            <div className="p-2 bg-gray-700 w-fit h-fit">
               {((cameraPermissionState == "prompt" && haveShownHelp) ||
                 cameraPermissionState == "granted") && (
                 <Suspense>

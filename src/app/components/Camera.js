@@ -128,7 +128,9 @@ export default function Camera({
     <div className="">
       <div className="hidden">{loadImageResources()}</div>
       <div className="filmStrip  overflow-hidden">
-        <div className={`${picture ? "hidden" : "visible"} camera `}>
+        <div
+          className={`${picture ? "hidden" : "visible"} camera overflow-clip `}
+        >
           <video
             webkit-playsinline="true"
             autoPlay
