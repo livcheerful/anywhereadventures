@@ -235,11 +235,7 @@ export default function Scrapbook({
     console.log("Hello vivian did we get the page?");
     fetchPost();
   }, [slug]);
-  useEffect(() => {
-    new Draggable("#scrapbook-tool-wheel", {
-      type: "rotation",
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   function makeToolwheel() {
     const width = Math.min(480, window.innerWidth) - 30;
