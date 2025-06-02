@@ -253,7 +253,7 @@ export default function Page({}) {
             }}
             onClick={() => {
               setCameraDirectionIdx(
-                cameraDirectionIdx + (1 % cameraDirectionStates.length)
+                (cameraDirectionIdx + 1) % cameraDirectionStates.length
               );
             }}
           >
@@ -322,6 +322,8 @@ export default function Page({}) {
             }}
           ></div>
         </div>
+
+        <div className="font-mono">Number of cameras</div>
         <div
           className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
           style={{ height: "15%" }}

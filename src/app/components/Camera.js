@@ -69,8 +69,6 @@ export default function Camera({
         if (!streaming) {
           const w = cameraScreen.getBoundingClientRect().width;
 
-          // setWidth(w);
-          // setHeight(w / aspectRatio);
           setStreaming(true);
         }
       },
