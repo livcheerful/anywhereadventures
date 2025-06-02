@@ -34,11 +34,12 @@ export function ScrapbookElem(type, htmlElem, id, z) {
       start: (event) => {},
       move: (event) => {
         const zoomSensitivity = 0.15; // lower = slower zoom
+        const rotationSensitivity = 0.1;
         const deltaScale = (event.scale - 1) * zoomSensitivity;
         this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
         this.y += event.delta.y;
-        this.rotation += event.angle;
+        this.rotation += event.angle * rotationSensitivity;
         updateTransform();
       },
     },
