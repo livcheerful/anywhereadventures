@@ -1,11 +1,12 @@
 "use client";
-
 import { useEffect, useState, Suspense } from "react";
+import { useRouter } from "next/navigation";
+
 import FilmReel from "../components/FilmReel";
 import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
-import { useRouter } from "next/navigation";
+
 import { savePage, numberOfPages } from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
@@ -323,7 +324,6 @@ export default function Page({}) {
           ></div>
         </div>
 
-        <div className="font-mono">Number of cameras</div>
         <div
           className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
           style={{ height: "15%" }}

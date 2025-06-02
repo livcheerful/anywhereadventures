@@ -1,8 +1,10 @@
 import { useState, useEffect, Suspense } from "react";
-import { getAllLCItems } from "../lib/storageHelpers";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
-import SearchParamHandler from "./SearchParamHandler";
+import interact from "interactjs";
+
+import { getAllLCItems } from "../lib/storageHelpers";
+
 function ScrapbookElem(type, htmlElem, id, z) {
   htmlElem.className = "cursor-pointer";
   this.type = type;
@@ -10,7 +12,51 @@ function ScrapbookElem(type, htmlElem, id, z) {
   this.id = id;
   this.elem = htmlElem;
 
-  Draggable.create(htmlElem);
+  // Draggable.create(htmlElem);
+  const sticker = interact(htmlElem);
+  const position = { x: 0, y: 0 };
+  sticker.draggable({
+    // make the element fire drag events
+    listeners: {
+      start(event) {
+        console.log(event.type, event.target);
+      },
+      move(event) {
+        position.x += event.dx;
+        position.y += event.dy;
+
+        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      },
+    },
+  });
+  sticker.gesturable({
+    listeners: {
+      start(event) {
+        angleScale.angle -= event.angle;
+
+        clearTimeout(resetTimeout);
+        scaleElement.classList.remove("reset");
+      },
+      move(event) {
+        // document.body.appendChild(new Text(event.scale))
+        var currentAngle = event.angle + angleScale.angle;
+        var currentScale = event.scale * angleScale.scale;
+
+        scaleElement.style.transform =
+          "rotate(" + currentAngle + "deg)" + "scale(" + currentScale + ")";
+
+        // uses the dragMoveListener from the draggable demo above
+        dragMoveListener(event);
+      },
+      end(event) {
+        angleScale.angle = angleScale.angle + event.angle;
+        angleScale.scale = angleScale.scale * event.scale;
+
+        resetTimeout = setTimeout(reset, 1000);
+        scaleElement.classList.add("reset");
+      },
+    },
+  });
   htmlElem.style.left = window.innerWidth / 2;
   htmlElem.style.right = window.innerHeight / 2;
 }
@@ -176,7 +222,7 @@ export default function Scrapbook({
     new Draggable("#scrapbook-tool-wheel", {
       type: "rotation",
     });
-  });
+  }, []);
 
   function makeToolwheel() {
     const width = Math.min(480, window.innerWidth) - 30;
