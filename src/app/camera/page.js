@@ -277,7 +277,6 @@ export default function Page({}) {
                     videoWrapper.getBoundingClientRect().width;
                   const destinationHeight =
                     videoWrapper.getBoundingClientRect().height;
-                  console.log(videoWrapper);
                   const video = document.getElementById("video");
                   const videoDimensions = video.width / video.height;
 

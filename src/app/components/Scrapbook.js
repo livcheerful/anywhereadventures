@@ -1,71 +1,9 @@
 import { useState, useEffect, Suspense } from "react";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
-import interact from "interactjs";
+import { ScrapbookElem } from "./ScrapbookElement";
 
 import { getAllLCItems } from "../lib/storageHelpers";
-
-function dragMoveListener(event) {
-  var target = event.target;
-  // keep the dragged position in the data-x/data-y attributes
-  var x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
-  var y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
-
-  // translate the element
-  target.style.transform = "translate(" + x + "px, " + y + "px)";
-
-  // update the posiion attributes
-  target.setAttribute("data-x", x);
-  target.setAttribute("data-y", y);
-}
-function ScrapbookElem(type, htmlElem, id, z) {
-  htmlElem.className = "cursor-pointer";
-  this.type = type;
-  this.z = z;
-  this.id = id;
-  this.elem = htmlElem;
-
-  const sticker = interact(htmlElem);
-  const position = { x: 0, y: 0 };
-  var angleScale = {
-    angle: 0,
-    scale: 1,
-  };
-  sticker.draggable({
-    // make the element fire drag events
-    listeners: {
-      start(event) {
-        console.log(event.type, event.target);
-      },
-      move(event) {
-        position.x += event.dx;
-        position.y += event.dy;
-
-        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-      },
-    },
-  });
-  sticker.gesturable({
-    listeners: {
-      start(event) {
-        angleScale.angle -= event.angle;
-
-        scaleElement.classList.remove("reset");
-      },
-      move(event) {
-        var currentAngle = event.angle + angleScale.angle;
-        var currentScale = event.scale * angleScale.scale;
-
-        htmlElem.style.transform =
-          "rotate(" + currentAngle + "deg)" + "scale(" + currentScale + ")";
-
-        dragMoveListener(event);
-      },
-    },
-  });
-  htmlElem.style.left = window.innerWidth / 2;
-  htmlElem.style.right = window.innerHeight / 2;
-}
 
 function ScrapbookPage(picture) {
   this.topZ = 10;
@@ -146,6 +84,7 @@ function ScrapbookPage(picture) {
       `sticker-${this.numElems}`,
       this.topZ
     );
+    console.log(stick);
     this.elements.push(stick);
     this.topZ++;
     this.numElems++;
