@@ -170,36 +170,22 @@ export default function Scrapbook({
 
   const itemsOnWheel = [
     {
-      title: "Back to Camera",
-      onClickHandler: () => {
-        setProcessPhotos(false);
-      },
+      title: "My Photos",
+      onClickHandler: () => {},
     },
     {
-      title: "Save",
-      onClickHandler: () => {
-        const img = scrapbookPage.flatten();
-
-        var a = document.createElement("a");
-        // Set the link to the image so that when clicked, the image begins downloading
-        a.href = img;
-        // Specify the image filename
-        a.download = `loc-${slug}.jpg`;
-        // Click on the link to set off download
-        a.click();
-      },
-    },
-    {
-      title: "Sticker",
+      title: "Stickers",
       onClickHandler: () => {
         setShowStickerModal(true);
       },
     },
     {
-      title: "Finish",
-      onClickHandler: () => {
-        onFinishedScrapbooking(scrapbookPage.flatten());
-      },
+      title: "Text",
+      onClickHandler: () => {},
+    },
+    {
+      title: "Pen",
+      onClickHandler: () => {},
     },
   ];
   useEffect(() => {
@@ -220,66 +206,46 @@ export default function Scrapbook({
       console.log(f.stickers);
       setPageStickers(f.stickers);
     }
-    console.log("Hello vivian did we get the page?");
     fetchPost();
   }, [slug]);
   useEffect(() => {}, []);
 
-  function makeToolwheel() {
-    const width = Math.min(480, window.innerWidth) - 30;
+  function makeToolbar() {
     return (
-      <div
-        className="w-full md:w-limiter flex flex-col items-center fixed z-20"
-        id="scrapbook-tool-wheel"
-        style={{
-          bottom: `-${(width / 4) * 3}px`,
-          transform: `rotate(-120deg)`,
-        }}
-      >
-        <svg
-          viewBox={`0 0 ${width} ${width}`}
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ width: `${width}px` }}
-        >
-          <circle
-            className=" fill-slate-200"
-            cx={width / 2}
-            cy={width / 2}
-            z={10}
-            r={width / 2}
-          />
-
-          {itemsOnWheel.map((item, i) => {
-            const degrees = 30 * i;
-            const radians = degrees * (Math.PI / 180);
-            return (
-              <>
-                <circle
-                  z={2}
-                  cx={(Math.cos(radians) * width) / 2 + width / 2}
-                  cy={(Math.sin(radians) * width) / 2 + width / 2}
-                  r={20}
-                  onClick={() => {
-                    item.onClickHandler();
-                  }}
-                />
-                <circle
-                  className=" fill-blue-800"
-                  cx={(Math.cos(radians) * width) / 2 + width / 2}
-                  cy={(Math.sin(radians) * width) / 2 + width / 2}
-                  r={5}
-                />
-                <text
-                  x={(Math.cos(radians) * width * 0.8) / 2 + width / 2}
-                  y={(Math.sin(radians) * width * 0.8) / 2 + width / 2}
-                  className="  fill-blue-600  "
-                >
-                  {item.title}
-                </text>
-              </>
-            );
-          })}
-        </svg>
+      <div className="w-fit flex flex-row gap-2" id="scrapbook-tool-wheel">
+        {itemsOnWheel.map((item, i) => {
+          return (
+            <button
+              key={i}
+              className="w-36 h-20 bg-blue-300 rounded-full flex flex-col pt-2"
+              onClick={() => {
+                item.onClickHandler();
+              }}
+            >
+              <div className="w-full text-center  font-mono font-bold text-gray-700 h-fit">
+                {item.title}
+              </div>
+            </button>
+          );
+        })}
+        <div className="fixed bottom-0 left-0 w-full md:w-limiter bg-blue-200 p-2 flex flex-row gap-2 font-mono text-gray-600 font-bold">
+          <button
+            onClick={() => {
+              setProcessPhotos(false);
+            }}
+            className="bg-white rounded-full px-4 py-2 grow"
+          >
+            Back
+          </button>
+          <button
+            onClick={() => {
+              onFinishedScrapbooking(scrapbookPage.flatten());
+            }}
+            className="bg-white rounded-full px-4 py-2 grow"
+          >
+            Finish
+          </button>
+        </div>
       </div>
     );
   }
@@ -295,11 +261,6 @@ export default function Scrapbook({
         id="scrapbookPlayground"
         className="w-full h-full top-0 left-0 absolute overflow-clip z-10 touch-none select-none"
       ></div>
-      {reel && (
-        <div className="text-white absolute bottom-0  h-fit">
-          {makeToolwheel()}
-        </div>
-      )}
       {showStickerModal && (
         <div
           className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
@@ -362,6 +323,11 @@ export default function Scrapbook({
               })}
             </div>
           </div>
+        </div>
+      )}
+      {reel && (
+        <div className="w-full md:w-limiter  z-50 fixed bottom-0 left-0 h-24 overflow-clip overflow-x-auto">
+          {makeToolbar()}
         </div>
       )}
     </div>

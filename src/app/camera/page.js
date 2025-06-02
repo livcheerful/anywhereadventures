@@ -147,7 +147,7 @@ export default function Page({}) {
         />
       </Suspense>
       {cameraPermissionState == "prompt" && !haveShownHelp && (
-        <div className="absolute w-full h-full bg-white/85 flex flex-col items-center justify-center z-20">
+        <div className="absolute w-full h-full top-0 left-0 bg-white/85 flex flex-col items-center justify-center z-20">
           <div
             className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2  text-black "
             style={{ maxWidth: "80%" }}
@@ -350,7 +350,7 @@ export default function Page({}) {
         />
       )}
       {showSummaryPage && (
-        <div className="w-full h-full absolute bg-white z-20 overflow-y-auto ">
+        <div className="w-full h-full absolute top-0 left-0 bg-white z-20 overflow-y-auto ">
           <div
             className=" bg-green-400 rounded-lg font-extrabold w-fit px-2 py-1 drop-shadow-md cursor-pointer "
             onClick={() => {
