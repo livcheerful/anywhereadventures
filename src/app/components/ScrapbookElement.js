@@ -38,6 +38,7 @@ export function ScrapbookElem(type, htmlElem, id, z) {
         this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
         this.y += event.delta.y;
+        this.rotation += event.angle;
         updateTransform();
       },
     },
