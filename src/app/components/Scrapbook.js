@@ -49,8 +49,18 @@ function ScrapbookPage(picture) {
     for (let i = 0; i < this.elements.length; i++) {
       const currElem = this.elements[i].elem;
       const box = currElem.getBoundingClientRect();
-      console.log(box);
-      ctx.drawImage(currElem, box.x, box.y, box.width, box.height);
+
+      const x = box.x;
+      const y = box.y;
+      const width = box.width;
+      const height = box.height;
+      console.log(this.elements[i]);
+      ctx.save();
+
+      ctx.translate(x, y);
+      ctx.rotate(this.elements[i].rotation);
+      ctx.drawImage(currElem, 0, 0, width, height);
+      ctx.restore();
     }
 
     const dataURL = document
