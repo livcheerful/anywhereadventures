@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import interact from "interactjs";
 
+import ScrapbookCornerDisplay from "./ScrapbookCornerDisplay";
 import { ScrapbookElem } from "./ScrapbookElement";
 
 import { getAllLCItems } from "../lib/storageHelpers";
@@ -329,6 +330,7 @@ export default function Scrapbook({
               })}
             </div>
           </div>
+          <ScrapbookCornerDisplay imgUrl="/rotatedFilm.png" />
         </div>
       )}
       {showStickerModal && (
@@ -393,16 +395,21 @@ export default function Scrapbook({
               })}
             </div>
           </div>
+          <ScrapbookCornerDisplay imgUrl="/tempStickerImage.png" />
         </div>
       )}
       {showTextModal && (
         <div
-          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
+          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-center  items-center z-50"
           onClick={() => {
             setShowTextModal(false);
           }}
         >
-          <input id="textStickerInput"></input>
+          <div>
+            <input id="textStickerInput"></input>
+          </div>
+
+          <ScrapbookCornerDisplay imgUrl="/tape1.png" />
         </div>
       )}
       {reel && (
