@@ -70,10 +70,16 @@ function ScrapbookPage(picture) {
       ctx.rotate(toRadians(this.elements[i].rotation));
       ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
       ctx.scale(sticker.scale, sticker.scale);
-      currElem.style.transform = `      
+      currElem.style.transform = ` 
         scale(${this.scale})
       `;
-      ctx.drawImage(currElem, 0, 0, width, height);
+      ctx.drawImage(
+        currElem,
+        0,
+        0,
+        currElem.getBoundingClientRect().width,
+        currElem.getBoundingClientRect().height
+      );
       ctx.restore();
       currElem.style.transform = oldTransform;
     }
