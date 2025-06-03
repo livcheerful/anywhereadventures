@@ -53,30 +53,37 @@ function ScrapbookPage(picture) {
     for (let i = 0; i < this.elements.length; i++) {
       const sticker = this.elements[i];
       const currElem = sticker.elem;
+
+      // Get layout info (position after CSS transforms)
       const rect = currElem.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
 
-      // Get full computed transform matrix
-      const computedTransform = getComputedStyle(currElem).transform;
+      // Get the transform values from your own logic (not from CSS)
+      const rotation = sticker.rotation; // in degrees
+      const scale = sticker.scale;
+      const x = rect.left + width / 2; // center of element
+      const y = rect.top + height / 2;
 
       ctx.save();
 
-      if (computedTransform && computedTransform !== "none") {
-        const matrixValues = computedTransform
-          .match(/matrix\(([^)]+)\)/)[1]
-          .split(",")
-          .map(Number);
+      // Move to the center of the element
+      ctx.translate(x, y);
 
-        // Apply the exact same transform to the canvas
-        ctx.setTransform(...matrixValues);
-      } else {
-        // Fallback: No transform, use normal draw
-        ctx.setTransform(1, 0, 0, 1, rect.x, rect.y);
-      }
+      // Rotate the canvas (convert degrees to radians)
+      ctx.rotate((rotation * Math.PI) / 180);
 
-      // Now draw the element at (0, 0) because it’s transformed into place
-      ctx.drawImage(currElem, 0, 0, width, height);
+      // Scale the canvas
+      ctx.scale(scale, scale);
+
+      // Draw the image centered at the origin (corrected for rotation/scale)
+      ctx.drawImage(
+        currElem,
+        -width / 2 / scale,
+        -height / 2 / scale,
+        width / scale,
+        height / scale
+      );
 
       ctx.restore();
     }
