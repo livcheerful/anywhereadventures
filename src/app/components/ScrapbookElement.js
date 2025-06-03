@@ -1,6 +1,14 @@
 import interact from "interactjs";
 
-export function ScrapbookElem(type, htmlElem, id, z) {
+export function ScrapbookElem(
+  type,
+  htmlElem,
+  id,
+  z,
+  imgSrc,
+  origWidth,
+  origHeight
+) {
   htmlElem.className = "cursor-pointer";
   this.type = type;
   this.z = z;
@@ -10,10 +18,15 @@ export function ScrapbookElem(type, htmlElem, id, z) {
   this.y = 0;
   this.scale = 1;
   this.rotation = 0;
-  const sticker = interact(htmlElem);
+  this.imgSrc = imgSrc;
 
-  const zoomSensitivity = 0.15; // lower = slower zoom
-  const rotationSensitivity = 0.1;
+  console.log("VVN KLJS:LKJFL:SKDJFL:SDKJFL:Kj");
+  console.log(htmlElem);
+  this.originalWidth = origWidth;
+  this.originalHeight = origHeight;
+  const sticker = interact(htmlElem);
+  console.log(this.originalWidth);
+
   const updateTransform = () => {
     htmlElem.style.transform = `
       translate(${this.x}px, ${this.y}px)

@@ -5,6 +5,7 @@ import { ScrapbookElem } from "./ScrapbookElement";
 
 import { getAllLCItems } from "../lib/storageHelpers";
 
+const defaultStickerSize = 300;
 function ScrapbookPage(picture) {
   this.topZ = 10;
   this.elements = []; // array for now, maybe diff structure in future
@@ -46,45 +47,43 @@ function ScrapbookPage(picture) {
     //   pictureDiv.getBoundingClientRect().height
     // );
 
-    function toRadians(degrees) {
-      return (degrees * Math.PI) / 180;
-    }
-
     for (let i = 0; i < this.elements.length; i++) {
       const sticker = this.elements[i];
       const currElem = sticker.elem;
+      var imgSrc = new Image();
+      imgSrc.src = sticker.imgSrc;
+      // Use natural (untransformed) size
+      const originalWidth = sticker.originalWidth;
+      const originalHeight = sticker.originalHeight;
+      console.log(sticker);
 
-      // Get layout info (position after CSS transforms)
-      const rect = currElem.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
+      // Use visual (transformed) position
+      const box = currElem.getBoundingClientRect();
 
-      // Get the transform values from your own logic (not from CSS)
-      const rotation = sticker.rotation; // in degrees
-      const scale = sticker.scale;
-      const x = rect.left + width / 2; // center of element
-      const y = rect.top + height / 2;
-
+      // Save canvas state
       ctx.save();
 
-      // Move to the center of the element
-      ctx.translate(x, y);
+      // Move canvas origin to center of the sticker
+      ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
 
-      // Rotate the canvas (convert degrees to radians)
-      ctx.rotate((rotation * Math.PI) / 180);
+      // Apply rotation
+      ctx.rotate((sticker.rotation * Math.PI) / 180);
 
-      // Scale the canvas
-      ctx.scale(scale, scale);
+      // Apply scale
+      ctx.scale(sticker.scale, sticker.scale);
 
-      // Draw the image centered at the origin (corrected for rotation/scale)
+      console.log(originalWidth);
+      console.log(originalHeight);
+      // Draw image centered at origin
       ctx.drawImage(
-        currElem,
-        -width / 2 / scale,
-        -height / 2 / scale,
-        width / scale,
-        height / scale
+        imgSrc,
+        -originalWidth / 2,
+        -originalHeight / 2,
+        originalWidth,
+        originalHeight
       );
 
+      // Restore canvas state
       ctx.restore();
     }
 
@@ -117,7 +116,10 @@ function ScrapbookPage(picture) {
       "sticker",
       imgDiv,
       `sticker-${this.numElems}`,
-      this.topZ
+      this.topZ,
+      img,
+      300,
+      168.75
     );
     console.log(stick);
     this.elements.push(stick);
@@ -168,7 +170,7 @@ export default function Scrapbook({
     setStickers(Object.values(lcItems));
 
     reel.forEach((image, i) => {
-      scrapbookPage.addNewSticker(image, 300);
+      scrapbookPage.addNewSticker(image, defaultStickerSize);
     });
   }, []);
 
