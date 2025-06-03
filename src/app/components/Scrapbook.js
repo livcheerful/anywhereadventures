@@ -70,9 +70,6 @@ function ScrapbookPage(picture) {
       ctx.rotate(toRadians(this.elements[i].rotation));
       ctx.scale(sticker.scale, sticker.scale);
       ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
-      currElem.style.transform = ` 
-        scale(${this.scale})
-      `;
       ctx.drawImage(
         currElem,
         0,
