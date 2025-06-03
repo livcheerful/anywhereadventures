@@ -64,19 +64,10 @@ function ScrapbookPage(picture) {
       console.log(sticker);
       ctx.save();
 
-      const scaledWidth = width * sticker.scale;
-      const scaledHeight = height * sticker.scale;
-      ctx.translate(sticker.x + scaledWidth / 2, sticker.y + scaledHeight / 2);
+      ctx.translate(sticker.x, sticker.y);
       ctx.rotate(toRadians(this.elements[i].rotation));
       ctx.scale(sticker.scale, sticker.scale);
-      ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
-      ctx.drawImage(
-        currElem,
-        0,
-        0,
-        currElem.getBoundingClientRect().width,
-        currElem.getBoundingClientRect().height
-      );
+      ctx.drawImage(currElem, -width / 2, -height / 2, width, height);
       ctx.restore();
       currElem.style.transform = oldTransform;
     }
