@@ -47,20 +47,31 @@ function ScrapbookPage(picture) {
     // );
 
     for (let i = 0; i < this.elements.length; i++) {
-      const currElem = this.elements[i].elem;
+      const sticker = this.elements[i];
+      const currElem = sticker.elem;
       const box = currElem.getBoundingClientRect();
 
+      const oldTransform = currElem.style.transform;
+      currElem.style.transform = "";
+      console.log(oldTransform);
       const x = box.x;
       const y = box.y;
       const width = box.width;
       const height = box.height;
-      console.log(this.elements[i]);
+      console.log(sticker);
       ctx.save();
 
-      ctx.translate(x, y);
+      ctx.translate(sticker.x, sticker.y);
       ctx.rotate(this.elements[i].rotation);
-      ctx.drawImage(currElem, 0, 0, width, height);
+      ctx.drawImage(
+        currElem,
+        0,
+        0,
+        width * sticker.scale,
+        height * sticker.scale
+      );
       ctx.restore();
+      currElem.style.transform = oldTransform;
     }
 
     const dataURL = document
