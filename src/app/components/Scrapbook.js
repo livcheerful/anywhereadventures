@@ -1,12 +1,13 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { Draggable } from "gsap/Draggable";
+import interact from "interactjs";
+
 import { ScrapbookElem } from "./ScrapbookElement";
 
 import { getAllLCItems } from "../lib/storageHelpers";
 
 const defaultStickerSize = 300;
-function ScrapbookPage(picture) {
+function ScrapbookPage(handleDraggingItem, picture) {
   this.topZ = 10;
   this.elements = []; // array for now, maybe diff structure in future
   this.numElems = 0;
@@ -80,6 +81,14 @@ function ScrapbookPage(picture) {
     return dataURL;
   };
 
+  this.deleteSticker = function (draggable) {
+    const foundIndex = this.elements.indexOf((e) => {
+      return e.elem == draggable;
+    });
+    draggable.remove();
+    this.elements.splice(foundIndex, 1);
+  };
+
   this.addNewPageSticker = function (img, size, linkOut) {
     const imgDiv = this.addNewSticker(img, size);
     if (linkOut) {
@@ -87,24 +96,25 @@ function ScrapbookPage(picture) {
       imgDiv.setAttribute("linkout", linkOut);
     }
   };
-  this.addNewSticker = function (img, size) {
+  this.addNewSticker = function (img, width, height) {
     const placeItHere = document.querySelector("#scrapbookPlayground");
     const imgDiv = document.createElement("img");
     imgDiv.id = `sticker-${this.numElems}`;
     imgDiv.src = img;
     imgDiv.style.position = "absolute";
     imgDiv.style.zIndex = this.topZ;
-    imgDiv.style.width = `${size}px`;
+    imgDiv.style.width = `${width}px`;
     imgDiv.style.top = "0px";
     imgDiv.style.left = "0px";
 
     const stick = new ScrapbookElem(
+      handleDraggingItem,
       "sticker",
       imgDiv,
       `sticker-${this.numElems}`,
       this.topZ,
       img,
-      300,
+      width,
       168.75
     );
     console.log(stick);
@@ -129,7 +139,12 @@ export default function Scrapbook({
   const [stickers, setStickers] = useState([]);
   const [pageStickers, setPageStickers] = useState([]);
   const [showMyPhotos, setShowMyPhotos] = useState(false);
-  const [scrapbookPage, setScrapbookPage] = useState(new ScrapbookPage());
+  const [scrapbookPage, setScrapbookPage] = useState(
+    new ScrapbookPage(handleDraggingItem)
+  );
+  const [draggingItem, setDraggingItem] = useState(undefined);
+
+  const trashRef = useRef();
 
   const itemsOnWheel = [
     {
@@ -173,6 +188,28 @@ export default function Scrapbook({
   }, []);
 
   useEffect(() => {
+    if (!trashRef.current) return;
+
+    const dropZone = interact("#trashZone").dropzone({
+      accept: ".trashable",
+      overlap: "pointer",
+      ondropactivate: (event) => {
+        console.log("Drop Activated");
+      },
+      ondropenter: (event) => {
+        console.log("drop entered");
+      },
+      ondrop: (event) => {
+        console.log("Dropped!");
+        console.log(event);
+        scrapbookPage.deleteSticker(event.draggable.target);
+      },
+    });
+
+    return () => dropZone.unset();
+  }, []);
+
+  useEffect(() => {
     // Get Post based on slug
     async function fetchPost() {
       const file = await fetch(`/content/generated/${slug}.json`);
@@ -183,6 +220,10 @@ export default function Scrapbook({
     fetchPost();
   }, [slug]);
   useEffect(() => {}, []);
+
+  function handleDraggingItem(element) {
+    setDraggingItem(element);
+  }
 
   function makeToolbar() {
     return (
@@ -250,7 +291,6 @@ export default function Scrapbook({
             setShowMyPhotos(false);
           }}
         >
-          {" "}
           <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
             <svg
               className="w-4 "
@@ -350,10 +390,19 @@ export default function Scrapbook({
         </div>
       )}
       {reel && (
-        <div className="w-full md:w-limiter  z-10 fixed bottom-0 left-0 h-fit overflow-clip overflow-x-auto">
+        <div className="fixed w-full md:w-limiter z-10  bottom-0 left-0 h-fit overflow-clip overflow-x-auto">
           {makeToolbar()}
         </div>
       )}
+      <div
+        id="trashZone"
+        ref={trashRef}
+        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
+          draggingItem ? "visible" : "invisible"
+        }`}
+      >
+        <div className="font-mono font-bold">TRASH</div>
+      </div>
     </div>
   );
 }

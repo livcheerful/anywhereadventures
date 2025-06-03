@@ -1,6 +1,7 @@
 import interact from "interactjs";
 
 export function ScrapbookElem(
+  handleDraggingItem,
   type,
   htmlElem,
   id,
@@ -9,7 +10,7 @@ export function ScrapbookElem(
   origWidth,
   origHeight
 ) {
-  htmlElem.className = "cursor-pointer";
+  htmlElem.className = "cursor-pointer trashable";
   this.type = type;
   this.z = z;
   this.id = id;
@@ -20,13 +21,9 @@ export function ScrapbookElem(
   this.rotation = 0;
   this.imgSrc = imgSrc;
 
-  console.log("VVN KLJS:LKJFL:SKDJFL:SDKJFL:Kj");
-  console.log(htmlElem);
   this.originalWidth = origWidth;
   this.originalHeight = origHeight;
   const sticker = interact(htmlElem);
-  console.log(this.originalWidth);
-
   const updateTransform = () => {
     htmlElem.style.transform = `
       translate(${this.x}px, ${this.y}px)
@@ -36,10 +33,16 @@ export function ScrapbookElem(
   };
   sticker.draggable({
     listeners: {
+      start: (event) => {
+        handleDraggingItem(this);
+      },
       move: (event) => {
         this.x += event.dx;
         this.y += event.dy;
         updateTransform();
+      },
+      end: (event) => {
+        handleDraggingItem(undefined);
       },
     },
   });
@@ -48,6 +51,7 @@ export function ScrapbookElem(
     listeners: {
       start: (event) => {
         // this.rotate -= event.da * rotationSensitivity;
+        handleDraggingItem(this);
       },
       move: (event) => {
         const deltaScale = event.ds;
@@ -61,6 +65,7 @@ export function ScrapbookElem(
     end: (event) => {
       //   this.rotate = this.angle + event.angle;
       //   this.scale = this.scale * event.scale;
+      handleDraggingItem(undefined);
     },
   });
   htmlElem.style.left = window.innerWidth / 2;
