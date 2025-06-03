@@ -34,14 +34,15 @@ export function ScrapbookElem(type, htmlElem, id, z) {
   sticker.gesturable({
     listeners: {
       start: (event) => {
-        this.rotate -= event.angle * rotationSensitivity;
+        // this.rotate -= event.da * rotationSensitivity;
       },
       move: (event) => {
         const deltaScale = (event.scale - 1) * zoomSensitivity;
         this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
         this.y += event.delta.y;
-        this.rotation += event.angle * rotationSensitivity;
+        this.rotation += event.da * rotationSensitivity;
+        console.log(event);
         updateTransform();
       },
     },
