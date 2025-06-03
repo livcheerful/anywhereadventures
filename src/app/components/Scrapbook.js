@@ -36,7 +36,7 @@ function ScrapbookPage(handleDraggingItem, picture) {
     canvas.width = placeItHere.getBoundingClientRect().width;
     canvas.height = window.innerHeight;
     ctx.beginPath();
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke();
     // const pictureDiv = document.querySelector("#picture");
@@ -139,6 +139,7 @@ export default function Scrapbook({
   const [stickers, setStickers] = useState([]);
   const [pageStickers, setPageStickers] = useState([]);
   const [showMyPhotos, setShowMyPhotos] = useState(false);
+  const [showTextModal, setShowTextModal] = useState(false);
   const [scrapbookPage, setScrapbookPage] = useState(
     new ScrapbookPage(handleDraggingItem)
   );
@@ -163,7 +164,10 @@ export default function Scrapbook({
     },
     {
       title: "Text",
-      onClickHandler: () => {},
+      image: "/tape1.png",
+      onClickHandler: () => {
+        setShowTextModal(true);
+      },
     },
     {
       title: "Scissors",
@@ -177,6 +181,13 @@ export default function Scrapbook({
       onClickHandler: () => {},
     },
   ];
+
+  useEffect(() => {
+    if (!showTextModal) return;
+    const textInput = document.getElementById("textStickerInput");
+    console.log(textInput);
+    textInput.focus();
+  }, [showTextModal]);
   useEffect(() => {
     // get all saved LC items
     const lcItems = getAllLCItems();
@@ -227,15 +238,12 @@ export default function Scrapbook({
 
   function makeToolbar() {
     return (
-      <div
-        className="w-fit flex flex-row gap-2 -pb-10"
-        id="scrapbook-tool-wheel"
-      >
+      <div className="w-fit flex flex-row gap-2 pl-2" id="scrapbook-tool-wheel">
         {itemsOnWheel.map((item, i) => {
           return (
             <button
               key={i}
-              className="h-48 w-36 flex flex-col pt-2 "
+              className="h-36 w-36   flex flex-col pt-2 "
               style={{
                 backgroundImage: `url(${item.image})`,
                 backgroundSize: "contain",
@@ -245,9 +253,7 @@ export default function Scrapbook({
                 item.onClickHandler();
               }}
             >
-              <div className="w-full text-center font-mono font-bold text-gray-700 h-fit ">
-                {item.title}
-              </div>
+              <div className="w-full text-center font-mono font-bold text-gray-700 h-fit "></div>
             </button>
           );
         })}
@@ -313,7 +319,7 @@ export default function Scrapbook({
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      scrapbookPage.addNewPageSticker(photo, 200);
+                      scrapbookPage.addNewPageSticker(photo, 300);
                       setShowMyPhotos(false);
                     }}
                   >
@@ -389,8 +395,18 @@ export default function Scrapbook({
           </div>
         </div>
       )}
+      {showTextModal && (
+        <div
+          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
+          onClick={() => {
+            setShowTextModal(false);
+          }}
+        >
+          <input id="textStickerInput"></input>
+        </div>
+      )}
       {reel && (
-        <div className="fixed w-full md:w-limiter z-10  bottom-0 left-0 h-fit overflow-clip overflow-x-auto">
+        <div className="fixed w-full md:w-limiter z-10  bottom-0 left-0 h-fit  overflow-x-auto">
           {makeToolbar()}
         </div>
       )}

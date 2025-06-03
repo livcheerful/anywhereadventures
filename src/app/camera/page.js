@@ -359,7 +359,10 @@ export default function Page({}) {
             Back
           </div>
           <div className="flex flex-col items-center gap-2 ">
-            <img src={collageImage} className="w-1/2 -rotate-6 " />
+            <img
+              src={collageImage}
+              className="w-1/2 -rotate-6 drop-shadow-xl"
+            />
 
             <a
               className="w-1/3 h-fit"
