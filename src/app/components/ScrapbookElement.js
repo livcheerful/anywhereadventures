@@ -1,15 +1,16 @@
 import interact from "interactjs";
 
-export function ScrapbookElem(
+export function ScrapbookElem({
   handleDraggingItem,
   type,
   htmlElem,
   id,
   z,
-  imgSrc,
   origWidth,
-  origHeight
-) {
+  origHeight,
+  imgSrc,
+  textSrc,
+}) {
   htmlElem.className = "cursor-pointer trashable";
   this.type = type;
   this.z = z;
@@ -20,6 +21,7 @@ export function ScrapbookElem(
   this.scale = 1;
   this.rotation = 0;
   this.imgSrc = imgSrc;
+  this.textSrc = textSrc;
 
   this.originalWidth = origWidth;
   this.originalHeight = origHeight;

@@ -29,7 +29,12 @@ function ScrapbookPage(handleDraggingItem, picture) {
   this.adjustedHeight = adjustedHeight;
   pictureDiv.remove();
 
-  this.flatten = function () {
+  this.startFlatten = async function (onFlattenEnd) {
+    const dataUrl = await this.flatten();
+    onFlattenEnd(dataUrl);
+  };
+
+  this.flatten = async function () {
     const canvas = document.querySelector("#scrapbookCanvas");
     var ctx = canvas.getContext("2d");
 
@@ -48,31 +53,62 @@ function ScrapbookPage(handleDraggingItem, picture) {
     //   pictureDiv.getBoundingClientRect().width,
     //   pictureDiv.getBoundingClientRect().height
     // );
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = (e) => {
+          console.log(e);
+          reject(new Error(` Failed to load image: ${src}:`));
+        };
+        img.src = src;
+      });
+    }
 
     for (let i = 0; i < this.elements.length; i++) {
-      const sticker = this.elements[i];
-      const currElem = sticker.elem;
-      var imgSrc = new Image();
-      imgSrc.src = sticker.imgSrc;
-      const originalWidth = sticker.originalWidth;
-      const originalHeight = sticker.originalHeight;
+      const elem = this.elements[i];
+      console.log(elem);
+      switch (elem.type) {
+        case "sticker":
+          console.log("flatten sticker");
+          const sticker = this.elements[i];
+          const currElem = sticker.elem;
+          const imgSrc = await loadImage(sticker.imgSrc);
+          const originalWidth = sticker.originalWidth;
+          const originalHeight = sticker.originalHeight;
 
-      const box = currElem.getBoundingClientRect();
+          const box = currElem.getBoundingClientRect();
 
-      ctx.save();
-      ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
-      ctx.rotate((sticker.rotation * Math.PI) / 180);
-      ctx.scale(sticker.scale, sticker.scale);
+          ctx.save();
+          ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
+          ctx.rotate((sticker.rotation * Math.PI) / 180);
+          ctx.scale(sticker.scale, sticker.scale);
 
-      ctx.drawImage(
-        imgSrc,
-        -originalWidth / 2,
-        -originalHeight / 2,
-        originalWidth,
-        originalHeight
-      );
+          ctx.drawImage(
+            imgSrc,
+            -originalWidth / 2,
+            -originalHeight / 2,
+            originalWidth,
+            originalHeight
+          );
 
-      ctx.restore();
+          ctx.restore();
+          break;
+        case "text":
+          console.log("trying to flatten text");
+          const svgElement = elem.elem;
+          const svgString = new XMLSerializer().serializeToString(svgElement);
+          const svgBlob = new Blob([svgString], {
+            type: "image/svg+xml;charset=utf-8",
+          });
+          const url = URL.createObjectURL(svgBlob);
+          const img = await loadImage(url);
+          ctx.drawImage(img, 0, 0, 10, 10);
+          break;
+        default:
+          console.log("Default");
+          break;
+      }
     }
 
     const dataURL = document
@@ -88,6 +124,36 @@ function ScrapbookPage(handleDraggingItem, picture) {
     });
     draggable.remove();
     this.elements.splice(foundIndex, 1);
+  };
+
+  this.addNewTextSticker = function (text) {
+    const placeItHere = document.querySelector("#scrapbookPlayground");
+    const svgDiv = document.createElement("svg");
+    svgDiv.id = `sticker-${this.numElems}`;
+    const textSvg = document.createElement("text");
+    svgDiv.appendChild(textSvg);
+    svgDiv.style.position = "absolute";
+    svgDiv.style.zIndex = this.topZ;
+    svgDiv.style.width = `${200}px`;
+    svgDiv.style.top = "0px";
+    svgDiv.style.left = "0px";
+    const stick = new ScrapbookElem({
+      handleDraggingItem: handleDraggingItem,
+      type: "text",
+      htmlElem: svgDiv,
+      id: `sticker-${this.numElems}`,
+      z: this.topZ,
+      origWidth: 200,
+      origHeight: 168.75,
+      textSrc: "text",
+    });
+    this.elements.push(stick);
+    this.topZ++;
+    this.numElems++;
+
+    textSvg.textContent = text;
+
+    placeItHere.appendChild(svgDiv);
   };
 
   this.addNewPageSticker = function (img, size, linkOut) {
@@ -108,16 +174,16 @@ function ScrapbookPage(handleDraggingItem, picture) {
     imgDiv.style.top = "0px";
     imgDiv.style.left = "0px";
 
-    const stick = new ScrapbookElem(
-      handleDraggingItem,
-      "sticker",
-      imgDiv,
-      `sticker-${this.numElems}`,
-      this.topZ,
-      img,
-      width,
-      168.75
-    );
+    const stick = new ScrapbookElem({
+      handleDraggingItem: handleDraggingItem,
+      type: "sticker",
+      htmlElem: imgDiv,
+      id: `sticker-${this.numElems}`,
+      z: this.topZ,
+      origWidth: width,
+      origHeight: 168.75,
+      imgSrc: img,
+    });
     console.log(stick);
     this.elements.push(stick);
     this.topZ++;
@@ -269,7 +335,7 @@ export default function Scrapbook({
           </button>
           <button
             onClick={() => {
-              onFinishedScrapbooking(scrapbookPage.flatten());
+              scrapbookPage.startFlatten(onFinishedScrapbooking);
             }}
             className="bg-white rounded-full px-4 py-2 grow"
           >
@@ -406,7 +472,18 @@ export default function Scrapbook({
           }}
         >
           <div>
-            <input id="textStickerInput"></input>
+            <input type="text" id="textStickerInput"></input>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const textInput = document.querySelector("#textStickerInput");
+                scrapbookPage.addNewTextSticker(textInput.value);
+                textInput.value = "";
+                setShowTextModal(false);
+              }}
+            >
+              Done
+            </button>
           </div>
 
           <ScrapbookCornerDisplay imgUrl="/tape1.png" />

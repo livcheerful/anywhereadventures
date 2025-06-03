@@ -39,7 +39,6 @@ export default function Page({}) {
   }, [locationId]);
 
   function onFinishedScrapbooking(imagedata) {
-    console.log(`imagedata ${imagedata}`);
     setShowSummaryPage(true);
     setCollageImage(imagedata);
     // save image to local storage
