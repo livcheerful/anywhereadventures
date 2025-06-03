@@ -52,29 +52,16 @@ function ScrapbookPage(picture) {
       const currElem = sticker.elem;
       var imgSrc = new Image();
       imgSrc.src = sticker.imgSrc;
-      // Use natural (untransformed) size
       const originalWidth = sticker.originalWidth;
       const originalHeight = sticker.originalHeight;
-      console.log(sticker);
 
-      // Use visual (transformed) position
       const box = currElem.getBoundingClientRect();
 
-      // Save canvas state
       ctx.save();
-
-      // Move canvas origin to center of the sticker
       ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
-
-      // Apply rotation
       ctx.rotate((sticker.rotation * Math.PI) / 180);
-
-      // Apply scale
       ctx.scale(sticker.scale, sticker.scale);
 
-      console.log(originalWidth);
-      console.log(originalHeight);
-      // Draw image centered at origin
       ctx.drawImage(
         imgSrc,
         -originalWidth / 2,
@@ -83,7 +70,6 @@ function ScrapbookPage(picture) {
         originalHeight
       );
 
-      // Restore canvas state
       ctx.restore();
     }
 
@@ -142,15 +128,20 @@ export default function Scrapbook({
   const [currentTool, setCurrentTool] = useState();
   const [stickers, setStickers] = useState([]);
   const [pageStickers, setPageStickers] = useState([]);
+  const [showMyPhotos, setShowMyPhotos] = useState(false);
   const [scrapbookPage, setScrapbookPage] = useState(new ScrapbookPage());
 
   const itemsOnWheel = [
     {
       title: "My Photos",
-      onClickHandler: () => {},
+      image: "/rotatedFilm.png",
+      onClickHandler: () => {
+        setShowMyPhotos(true);
+      },
     },
     {
       title: "Stickers",
+      image: "/tempStickerImage.png",
       onClickHandler: () => {
         setShowStickerModal(true);
       },
@@ -158,6 +149,13 @@ export default function Scrapbook({
     {
       title: "Text",
       onClickHandler: () => {},
+    },
+    {
+      title: "Scissors",
+      image: "/scissorsUp.png",
+      onClickHandler: () => {
+        setShowStickerModal(true);
+      },
     },
     {
       title: "Pen",
@@ -188,17 +186,25 @@ export default function Scrapbook({
 
   function makeToolbar() {
     return (
-      <div className="w-fit flex flex-row gap-2" id="scrapbook-tool-wheel">
+      <div
+        className="w-fit flex flex-row gap-2 -pb-10"
+        id="scrapbook-tool-wheel"
+      >
         {itemsOnWheel.map((item, i) => {
           return (
             <button
               key={i}
-              className="w-36 h-20 bg-blue-300 rounded-full flex flex-col pt-2"
+              className="h-48 w-36 flex flex-col pt-2 "
+              style={{
+                backgroundImage: `url(${item.image})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+              }}
               onClick={() => {
                 item.onClickHandler();
               }}
             >
-              <div className="w-full text-center  font-mono font-bold text-gray-700 h-fit">
+              <div className="w-full text-center font-mono font-bold text-gray-700 h-fit ">
                 {item.title}
               </div>
             </button>
@@ -229,7 +235,7 @@ export default function Scrapbook({
   return (
     <div className="overflow-y-hidden z-30">
       {reel && (
-        <div className="flex flex-col  w-full h-full absolute top-0 left-0 bg-black"></div>
+        <div className="flex flex-col  w-full h-full absolute top-0 left-0 bg-white"></div>
       )}
       <canvas className="absolute top-0 left-0" id="scrapbookCanvas" />
 
@@ -237,6 +243,48 @@ export default function Scrapbook({
         id="scrapbookPlayground"
         className="w-full h-full top-0 left-0 absolute overflow-clip z-10 touch-none select-none"
       ></div>
+      {showMyPhotos && (
+        <div
+          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
+          onClick={() => {
+            setShowMyPhotos(false);
+          }}
+        >
+          {" "}
+          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
+            <svg
+              className="w-4 "
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              onClick={(e) => {
+                setShowMyPhotos(false);
+                e.stopPropagation();
+              }}
+            >
+              <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+            </svg>
+            <div className=" p-2 text-lg font-bold">Your photos</div>
+            <div className="flex flex-row flex-wrap gap-2 items-center justify-center p-2">
+              {reel?.map((photo, i) => {
+                return (
+                  <div
+                    key={i}
+                    style={{ width: "300px" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      scrapbookPage.addNewPageSticker(photo, 200);
+                      setShowMyPhotos(false);
+                    }}
+                  >
+                    <img src={photo}></img>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
       {showStickerModal && (
         <div
           className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
@@ -244,7 +292,7 @@ export default function Scrapbook({
             setShowStickerModal(false);
           }}
         >
-          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-scroll dark:text-black">
+          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
             <svg
               className="w-4 "
               xmlns="http://www.w3.org/2000/svg"
@@ -302,7 +350,7 @@ export default function Scrapbook({
         </div>
       )}
       {reel && (
-        <div className="w-full md:w-limiter  z-10 fixed bottom-0 left-0 h-24 overflow-clip overflow-x-auto">
+        <div className="w-full md:w-limiter  z-10 fixed bottom-0 left-0 h-fit overflow-clip overflow-x-auto">
           {makeToolbar()}
         </div>
       )}
