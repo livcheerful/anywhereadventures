@@ -66,7 +66,7 @@ function ScrapbookPage(picture) {
       }
 
       ctx.translate(sticker.x, sticker.y);
-      ctx.rotate(toRadians(-1 * this.elements[i].rotation));
+      ctx.rotate(toRadians(this.elements[i].rotation));
       ctx.drawImage(
         currElem,
         0,
