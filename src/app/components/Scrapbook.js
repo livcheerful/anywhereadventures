@@ -62,7 +62,7 @@ function ScrapbookPage(picture) {
       ctx.save();
 
       ctx.translate(sticker.x, sticker.y);
-      ctx.rotate(this.elements[i].rotation);
+      ctx.rotate(-1 * this.elements[i].rotation);
       ctx.drawImage(
         currElem,
         0,
