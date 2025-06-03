@@ -12,7 +12,6 @@ function ScrapbookPage(picture) {
 
   this.picture = picture;
 
-  const placeItHere = document.querySelector("#scrapbookPlayground");
   const pictureDiv = document.createElement("img");
   pictureDiv.src = picture;
   let adjustedWidth = pictureDiv.width;
@@ -31,7 +30,8 @@ function ScrapbookPage(picture) {
     const canvas = document.querySelector("#scrapbookCanvas");
     var ctx = canvas.getContext("2d");
 
-    canvas.width = Math.min(480, window.innerWidth);
+    const placeItHere = document.querySelector("#scrapbookPlayground");
+    canvas.width = placeItHere.getBoundingClientRect().width;
     canvas.height = window.innerHeight;
     ctx.beginPath();
     ctx.fillStyle = "black";
@@ -66,7 +66,7 @@ function ScrapbookPage(picture) {
 
       const scaledWidth = width * sticker.scale;
       const scaledHeight = height * sticker.scale;
-      ctx.translate(sticker.x + scaledWidth / 2, sticker.y + scaledHeight / 2);
+      ctx.translate(sticker.x + width / 2, sticker.y + height / 2);
       ctx.rotate(toRadians(this.elements[i].rotation));
       ctx.scale(sticker.scale, sticker.scale);
       ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
