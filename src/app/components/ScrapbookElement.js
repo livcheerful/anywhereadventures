@@ -37,11 +37,11 @@ export function ScrapbookElem(type, htmlElem, id, z) {
         // this.rotate -= event.da * rotationSensitivity;
       },
       move: (event) => {
-        const deltaScale = (event.scale - 1) * zoomSensitivity;
+        const deltaScale = event.ds;
         this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
         this.y += event.delta.y;
-        this.rotation += event.da * rotationSensitivity;
+        this.rotation += event.da;
         console.log(event);
         updateTransform();
       },
