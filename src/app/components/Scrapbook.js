@@ -71,16 +71,9 @@ function ScrapbookPage(picture) {
       ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
       ctx.scale(sticker.scale, sticker.scale);
       currElem.style.transform = `      
-        translate(${this.x}px, ${this.y}px)
         scale(${this.scale})
       `;
-      ctx.drawImage(
-        currElem,
-        0,
-        0,
-        currElem.getBoundingClientRect().width,
-        currElem.getBoundingClientRect().height
-      );
+      ctx.drawImage(currElem, 0, 0, width, height);
       ctx.restore();
       currElem.style.transform = oldTransform;
     }
