@@ -42,7 +42,6 @@ export function ScrapbookElem(type, htmlElem, id, z) {
         this.x += event.delta.x;
         this.y += event.delta.y;
         this.rotation += event.da;
-        console.log(event);
         updateTransform();
       },
     },

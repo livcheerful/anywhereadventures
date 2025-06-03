@@ -53,7 +53,6 @@ function ScrapbookPage(picture) {
 
       const oldTransform = currElem.style.transform;
       currElem.style.transform = "";
-      console.log(oldTransform);
       const x = box.x;
       const y = box.y;
       const width = box.width;
@@ -65,15 +64,12 @@ function ScrapbookPage(picture) {
         return (degrees * Math.PI) / 180;
       }
 
-      ctx.translate(sticker.x, sticker.y);
+      const scaledWidth = width * sticker.scale;
+      const scaledHeight = height * sticker.scale;
+      ctx.translate(sticker.x + scaledWidth / 2, sticker.y + scaledHeight / 2);
       ctx.rotate(toRadians(this.elements[i].rotation));
-      ctx.drawImage(
-        currElem,
-        0,
-        0,
-        width * sticker.scale,
-        height * sticker.scale
-      );
+      ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
+      ctx.drawImage(currElem, 0, 0, scaledWidth, scaledHeight);
       ctx.restore();
       currElem.style.transform = oldTransform;
     }
@@ -290,7 +286,7 @@ export default function Scrapbook({
         </div>
       )}
       {reel && (
-        <div className="w-full md:w-limiter  z-50 fixed bottom-0 left-0 h-24 overflow-clip overflow-x-auto">
+        <div className="w-full md:w-limiter  z-10 fixed bottom-0 left-0 h-24 overflow-clip overflow-x-auto">
           {makeToolbar()}
         </div>
       )}
