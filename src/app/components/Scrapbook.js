@@ -46,6 +46,10 @@ function ScrapbookPage(picture) {
     //   pictureDiv.getBoundingClientRect().height
     // );
 
+    function toRadians(degrees) {
+      return (degrees * Math.PI) / 180;
+    }
+
     for (let i = 0; i < this.elements.length; i++) {
       const sticker = this.elements[i];
       const currElem = sticker.elem;
@@ -60,16 +64,12 @@ function ScrapbookPage(picture) {
       console.log(sticker);
       ctx.save();
 
-      function toRadians(degrees) {
-        return (degrees * Math.PI) / 180;
-      }
-
       const scaledWidth = width * sticker.scale;
       const scaledHeight = height * sticker.scale;
       ctx.translate(sticker.x + scaledWidth / 2, sticker.y + scaledHeight / 2);
       ctx.rotate(toRadians(this.elements[i].rotation));
-      ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
       ctx.scale(sticker.scale, sticker.scale);
+      ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
       currElem.style.transform = ` 
         scale(${this.scale})
       `;
