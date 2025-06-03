@@ -12,6 +12,8 @@ export function ScrapbookElem(type, htmlElem, id, z) {
   this.rotation = 0;
   const sticker = interact(htmlElem);
 
+  const zoomSensitivity = 0.15; // lower = slower zoom
+  const rotationSensitivity = 0.1;
   const updateTransform = () => {
     htmlElem.style.transform = `
       translate(${this.x}px, ${this.y}px)
@@ -31,10 +33,10 @@ export function ScrapbookElem(type, htmlElem, id, z) {
 
   sticker.gesturable({
     listeners: {
-      start: (event) => {},
+      start: (event) => {
+        this.rotate -= event.angle * rotationSensitivity;
+      },
       move: (event) => {
-        const zoomSensitivity = 0.15; // lower = slower zoom
-        const rotationSensitivity = 0.1;
         const deltaScale = (event.scale - 1) * zoomSensitivity;
         this.scale *= 1 + deltaScale;
         this.x += event.delta.x;
@@ -42,6 +44,10 @@ export function ScrapbookElem(type, htmlElem, id, z) {
         this.rotation += event.angle * rotationSensitivity;
         updateTransform();
       },
+    },
+    end: (event) => {
+      //   this.rotate = this.angle + event.angle;
+      //   this.scale = this.scale * event.scale;
     },
   });
   htmlElem.style.left = window.innerWidth / 2;
