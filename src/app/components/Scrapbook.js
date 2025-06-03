@@ -53,32 +53,32 @@ function ScrapbookPage(picture) {
     for (let i = 0; i < this.elements.length; i++) {
       const sticker = this.elements[i];
       const currElem = sticker.elem;
-      const box = currElem.getBoundingClientRect();
+      const rect = currElem.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
 
-      const oldTransform = currElem.style.transform;
-      currElem.style.transform = "";
-      const x = box.x;
-      const y = box.y;
-      const width = box.width;
-      const height = box.height;
-      console.log(sticker);
+      // Get full computed transform matrix
+      const computedTransform = getComputedStyle(currElem).transform;
+
       ctx.save();
 
-      const scaledWidth = width * sticker.scale;
-      const scaledHeight = height * sticker.scale;
-      ctx.translate(sticker.x + width / 2, sticker.y + height / 2);
-      ctx.rotate(toRadians(this.elements[i].rotation));
-      ctx.scale(sticker.scale, sticker.scale);
-      ctx.translate(-scaledWidth / 2, -scaledHeight / 2);
-      ctx.drawImage(
-        currElem,
-        0,
-        0,
-        currElem.getBoundingClientRect().width,
-        currElem.getBoundingClientRect().height
-      );
+      if (computedTransform && computedTransform !== "none") {
+        const matrixValues = computedTransform
+          .match(/matrix\(([^)]+)\)/)[1]
+          .split(",")
+          .map(Number);
+
+        // Apply the exact same transform to the canvas
+        ctx.setTransform(...matrixValues);
+      } else {
+        // Fallback: No transform, use normal draw
+        ctx.setTransform(1, 0, 0, 1, rect.x, rect.y);
+      }
+
+      // Now draw the element at (0, 0) because it’s transformed into place
+      ctx.drawImage(currElem, 0, 0, width, height);
+
       ctx.restore();
-      currElem.style.transform = oldTransform;
     }
 
     const dataURL = document
