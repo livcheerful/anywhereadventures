@@ -61,8 +61,12 @@ function ScrapbookPage(picture) {
       console.log(sticker);
       ctx.save();
 
+      function toRadians(degrees) {
+        return (degrees * Math.PI) / 180;
+      }
+
       ctx.translate(sticker.x, sticker.y);
-      ctx.rotate(-1 * this.elements[i].rotation);
+      ctx.rotate(toRadians(-1 * this.elements[i].rotation));
       ctx.drawImage(
         currElem,
         0,
