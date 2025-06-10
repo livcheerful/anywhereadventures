@@ -2,6 +2,7 @@ import interact from "interactjs";
 
 export function ScrapbookElem({
   handleDraggingItem,
+  getDraggingItem,
   type,
   htmlElem,
   id,
@@ -10,8 +11,10 @@ export function ScrapbookElem({
   origHeight,
   imgSrc,
   textSrc,
+  props,
+  onClick,
 }) {
-  htmlElem.className = "cursor-pointer trashable";
+  htmlElem.setAttribute("class", "cursor-pointer trashable");
   this.type = type;
   this.z = z;
   this.id = id;
@@ -22,7 +25,9 @@ export function ScrapbookElem({
   this.rotation = 0;
   this.imgSrc = imgSrc;
   this.textSrc = textSrc;
+  this.props = props;
 
+  htmlElem.style.touchAction = "none";
   this.originalWidth = origWidth;
   this.originalHeight = origHeight;
   const sticker = interact(htmlElem);
@@ -36,6 +41,7 @@ export function ScrapbookElem({
   sticker.draggable({
     listeners: {
       start: (event) => {
+        // VVN TODO: prevent multi drag by checking getDraggingItem()
         handleDraggingItem(this);
       },
       move: (event) => {
@@ -44,9 +50,18 @@ export function ScrapbookElem({
         updateTransform();
       },
       end: (event) => {
+        event.stopPropagation();
+        event.preventDefault();
         handleDraggingItem(undefined);
       },
     },
+  });
+  sticker.on("click", (e) => {
+    e.stopPropagation();
+    const draggingItem = getDraggingItem();
+    if (!draggingItem) {
+      onClick(this);
+    }
   });
 
   sticker.gesturable({
@@ -70,6 +85,4 @@ export function ScrapbookElem({
       handleDraggingItem(undefined);
     },
   });
-  htmlElem.style.left = window.innerWidth / 2;
-  htmlElem.style.right = window.innerHeight / 2;
 }

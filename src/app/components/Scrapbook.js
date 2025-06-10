@@ -4,11 +4,12 @@ import interact from "interactjs";
 
 import ScrapbookCornerDisplay from "./ScrapbookCornerDisplay";
 import { ScrapbookElem } from "./ScrapbookElement";
+import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems } from "../lib/storageHelpers";
 
 const defaultStickerSize = 300;
-function ScrapbookPage(handleDraggingItem, picture) {
+function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
   this.topZ = 10;
   this.elements = []; // array for now, maybe diff structure in future
   this.numElems = 0;
@@ -45,41 +46,35 @@ function ScrapbookPage(handleDraggingItem, picture) {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke();
-    // const pictureDiv = document.querySelector("#picture");
-    // ctx.drawImage(
-    //   pictureDiv,
-    //   0,
-    //   0,
-    //   pictureDiv.getBoundingClientRect().width,
-    //   pictureDiv.getBoundingClientRect().height
-    // );
-    function loadImage(src) {
+
+    function loadImage(src, width, height) {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
         img.onerror = (e) => {
-          console.log(e);
           reject(new Error(` Failed to load image: ${src}:`));
         };
         img.src = src;
+        img.width = `${width}px`;
+        img.height = `${height}px`;
       });
     }
 
     for (let i = 0; i < this.elements.length; i++) {
-      const elem = this.elements[i];
-      console.log(elem);
-      switch (elem.type) {
+      const sticker = this.elements[i];
+      const element = sticker.elem;
+      const box = element.getBoundingClientRect();
+      const originalWidth = sticker.originalWidth;
+      const originalHeight = sticker.originalHeight;
+      ctx.save();
+      switch (sticker.type) {
         case "sticker":
-          console.log("flatten sticker");
-          const sticker = this.elements[i];
-          const currElem = sticker.elem;
-          const imgSrc = await loadImage(sticker.imgSrc);
-          const originalWidth = sticker.originalWidth;
-          const originalHeight = sticker.originalHeight;
+          const imgSrc = await loadImage(
+            sticker.imgSrc,
+            originalWidth,
+            originalHeight
+          );
 
-          const box = currElem.getBoundingClientRect();
-
-          ctx.save();
           ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
           ctx.rotate((sticker.rotation * Math.PI) / 180);
           ctx.scale(sticker.scale, sticker.scale);
@@ -92,23 +87,30 @@ function ScrapbookPage(handleDraggingItem, picture) {
             originalHeight
           );
 
-          ctx.restore();
           break;
         case "text":
-          console.log("trying to flatten text");
-          const svgElement = elem.elem;
-          const svgString = new XMLSerializer().serializeToString(svgElement);
-          const svgBlob = new Blob([svgString], {
-            type: "image/svg+xml;charset=utf-8",
-          });
-          const url = URL.createObjectURL(svgBlob);
-          const img = await loadImage(url);
-          ctx.drawImage(img, 0, 0, 10, 10);
+          ctx.translate(
+            sticker.x + originalWidth / 2,
+            sticker.y + originalHeight / 2
+          );
+
+          ctx.fillStyle = sticker.props.textColor;
+
+          ctx.textBaseline = "hanging";
+
+          ctx.font = "16px Arial";
+          ctx.fillText(
+            sticker.textSrc,
+            -originalWidth / 2,
+            -originalHeight / 2
+          );
           break;
         default:
           console.log("Default");
           break;
       }
+
+      ctx.restore();
     }
 
     const dataURL = document
@@ -126,34 +128,64 @@ function ScrapbookPage(handleDraggingItem, picture) {
     this.elements.splice(foundIndex, 1);
   };
 
-  this.addNewTextSticker = function (text) {
+  function drawTextToCanvas(canvas, text, textStyle) {
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "16px Arial";
+    const width = ctx.measureText(text).width;
+    const height = 20;
+    canvas.width = width + 2;
+    canvas.height = height + 2;
+
+    console.log(textStyle);
+    if (textStyle.backgroundColor) {
+      ctx.fillStyle = textStyle.backgroundColor;
+      ctx.fillRect(0, 0, width + 2, height + 2);
+    }
+
+    ctx.fillStyle = textStyle.textColor;
+    ctx.font = "16px Arial";
+    ctx.textBaseline = "hanging";
+
+    ctx.fillText(text, 1, 4);
+  }
+
+  this.addNewTextSticker = function (
+    text,
+    textStyle,
+    handleEditingTextSticker
+  ) {
     const placeItHere = document.querySelector("#scrapbookPlayground");
-    const svgDiv = document.createElement("svg");
-    svgDiv.id = `sticker-${this.numElems}`;
-    const textSvg = document.createElement("text");
-    svgDiv.appendChild(textSvg);
-    svgDiv.style.position = "absolute";
-    svgDiv.style.zIndex = this.topZ;
-    svgDiv.style.width = `${200}px`;
-    svgDiv.style.top = "0px";
-    svgDiv.style.left = "0px";
+    const canvas = document.createElement("canvas");
+    canvas.id = `sticker-${this.numElems}`;
+
+    drawTextToCanvas(canvas, text, textStyle);
+
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
+      getDraggingItem: getDraggingItem,
       type: "text",
-      htmlElem: svgDiv,
+      htmlElem: canvas,
       id: `sticker-${this.numElems}`,
       z: this.topZ,
-      origWidth: 200,
-      origHeight: 168.75,
-      textSrc: "text",
+      origWidth: canvas.width,
+      origHeight: canvas.height,
+      textSrc: text,
+      props: textStyle,
+      onClick: handleEditingTextSticker,
     });
     this.elements.push(stick);
     this.topZ++;
     this.numElems++;
 
-    textSvg.textContent = text;
+    placeItHere.appendChild(canvas);
+  };
 
-    placeItHere.appendChild(svgDiv);
+  this.updateTextSticker = function (sticker, text, textStyle) {
+    sticker.textSrc = text;
+    sticker.props = textStyle;
+    const canvas = sticker.elem;
+    drawTextToCanvas(canvas, text, textStyle);
   };
 
   this.addNewPageSticker = function (img, size, linkOut) {
@@ -176,6 +208,7 @@ function ScrapbookPage(handleDraggingItem, picture) {
 
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
+      getDraggingItem: getDraggingItem,
       type: "sticker",
       htmlElem: imgDiv,
       id: `sticker-${this.numElems}`,
@@ -202,18 +235,26 @@ export default function Scrapbook({
   setProcessPhotos,
 }) {
   const [showStickerModal, setShowStickerModal] = useState(false);
-  const [currentTool, setCurrentTool] = useState();
   const [stickers, setStickers] = useState([]);
   const [pageStickers, setPageStickers] = useState([]);
   const [showMyPhotos, setShowMyPhotos] = useState(false);
   const [showTextModal, setShowTextModal] = useState(false);
+  const [editingTextSticker, setEditingTextSticker] = useState(undefined);
   const [scrapbookPage, setScrapbookPage] = useState(
-    new ScrapbookPage(handleDraggingItem)
+    new ScrapbookPage(getDraggingItem, handleDraggingItem)
   );
   const [draggingItem, setDraggingItem] = useState(undefined);
+  const draggingItemRef = useRef(undefined);
+
+  const [textStyle, setTextStyle] = useState({
+    backgroundColor: undefined,
+    textColor: "#000000",
+  });
 
   const trashRef = useRef();
-
+  function getDraggingItem() {
+    return draggingItemRef.current;
+  }
   const itemsOnWheel = [
     {
       title: "My Photos",
@@ -252,7 +293,6 @@ export default function Scrapbook({
   useEffect(() => {
     if (!showTextModal) return;
     const textInput = document.getElementById("textStickerInput");
-    console.log(textInput);
     textInput.focus();
   }, [showTextModal]);
   useEffect(() => {
@@ -271,12 +311,8 @@ export default function Scrapbook({
     const dropZone = interact("#trashZone").dropzone({
       accept: ".trashable",
       overlap: "pointer",
-      ondropactivate: (event) => {
-        console.log("Drop Activated");
-      },
-      ondropenter: (event) => {
-        console.log("drop entered");
-      },
+      ondropactivate: (event) => {},
+      ondropenter: (event) => {},
       ondrop: (event) => {
         console.log("Dropped!");
         console.log(event);
@@ -300,7 +336,22 @@ export default function Scrapbook({
   useEffect(() => {}, []);
 
   function handleDraggingItem(element) {
-    setDraggingItem(element);
+    if (element) {
+      draggingItemRef.current = element;
+      setDraggingItem(element);
+    } else {
+      setTimeout(() => {
+        draggingItemRef.current = undefined;
+      }, 0);
+    }
+  }
+
+  function isSomethingBeingDragged() {}
+
+  function handleEditingTextSticker(sticker) {
+    console.log("hello vivian in handle editing text sticker");
+    setShowTextModal(true);
+    setEditingTextSticker(sticker);
   }
 
   function makeToolbar() {
@@ -310,7 +361,7 @@ export default function Scrapbook({
           return (
             <button
               key={i}
-              className="h-36 w-36   flex flex-col pt-2 "
+              className="h-36 w-36 flex flex-col pt-2 "
               style={{
                 backgroundImage: `url(${item.image})`,
                 backgroundSize: "contain",
@@ -465,29 +516,15 @@ export default function Scrapbook({
         </div>
       )}
       {showTextModal && (
-        <div
-          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-center  items-center z-50"
-          onClick={() => {
-            setShowTextModal(false);
-          }}
-        >
-          <div>
-            <input type="text" id="textStickerInput"></input>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                const textInput = document.querySelector("#textStickerInput");
-                scrapbookPage.addNewTextSticker(textInput.value);
-                textInput.value = "";
-                setShowTextModal(false);
-              }}
-            >
-              Done
-            </button>
-          </div>
-
-          <ScrapbookCornerDisplay imgUrl="/tape1.png" />
-        </div>
+        <TextEditor
+          scrapbookPage={scrapbookPage}
+          setShowTextModal={setShowTextModal}
+          setEditingTextSticker={setEditingTextSticker}
+          editingTextSticker={editingTextSticker}
+          setTextStyle={setTextStyle}
+          textStyle={textStyle}
+          handleEditingTextSticker={handleEditingTextSticker}
+        />
       )}
       {reel && (
         <div className="fixed w-full md:w-limiter z-10  bottom-0 left-0 h-fit  overflow-x-auto">
