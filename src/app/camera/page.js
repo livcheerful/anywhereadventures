@@ -6,6 +6,7 @@ import FilmReel from "../components/FilmReel";
 import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
+import ScrapbookDeskPage from "../components/ScrapbookDeskPage";
 
 import { savePage, numberOfPages } from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
@@ -89,6 +90,7 @@ export default function Page({}) {
       list.push({
         image: pageStickers[i].getAttribute("src"),
         linkOut: linkOut,
+        title: pageStickers[i].getAttribute("title"),
       });
     }
     setStickerRefs(list);
@@ -326,9 +328,11 @@ export default function Page({}) {
           className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
           style={{ height: "15%" }}
         >
-          <div className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow">
-            Back
-          </div>
+          <a href="/" className=" flex-grow">
+            <div className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono">
+              Back
+            </div>
+          </a>
           <button
             className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow"
             onClick={() => {
@@ -348,59 +352,12 @@ export default function Page({}) {
         />
       )}
       {showSummaryPage && (
-        <div className="w-full h-full absolute top-0 left-0 bg-white z-20 overflow-y-auto ">
-          <div
-            className=" bg-green-400 rounded-lg font-extrabold w-fit px-2 py-1 drop-shadow-md cursor-pointer "
-            onClick={() => {
-              setShowSummaryPage(false);
-            }}
-          >
-            Back
-          </div>
-          <div className="flex flex-col items-center gap-2 ">
-            <img
-              src={collageImage}
-              className="w-1/2 -rotate-6 drop-shadow-xl"
-            />
-
-            <a
-              className="w-1/3 h-fit"
-              href={collageImage}
-              download={`loc-${locationId}.jpg`}
-            >
-              <div className=" p-2 text-center text-white font-bold bg-purple-400 rounded-lg grow-0">
-                Download
-              </div>
-            </a>
-
-            <a className="w-1/3 h-fit" href="/">
-              <div className=" p-2 text-center text-white font-bold bg-purple-400 rounded-lg grow-0">
-                Return to map
-              </div>
-            </a>
-
-            <a className="w-1/3 h-fit" href="/journal">
-              <div className=" p-2 text-center text-white font-bold bg-purple-400 rounded-lg grow-0">
-                To scrapbook
-              </div>
-            </a>
-            <div className="pt-4 px-2">
-              <div className="text-lg font-bold">Items used</div>
-              {stickerRefs.map((stickerObj, i) => {
-                return (
-                  <div className="flex flex-row gap-3" key={i}>
-                    <img className="w-1/3 " src={stickerObj.image} />
-                    <a className="w-1/3 h-fit" href={stickerObj.linkOut}>
-                      <div className=" p-2  text-center text-white font-bold bg-purple-400 rounded-lg grow-0">
-                        View Original
-                      </div>
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <ScrapbookDeskPage
+          collageImage={collageImage}
+          locationId={locationId}
+          stickerRefs={stickerRefs}
+          setShowSummaryPage={setShowSummaryPage}
+        />
       )}
     </div>
   );

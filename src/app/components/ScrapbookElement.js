@@ -67,7 +67,6 @@ export function ScrapbookElem({
   sticker.gesturable({
     listeners: {
       start: (event) => {
-        // this.rotate -= event.da * rotationSensitivity;
         handleDraggingItem(this);
       },
       move: (event) => {

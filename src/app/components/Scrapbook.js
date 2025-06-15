@@ -8,7 +8,8 @@ import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems } from "../lib/storageHelpers";
 
-const defaultStickerSize = 300;
+const defaultStickerWidth = 300;
+const defaultStickerHeight = 168.75;
 function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
   this.topZ = 10;
   this.elements = []; // array for now, maybe diff structure in future
@@ -94,6 +95,16 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
             sticker.y + originalHeight / 2
           );
 
+          if (sticker.props.backgroundColor) {
+            ctx.fillStyle = sticker.props.backgroundColor;
+            ctx.fillRect(
+              -originalWidth / 2,
+              -originalHeight / 2,
+              originalWidth,
+              originalHeight
+            );
+          }
+
           ctx.fillStyle = sticker.props.textColor;
 
           ctx.textBaseline = "hanging";
@@ -101,8 +112,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
           ctx.font = "16px Arial";
           ctx.fillText(
             sticker.textSrc,
-            -originalWidth / 2,
-            -originalHeight / 2
+            -originalWidth / 2 + 1,
+            -originalHeight / 2 + 4
           );
           break;
         default:
@@ -188,11 +199,14 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     drawTextToCanvas(canvas, text, textStyle);
   };
 
-  this.addNewPageSticker = function (img, size, linkOut) {
-    const imgDiv = this.addNewSticker(img, size);
+  this.addNewPageSticker = function (img, width, height, linkOut, title) {
+    const imgDiv = this.addNewSticker(img, width, height);
     if (linkOut) {
       imgDiv.className = imgDiv.className + " refImage";
       imgDiv.setAttribute("linkout", linkOut);
+    }
+    if (title) {
+      imgDiv.setAttribute("title", title);
     }
   };
   this.addNewSticker = function (img, width, height) {
@@ -203,9 +217,11 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     imgDiv.style.position = "absolute";
     imgDiv.style.zIndex = this.topZ;
     imgDiv.style.width = `${width}px`;
+    imgDiv.style.height = `${height}px`;
     imgDiv.style.top = "0px";
     imgDiv.style.left = "0px";
 
+    console.log("VVN peek me!");
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
       getDraggingItem: getDraggingItem,
@@ -214,10 +230,9 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
       id: `sticker-${this.numElems}`,
       z: this.topZ,
       origWidth: width,
-      origHeight: 168.75,
+      origHeight: height || 168,
       imgSrc: img,
     });
-    console.log(stick);
     this.elements.push(stick);
     this.topZ++;
     this.numElems++;
@@ -301,7 +316,11 @@ export default function Scrapbook({
     setStickers(Object.values(lcItems));
 
     reel.forEach((image, i) => {
-      scrapbookPage.addNewSticker(image, defaultStickerSize);
+      scrapbookPage.addNewSticker(
+        image,
+        defaultStickerWidth,
+        defaultStickerHeight
+      );
     });
   }, []);
 
@@ -343,10 +362,9 @@ export default function Scrapbook({
       setTimeout(() => {
         draggingItemRef.current = undefined;
       }, 0);
+      setDraggingItem(undefined);
     }
   }
-
-  function isSomethingBeingDragged() {}
 
   function handleEditingTextSticker(sticker) {
     console.log("hello vivian in handle editing text sticker");
@@ -437,7 +455,11 @@ export default function Scrapbook({
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      scrapbookPage.addNewPageSticker(photo, 300);
+                      scrapbookPage.addNewPageSticker(
+                        photo,
+                        defaultStickerWidth,
+                        defaultStickerHeight
+                      );
                       setShowMyPhotos(false);
                     }}
                   >
@@ -477,12 +499,16 @@ export default function Scrapbook({
                     key={`myStickers-${i}`}
                     style={{ width: "200px" }}
                     onClick={(e) => {
+                      const htmlEl = e.target;
+                      console.log(htmlEl.getBoundingClientRect());
                       e.stopPropagation();
                       e.preventDefault();
                       scrapbookPage.addNewPageSticker(
                         item.image,
                         200,
-                        item.linkOut
+                        htmlEl.getBoundingClientRect().height,
+                        item.linkOut,
+                        item.title
                       );
                       setShowStickerModal(false);
                     }}

@@ -6,6 +6,7 @@ import {
   isLocationAdded,
   remove as removeFromStorage,
 } from "../lib/storageHelpers";
+import { unvisitedMapColor } from "../lib/constants";
 
 export default function MapExploreMarker({
   mdx,
@@ -83,17 +84,24 @@ export default function MapExploreMarker({
             <div className="flex flex-col gap-2">
               {mdx.tags.map((tag, i) => {
                 const categoryMeta = categoryInfo[tag];
+                console.log("category Meta");
+                console.log(tag);
+                console.log(categoryMeta);
                 return (
                   <button
                     key={i}
                     className=" text-center py-2 rounded-full border-2 border-gray-900 "
-                    style={{ backgroundColor: `${categoryMeta.pinColor}` }}
+                    style={{
+                      backgroundColor: `${
+                        categoryMeta?.pinColor || unvisitedMapColor
+                      }`,
+                    }}
                     onClick={() => {
                       exploreCategoryClickHander(tag);
                     }}
                   >
                     <div className="font-bold">
-                      {categoryMeta?.title || category.tag}
+                      {categoryMeta?.title || tag}
                     </div>
                   </button>
                 );

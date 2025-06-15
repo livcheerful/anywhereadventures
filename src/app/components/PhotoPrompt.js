@@ -1,5 +1,6 @@
 export default function PhotoPrompt({ mdx, visited }) {
-  const genericPhotoPromptText = "Take some photos";
+  const genericPhotoPromptText =
+    "Create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
   return (
     <div className="relative bg-amber-300 border-2 border-gray-900 -m-2 mt-4 p-4 overflow-clip ">
       {visited ? (

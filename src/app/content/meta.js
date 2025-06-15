@@ -12,6 +12,7 @@ export const tagsByCity = {
     "light rail",
     "walk",
   ],
+  sewy: ["albany", "laramie"],
 };
 
 export const categoryInfo = {
@@ -66,5 +67,13 @@ export const categoryInfo = {
   },
   "west seattle": {
     title: "West Seattle",
+  },
+  albany: {
+    title: "Albany County",
+    pinColor: "#49FF65",
+  },
+  laramie: {
+    title: "Laramie County",
+    pinColor: "#49FF65",
   },
 };
