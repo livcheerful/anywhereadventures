@@ -54,7 +54,6 @@ export default function ContentPane({
   const scrollValue = useRef();
 
   function focusOnPin(slug, post) {
-    console.log("VVN in focusOnPin()");
     setPaneOpen(false);
     const pin = mainMap.getPinFromSlug(slug);
     console.log(pin);
@@ -70,18 +69,6 @@ export default function ContentPane({
     }
   }
 
-  // useEffect(() => {
-  //   // Get Post based on slug
-  //   async function fetchPost() {
-  //     const file = await fetch(`/content/generated/${currentSlug}.json`);
-  //     const f = await file.json();
-
-  //     setPost(f);
-  //   }
-  //   if (currentSlug == "discover" || currentSlug == "") return;
-  //   fetchPost();
-  // }, [currentSlug]);
-
   useEffect(() => {
     setPaneHeight(getPaneHeight());
   }, [paneOpen]);
@@ -96,6 +83,7 @@ export default function ContentPane({
         <div className="w-full text-2xl font-bold fixed  z-40">
           <ContentToolBar
             post={post}
+            paneOpen={paneOpen}
             setPaneOpen={setPaneOpen}
             exploringContent={exploringContent}
             setExploringContent={setExploringContent}
@@ -109,6 +97,7 @@ export default function ContentPane({
           />
         </div>
         <div
+          aria-disabled={!paneOpen}
           className="w-full h-full overflow-x-hidden overflow-y-auto flex flex-col z-10"
           style={{ paddingTop: "30px" }}
           id="content-pane"

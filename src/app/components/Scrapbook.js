@@ -292,17 +292,6 @@ export default function Scrapbook({
         setShowTextModal(true);
       },
     },
-    {
-      title: "Scissors",
-      image: "/scissorsUp.png",
-      onClickHandler: () => {
-        setShowStickerModal(true);
-      },
-    },
-    {
-      title: "Pen",
-      onClickHandler: () => {},
-    },
   ];
 
   useEffect(() => {

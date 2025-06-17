@@ -48,6 +48,7 @@ export default function ScrapbookDeskPage({
     );
     new ScrapbookDeskItem(document.querySelector("#collageImage"), -6, 0, 0);
     tl.fromTo("#backToMap", { bottom: "-30rem" }, { bottom: "-10rem" });
+    tl.fromTo("#toJournal", { bottom: "-30rem" }, { bottom: "-10rem" });
   }, []);
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -67,7 +68,13 @@ export default function ScrapbookDeskPage({
     });
   }, [stickerRefs]);
   return (
-    <div className="w-full h-full absolute top-0 left-0 bg-gray-200 z-20 overflow-clip">
+    <div
+      className="w-full h-full absolute top-0 left-0  z-20 overflow-clip"
+      style={{
+        backgroundImage: "url(woodendesk.png)",
+        backgroundSize: "cover",
+      }}
+    >
       <div
         className=" bg-green-400 rounded-lg font-extrabold w-fit px-2 py-1 drop-shadow-md cursor-pointer "
         onClick={() => {
@@ -135,11 +142,24 @@ export default function ScrapbookDeskPage({
         <a href="/">
           <div
             id="backToMap"
-            className="  absolute z-30 left-0 rotate-6 "
+            className="  absolute z-30 left-0 rotate-6 drop-shadow-xl"
             style={{
               width: "15rem",
               height: "25rem",
               backgroundImage: "url(/loc/map.png)",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
+          ></div>
+        </a>
+        <a href="/journal">
+          <div
+            id="toJournal"
+            className="  absolute z-30 -right-10 -rotate-6 drop-shadow-xl"
+            style={{
+              width: "15rem",
+              height: "25rem",
+              backgroundImage: "url(/notebook3.png)",
               backgroundSize: "contain",
               backgroundRepeat: "no-repeat",
             }}

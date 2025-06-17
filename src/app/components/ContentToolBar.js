@@ -14,6 +14,7 @@ import { makeConfetti } from "../lib/animationHelpers";
 import { useEffect, useState } from "react";
 export default function ContentToolBar({
   post,
+  paneOpen,
   setPaneOpen,
   exploringContent,
   setExploringContent,
@@ -31,6 +32,7 @@ export default function ContentToolBar({
   const [shouldShowAddToMapButton, setShouldShowAddToMapButton] = useState(
     exploringContent && currentSlug != "discover"
   );
+  const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
 
   useEffect(() => {
     setShouldShowAddToMapButton(exploringContent && currentSlug != "discover");
@@ -56,6 +58,29 @@ export default function ContentToolBar({
         setPaneOpen(true);
       }}
     >
+      <div
+        className={`absolute -top-10 left-0 w-full bg-white h-10 flex flex-col justify-center pointer-events-none ${
+          focusOnMapSwitcher ? "opacity-100" : "opacity-0"
+        }`}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (focusOnMapSwitcher) {
+            if (e.code == "Enter") {
+              setPaneOpen(!paneOpen);
+            }
+          }
+        }}
+        onFocus={(e) => {
+          setFocusOnMapSwitcher(true);
+        }}
+        onBlur={() => {
+          setFocusOnMapSwitcher(false);
+        }}
+      >
+        <div className="w-full text-center font-mono">
+          {paneOpen ? "Open my map" : "Open reading pane"}
+        </div>
+      </div>
       {toolTipText()}
       {/* <div
         className="w-14 h-14 bg-emerald-800 absolute rounded-full -top-4 left-2 cursor-pointer flex flex-col items-center justify-center drop-shadow-xl"

@@ -7,7 +7,7 @@ import {
   LngLatBounds,
 } from "maplibre-gl";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { unopinionatedMapColor, unvisitedMapColor } from "../lib/constants";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -17,6 +17,19 @@ import MapBrochures from "./MapBrochures";
 import MapExploreMarker from "./MapExploreMarker";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
+function updateMarkerTabAccess(visible) {
+  if (visible) {
+    const allMarkers = [...document.querySelectorAll(".maplibregl-marker")];
+    allMarkers.forEach((marker) => {
+      marker.tabIndex = 0;
+    });
+  } else {
+    const allMarkers = [...document.querySelectorAll(".maplibregl-marker")];
+    allMarkers.forEach((marker) => {
+      marker.tabIndex = -1;
+    });
+  }
+}
 export function shiftUp(lat, lon, zoom) {
   // returns a location that is shifted up to make center in the top of the screen
   let shiftValue = 0.1;
@@ -104,6 +117,7 @@ function MapManager(map, router) {
     pin.getElement().addEventListener("click", () => {
       onClickCb(info, pin);
     });
+    console.log(pin);
     return pin;
   }
 
@@ -149,6 +163,7 @@ export default function MyMap({
   myLocations,
   setMyLocations,
   defaultLocation,
+  paneOpen,
   setExploringContent,
   viewingPin,
   setViewingPin,
@@ -166,8 +181,8 @@ export default function MyMap({
   const [mapManager, setMapManager] = useState();
   const [viewingExplorePin, setViewingExplorePin] = useState(undefined);
   const [viewingBrochureIndex, setViewingBrochureIndex] = useState(0);
+  const navControlRef = useRef();
   const exploreMapMouseHandler = useCallback(() => {
-    console.log("close!");
     setViewingExplorePin(undefined);
     handleCloseBrochureView();
   }, [setViewingExplorePin, brochureViewOpen]);
@@ -187,16 +202,17 @@ export default function MyMap({
       attributionControl: false,
       pitch: 60,
     });
-
-    map.addControl(
-      new NavigationControl({
-        visualizePitch: true,
-        visualizeRoll: false,
-        showZoom: true,
-        showCompass: true,
-      }),
-      "top-left"
-    );
+    const navControl = new NavigationControl({
+      visualizePitch: true,
+      visualizeRoll: false,
+      showZoom: true,
+      showCompass: true,
+    });
+    console.log("------Navigation control:------");
+    console.log(navControl);
+    console.log("------Navigation control------");
+    navControlRef.current = navControl;
+    map.addControl(navControl, "top-left");
     const myMap = new MapManager(map, router);
     mapCB(myMap);
     setMapManager(myMap);
@@ -223,7 +239,8 @@ export default function MyMap({
       }
     );
   }
-  // Update Map State
+
+  // Update Map State between explore and my map
   useEffect(() => {
     if (!mapManager) return;
     if (mapState == "myMap") {
@@ -291,6 +308,15 @@ export default function MyMap({
     mapManager.updatePins(myLocations, myMapPinClickHandler, router);
   }, [myLocations]);
 
+  // Change map controls depending on if map is open or not
+  useEffect(() => {
+    if (mapState == "myMap") {
+      updateMarkerTabAccess(!paneOpen);
+    } else {
+      updateMarkerTabAccess(true);
+    }
+  }, [paneOpen, mapState]);
+
   function exploreCategoryClickHander(category) {
     setViewingExplorePin(undefined);
     setViewingExploreCategory(category);
@@ -342,6 +368,7 @@ export default function MyMap({
     >
       <div className="bg-slate-800 w-full h-dvh" id="map"></div>
       <button
+        aria-label="Add locations to Map"
         className="absolute top-2 right-2 w-16 h-16 bg-white rounded-full flex flex-row items-center justify-center drop-shadow-lg"
         onClick={() => {
           if (mapState == "myMap") {
@@ -353,7 +380,9 @@ export default function MyMap({
           }
         }}
       >
-        <div className=" select-none">{mapState == "myMap" ? "+" : "x"}</div>
+        <div className=" select-none" aria-hidden="true" focusable="false">
+          {mapState == "myMap" ? "+" : "x"}
+        </div>
       </button>
       {viewingPin && (
         <MapPin

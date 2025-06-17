@@ -32,7 +32,7 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
       ></div>
       <PinJournal page={getPage(mdx.slug)} />
       <PinCamera mdx={mdx} />
-      <div className="absolute flex flex-col w-4/5 p-5 bg-white drop-shadow-2xl border-2 border-gray-900 ">
+      <div className="absolute flex flex-col w-4/5 p-4 bg-white drop-shadow-2xl border-2 border-gray-900 ">
         <button
           onClick={() => {
             onCloseCB();
@@ -41,10 +41,12 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
         >
           <div className="font-bold">x</div>
         </button>
-        <div className=" text-2xl font-bold">{mdx.title}</div>
+        <div className=" text-xl font-bold">{mdx.title}</div>
         <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3">
           {mdx.neighborhood && <div>{mdx.neighborhood}</div>}
-          <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0]}, ${mdx.latlon[1]}`}</div>
+          <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0].toFixed(
+            4
+          )}, ${mdx.latlon[1].toFixed(4)}`}</div>
         </div>
         <hr className="pt-1" />
         {mdx.address && (
@@ -73,7 +75,9 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
             </button>
           </div>
         )}
-        {mdx.blurb && <div className="pt-2 text-gray-600">{mdx.blurb}</div>}
+        {mdx.blurb && (
+          <div className="pt-2 text-gray-600 text-sm">{mdx.blurb}</div>
+        )}
 
         <PhotoPrompt mdx={mdx} visited={visited} />
       </div>

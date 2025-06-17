@@ -99,6 +99,7 @@ export default function BasePage({ slug }) {
       {
         <MyMap
           mapCB={mapCB}
+          paneOpen={paneOpen}
           mapClickHandler={mapClickHandler}
           chosenLocation={chosenLocation}
           myLocations={myLocations}
