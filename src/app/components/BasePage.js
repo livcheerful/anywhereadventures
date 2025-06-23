@@ -118,6 +118,33 @@ export default function BasePage({ slug }) {
           setBrochureViewOpen={setBrochureViewOpen}
         />
       }
+      {!viewingPin && (
+        <a href="/journal">
+          <div
+            id="toJournal"
+            className="absolute -right-24 md:-right-10 -bottom-32 md:bottom-0 -rotate-6 drop-shadow-xl"
+            style={{
+              width: "15rem",
+              height: "25rem",
+              backgroundImage: "url(/notebook3.png)",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
+          ></div>
+          <div
+            className="stickyNote w-28 h-28 bottom-28 md:bottom-14 right-7 absolute p-2 flex flex-col justify-center  -rotate-6"
+            style={{
+              backgroundImage: `url(/stickynote.png)`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="font-mono text-gray-900 font-bold text-sm text-center">
+              View journal
+            </div>
+          </div>
+        </a>
+      )}
       {exploringContent != undefined && exploringContent == false && (
         <ContentPane
           chosenLocation={chosenLocation}

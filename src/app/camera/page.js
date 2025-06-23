@@ -70,7 +70,7 @@ export default function Page({}) {
       text: "Swap Camera",
       onClick: () => {
         setCameraDirectionIdx(
-          cameraDirectionIdx + (1 % cameraDirectionStates.length)
+          (cameraDirectionIdx + 1) % cameraDirectionStates.length
         );
         setShowMenu(false);
       },
@@ -129,13 +129,15 @@ export default function Page({}) {
           </div>
         </div>
         <div className="w-1/2 font-mono flex flex-col gap-2 pr-2 ">
-          {reel.map((picture, i) => {
+          {reel.map((pictureObj, i) => {
             return (
               <div
                 key={i}
-                className="p-1 bg-lime-200/80  rounded-md text-sm text-gray-700 drop-shadow-sm "
+                className="p-1 bg-lime-200/80  rounded-md text-xs text-gray-700 drop-shadow-sm "
               >
-                <div className="text-xs">{`Picture 00${i + 1}`}</div>
+                <div className="">{`Picture 00${i + 1}`}</div>
+                <hr className="border-slate-400"></hr>
+                <div>{`${pictureObj.timeTaken.toLocaleDateString()} | ${pictureObj.timeTaken.toLocaleTimeString()}`}</div>
               </div>
             );
           })}
@@ -231,26 +233,11 @@ export default function Page({}) {
           Anywhere Adventures COOLCam
         </div>
         <div className="flex flex-row w-full flex-grow gap-3 p-3 justify-between items-center">
-          {/* Section for Camera controls */}
           <button
-            className="h-10 bg-slate-600 px-4 rounded-full text-slate-50 font-mono font-bold"
+            className="h-16 w-32 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
             style={{
               backgroundImage: `url(cameraButton.png)`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-            }}
-            onClick={() => {
-              setShowMenu(!showMenu);
-            }}
-          >
-            Menu
-          </button>
-
-          <button
-            className="h-10 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 font-mono font-bold"
-            style={{
-              backgroundImage: `url(cameraButton.png)`,
-              backgroundSize: "contain",
+              backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
             }}
             onClick={() => {
@@ -315,7 +302,7 @@ export default function Page({}) {
                 }
 
                 const photo = snapPhoto();
-                newPhotos.push(photo);
+                newPhotos.push({ img: photo, timeTaken: new Date() });
                 setReel(newPhotos);
               } else {
                 // process photos

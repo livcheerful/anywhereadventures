@@ -6,26 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { Map, Marker, Popup } from "maplibre-gl";
 
 // Components
-import PostContent from "./PostContent";
 import RiverFeed from "./RiverFeed";
-import ContentHeader from "./StickyHeader";
 import ContentToolBar from "./ContentToolBar";
-import DiscoverFeed from "./DiscoverFeed";
-
-// Helpers
-import {
-  getAllContent,
-  getAllSlugs,
-  isAdded,
-  localStorageKey,
-} from "../lib/storageHelpers";
-import { makeNewMarker } from "../components/Map";
-import { categoryInfo } from "../content/meta";
-import {
-  unvisitedMapColor,
-  unopinionatedMapColor,
-  excitingMapColor,
-} from "../lib/constants";
 
 export default function ContentPane({
   slug,

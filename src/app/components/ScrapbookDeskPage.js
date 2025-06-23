@@ -47,8 +47,10 @@ export default function ScrapbookDeskPage({
       { scale: 1, display: "block", delay: 1 }
     );
     new ScrapbookDeskItem(document.querySelector("#collageImage"), -6, 0, 0);
+    tl.fromTo("#pens", { top: "-30rem" }, { top: "-4rem" });
     tl.fromTo("#backToMap", { bottom: "-30rem" }, { bottom: "-10rem" });
     tl.fromTo("#toJournal", { bottom: "-30rem" }, { bottom: "-10rem" });
+    tl.fromTo(".stickyNote", { opacity: 0 }, { opacity: 1 });
   }, []);
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -69,34 +71,38 @@ export default function ScrapbookDeskPage({
   }, [stickerRefs]);
   return (
     <div
-      className="w-full h-full absolute top-0 left-0  z-20 overflow-clip"
+      className="w-full h-full absolute top-0 left-0  z-20 overflow-clip touch-none select-none"
       style={{
         backgroundImage: "url(woodendesk.png)",
         backgroundSize: "cover",
       }}
     >
-      <div
-        className=" bg-green-400 rounded-lg font-extrabold w-fit px-2 py-1 drop-shadow-md cursor-pointer "
-        onClick={() => {
-          setShowSummaryPage(false);
-        }}
-      >
-        Back
-      </div>
-
       <button
         onClick={() => {
           setShowSummaryPage(false);
         }}
       >
         <div
-          className="absolute left-14 w-36 h-96 z-30 -top-48 rotate-12"
+          id="pens"
+          className="absolute left-5 w-40 h-96 z-30 -top-24 rotate-12"
           style={{
-            backgroundImage: `url(/pencil.png)`,
+            backgroundImage: `url(/pens.png)`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
           }}
         ></div>
+        <div
+          className="stickyNote w-28 h-28 top-4 left-0 absolute z-30 p-2 flex flex-col justify-center  mt-2 rotate-6"
+          style={{
+            backgroundImage: `url(/stickynote.png)`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="font-mono text-gray-900 font-bold text-sm text-center">
+            Back to editing
+          </div>
+        </div>
       </button>
       <div className="flex flex-col items-center gap-2 ">
         {/* <a
@@ -151,11 +157,23 @@ export default function ScrapbookDeskPage({
               backgroundRepeat: "no-repeat",
             }}
           ></div>
+          <div
+            className="stickyNote w-28 h-28 bottom-4 left-0 absolute z-30 p-2 flex flex-col justify-center  mt-2 -rotate-6"
+            style={{
+              backgroundImage: `url(/stickynote.png)`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="font-mono text-gray-900 font-bold text-sm text-center">
+              Back to map
+            </div>
+          </div>
         </a>
         <a href="/journal">
           <div
             id="toJournal"
-            className="  absolute z-30 -right-10 -rotate-6 drop-shadow-xl"
+            className="absolute z-30 -right-10 -rotate-6 drop-shadow-xl"
             style={{
               width: "15rem",
               height: "25rem",
@@ -164,6 +182,18 @@ export default function ScrapbookDeskPage({
               backgroundRepeat: "no-repeat",
             }}
           ></div>
+          <div
+            className="stickyNote w-28 h-28 bottom-0 right-7 absolute z-30 p-2 flex flex-col justify-center  -rotate-6"
+            style={{
+              backgroundImage: `url(/stickynote.png)`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="font-mono text-gray-900 font-bold text-sm text-center">
+              View journal
+            </div>
+          </div>
         </a>
       </div>
     </div>

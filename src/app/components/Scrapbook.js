@@ -6,7 +6,7 @@ import ScrapbookCornerDisplay from "./ScrapbookCornerDisplay";
 import { ScrapbookElem } from "./ScrapbookElement";
 import TextEditor from "./scrapbook/TextEditor";
 
-import { getAllLCItems } from "../lib/storageHelpers";
+import { getAllLCItems, getHomeLocation } from "../lib/storageHelpers";
 
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
@@ -221,7 +221,6 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     imgDiv.style.top = "0px";
     imgDiv.style.left = "0px";
 
-    console.log("VVN peek me!");
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
       getDraggingItem: getDraggingItem,
@@ -258,6 +257,8 @@ export default function Scrapbook({
   const [scrapbookPage, setScrapbookPage] = useState(
     new ScrapbookPage(getDraggingItem, handleDraggingItem)
   );
+  const [defaultStickerMetaInfo, setDefaultStickerMetaInfo] =
+    useState(undefined);
   const [draggingItem, setDraggingItem] = useState(undefined);
   const draggingItemRef = useRef(undefined);
 
@@ -304,13 +305,19 @@ export default function Scrapbook({
     const lcItems = getAllLCItems();
     setStickers(Object.values(lcItems));
 
-    reel.forEach((image, i) => {
+    reel.forEach((imageObj, i) => {
       scrapbookPage.addNewSticker(
-        image,
+        imageObj.img,
         defaultStickerWidth,
         defaultStickerHeight
       );
     });
+    const fetchStickerInfo = async () => {
+      const file = await fetch("/content/stickerinfo.json");
+      const f = await file.json();
+      setDefaultStickerMetaInfo(f);
+    };
+    fetchStickerInfo();
   }, []);
 
   useEffect(() => {
@@ -359,6 +366,30 @@ export default function Scrapbook({
     console.log("hello vivian in handle editing text sticker");
     setShowTextModal(true);
     setEditingTextSticker(sticker);
+  }
+
+  function getDefaultStickerPack() {
+    const defaultStickers = [];
+    // Get sticker packs depending on location :)
+    const home = getHomeLocation();
+    let fileNames = [];
+    switch (home) {
+      case "Southeast Wyoming":
+        fileNames = [
+          "/stickerpacks/sewy/bill.png",
+          "/stickerpacks/sewy/grahamMarket.png",
+        ];
+        break;
+      case "Seattle":
+        fileNames = ["/stickerpacks/seattle/pano.jpg"];
+        break;
+      case "Chicago":
+        break;
+    }
+    fileNames.forEach((fn, i) => {
+      defaultStickers.push({ ...defaultStickerMetaInfo[fn], img: fn });
+    });
+    return defaultStickers;
   }
 
   function makeToolbar() {
@@ -417,26 +448,28 @@ export default function Scrapbook({
       ></div>
       {showMyPhotos && (
         <div
-          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
+          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50 shadow-t-lg"
           onClick={() => {
             setShowMyPhotos(false);
           }}
         >
           <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
-            <svg
-              className="w-4 "
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 384 512"
-              onClick={(e) => {
-                setShowMyPhotos(false);
-                e.stopPropagation();
-              }}
-            >
-              <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
-            </svg>
-            <div className=" p-2 text-lg font-bold">Your photos</div>
+            <div className="w-full  p-2 flex flex-row justify-end">
+              <svg
+                className="w-4 cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 384 512"
+                onClick={(e) => {
+                  setShowMyPhotos(false);
+                  e.stopPropagation();
+                }}
+              >
+                <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+              </svg>
+            </div>
+            <div className="p-4 text-2xl font-bold">Your Photos</div>
             <div className="flex flex-row flex-wrap gap-2 items-center justify-center p-2">
-              {reel?.map((photo, i) => {
+              {reel?.map((photoObj, i) => {
                 return (
                   <div
                     key={i}
@@ -445,14 +478,14 @@ export default function Scrapbook({
                       e.stopPropagation();
                       e.preventDefault();
                       scrapbookPage.addNewPageSticker(
-                        photo,
+                        photoObj.img,
                         defaultStickerWidth,
                         defaultStickerHeight
                       );
                       setShowMyPhotos(false);
                     }}
                   >
-                    <img src={photo}></img>
+                    <img src={photoObj.img}></img>
                   </div>
                 );
               })}
@@ -469,20 +502,53 @@ export default function Scrapbook({
           }}
         >
           <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
-            <svg
-              className="w-4 "
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 384 512"
-              onClick={(e) => {
-                setShowStickerModal(false);
-                e.stopPropagation();
-              }}
-            >
-              <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
-            </svg>
-            <div className=" p-2 text-lg font-bold">From the page</div>
-            <div className="flex flex-row flex-wrap gap-2">
-              {pageStickers?.map((item, i) => {
+            <div className="w-full  p-2 flex flex-row justify-end">
+              <svg
+                className="w-4 cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 384 512"
+                onClick={(e) => {
+                  setShowStickerModal(false);
+                  e.stopPropagation();
+                }}
+              >
+                <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+              </svg>
+            </div>
+            {pageStickers && pageStickers.length > 0 && (
+              <div>
+                <div className=" p-4 text-2xl font-bold">From the page</div>
+                <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
+                  {pageStickers?.map((item, i) => {
+                    return (
+                      <div
+                        key={`myStickers-${i}`}
+                        style={{ width: "200px" }}
+                        onClick={(e) => {
+                          const htmlEl = e.target;
+                          console.log(htmlEl.getBoundingClientRect());
+                          e.stopPropagation();
+                          e.preventDefault();
+                          scrapbookPage.addNewPageSticker(
+                            item.image,
+                            200,
+                            htmlEl.getBoundingClientRect().height,
+                            item.linkOut,
+                            item.title
+                          );
+                          setShowStickerModal(false);
+                        }}
+                      >
+                        <img src={item.image} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            <div className="px-4 pb-4 text-2xl font-bold">Stickers</div>
+            <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
+              {getDefaultStickerPack().map((stickerInfo, i) => {
                 return (
                   <div
                     key={`myStickers-${i}`}
@@ -493,22 +559,22 @@ export default function Scrapbook({
                       e.stopPropagation();
                       e.preventDefault();
                       scrapbookPage.addNewPageSticker(
-                        item.image,
+                        stickerInfo.img,
                         200,
                         htmlEl.getBoundingClientRect().height,
-                        item.linkOut,
-                        item.title
+                        stickerInfo.linkOut,
+                        stickerInfo.title
                       );
                       setShowStickerModal(false);
                     }}
                   >
-                    <img src={item.image} />
+                    <img src={stickerInfo.img} />
                   </div>
                 );
               })}
             </div>
-            <div className=" p-2 text-lg font-bold">Your Stickers</div>
-            <div className="flex flex-row flex-wrap gap-2">
+            <div className="p-4 text-2xl font-bold">Your Stickers</div>
+            <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
               {stickers.map((item, i) => {
                 return (
                   <div

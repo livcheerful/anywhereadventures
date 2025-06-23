@@ -35,6 +35,15 @@ export default function MapBrochure({
     });
   }
   if (!category) return <div></div>;
+
+  const neighborhoods = [];
+  // Compile neighborhoods
+  category.posts.forEach((post, i) => {
+    if (post.neighborhood) {
+      neighborhoods.push(post.neighborhood);
+    }
+  });
+
   return (
     <div
       className="bg-white w-full h-full overflow-y-auto pr-0 drop-shadow-2xl "
@@ -67,8 +76,8 @@ export default function MapBrochure({
           <div className="font-black text-gray-900 text-2xl min-h-16 flex items-end ">
             {category.title || category.tag}
           </div>
-          <div className="flex flex-col font-mono text-gray-500 text-xs">
-            <div>belltown, georgetown</div>
+          <div className="flex flex-col font-mono text-gray-500 text-xs w-full text-wrap">
+            <div>{neighborhoods.join(", ")}</div>
             <div>{`${category.posts.length} locations`}</div>
           </div>
           <hr></hr>

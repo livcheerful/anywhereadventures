@@ -17,6 +17,7 @@ module.exports = {
       },
       fontFamily: {
         vivian: ["var(--font-vivian)"],
+        overpass: ["Overpass", "sans-serif"],
       },
       colors: {
         background: "var(--background)",

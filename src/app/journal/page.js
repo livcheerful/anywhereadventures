@@ -307,6 +307,9 @@ export default function Page() {
             About the project
           </div>
         </div> */}
+        <div className="fixed left-0 top-1/2 bg-white p-2 z-30">
+          Back to Map
+        </div>
       </div>
     </div>
   );

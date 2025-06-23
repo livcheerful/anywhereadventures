@@ -61,7 +61,7 @@ export default function StickyHeader({
             Open in Map
           </button>
         </div>
-        <div className="flex flex-col gap-2 pt-6 w-full">
+        <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">
           <div className="flex flex-row justify-between items-end">
             <div className="font-mono font-black px-2 text-lg">
               {post.locationTitle}

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "mdx": "node ./queryMdx.js",
+    "newSticker": "node ./addNewSticker.js",
     "newMdx": "node ./makeNewMdx.js",
     "build": "next build",
     "start": "next start",

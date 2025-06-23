@@ -86,7 +86,7 @@ function MapManager(map, router) {
     }
   };
 
-  this.addExploreMarker = function (slug, title, latlon, image, cb) {
+  this.addExploreMarker = function (slug, markerInfo, latlon, image, cb) {
     const el = document.createElement("div");
     el.className =
       "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
@@ -95,20 +95,33 @@ function MapManager(map, router) {
     el.style.borderWidth = "1px";
     el.style.width = `3rem`;
     el.style.height = `3rem`;
-    console.log(el);
     const marker = new Marker({ element: el }).setLngLat([
       latlon[1],
       latlon[0],
     ]);
 
     el.addEventListener("click", () => {
-      cb();
+      cb(markerInfo, marker);
     });
     marker.addTo(this.map);
-    el.setAttribute("aria-label", title);
-    el.setAttribute("role", "button");
+    addAccessibilityAttrs(el, marker, markerInfo, cb);
     this.exploreMarkers.set(slug, marker);
   };
+
+  function addAccessibilityAttrs(el, pin, markerInfo, onClickFunc) {
+    el.setAttribute(
+      "aria-label",
+      `${markerInfo.title}${
+        markerInfo.neighborhood ? ` - ${markerInfo.neighborhood}` : ""
+      }}`
+    );
+    el.setAttribute("role", "button");
+    el.addEventListener("keydown", (e) => {
+      if (e.code == "Enter") {
+        onClickFunc(markerInfo, pin);
+      }
+    });
+  }
 
   function makeMarker(info, onClickCb) {
     const pin = new Marker({
@@ -142,8 +155,7 @@ function MapManager(map, router) {
       const layer = pin.addTo(this.map);
 
       const el = pin.getElement();
-      el.setAttribute("aria-label", info.title);
-      el.setAttribute("role", "button");
+      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
       this.currentLayers.set(slug, layer);
     }
   };
@@ -157,13 +169,8 @@ function MapManager(map, router) {
       const pin = makeMarker(markerInfo, pinCb);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
-      el.setAttribute(
-        "aria-label",
-        `${markerInfo.title} ${
-          markerInfo.neighborhood ? `- ${markerInfo.neighborhood}` : ""
-        }}`
-      );
-      el.setAttribute("role", "button");
+
+      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
       this.currentLayers.set(slug, layer);
     }
     // asdf
@@ -222,9 +229,6 @@ export default function MyMap({
       showZoom: true,
       showCompass: true,
     });
-    console.log("------Navigation control:------");
-    console.log(navControl);
-    console.log("------Navigation control------");
     navControlRef.current = navControl;
     map.addControl(navControl, "top-left");
     const myMap = new MapManager(map, router);
@@ -232,10 +236,9 @@ export default function MyMap({
     setMapManager(myMap);
   }, []);
   function addExploreMarkerWithAnims(location) {
-    console.log(location);
     mapManager.addExploreMarker(
       location.slug,
-      location.title,
+      location,
       location.latlon,
       location.cameraImage || location.cardImage,
       (marker) => {
@@ -289,6 +292,7 @@ export default function MyMap({
         myLocations
       );
 
+      console.log(chosenLocation);
       // Add custom map markers for all locations we don't already have added
       for (let i = 0; i < chosenLocation.locs.length; i++) {
         const location = chosenLocation.locs[i];
@@ -352,6 +356,7 @@ export default function MyMap({
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
+        // VVNTODO should we manually change focus to popup title here?
       });
     }
 
@@ -376,7 +381,7 @@ export default function MyMap({
 
   return (
     <div
-      className="w-full"
+      className="w-full overflow-clip"
       onClick={() => {
         mapClickHandler();
       }}

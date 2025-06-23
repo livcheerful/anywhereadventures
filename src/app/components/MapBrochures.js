@@ -83,7 +83,10 @@ export default function MapBrochures({
     <div>
       {/* Keep one in the corner */}
       {brochureViewOpen == false && (
-        <div className="w-full h-fit absolute -right-1/3 top-1/2 rotate-[10deg] scale-75 ">
+        <div
+          tabIndex={0}
+          className="w-full h-fit absolute -right-1/3 top-1/2 rotate-[10deg] scale-75 "
+        >
           <MapBrochure
             category={categories[viewingBrochureIndex]}
             setBrochureViewOpen={setBrochureViewOpen}

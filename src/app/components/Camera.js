@@ -157,18 +157,6 @@ export default function Camera({
           </video>
         </div>
         <canvas className="hidden" id="canvas" ref={canvas} />
-        {/* Countdown Elements */}
-        {(showSayCheese || countdown) && (
-          <div
-            id="white-background"
-            className="absolute z-10 w-full  h-full flex justify-center items-center"
-            style={{ backgroundColor: "#FFFFFF99" }}
-          >
-            <div className="text-black font-bold text-[3rem] ">
-              {countdown ? countdown : "say CHEEESE"}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

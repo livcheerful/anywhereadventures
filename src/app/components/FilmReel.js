@@ -3,10 +3,10 @@ export default function FilmReel({ snapshots }) {
     <div className="relative w-full flex flex-col bottom-0 ">
       <div className="px-4 pr-8">
         <div className="flex flex-col w-full bg-black ">
-          {snapshots.map((snapshot, i) => {
+          {snapshots.map((snapshotObj, i) => {
             return (
               <img
-                src={snapshot}
+                src={snapshotObj.img}
                 className="block w-full h-auto pb-2"
                 key={i}
               />
