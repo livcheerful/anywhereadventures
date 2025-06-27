@@ -18,11 +18,8 @@ export default function MapExploreMarker({
   setViewingExplorePin,
 }) {
   return (
-    <div
-      className="absolute w-full flex flex-col items-center justify-start left-0  h-fit  "
-      style={{ top: "20%" }}
-    >
-      <div className="absolute flex flex-col w-4/5 p-5 bg-white drop-shadow-2xl border-2 border-gray-900 ">
+    <div className="absolute w-full flex flex-col items-center justify-start left-0  h-fit top-20 md:top-[20%]">
+      <div className="absolute flex flex-col w-11/12 md:w-4/5 p-5 bg-white drop-shadow-2xl border-2 border-gray-900 ">
         <button
           className="absolute w-8 h-8  -top-4  -right-4 bg-white border-2 border-gray-900 rounded-full text-center"
           onClick={() => {
@@ -37,9 +34,9 @@ export default function MapExploreMarker({
             <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
           </svg>
         </button>
-        <div className="text-xl font-bold">{mdx.title}</div>
-        <hr className="py-2"></hr>
-        <div className="font-mono text-gray-500 text-sm">
+        <div className="text-md md:text-xl font-bold">{mdx.title}</div>
+        <hr className="md:py-2"></hr>
+        <div className="font-mono text-gray-500 text-xs md:text-sm">
           {mdx.locationTitle}
         </div>
         <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3">
@@ -48,7 +45,11 @@ export default function MapExploreMarker({
             4
           )}, ${mdx.latlon[1].toFixed(4)}`}</div>
         </div>
-        {mdx.blurb && <div className="pt-2 text-gray-600">{mdx.blurb}</div>}
+        {mdx.blurb && (
+          <div className="pt-2 text-gray-600 text-sm md:text-md">
+            {mdx.blurb}
+          </div>
+        )}
         {isLocationAdded(mdx.slug) ? (
           <button
             className=" text-center py-2 my-2 rounded-full border-2 border-gray-300 bg-white"

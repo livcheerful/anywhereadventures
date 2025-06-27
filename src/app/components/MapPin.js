@@ -19,7 +19,7 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
     return "Visit this location and capture what it looks like now.";
   }
   return (
-    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-32 h-full  ">
+    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 md:top-32 h-full  ">
       <div
         className="h-48 top-6 relative w-full"
         style={{
@@ -32,7 +32,7 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
       ></div>
       <PinJournal page={getPage(mdx.slug)} />
       <PinCamera mdx={mdx} />
-      <div className="absolute flex flex-col w-4/5 p-4 bg-white drop-shadow-2xl border-2 border-gray-900 ">
+      <div className="absolute flex flex-col w-11/12 md:w-4/5 p-4 bg-white drop-shadow-2xl border-2 border-gray-900 ">
         <button
           onClick={() => {
             onCloseCB();

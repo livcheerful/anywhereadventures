@@ -118,7 +118,7 @@ export default function BasePage({ slug }) {
           setBrochureViewOpen={setBrochureViewOpen}
         />
       }
-      {!viewingPin && (
+      {!viewingPin && mapState == "myMap" && (
         <a href="/journal">
           <div
             id="toJournal"

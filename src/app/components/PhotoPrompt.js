@@ -13,13 +13,13 @@ export default function PhotoPrompt({ mdx, visited }) {
             className="absolute w-36 top-0 -left-16 mix-blend-hard-light rotate-12 opacity-30"
           />
           <div className="z-10 ">
-            <div className="text-gray-800 font-bold text-lg min-h-8 flex flex-col jusify-end">
+            <div className="text-gray-800 font-bold text-sm md:text-lg min-h-8 flex flex-col jusify-end">
               <div>{mdx.locationTitle || mdx.title}</div>
             </div>
             <hr className="border-gray-700"></hr>
             <div className="flex flex-row justify-between text-gray-900/50 text-xs font-mono">
               <div className=" text-black font-mono">VISITED</div>
-              <div className="flex flex-col items-end ">
+              <div className="flex flex-row gap-2 md:flex-col items-end ">
                 <div className="">{`${visitedDate.toLocaleDateString()}`}</div>
                 <div className="">{`${visitedDate.toLocaleTimeString()}`}</div>
               </div>

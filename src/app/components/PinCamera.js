@@ -4,27 +4,29 @@ import { useGSAP } from "@gsap/react";
 export default function PinCamera({ mdx }) {
   useGSAP(() => {
     // console.log("starting animation");
+    const screenWidth = window.innerWidth;
+    const smallScreen = screenWidth < 768;
     gsap.fromTo(
       "#camera",
-      { rotate: -100, left: "-30rem" },
-      { rotate: -13, left: "-8rem", delay: 0.2, duration: 1.2 }
+      { rotate: -100, left: "-30rem", bottom: smallScreen ? "20%" : "50%" },
+      {
+        rotate: smallScreen ? -9 : -13,
+        left: smallScreen ? "-3rem" : "-8rem",
+        delay: 0.2,
+        duration: 1.2,
+      }
     );
   }, []);
   return (
     <div
       id="camera"
-      className="w-[24rem] h-[10rem] absolute  "
-      style={{ bottom: "50%" }}
+      className="w-[15rem] h-[10rem] md:w-[24rem] md:h-[10rem] absolute  "
     >
       <a href={`/camera?locationId=${mdx.slug}`}>
         <img src="/camera.png" />
         <div
-          className="bg-white absolute top-0 "
+          className="bg-white absolute top-9 left-[1rem] w-[9rem] h-[6.5rem] md:w-[14rem] md:h-[10rem] md:left-[1.8rem] md:top-[3.8rem]"
           style={{
-            width: "14rem",
-            height: "10rem",
-            left: "1.8rem",
-            top: "3.8rem",
             rotate: "-2deg",
             backgroundImage: `url(${mdx.cameraImage || mdx.cardImage})`,
             backgroundSize: "cover",

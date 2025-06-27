@@ -441,7 +441,7 @@ export default function MyMap({
         />
       )}
       {mapState == "explore" && (
-        <div className="absolute w-1/3 top-2 left-12 bg-white p-2 border-2 text-gray-900 border-gray-900 font-bold drop-shadow-xl">
+        <div className="absolute w-2/3 text-sm top-2 left-12 bg-white p-2 border-2 text-gray-900 border-gray-900 font-bold drop-shadow-xl">
           Discover new locations to add to your map
         </div>
       )}

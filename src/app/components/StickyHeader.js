@@ -43,7 +43,7 @@ export default function StickyHeader({
       className="sticky -top-1 bg-white z-30 dark:text-black "
     >
       <div
-        className={`flex flex-row gap-2 pt-12 pb-2 p-2 w-full items-center`}
+        className={`flex flex-row gap-2 pt-8 md:pt-12 pb-2 p-2 w-full items-center`}
         style={{
           backgroundSize: "cover",
           backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,

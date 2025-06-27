@@ -73,7 +73,7 @@ export default function MapBrochure({
       </div>
       <div className="">
         <div className="p-4">
-          <div className="font-black text-gray-900 text-2xl min-h-16 flex items-end ">
+          <div className="font-black text-gray-900 text-2xl min-h-8 md:min-h-16 flex items-end ">
             {category.title || category.tag}
           </div>
           <div className="flex flex-col font-mono text-gray-500 text-xs w-full text-wrap">
@@ -84,7 +84,6 @@ export default function MapBrochure({
           <div className="text-sm py-2 text-gray-800 tracking-wide">
             {category.description}
           </div>
-          <hr></hr>
           <button
             className="bg-green-600 text-white border-2 border-gray-800 w-full rounded-md py-1 mt-2 text-center font-bold"
             onClick={() => {

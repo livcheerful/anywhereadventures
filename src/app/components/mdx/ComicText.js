@@ -8,11 +8,11 @@ export default function ComicText({ textInfo }) {
    */
 
   function makeBubble() {
-    const tailDegree = 270;
+    const tailDegree = textInfo.bubbleStyle?.tailDegree;
     const tailRadians = (tailDegree * Math.PI) / 180;
 
-    let xOffset = 4;
-    let yOffset = 11;
+    let xOffset = 0;
+    let yOffset = 0;
 
     const margin = 8;
     const bubbleWidth = 100;
@@ -20,7 +20,7 @@ export default function ComicText({ textInfo }) {
     const bubbleWid = bubbleWidth / 2;
     const bubbleHei = bubbleHeight / 2;
     const bubbleDrop = 5; // Curve size
-    const tailLength = 12;
+    const tailLength = 10;
     const tailGap = 10;
     const strokeWidth = textInfo.size.width > 1 ? 1 : 2;
     const absStrokeWidth = 2;
@@ -36,27 +36,28 @@ export default function ComicText({ textInfo }) {
     let w = viewboxWidth / 2;
     let h = viewboxHeight / 2;
 
-    if (tailDegree < degreeTurn) {
-      x = w;
-      y = x * Math.tan(tailRadians);
-    } else if (tailDegree < 180 - degreeTurn) {
-      y = h;
-      x = y / Math.tan(tailRadians);
-    } else if (tailDegree < degreeTurn + 180) {
-      x = -1 * w;
-      y = x * Math.tan(tailRadians);
-    } else if (tailDegree < 360 - degreeTurn) {
-      y = -1 * h;
-      x = y / Math.tan(tailRadians);
-    } else {
-      x = w;
-      y = x * Math.tan(tailRadians);
+    if (tailDegree) {
+      if (tailDegree < degreeTurn) {
+        x = w - 3;
+        y = x * Math.tan(tailRadians);
+      } else if (tailDegree < 180 - degreeTurn) {
+        y = h - 3;
+        x = y / Math.tan(tailRadians);
+      } else if (tailDegree < degreeTurn + 180) {
+        x = -1 * (w - 3);
+        y = x * Math.tan(tailRadians);
+      } else if (tailDegree < 360 - degreeTurn) {
+        y = -1 * (h - 3);
+        x = y / Math.tan(tailRadians);
+      } else {
+        x = w - 3;
+        y = x * Math.tan(tailRadians);
+      }
     }
-    xOffset = tailLength * Math.cos(Math.PI + tailRadians);
-    yOffset = tailLength * Math.sin(Math.PI + tailRadians);
-
-    const bubbleCenterX = bubbleWid + strokeWidth + xOffset;
-    const bubbleCenterY = bubbleHei + strokeWidth + yOffset;
+    if (tailDegree) {
+      xOffset = tailLength * Math.cos(Math.PI + tailRadians);
+      yOffset = tailLength * Math.sin(Math.PI + tailRadians);
+    }
 
     const viewboxCenterX = viewboxWidth / 2;
     const viewboxCenterY = viewboxHeight / 2;
@@ -69,18 +70,23 @@ export default function ComicText({ textInfo }) {
       <svg
         className="absolute stroke-black w-full h-full"
         preserveAspectRatio="none"
-        strokeLinejoin="bevel"
+        strokeLinejoin="round"
         viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       >
+        {tailDegree && (
+          <path
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
+              y - b
+            } l${c - x} ${d - y}`}
+            strokeLinejoin="round"
+            style={{ strokeWidth: `${2}px` }}
+            className="fill-white"
+          />
+        )}
         <path
-          d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
-            y - b
-          } l${c - x} ${d - y}`}
-          style={{ strokeWidth: `${2}px` }}
-          className="fill-white"
-        />
-        <path
-          d={`m${viewboxCenterX} ${yOffset} c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
+          d={`m${
+            viewboxCenterX + xOffset
+          } ${yOffset} c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
             bubbleHei - bubbleDrop - 0
           }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${
             bubbleHei - 0
@@ -92,14 +98,15 @@ export default function ComicText({ textInfo }) {
           style={{ strokeWidth: `${strokeWidth}px` }}
           className="fill-white  "
         />
-
-        <path
-          d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
-            y - b
-          } l${c - x} ${d - y}`}
-          style={{ strokeWidth: `${2}px` }}
-          className="fill-white stroke-transparent"
-        />
+        {tailDegree && (
+          <path
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
+              y - b
+            } l${c - x} ${d - y}`}
+            style={{ strokeWidth: `${2}px` }}
+            className="fill-white stroke-transparent"
+          />
+        )}
       </svg>
     );
   }
@@ -110,12 +117,31 @@ export default function ComicText({ textInfo }) {
       top: "-10px",
     };
   }
+
+  function createTextStyles() {
+    let offSet = textInfo.style.outline == "bubble" ? calculateOffset() : {};
+    let alignStyle = {};
+    if (textInfo.style.outline != "bubble") {
+      switch (textInfo.style.textAlign) {
+        case "left":
+          alignStyle = { alignItems: "flex-start" };
+          break;
+        case "center":
+          alignStyle = { alignItems: "center" };
+          break;
+        case "right":
+          alignStyle = { alignItems: "flex-end" };
+          break;
+        default:
+          alignStyle = { alignItems: "flex-start" };
+      }
+    }
+    return { ...offSet, ...alignStyle };
+  }
   function createBubbleStyles() {
     let borderStyles = {};
     switch (textInfo.style.outline) {
       case "bubble":
-        // Maybe for SVG building... it's a set size and gets scaled....?
-        borderStyles = { border: "2px red solid" };
         break;
       case "box":
         borderStyles = { border: "2px black solid" };
@@ -127,6 +153,7 @@ export default function ComicText({ textInfo }) {
         borderStyles = {};
         break;
     }
+
     return {
       fontFamily: `Overpass`,
       fontWeight: "bold",
@@ -137,21 +164,26 @@ export default function ComicText({ textInfo }) {
   }
   return (
     <div
-      className={`relative text-left ${
-        textInfo.style.outline == "bubble" ? "w-full h-full " : "w-fit h-fit"
+      className={`relative  ${
+        textInfo.style.outline == "bubble" ? "w-full h-full" : "w-full h-fit"
       }`}
       style={createBubbleStyles()}
     >
       {textInfo.style.outline == "bubble" && makeBubble()}
       <div
-        className={`${
+        className={`flex flex-col ${
           textInfo.style.outline == "bubble"
-            ? "absolute text-center flex flex-col justify-center w-full h-full"
-            : ""
+            ? "absolute items-center justify-center w-full h-full"
+            : "w-full"
         }`}
-        style={textInfo.style.outline == "bubble" ? calculateOffset() : {}}
+        style={createTextStyles()}
       >
-        <div>{textInfo.src}</div>
+        <div
+          className="w-fit h-fit"
+          style={{ fontSize: textInfo.style.fontSize }}
+        >
+          {textInfo.src}
+        </div>
       </div>
     </div>
   );
