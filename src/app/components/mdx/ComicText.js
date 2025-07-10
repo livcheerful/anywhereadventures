@@ -189,8 +189,11 @@ export default function ComicText({ textInfo }) {
         style={createTextStyles()}
       >
         <div
-          className="w-fit h-fit"
-          style={{ fontSize: textInfo.style.fontSize || ".8rem" }}
+          className="w-fit h-fit leading-5"
+          style={{
+            fontSize: textInfo.style.fontSize || ".8rem",
+            fontFamily: textInfo.style.fontFamily || "",
+          }}
         >
           <Markdown>{textInfo.src}</Markdown>
         </div>

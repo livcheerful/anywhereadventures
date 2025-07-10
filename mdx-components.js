@@ -31,11 +31,12 @@ export const MyMDXComponents = {
   BigLink: ({ link, thumbnail, title, children }) => {
     return <BigLink link={link} thumbnail={thumbnail} title={title} />;
   },
-  ComicSection: ({ elements, cols, overlap, children }) => {
+  ComicSection: ({ elements, cols, rowHeight, overlap, children }) => {
     return (
       <ComicSection
         overlap={overlap || 0}
         cols={cols}
+        rowHeight={rowHeight}
         elements={elements}
       ></ComicSection>
     );

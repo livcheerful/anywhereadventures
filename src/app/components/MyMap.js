@@ -240,7 +240,7 @@ export default function MyMap({
       location.slug,
       location,
       location.latlon,
-      location.cameraImage || location.cardImage,
+      location.cardImage || location.cameraImage,
       (marker) => {
         setViewingExploreCategory(undefined);
         setBrochureViewOpen(false);

@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Comic from "./components/mdx/Comic";
+import ComicSection from "./components/mdx/ComicSection";
 
 const vivianFont = localFont({
   src: "./fonts/Viviantesthand-Regular.ttf",
@@ -19,22 +19,41 @@ export default function RootLayout({ children }) {
         <div className="md:w-limiter">{children}</div>
 
         <div
-          className={`absolute top-0 right-0 w-fit invisible lg:visible -z-10 dark:text-black`}
+          className={`absolute top-0 right-0 w-96 invisible lg:visible -z-10 dark:text-black`}
         >
-          <Comic
-            speechBubbles={[
+          <ComicSection
+            elements={[
               {
-                text: "oh hey there! it looks like you're checking out the site on a desktop computer",
+                type: "image",
+                src: "/comics/Vivian.png",
+                position: { col: 3, row: 2 },
+                size: { width: 1, height: 2 },
               },
               {
-                text: "*Anywhere Adventures* was designed to be viewed on a phone, so the page is squished on purpose here",
+                type: "text",
+                src: "oh hey there! it looks like you're checking out the site on a desktop computer",
+                position: { col: 1, row: 1 },
+                size: { width: 2, height: 2 },
+                style: { outline: "bubble" },
+                bubbleStyle: { tailDegree: 10 },
               },
               {
-                text: "But you can still read and learn, even if you aren't based in Seattle!",
+                type: "text",
+                src: "*Anywhere Adventures* was designed to be viewed on a phone, so the page is squished on purpose here",
+                position: { col: 1, row: 3 },
+                size: { width: 2, height: 2 },
+                style: { outline: "bubble" },
+                bubbleStyle: { tailDegree: 330 },
+              },
+              {
+                type: "text",
+                src: "But you can still read and learn, even if you aren't based in Seattle, SE Wyoming, or Chicago!",
+                position: { col: 1, row: 5 },
+                size: { width: 3, height: 1 },
+                style: { outline: "bubble" },
+                bubbleStyle: { tailDegree: 310 },
               },
             ]}
-            image="/comics/Vivian.png"
-            position="right"
           />
         </div>
       </body>

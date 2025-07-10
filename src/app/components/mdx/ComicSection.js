@@ -1,6 +1,11 @@
 import ComicImage from "./ComicImage";
 import ComicText from "./ComicText";
-export default function ComicSection({ overlap = 0, cols, elements }) {
+export default function ComicSection({
+  overlap = 0,
+  cols,
+  rowHeight,
+  elements,
+}) {
   function estimateHeight() {
     return 200;
   }
@@ -41,11 +46,12 @@ export default function ComicSection({ overlap = 0, cols, elements }) {
       }}
     >
       <div
-        className="grid  auto-rows-[6rem] md: auto-rows[8rem] align-middle"
+        className="grid  md: auto-rows[8rem] align-middle"
         style={{
           gridTemplateColumns: cols
             ? `repeat(${cols}, minmax(0, 1fr))`
             : `repeat(3, minmax(0, 1fr))`,
+          gridAutoRows: rowHeight ? rowHeight : "6rem",
         }}
       >
         {elements.map((el, i) => {
