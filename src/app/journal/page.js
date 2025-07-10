@@ -124,7 +124,7 @@ export default function Page() {
           </div>
           <hr className="w-full border-slate-700 pb-4"></hr>
           <div className="bg-white font-bold w-fit">Locations by theme</div>
-          {values?.map((category, i) => {
+          {categories.values().map((category, i) => {
             const catMeta = categoryInfo[category.tag];
             return (
               <a
@@ -190,7 +190,7 @@ export default function Page() {
           </a>
         </div>
 
-        {values?.map((category, i) => {
+        {categories.values().map((category, i) => {
           const catMeta = categoryInfo[category.tag];
           const numberPerPage = 4;
           const numOfPagesNeeded = Math.ceil(
