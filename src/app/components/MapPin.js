@@ -58,7 +58,7 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
               >
                 Address:
               </div>
-              <div className="text-gray-700 flex-grow text-md font-mono">
+              <div className="text-gray-700 flex-grow text-xs font-mono">
                 {mdx.address}
               </div>
             </div>

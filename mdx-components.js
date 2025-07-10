@@ -23,22 +23,22 @@ export const MyMDXComponents = {
   li: ({ children }) => <li className="list-disc">{children}</li>,
   ul: ({ children }) => <ul className="list-disc">{children}</ul>,
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
-  LOCItem: ({ image, assetLink, linkOut, caption, alt, children }) => {
+  LOCItem: ({ image, linkOut, caption, alt, children }) => {
     return (
-      <LOCItem
-        image={image}
-        assetLink={assetLink}
-        linkOut={linkOut}
-        caption={caption}
-        alt={alt}
-      />
+      <LOCItem image={image} linkOut={linkOut} caption={caption} alt={alt} />
     );
   },
   BigLink: ({ link, thumbnail, title, children }) => {
     return <BigLink link={link} thumbnail={thumbnail} title={title} />;
   },
-  ComicSection: ({ elements, children }) => {
-    return <ComicSection elements={elements}></ComicSection>;
+  ComicSection: ({ elements, cols, overlap, children }) => {
+    return (
+      <ComicSection
+        overlap={overlap || 0}
+        cols={cols}
+        elements={elements}
+      ></ComicSection>
+    );
   },
   Comic: ({
     speechBubbles,

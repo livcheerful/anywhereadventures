@@ -2,7 +2,7 @@ export const tagsByCity = {
   seattle: [
     "architects",
     "names",
-    "looking up",
+    "built",
     "olmsted",
     "downtown",
     "north seattle",
@@ -30,12 +30,11 @@ export const categoryInfo = {
     description:
       "These architects designed the look of our city today. Visit their creations and learn to start recognizing their work around town.",
   },
-  "looking up": {
+  built: {
     pinColor: "#f29100",
     brochureColor: "#fff4d6",
-    title: "Seattle Up Above",
-    description:
-      "Look up! What will you see? Maybe the name of a building, a terrace you wouldn't have seen, or a walrus.",
+    title: "Built Environment",
+    description: "Description here.",
   },
   olmsted: {
     title: "The Olmsted Parks of Seattle",

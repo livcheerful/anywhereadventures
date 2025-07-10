@@ -10,7 +10,9 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
   const [diffPos, setDiffPos] = useState([0, 0]);
   const [dragging, setDragging] = useState(false);
 
-  useEffect(() => {}, [itemOpen]);
+  useEffect(() => {
+    console.log("VVN HELLO");
+  }, [itemOpen]);
 
   function startSaveAnim(e) {
     // const journalTab = document.getElementById("navbar-journal-tab");
@@ -38,7 +40,7 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
       });
     }, 10);
   }
-
+  console.log(`vvn images: ${image}`);
   return (
     <div className="flex flex-col items-center gap-1 pb-3 relative">
       <img src={image} id={`lcitem-${image}`} alt={alt} />
@@ -72,7 +74,9 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
           save
         </button>
       </div>
-      <div className="italic font-serif text-sm p-2">{caption}</div>
+      {caption && (
+        <div className="italic font-serif text-sm p-2">{caption}</div>
+      )}
     </div>
   );
 }

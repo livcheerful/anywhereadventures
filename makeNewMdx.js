@@ -14,6 +14,13 @@ stampName:
 photoPrompt:
 blurb:
 ---
+
+
+{/* <ComicSection elements={[
+    {type:"image", src:"", position:{col:1, row:1}, size:{width:1, height:1}},
+    {type:"text", src:"", position:{col:1, row:1}, size:{width:1, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
+
+]}/>  */}
 `;
 
 const fileName = process.argv[2];

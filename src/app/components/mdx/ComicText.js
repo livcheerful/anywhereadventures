@@ -1,3 +1,5 @@
+import Markdown from "react-markdown";
+
 export default function ComicText({ textInfo }) {
   /**
    * Style options:
@@ -20,7 +22,7 @@ export default function ComicText({ textInfo }) {
     const bubbleWid = bubbleWidth / 2;
     const bubbleHei = bubbleHeight / 2;
     const bubbleDrop = 5; // Curve size
-    const tailLength = 10;
+    const tailLength = 5;
     const tailGap = 10;
     const strokeWidth = textInfo.size.width > 1 ? 1 : 2;
     const absStrokeWidth = 2;
@@ -135,22 +137,29 @@ export default function ComicText({ textInfo }) {
         default:
           alignStyle = { alignItems: "flex-start" };
       }
+    } else {
+      alignStyle = { alignItems: "center" };
     }
     return { ...offSet, ...alignStyle };
   }
   function createBubbleStyles() {
     let borderStyles = {};
+    let backgroundStyles = {};
     switch (textInfo.style.outline) {
       case "bubble":
+        backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
         break;
       case "box":
         borderStyles = { border: "2px black solid" };
+        backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
         break;
       case "none":
         borderStyles = {};
+        backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
         break;
       default:
         borderStyles = {};
+        backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
         break;
     }
 
@@ -160,6 +169,7 @@ export default function ComicText({ textInfo }) {
       padding: "3px",
       margin: "2px",
       ...borderStyles,
+      ...backgroundStyles,
     };
   }
   return (
@@ -180,9 +190,9 @@ export default function ComicText({ textInfo }) {
       >
         <div
           className="w-fit h-fit"
-          style={{ fontSize: textInfo.style.fontSize }}
+          style={{ fontSize: textInfo.style.fontSize || ".8rem" }}
         >
-          {textInfo.src}
+          <Markdown>{textInfo.src}</Markdown>
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
 import ComicImage from "./ComicImage";
 import ComicText from "./ComicText";
-export default function ComicSection({ elements }) {
-  const images = [];
-  const texts = [];
+export default function ComicSection({ overlap = 0, cols, elements }) {
+  function estimateHeight() {
+    return 200;
+  }
+
   return (
     /**
      * Lay things out on a grid
@@ -32,8 +34,20 @@ export default function ComicSection({ elements }) {
      *  - Arrow (entrance + exit)
      */
 
-    <div className="comic-section w-full h-fit">
-      <div className="grid grid-cols-3 auto-rows-[6rem] md: auto-rows[8rem] align-middle">
+    <div
+      className="comic-section relative w-full h-fit"
+      style={{
+        top: `-${overlap}px`,
+      }}
+    >
+      <div
+        className="grid  auto-rows-[6rem] md: auto-rows[8rem] align-middle"
+        style={{
+          gridTemplateColumns: cols
+            ? `repeat(${cols}, minmax(0, 1fr))`
+            : `repeat(3, minmax(0, 1fr))`,
+        }}
+      >
         {elements.map((el, i) => {
           console.log(el);
           return (
