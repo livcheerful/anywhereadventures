@@ -6,7 +6,7 @@ import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
   const slugs = allSlugs;
-  slugs.push("", "discover");
+  slugs.push("", "journal");
   // Grab file
   const slugmap = slugs.map((s) => ({
     slug: [s],
