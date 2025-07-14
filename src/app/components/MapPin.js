@@ -26,7 +26,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
       ></div>
       <PinJournal page={getPage(mdx.slug)} />
       <PinCamera mdx={mdx} />
-      <div className="absolute flex flex-col w-11/12 md:w-4/5 p-4 bg-white drop-shadow-2xl border-2 border-gray-900 ">
+      <div className="absolute flex flex-col w-11/12 md:w-4/5  bg-white drop-shadow-2xl border-2 border-gray-900 ">
         <button
           onClick={() => {
             onCloseCB();
@@ -44,19 +44,24 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             }
           }}
         >
-          <div className="text-md md:text-xl font-bold text-black">
+          <div className="text-md md:text-xl font-bold text-black p-2 md:p-4">
             {mdx.title}
           </div>
         </button>
-        <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3">
+
+        <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3 px-2 md:px-4">
           {mdx.neighborhood && <div>{mdx.neighborhood}</div>}
           <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0].toFixed(
             4
           )}, ${mdx.latlon[1].toFixed(4)}`}</div>
         </div>
         <hr className="pt-1" />
+        {mdx.blurb && (
+          <div className="p-2  text-gray-600 text-sm">{mdx.blurb}</div>
+        )}
+
         {mdx.address && (
-          <div className="flex flex-row w-full items-center justify-between">
+          <div className="flex flex-row w-full items-center justify-between p-2 ">
             <div className="flex flex-col">
               <div
                 className="text-gray-500 pr-4 text-xs font-mono h-full "
@@ -81,24 +86,34 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             </button>
           </div>
         )}
-        {mdx.blurb && (
-          <div className="pt-2 text-gray-600 text-sm">{mdx.blurb}</div>
-        )}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const article = document.querySelector(`#${mdx.slug}`);
-            if (article) {
-              article.scrollIntoView({ behavior: "smooth" });
-              setPaneOpen(true);
-            }
-          }}
-          className="underline text-sm text-gray-600"
-        >
-          Read the story
-        </button>
-        <PhotoPrompt mdx={mdx} visited={visited} />
+
+        <div className="flex flex-row relative pt-2">
+          <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pb-2 overflow-clip border-x-0 w-1/3">
+            <div className="text-xs w-full text-center text-sky-600 font-black">
+              READ
+            </div>
+            <div className="font-bold text-sm text-black">
+              Learn more about the history of this location.
+            </div>
+            <div className="flex flex-col items-center pt-2">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const article = document.querySelector(`#${mdx.slug}`);
+                  if (article) {
+                    article.scrollIntoView({ behavior: "smooth" });
+                    setPaneOpen(true);
+                  }
+                }}
+                className="border-gray-900 border-2 text-black bg-sky-100 px-4 py-2 font-black text-sm rounded-full"
+              >
+                READ
+              </button>
+            </div>
+          </div>
+          <PhotoPrompt mdx={mdx} visited={visited} />
+        </div>
       </div>
     </div>
   );

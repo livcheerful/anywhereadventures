@@ -6,9 +6,9 @@ export default function PhotoPrompt({ mdx, visited }) {
     ? `Visit ${mdx.locationTitle} in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.`
     : "Visit this location in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
   return (
-    <div className="relative bg-amber-300 border-2 border-gray-900 -m-2 mt-4 p-2 overflow-clip ">
+    <div className="relative bg-amber-300 border-2 border-gray-900 p-2 overflow-clip border-r-0 w-2/3">
       {visited ? (
-        <div className="pl-20">
+        <div className="">
           <img
             src="/seattle-general-2.svg"
             className="absolute w-36 top-0 -left-16 mix-blend-hard-light rotate-12 opacity-30"
@@ -38,7 +38,7 @@ export default function PhotoPrompt({ mdx, visited }) {
       ) : (
         <div>
           <div className="text-xs w-full text-center text-amber-500 font-black">
-            PHOTO PROMPT
+            VISIT
           </div>
           <div className="font-bold text-sm text-black">
             {mdx.photoPrompt || genericPhotoPromptText}
@@ -46,7 +46,7 @@ export default function PhotoPrompt({ mdx, visited }) {
           <div className="flex flex-col items-center pt-2">
             <a
               href={`/camera?locationId=${mdx.slug}`}
-              className="border-gray-900 border-2 text-black bg-white px-4 py-2 font-black text-sm rounded-full"
+              className="border-gray-900 border-2 text-black bg-amber-100 px-4 py-2 font-black text-sm rounded-full"
             >
               I'M HERE
             </a>

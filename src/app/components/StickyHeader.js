@@ -9,6 +9,7 @@ export default function StickyHeader({
   contentSlug,
   focusOnPin,
   paneOpen,
+  setPaneOpen,
   isAdded = false,
 }) {
   const router = useRouter();
@@ -51,16 +52,27 @@ export default function StickyHeader({
       >
         <div className="absolute w-full left-0 top-0 flex items-center justify-center">
           {paneOpen && (
-            <button
-              className="border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                focusOnPin(post.slug, post);
-              }}
-            >
-              Open in Map
-            </button>
+            <div className=" flex flex-row justify-center gap-2 border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPaneOpen(false);
+                }}
+              >
+                🗺️
+              </button>
+              <div>|</div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  focusOnPin(post.slug, post);
+                }}
+              >
+                Open in Map
+              </button>
+            </div>
           )}
         </div>
         <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">

@@ -16,6 +16,7 @@ export default function RiverFeed({
   myLocationSlugs,
   focusOnPin,
   paneOpen,
+  setPaneOpen,
   viewAsGrid,
   setViewAsGrid,
   scrollRef,
@@ -109,6 +110,7 @@ export default function RiverFeed({
               isAdded={true}
               scrollRef={scrollRef}
               paneOpen={paneOpen}
+              setPaneOpen={setPaneOpen}
             />
             <UnstickyHeader post={c} />
             <PostContent post={c} />
