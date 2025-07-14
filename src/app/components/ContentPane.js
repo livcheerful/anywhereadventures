@@ -44,7 +44,7 @@ export default function ContentPane({
     if (!paneOpen) {
       return "20%";
     } else {
-      return "90%";
+      return "100%";
     }
   }
 
