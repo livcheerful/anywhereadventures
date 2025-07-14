@@ -42,7 +42,7 @@ export default function ContentPane({
 
   function getPaneHeight() {
     if (!paneOpen) {
-      return "20%";
+      return "23%";
     } else {
       return "100%";
     }

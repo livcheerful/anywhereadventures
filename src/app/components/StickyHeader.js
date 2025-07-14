@@ -52,7 +52,7 @@ export default function StickyHeader({
         <div className="absolute w-full left-0 top-0 flex items-center justify-center">
           {paneOpen && (
             <button
-              className="border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center"
+              className="border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
