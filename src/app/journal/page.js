@@ -81,14 +81,9 @@ export default function Page() {
   }
 
   function transformSavedLocationsToCategories() {
-    const homeLoc = getHomeLocation();
+    const homeLoc = getHomeLocation() || "World";
     const locData = savedLocationToObj(homeLoc);
 
-    const slugs = locData.locs.map((l) => {
-      l.slug;
-    });
-
-    console.log(locData.locs);
     const gatheredCategoriesMap = new Map();
     for (let mdxIdx in locData.locs) {
       const mdx = locData.locs[mdxIdx];
