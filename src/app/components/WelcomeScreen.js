@@ -47,7 +47,7 @@ export default function WelcomeScreen({
                   setWelcomeTextState(welcomeTextState + 1);
                 } else {
                   setWelcomeTextState(undefined);
-                  onFinishWelcoming();
+                  onFinishWelcoming(l);
                 }
               }}
             >

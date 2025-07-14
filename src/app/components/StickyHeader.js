@@ -6,9 +6,9 @@ import { hasLocationBeenVisited } from "../lib/storageHelpers";
 import { gsap } from "gsap";
 export default function StickyHeader({
   post,
-  currentSlug,
   contentSlug,
   focusOnPin,
+  paneOpen,
   isAdded = false,
 }) {
   const router = useRouter();
@@ -40,26 +40,28 @@ export default function StickyHeader({
   return (
     <div
       id={`header-${contentSlug}`}
-      className="sticky -top-1 bg-white z-30 dark:text-black "
+      className="sticky top-0 bg-white z-30 dark:text-black "
     >
       <div
-        className={`flex flex-row gap-2 pt-8 md:pt-12 pb-2 p-2 w-full items-center`}
+        className={`flex flex-row gap-2 pt-5 md:pt-8 pb-2 p-2 w-full items-center`}
         style={{
           backgroundSize: "cover",
           backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,
         }}
       >
         <div className="absolute w-full left-0 top-0 flex items-center justify-center">
-          <button
-            className="border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              focusOnPin(post.slug, post);
-            }}
-          >
-            Open in Map
-          </button>
+          {paneOpen && (
+            <button
+              className="border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                focusOnPin(post.slug, post);
+              }}
+            >
+              Open in Map
+            </button>
+          )}
         </div>
         <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">
           <div className="flex flex-row justify-between items-end">

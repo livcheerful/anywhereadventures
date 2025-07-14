@@ -6,26 +6,30 @@ import StickyHeader from "./StickyHeader";
 import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
 import { getMdx } from "../lib/clientPostHelper";
-import * as storageHelpers from "../lib/storageHelpers";
+import { savedLocationToObj } from "../lib/locationHelpers";
 
+import * as storageHelpers from "../lib/storageHelpers";
 import { registerNewIO } from "../lib/intersectionObserverHelper";
 
 export default function RiverFeed({
-  setCurrentSlug,
-  setExploringContent,
+  entranceSlug,
   myLocationSlugs,
   focusOnPin,
-  setMyLocationSlugs,
-  setPaneOpen,
+  paneOpen,
   viewAsGrid,
   setViewAsGrid,
   scrollRef,
-  openMapExploreToBrochure,
 }) {
   const [contentArray, setContentArray] = useState(undefined);
   const [currentlyViewing, setCurrentlyViewing] = useState("");
   const [test, setTest] = useState(false);
   const ioRef = useRef(undefined);
+
+  useEffect(() => {
+    if (!entranceSlug) return;
+    const article = document.querySelector(`#${entranceSlug[0]}`);
+    if (article) article.scrollIntoView({ behavior: "smooth" });
+  }, [contentArray]);
 
   // Intersection Observer to update the URL
   useEffect(() => {
@@ -42,9 +46,7 @@ export default function RiverFeed({
           if (e.isIntersecting) {
             // VVN TODO: page skips when component gets rerendered / state gets updated
             const slug = e.target.getAttribute("articleslug");
-            const userKey = storageHelpers.getUserKey();
-            // setTest(!test);
-            updateRoute(`/${slug}?k=${userKey}`);
+            updateRoute(`/${slug}`);
             setCurrentlyViewing(slug);
           }
         }
@@ -54,7 +56,12 @@ export default function RiverFeed({
     ioRef.current = io;
   }, [contentArray]);
   useEffect(() => {
-    const locSlugs = storageHelpers.getAllSlugs();
+    const homeLoc = storageHelpers.getHomeLocation();
+    const homeLocationData = savedLocationToObj(homeLoc);
+    if (!homeLocationData) return;
+    const locSlugs = homeLocationData.locs.map((l) => {
+      return l.slug;
+    });
     getMdx(locSlugs, (res) => {
       setContentArray(res);
     });
@@ -92,59 +99,18 @@ export default function RiverFeed({
           </div>
         </div>
       )}
-      {(!contentArray || contentArray.length == 0) && (
-        <div className="pl-3 pt-2">
-          <div className="flex flex-row">
-            <svg
-              className={`stroke-black stroke-[1] w-1/3 h-1/3 fill-none `}
-              viewBox="0 0 24 24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              markerEnd="url(#arrow)"
-            >
-              <defs>
-                <marker
-                  className="fill-black"
-                  id="arrow"
-                  viewBox="0 0 10 10"
-                  refX="5"
-                  refY="5"
-                  markerWidth="3"
-                  markerHeight="3"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M 0 0 L 10 5 L 0 10 z" />
-                </marker>
-              </defs>
-              <path d={`m20 20 c-5 0 -13 -10 -13 -17 `}></path>
-            </svg>
-
-            <div className="pr-8 pt-10 font-bold -rotate-12  relative top-4 -left-6 dark:text-black">
-              <div>You don't have any locations saved to your map yet!</div>
-              <div>Add new stories by exploring.</div>
-            </div>
-          </div>
-        </div>
-      )}
       {contentArray?.map((c, i) => {
         return (
-          <div key={i} className="article" articleslug={c.slug}>
-            <div className="h-1 article-io-spacer"></div>
+          <div key={i} className="article" id={c.slug} articleslug={c.slug}>
             <StickyHeader
               post={c}
-              currentSlug={""}
               contentSlug={c.slug}
               focusOnPin={focusOnPin}
-              k={i}
               isAdded={true}
-              setMyLocationSlugs={setMyLocationSlugs}
-              setPaneOpen={setPaneOpen}
               scrollRef={scrollRef}
+              paneOpen={paneOpen}
             />
-            <UnstickyHeader
-              post={c}
-              openMapExploreToBrochure={openMapExploreToBrochure}
-            />
+            <UnstickyHeader post={c} />
             <PostContent post={c} />
             <div className="w-full p-4">
               <PhotoPrompt

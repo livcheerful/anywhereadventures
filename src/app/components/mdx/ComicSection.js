@@ -55,7 +55,6 @@ export default function ComicSection({
         }}
       >
         {elements.map((el, i) => {
-          console.log(el);
           return (
             <div
               key={i}

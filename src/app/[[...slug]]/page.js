@@ -16,11 +16,13 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const { slug } = await params;
+  console.log("VVN this is the slug!");
+  console.log(slug);
   let postSlug;
   return (
     <div className="relative flex w-full overflow-hidden">
       <Suspense>
-        <BasePage slug={postSlug ? postSlug[0] : ""}></BasePage>
+        <BasePage entranceSlug={slug}></BasePage>
       </Suspense>
     </div>
   );

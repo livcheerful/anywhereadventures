@@ -2,13 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { clearAll, getAllSlugs } from "../lib/storageHelpers";
+import { clearAll } from "../lib/storageHelpers";
 
-export default function Navbar({
-  slug,
-  setMyLocationSlugs,
-  setShowingWelcomeScreen,
-}) {
+export default function Navbar({ slug, setShowingWelcomeScreen }) {
   const router = useRouter();
 
   const [inJournal, setInJournal] = useState(slug == "journal");
@@ -27,7 +23,6 @@ export default function Navbar({
       className="text-red-700"
       onClick={() => {
         clearAll();
-        setMyLocationSlugs(getAllSlugs());
       }}
     >
       Reset

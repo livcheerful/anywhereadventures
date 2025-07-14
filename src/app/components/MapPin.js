@@ -4,7 +4,7 @@ import PinCamera from "./PinCamera";
 import PinJournal from "./PinJournal";
 import PhotoPrompt from "./PhotoPrompt";
 
-export default function MapPin({ mdx, pin, onCloseCB }) {
+export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
   const [copiedAlert, setCopiedAlert] = useState(false);
   const visited = hasLocationBeenVisited(mdx.slug);
   useEffect(() => {
@@ -12,12 +12,6 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
       setCopiedAlert(false);
     }, 2000);
   }, [copiedAlert]);
-  function generateGenericBlurb() {
-    if (visited) {
-      return "";
-    }
-    return "Visit this location and capture what it looks like now.";
-  }
   return (
     <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 md:top-32 h-full  ">
       <div
@@ -41,7 +35,17 @@ export default function MapPin({ mdx, pin, onCloseCB }) {
         >
           <div className="font-bold">x</div>
         </button>
-        <div className=" text-xl font-bold">{mdx.title}</div>
+        <button
+          onClick={(e) => {
+            const article = document.querySelector(`#${mdx.slug}`);
+            if (article) {
+              article.scrollIntoView({ behavior: "smooth" });
+              setPaneOpen(false);
+            }
+          }}
+        >
+          <div className="text-md md:text-xl font-bold">{mdx.title}</div>
+        </button>
         <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3">
           {mdx.neighborhood && <div>{mdx.neighborhood}</div>}
           <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0].toFixed(

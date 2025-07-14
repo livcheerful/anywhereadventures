@@ -5,15 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import { makeConfetti } from "../../lib/animationHelpers";
 import { saveLCItem } from "../../lib/storageHelpers";
 export default function LOCItem({ image, linkOut, caption, alt }) {
-  const [itemOpen, setItemOpen] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(2);
-  const [diffPos, setDiffPos] = useState([0, 0]);
-  const [dragging, setDragging] = useState(false);
-
-  useEffect(() => {
-    console.log("VVN HELLO");
-  }, [itemOpen]);
-
   function startSaveAnim(e) {
     // const journalTab = document.getElementById("navbar-journal-tab");
     // const journalTabBox = journalTab.getBoundingClientRect();
@@ -40,7 +31,6 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
       });
     }, 10);
   }
-  console.log(`vvn images: ${image}`);
   return (
     <div className="flex flex-col items-center gap-1 pb-3 relative">
       <img src={image} id={`lcitem-${image}`} alt={alt} />

@@ -67,7 +67,6 @@ export default function ComicText({ textInfo }) {
     const b = -1 * (tailGap / 2) * Math.cos(tailRadians);
     const c = -1 * a;
     const d = -1 * b;
-    console.log(`(a,b), (x,y), (c,d): (${a},${b}) (${x}, ${y}) (${c}, ${d})`);
     return (
       <svg
         className="absolute stroke-black w-full h-full"
@@ -189,10 +188,11 @@ export default function ComicText({ textInfo }) {
         style={createTextStyles()}
       >
         <div
-          className="w-fit h-fit leading-5"
+          className="w-fit h-fit "
           style={{
             fontSize: textInfo.style.fontSize || ".8rem",
             fontFamily: textInfo.style.fontFamily || "",
+            lineHeight: textInfo.style.fontSize || ".8rem",
           }}
         >
           <Markdown>{textInfo.src}</Markdown>

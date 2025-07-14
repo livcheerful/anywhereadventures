@@ -10,7 +10,7 @@ import RiverFeed from "./RiverFeed";
 import ContentToolBar from "./ContentToolBar";
 
 export default function ContentPane({
-  slug,
+  entranceSlug,
   mainMap,
   paneOpen,
   setPaneOpen,
@@ -21,11 +21,8 @@ export default function ContentPane({
   post,
   setPost,
   chosenLocation,
-  myLocationSlugs,
-  setMyLocationSlugs,
   setViewingPin,
   setShowingWelcomeScreen,
-  openMapExploreToBrochure,
 }) {
   const router = useRouter();
   const [viewAsGrid, setViewAsGrid] = useState(false);
@@ -54,10 +51,11 @@ export default function ContentPane({
   useEffect(() => {
     setPaneHeight(getPaneHeight());
   }, [paneOpen]);
+
   return (
     <div
       style={{ height: paneHeight }}
-      className={`md:w-limiter w-screen bg-white fixed self-end  shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
+      className={`md:w-limiter w-screen bg-white fixed self-end drop-shadow-2xl shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
       id="pane"
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
@@ -73,15 +71,14 @@ export default function ContentPane({
             setCurrentSlug={setCurrentSlug}
             mainMap={mainMap}
             viewAsGrid={viewAsGrid}
-            setMyLocationSlugs={setMyLocationSlugs}
             setViewAsGrid={setViewAsGrid}
             setShowingWelcomeScreen={setShowingWelcomeScreen}
           />
         </div>
         <div
           aria-disabled={!paneOpen}
-          className="w-full h-full overflow-x-hidden overflow-y-auto flex flex-col z-10"
-          style={{ paddingTop: "30px" }}
+          className="w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10"
+          style={{ paddingTop: "1rem" }}
           id="content-pane"
           onDrag={(e) => {
             e.preventDefault();
@@ -93,16 +90,13 @@ export default function ContentPane({
         >
           {!exploringContent && (
             <RiverFeed
-              setExploringContent={setExploringContent}
+              entranceSlug={entranceSlug}
               focusOnPin={focusOnPin}
-              setCurrentSlug={setCurrentSlug}
-              myLocationSlugs={myLocationSlugs}
-              setMyLocationSlugs={setMyLocationSlugs}
               setPaneOpen={setPaneOpen}
               viewAsGrid={viewAsGrid}
               setViewAsGrid={setViewAsGrid}
               scrollRef={scrollValue}
-              openMapExploreToBrochure={openMapExploreToBrochure}
+              paneOpen={paneOpen}
             />
           )}
         </div>

@@ -2,8 +2,9 @@ import { getPage } from "../lib/storageHelpers";
 export default function PhotoPrompt({ mdx, visited }) {
   const page = getPage(mdx.slug);
   const visitedDate = new Date(page?.date);
-  const genericPhotoPromptText =
-    "Create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
+  const genericPhotoPromptText = mdx.locationTitle
+    ? `Visit ${mdx.locationTitle} in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.`
+    : "Visit this location in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
   return (
     <div className="relative bg-amber-300 border-2 border-gray-900 -m-2 mt-4 p-2 overflow-clip ">
       {visited ? (
@@ -47,7 +48,7 @@ export default function PhotoPrompt({ mdx, visited }) {
               href={`/camera?locationId=${mdx.slug}`}
               className="border-gray-900 border-2 text-black bg-white px-4 py-2 font-black text-sm rounded-full"
             >
-              LOG VISIT
+              I'M HERE
             </a>
           </div>
         </div>

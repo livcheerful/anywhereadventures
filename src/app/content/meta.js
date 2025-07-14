@@ -4,12 +4,10 @@ export const tagsByCity = {
     "names",
     "built",
     "olmsted",
-    "downtown",
     "north seattle",
     "central district",
     "cap hill",
     "west seattle",
-    "light rail",
     "walk",
   ],
   sewy: ["albany", "laramie"],
@@ -31,9 +29,9 @@ export const categoryInfo = {
       "These architects designed the look of our city today. Visit their creations and learn to start recognizing their work around town.",
   },
   built: {
+    title: "Built Environment",
     pinColor: "#f29100",
     brochureColor: "#fff4d6",
-    title: "Built Environment",
     description: "Description here.",
   },
   olmsted: {
@@ -51,11 +49,9 @@ export const categoryInfo = {
       "Take the same path as someone before or experience a park with new information. These locations aren't just one spot, but a journey.",
   },
 
-  "light rail": { title: "Along the Light Rail" },
-  downtown: { title: "Downtown Seattle" },
-
   "north seattle": {
     title: "Above the Cut",
+    description: "Above Lake Washington Ship Canal",
   },
 
   "central district": {

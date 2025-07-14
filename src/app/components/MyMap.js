@@ -6,16 +6,13 @@ import {
   NavigationControl,
   LngLatBounds,
 } from "maplibre-gl";
+import { locationData } from "../lib/locationHelpers";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { unopinionatedMapColor, unvisitedMapColor } from "../lib/constants";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getMdx } from "../lib/clientPostHelper";
 import MapPin from "./MapPin";
-import MapBrochures from "./MapBrochures";
-import MapExploreMarker from "./MapExploreMarker";
-import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
 function updateMarkerTabAccess(visible) {
   if (visible) {
@@ -123,16 +120,25 @@ function MapManager(map, router) {
     });
   }
 
-  function makeMarker(info, onClickCb) {
-    const pin = new Marker({
-      color: hasLocationBeenVisited(info.slug)
-        ? unopinionatedMapColor
-        : unvisitedMapColor,
-    }).setLngLat(info.latlon);
-    pin.getElement().addEventListener("click", () => {
-      onClickCb(info, pin);
+  function makeMarker(info, onClickCb, image) {
+    const el = document.createElement("div");
+    el.className =
+      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
+    el.style.backgroundImage = `url(${image})`;
+    el.style.backgroundSize = `cover`;
+    el.style.borderWidth = "1px";
+    el.style.width = `3rem`;
+    el.style.height = `3rem`;
+
+    const marker = new Marker({ element: el }).setLngLat([
+      info.latlon[1],
+      info.latlon[0],
+    ]);
+
+    marker.getElement().addEventListener("click", () => {
+      onClickCb(info, marker);
     });
-    return pin;
+    return marker;
   }
 
   this.flyTo = function (center, zoom, shift = true) {
@@ -145,16 +151,18 @@ function MapManager(map, router) {
     });
   };
 
-  this.updatePins = function (locs, pinCb, router) {
-    // Remove all the current pins.
+  this.updatePins = function (pinCb, chosenLocation, router) {
+    if (!chosenLocation) return;
+    console.log(chosenLocation);
+
+    const locs = chosenLocation.locs;
     this.deleteAllPins();
-    // Add back the ones we want
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
       const layer = pin.addTo(this.map);
-
       const el = pin.getElement();
+
       addAccessibilityAttrs(el, pin, markerInfo, pinCb);
       this.currentLayers.set(slug, layer);
     }
@@ -165,15 +173,13 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      console.log(markerInfo);
-      const pin = makeMarker(markerInfo, pinCb);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
 
       addAccessibilityAttrs(el, pin, markerInfo, pinCb);
       this.currentLayers.set(slug, layer);
     }
-    // asdf
     this.map.setStyle(style);
   };
 }
@@ -181,43 +187,24 @@ function MapManager(map, router) {
 export default function MyMap({
   mapCB,
   mapClickHandler,
-  myLocations,
-  setMyLocations,
   defaultLocation,
   paneOpen,
-  setExploringContent,
+  setPaneOpen,
   viewingPin,
   setViewingPin,
   chosenLocation,
-  mapState,
-  setMapState,
-  viewingExploreCategory,
-  setViewingExploreCategory,
-  brochureViewOpen,
-  setBrochureViewOpen,
 }) {
   const router = useRouter();
   const [zoom, setZoom] = useState(defaultLocation.zoom);
   const [center, setCenter] = useState(defaultLocation.center);
   const [mapManager, setMapManager] = useState();
-  const [viewingExplorePin, setViewingExplorePin] = useState(undefined);
-  const [viewingBrochureIndex, setViewingBrochureIndex] = useState(0);
   const navControlRef = useRef();
-  const exploreMapMouseHandler = useCallback(() => {
-    setViewingExplorePin(undefined);
-    handleCloseBrochureView();
-  }, [setViewingExplorePin, brochureViewOpen]);
-
-  function updateExploreMarkers() {}
 
   // Initialize
   useEffect(() => {
     let map = new MapLibre({
       container: "map",
-      style:
-        mapState == "myMap"
-          ? "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
-          : "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
       zoom: zoom,
       center: center,
       attributionControl: false,
@@ -242,8 +229,6 @@ export default function MyMap({
       location.latlon,
       location.cardImage || location.cameraImage,
       (marker) => {
-        setViewingExploreCategory(undefined);
-        setBrochureViewOpen(false);
         mapManager.flyTo(
           [location.latlon[1], location.latlon[0]],
           location.zoom
@@ -252,7 +237,6 @@ export default function MyMap({
         mapManager.map.dragPan.disable();
 
         mapManager.map.once("moveend", () => {
-          setViewingExplorePin({ mdx: location, marker: marker });
           mapManager.map.dragPan.enable();
         });
       }
@@ -262,86 +246,28 @@ export default function MyMap({
   // Update Map State between explore and my map
   useEffect(() => {
     if (!mapManager) return;
-    if (mapState == "myMap") {
-      // Clean up from Explore View
-      mapManager.deleteAllExploreMarkers();
-      mapManager.map.off("click", exploreMapMouseHandler);
-      mapManager.map.off("dragstart", exploreMapMouseHandler);
+    // Clean up from Explore View
+    mapManager.deleteAllExploreMarkers();
 
-      setViewingExplorePin(undefined);
-      setViewingExploreCategory(undefined);
-      handleCloseBrochureView();
-
-      // Set up My Map View
-      mapManager.updateStyle(
-        "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-        myMapPinClickHandler,
-        myLocations
-      );
-    } else {
-      // Undo state from My Map view
-      setViewingPin(undefined);
-      mapManager.deleteAllPins();
-      mapManager.map.dragPan.enable();
-
-      // set up new view
-      mapManager.flyTo(defaultLocation.center, defaultLocation.zoom, false);
-      mapManager.updateStyle(
-        "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-        exploreMapPinClickHandler,
-        myLocations
-      );
-
-      console.log(chosenLocation);
-      // Add custom map markers for all locations we don't already have added
-      for (let i = 0; i < chosenLocation.locs.length; i++) {
-        const location = chosenLocation.locs[i];
-
-        if (myLocations[location.slug] == undefined) {
-          addExploreMarkerWithAnims(location);
-        }
-      }
-
-      // Add a listener for map touch to unset pins
-      mapManager.map.on("click", exploreMapMouseHandler);
-      mapManager.map.on("dragstart", exploreMapMouseHandler);
-    }
-  }, [mapState, mapManager]);
-
-  useEffect(() => {
-    if (!mapManager) return;
-    if (viewingExploreCategory != undefined) {
-      mapManager.flyTo(
-        defaultLocation.center,
-        defaultLocation.zoom,
-        location.zoom
-      );
-    }
-  }, [viewingExploreCategory]);
+    // Set up My Map View
+    mapManager.updateStyle(
+      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+      myMapPinClickHandler,
+      chosenLocation.locs
+    );
+  }, [mapManager]);
 
   // Update Map pins based on saved locations
   useEffect(() => {
     if (!mapManager) return;
 
-    if (myLocations == undefined) return;
-
-    mapManager.updatePins(myLocations, myMapPinClickHandler, router);
-  }, [myLocations]);
+    mapManager.updatePins(myMapPinClickHandler, chosenLocation, router);
+  }, [chosenLocation]);
 
   // Change map controls depending on if map is open or not
   useEffect(() => {
-    if (mapState == "myMap") {
-      updateMarkerTabAccess(!paneOpen);
-    } else {
-      updateMarkerTabAccess(true);
-    }
-  }, [paneOpen, mapState]);
-
-  function exploreCategoryClickHander(category) {
-    setViewingExplorePin(undefined);
-    setViewingExploreCategory(category);
-    setBrochureViewOpen(true);
-  }
+    updateMarkerTabAccess(!paneOpen);
+  }, [paneOpen]);
 
   function myMapPinClickHandler(info, pin) {
     function cb(mdxArr) {
@@ -356,27 +282,10 @@ export default function MyMap({
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
-        // VVNTODO should we manually change focus to popup title here?
       });
     }
 
     getMdx([info.slug], cb);
-  }
-  function exploreMapPinClickHandler(info, pin) {
-    console.log("In explore map");
-    console.log(info);
-  }
-
-  function handleCloseBrochureView() {
-    // VVN TODO grab brochure state
-    const brochures = document.querySelectorAll(".brochure");
-    brochures.forEach((b, i) => {
-      if (Math.abs(b.getBoundingClientRect().left) < 2) {
-        setViewingBrochureIndex(i);
-      }
-    });
-
-    setBrochureViewOpen(false);
   }
 
   return (
@@ -387,63 +296,15 @@ export default function MyMap({
       }}
     >
       <div className="bg-slate-800 w-full h-dvh" id="map"></div>
-      <button
-        aria-label="Add locations to Map"
-        className="absolute top-2 right-2 w-16 h-16 bg-white rounded-full flex flex-row items-center justify-center drop-shadow-lg"
-        onClick={() => {
-          if (mapState == "myMap") {
-            setMapState("explore");
-            setExploringContent(true);
-          } else {
-            setMapState("myMap");
-            setExploringContent(false);
-          }
-        }}
-      >
-        <div className=" select-none" aria-hidden="true" focusable="false">
-          {mapState == "myMap" ? "+" : "x"}
-        </div>
-      </button>
       {viewingPin && (
         <MapPin
           mdx={viewingPin.mdx}
-          pin={viewingPin.pin}
+          setPaneOpen={setPaneOpen}
           onCloseCB={() => {
             setViewingPin(undefined);
             mapManager.map.dragPan.enable();
           }}
         />
-      )}
-
-      {viewingExplorePin && (
-        <MapExploreMarker
-          mdx={viewingExplorePin.mdx}
-          marker={viewingExplorePin.marker}
-          mapManager={mapManager}
-          addExploreMarkerWithAnims={addExploreMarkerWithAnims}
-          setMyLocations={setMyLocations}
-          exploreCategoryClickHander={exploreCategoryClickHander}
-          setViewingExplorePin={setViewingExplorePin}
-        />
-      )}
-      {mapState == "explore" && (
-        <MapBrochures
-          brochureViewOpen={brochureViewOpen}
-          setBrochureViewOpen={setBrochureViewOpen}
-          viewingExploreCategory={viewingExploreCategory}
-          setViewingExploreCategory={setViewingExploreCategory}
-          setViewingExplorePin={setViewingExplorePin}
-          chosenLocation={chosenLocation}
-          mapManager={mapManager}
-          handleCloseBrochureView={handleCloseBrochureView}
-          viewingBrochureIndex={viewingBrochureIndex}
-          setViewingBrochureIndex={setViewingBrochureIndex}
-        />
-      )}
-      {mapState == "explore" && (
-        <div className="absolute w-2/3 text-sm top-2 left-12 bg-white p-2 border-2 text-gray-900 border-gray-900 font-bold drop-shadow-xl">
-          Discover new locations to add to your map
-        </div>
       )}
     </div>
   );
