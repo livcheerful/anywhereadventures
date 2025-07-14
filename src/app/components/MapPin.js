@@ -33,7 +33,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
           }}
           className="w-6 h-6 flex items-center justify-center bg-white border-gray-900 border-2 absolute -right-3 -top-3 rounded-full"
         >
-          <div className="font-bold">x</div>
+          <div className="font-bold text-black">x</div>
         </button>
         <button
           onClick={(e) => {
@@ -44,7 +44,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             }
           }}
         >
-          <div className="text-md md:text-xl font-bold">{mdx.title}</div>
+          <div className="text-md md:text-xl font-bold text-black">
+            {mdx.title}
+          </div>
         </button>
         <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3">
           {mdx.neighborhood && <div>{mdx.neighborhood}</div>}

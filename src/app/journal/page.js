@@ -20,7 +20,7 @@ export default function Page() {
     switch (homeLocation) {
       case "Seattle":
         return (
-          <div className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 ">
+          <div className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 text-black ">
             Seattle
           </div>
         );
@@ -32,7 +32,7 @@ export default function Page() {
           <div className="absolute left-3 bottom-1/3 ">
             <CornerTape>
               <img
-                className="w-56 h-auto rotate-2 drop-shadow-2xl"
+                className="w-56 h-auto rotate-2 drop-shadow-2xl text-black"
                 src="/loc/sewy/wypack.png"
               />
             </CornerTape>
@@ -222,7 +222,7 @@ export default function Page() {
 
           {makeJournalPages()}
           <a href="/">
-            <div className="fixed left-0 top-1/2 bg-lime-200 p-2 z-30 font-bold drop-shadow-2xl">
+            <div className="fixed left-0 top-1/2 bg-lime-200 p-2 z-30 font-bold drop-shadow-2xl text-black">
               Back to Map
             </div>
           </a>

@@ -15,7 +15,7 @@ export default function PhotoPrompt({ mdx, visited }) {
           />
           <div className="z-10 ">
             <div className="text-gray-800 font-bold text-sm md:text-lg min-h-8 flex flex-col jusify-end">
-              <div>{mdx.locationTitle || mdx.title}</div>
+              <div className="">{mdx.locationTitle || mdx.title}</div>
             </div>
             <hr className="border-gray-700"></hr>
             <div className="flex flex-row justify-between text-gray-900/50 text-xs font-mono">
@@ -40,7 +40,7 @@ export default function PhotoPrompt({ mdx, visited }) {
           <div className="text-xs w-full text-center text-amber-500 font-black">
             PHOTO PROMPT
           </div>
-          <div className="font-bold text-sm">
+          <div className="font-bold text-sm text-black">
             {mdx.photoPrompt || genericPhotoPromptText}
           </div>
           <div className="flex flex-col items-center pt-2">
