@@ -15,8 +15,6 @@ export default function BasePage({ entranceSlug }) {
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
   const [exploringContent, setExploringContent] = useState(false);
   const [post, setPost] = useState();
-  const searchParams = useSearchParams();
-  const userKey = searchParams.get("k");
 
   // VVN These store the same things, just one gets initialized...?
   const [savedLocation, setSavedLocation] = useState(getHomeLocation());
@@ -27,10 +25,7 @@ export default function BasePage({ entranceSlug }) {
   const [mainMap, setMainMap] = useState(undefined);
   // Elements to control map
   const [viewingPin, setViewingPin] = useState(undefined);
-  const [mapState, setMapState] = useState("myMap"); // Could also be in "Explore state"
-  const [viewingExploreCategory, setViewingExploreCategory] =
-    useState(undefined);
-  const [brochureViewOpen, setBrochureViewOpen] = useState(false);
+
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
@@ -47,7 +42,13 @@ export default function BasePage({ entranceSlug }) {
     setMainMap(m);
   }
   function mapClickHandler() {
+    console.log("VVN map click handler");
     setPaneOpen(false);
+  }
+
+  function setPaneOpenHandler(open) {
+    console.log("VVN in set pane open handler");
+    setPaneOpen(open);
   }
 
   return (
@@ -63,7 +64,7 @@ export default function BasePage({ entranceSlug }) {
           mapClickHandler={mapClickHandler}
           defaultLocation={chosenLocation}
           paneOpen={paneOpen}
-          setPaneOpen={setPaneOpen}
+          setPaneOpen={setPaneOpenHandler}
           viewingPin={viewingPin}
           setViewingPin={setViewingPin}
           chosenLocation={chosenLocation}

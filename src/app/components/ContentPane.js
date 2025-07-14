@@ -49,6 +49,7 @@ export default function ContentPane({
   }
 
   useEffect(() => {
+    console.log("VVN in useEffect for pane Height");
     setPaneHeight(getPaneHeight());
   }, [paneOpen]);
 

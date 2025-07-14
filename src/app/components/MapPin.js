@@ -40,7 +40,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             const article = document.querySelector(`#${mdx.slug}`);
             if (article) {
               article.scrollIntoView({ behavior: "smooth" });
-              setPaneOpen(false);
+              setPaneOpen(true);
             }
           }}
         >
@@ -82,7 +82,20 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
         {mdx.blurb && (
           <div className="pt-2 text-gray-600 text-sm">{mdx.blurb}</div>
         )}
-
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const article = document.querySelector(`#${mdx.slug}`);
+            if (article) {
+              article.scrollIntoView({ behavior: "smooth" });
+              setPaneOpen(true);
+            }
+          }}
+          className="underline text-sm text-gray-600"
+        >
+          Read the story
+        </button>
         <PhotoPrompt mdx={mdx} visited={visited} />
       </div>
     </div>
