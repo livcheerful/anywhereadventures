@@ -13,7 +13,7 @@ cardImage: "/placeholderThumbnail.png"
 stampName:
 photoPrompt:
 blurb:
-stickers:[]
+stickers: []
 ---
 
 {/* 

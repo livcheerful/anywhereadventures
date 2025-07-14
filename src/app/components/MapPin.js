@@ -44,24 +44,20 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             }
           }}
         >
-          <div className="text-md md:text-xl font-bold text-black p-2 md:p-4">
+          <div className="text-md md:text-xl font-bold text-black px-2 pt-1 ">
             {mdx.title}
           </div>
         </button>
 
-        <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3 px-2 md:px-4">
+        <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3 px-2 ">
           {mdx.neighborhood && <div>{mdx.neighborhood}</div>}
           <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0].toFixed(
             4
           )}, ${mdx.latlon[1].toFixed(4)}`}</div>
         </div>
         <hr className="pt-1" />
-        {mdx.blurb && (
-          <div className="p-2  text-gray-600 text-sm">{mdx.blurb}</div>
-        )}
-
         {mdx.address && (
-          <div className="flex flex-row w-full items-center justify-between p-2 ">
+          <div className="flex flex-row w-full items-center justify-between px-2 ">
             <div className="flex flex-col">
               <div
                 className="text-gray-500 pr-4 text-xs font-mono h-full "
@@ -69,7 +65,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               >
                 Address:
               </div>
-              <div className="text-gray-700 flex-grow text-xs font-mono">
+              <div className="text-gray-600 flex-grow text-xs font-mono">
                 {mdx.address}
               </div>
             </div>
@@ -85,6 +81,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               {copiedAlert ? "Copied!" : "Copy"}
             </button>
           </div>
+        )}
+        {mdx.blurb && (
+          <div className="p-2  text-gray-600 text-sm">{mdx.blurb}</div>
         )}
 
         <div className="flex flex-row relative pt-2">
@@ -112,7 +111,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               </button>
             </div>
           </div>
-          <PhotoPrompt mdx={mdx} visited={visited} />
+          <div className="w-2/3">
+            <PhotoPrompt mdx={mdx} visited={visited} />
+          </div>
         </div>
       </div>
     </div>
