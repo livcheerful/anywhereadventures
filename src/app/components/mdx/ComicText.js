@@ -1,5 +1,6 @@
 import Markdown from "react-markdown";
 
+const tailLength = 5;
 export default function ComicText({ textInfo }) {
   /**
    * Style options:
@@ -22,7 +23,6 @@ export default function ComicText({ textInfo }) {
     const bubbleWid = bubbleWidth / 2;
     const bubbleHei = bubbleHeight / 2;
     const bubbleDrop = 5; // Curve size
-    const tailLength = 5;
     const tailGap = 10;
     const strokeWidth = textInfo.size.width > 1 ? 1 : 2;
     const absStrokeWidth = 2;
@@ -85,9 +85,9 @@ export default function ComicText({ textInfo }) {
           />
         )}
         <path
-          d={`m${
-            viewboxCenterX + xOffset
-          } ${yOffset} c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
+          d={`m${viewboxCenterX + xOffset} ${
+            viewboxCenterY - bubbleHei + yOffset
+          } c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
             bubbleHei - bubbleDrop - 0
           }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${
             bubbleHei - 0
@@ -112,15 +112,7 @@ export default function ComicText({ textInfo }) {
     );
   }
 
-  function calculateOffset() {
-    return {
-      left: "0px",
-      top: "-10px",
-    };
-  }
-
   function createTextStyles() {
-    let offSet = textInfo.style.outline == "bubble" ? calculateOffset() : {};
     let alignStyle = {};
     if (textInfo.style.outline != "bubble") {
       switch (textInfo.style.textAlign) {
@@ -139,11 +131,55 @@ export default function ComicText({ textInfo }) {
     } else {
       alignStyle = { alignItems: "center" };
     }
-    return { ...offSet, ...alignStyle };
+    return { ...alignStyle };
+  }
+
+  function generateTextBubbleMargins() {
+    console.log("VVN in generate text bubble margins");
+    let style = "";
+
+    const tailDegree = textInfo.bubbleStyle?.tailDegree;
+    const tailRadians = (tailDegree * Math.PI) / 180;
+
+    function pxToRem(px) {
+      return px / 16;
+    }
+
+    switch (textInfo.style.outline) {
+      case "none":
+        break;
+      case "border":
+        break;
+      case "bubble":
+        let top = 1;
+        let bottom = 1;
+        let left = 1.4;
+        let right = 1.4;
+
+        const xOffset = tailLength * Math.cos(Math.PI + tailRadians);
+        const yOffset = tailLength * Math.sin(Math.PI + tailRadians);
+        if (yOffset > 0) {
+          top += pxToRem(yOffset);
+        } else {
+          bottom += pxToRem(yOffset * -1);
+        }
+
+        if (xOffset > 0) {
+          left += pxToRem(xOffset);
+        } else {
+          right += pxToRem(xOffset * -1);
+        }
+        tailLength;
+
+        style = `${top}rem ${right}rem ${bottom}rem ${left}rem`;
+        break;
+    }
+    return style;
   }
   function createBubbleStyles() {
     let borderStyles = {};
     let backgroundStyles = {};
+    let spacers = {};
     switch (textInfo.style.outline) {
       case "bubble":
         backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
@@ -151,6 +187,10 @@ export default function ComicText({ textInfo }) {
       case "box":
         borderStyles = { border: "2px black solid" };
         backgroundStyles = { backgroundColor: textInfo.style.backgroundColor };
+        spacers = {
+          padding: "3px",
+          margin: "2px",
+        };
         break;
       case "none":
         borderStyles = {};
@@ -165,8 +205,8 @@ export default function ComicText({ textInfo }) {
     return {
       fontFamily: `Overpass`,
       fontWeight: "bold",
-      padding: "3px",
-      margin: "2px",
+      margin: generateTextBubbleMargins(),
+      ...spacers,
       ...borderStyles,
       ...backgroundStyles,
     };
@@ -182,7 +222,7 @@ export default function ComicText({ textInfo }) {
       <div
         className={`flex flex-col ${
           textInfo.style.outline == "bubble"
-            ? "absolute items-center justify-center w-full h-full"
+            ? "relative items-center justify-center w-full h-full"
             : "w-full"
         }`}
         style={createTextStyles()}
