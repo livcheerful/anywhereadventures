@@ -6,6 +6,7 @@ import {
 } from "../lib/storageHelpers";
 import { useState, useEffect } from "react";
 import JournalPage from "../components/JournalPage";
+import JournalNav from "../components/JournalNav";
 import { categoryInfo } from "../content/meta";
 import { savedLocationToObj } from "../lib/locationHelpers";
 import { getHomeLocation } from "../lib/storageHelpers";
@@ -15,6 +16,9 @@ export default function Page() {
   const [categories, setCategories] = useState(
     transformSavedLocationsToCategories()
   );
+
+  const [showToc, setShowToc] = useState(false);
+  const [showSavedItems, setShowSavedItems] = useState(false);
 
   function addHomeLocationStickers(homeLocation) {
     switch (homeLocation) {
@@ -115,6 +119,88 @@ export default function Page() {
           id="journal-holder"
           className="flex flex-row snap-x snap-mandatory overflow-x-auto pb-20 gap-4"
         >
+          {showToc && (
+            <div className="absolute z-10 left-0 top-0 bg-white w-full md:w-limiter h-full overflow-y-auto">
+              <div className="w-full shrink-0 snap-start flex flex-col pl-8 p-2 text-black min-h-dvh bg-yellow-100 pb-20">
+                <div className="w-full  flex flex-row justify-between p-2 text-xs text-gray-700 font-mono">
+                  <div className="font-bold text-xs text-gray-700 font-mono">
+                    Table of Contents
+                  </div>
+                </div>
+                <hr className="w-full border-slate-700 pb-4"></hr>
+                {categories.values().map((category, i) => {
+                  const catMeta = categoryInfo[category.tag];
+                  return (
+                    <div className="pb-2" key={i}>
+                      <a
+                        href={`#page-${category.tag}-0`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowToc(false);
+                          const page = document.querySelector(
+                            `#page-${category.tag}-0`
+                          );
+                          page.scrollIntoView({ behavior: "smooth" });
+                        }}
+                      >
+                        <div className="font-mono text-gray-900 font-bold underline">
+                          {catMeta?.title}
+                        </div>
+                      </a>
+                      {category.locations.map((categoryLocation, j) => {
+                        return (
+                          <div
+                            key={j}
+                            className="text-sm font-mono pl-4 text-gray-800"
+                          >
+                            <a
+                              href={`#page-${category.tag}-0`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setShowToc(false);
+                                console.log("Trying to scroll:");
+                                console.log(`#page-${category.tag}-${j % 4}`);
+                                const page = document.querySelector(
+                                  `#page-${category.tag}-${Math.floor(j / 4)}`
+                                );
+                                page.scrollIntoView({ behavior: "smooth" });
+                              }}
+                            >
+                              {categoryLocation.locationTitle ||
+                                categoryLocation.title}
+                            </a>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+
+                <a
+                  href={`#explore`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const page = document.querySelector(`#explore`);
+                    page.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <div className="flex flex-row gap-2 text-md font-bold">
+                    Explore the library more
+                  </div>
+                </a>
+                <a
+                  href={`#about`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const page = document.querySelector(`#about`);
+                    page.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <div>About the project</div>
+                </a>
+              </div>
+            </div>
+          )}
           <div
             className="w-full shrink-0 h-dvh snap-start flex flex-col items-center relative"
             style={{
@@ -140,94 +226,16 @@ export default function Page() {
             </div>
             {addHomeLocationStickers(homeLocation)}
           </div>
-          <div className="w-full shrink-0 h-dvh snap-start flex flex-col pl-8 p-2 text-black bg-yellow-100">
-            <div className="w-full  flex flex-row justify-between p-2 text-xs text-gray-700 font-mono">
-              <div className="font-bold text-xs text-gray-700 font-mono">
-                My Anywhere Adventures with the Library of Congress
-              </div>
-            </div>
-            <hr className="w-full border-slate-700 pb-4"></hr>
-            <div className="bg-white font-bold w-fit p-1 px-2">
-              Locations by theme
-            </div>
-            {categories.values().map((category, i) => {
-              const catMeta = categoryInfo[category.tag];
-              return (
-                <div className="pb-2" key={i}>
-                  <a
-                    href={`#page-${category.tag}-0`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const page = document.querySelector(
-                        `#page-${category.tag}-0`
-                      );
-                      page.scrollIntoView({ behavior: "smooth" });
-                    }}
-                  >
-                    <div className="font-mono text-gray-900 font-bold underline">
-                      {catMeta?.title}
-                    </div>
-                  </a>
-                  {category.locations.map((categoryLocation, j) => {
-                    return (
-                      <div
-                        key={j}
-                        className="text-sm font-mono pl-4 text-gray-800"
-                      >
-                        <a
-                          href={`#page-${category.tag}-0`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            console.log("Trying to scroll:");
-                            console.log(`#page-${category.tag}-${j % 4}`);
-                            const page = document.querySelector(
-                              `#page-${category.tag}-${Math.floor(j / 4)}`
-                            );
-                            page.scrollIntoView({ behavior: "smooth" });
-                          }}
-                        >
-                          {categoryLocation.locationTitle ||
-                            categoryLocation.title}
-                        </a>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-
-            <a
-              href={`#explore`}
-              onClick={(e) => {
-                e.preventDefault();
-                const page = document.querySelector(`#explore`);
-                page.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <div className="flex flex-row gap-2 text-md font-bold">
-                Explore the library more
-              </div>
-            </a>
-            <a
-              href={`#about`}
-              onClick={(e) => {
-                e.preventDefault();
-                const page = document.querySelector(`#about`);
-                page.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <div>About the project</div>
-            </a>
-          </div>
 
           {makeJournalPages()}
-          <a href="/">
-            <div className="fixed left-0 top-1/2 bg-lime-200 p-2 z-30 font-bold drop-shadow-2xl text-black">
-              Back to Map
-            </div>
-          </a>
         </div>
       </div>
+      <JournalNav
+        showToc={showToc}
+        setShowToc={setShowToc}
+        showSavedItems={showSavedItems}
+        setShowSavedItems={setShowSavedItems}
+      />
     </div>
   );
 }

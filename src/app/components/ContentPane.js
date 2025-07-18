@@ -19,8 +19,6 @@ export default function ContentPane({
   currentSlug,
   setCurrentSlug,
   post,
-  setPost,
-  chosenLocation,
   setViewingPin,
   setShowingWelcomeScreen,
 }) {

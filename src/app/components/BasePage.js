@@ -42,12 +42,10 @@ export default function BasePage({ entranceSlug }) {
     setMainMap(m);
   }
   function mapClickHandler() {
-    console.log("VVN map click handler");
     setPaneOpen(false);
   }
 
   function setPaneOpenHandler(open) {
-    console.log("VVN in set pane open handler");
     setPaneOpen(open);
   }
 

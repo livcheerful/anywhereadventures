@@ -526,7 +526,6 @@ export default function Scrapbook({
                         style={{ width: "200px" }}
                         onClick={(e) => {
                           const htmlEl = e.target;
-                          console.log(htmlEl.getBoundingClientRect());
                           e.stopPropagation();
                           e.preventDefault();
                           scrapbookPage.addNewPageSticker(

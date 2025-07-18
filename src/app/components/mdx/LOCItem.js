@@ -1,13 +1,13 @@
 "use client";
 import { gsap } from "gsap";
-import { useState, useEffect, useRef } from "react";
 
+import Toast from "../Toast";
 import { makeConfetti } from "../../lib/animationHelpers";
 import { saveLCItem } from "../../lib/storageHelpers";
-export default function LOCItem({ image, linkOut, caption, alt }) {
+import { useState } from "react";
+export default function LOCItem({ image, linkOut, caption, allowSave, alt }) {
+  const [showToast, setShowToast] = useState(false);
   function startSaveAnim(e) {
-    // const journalTab = document.getElementById("navbar-journal-tab");
-    // const journalTabBox = journalTab.getBoundingClientRect();
     const ogImage = document.getElementById(`lcitem-${image}`);
     // Animate from current position to new with a little shrinking situation.
     const resourceCpy = document.createElement("img");
@@ -25,7 +25,6 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
         rotate: -360,
         scale: 0.2,
         onComplete: () => {
-          // makeConfetti(resourceCpy.parentElement, 0, 15, 4);
           resourceCpy.remove();
         },
       });
@@ -42,31 +41,30 @@ export default function LOCItem({ image, linkOut, caption, alt }) {
             </button>
           </a>
         )}
-        <button
-          className="font-bold cursor-pointer relative bg-emerald-800 p-2 -top-1 drop-shadow-lg text-white rounded-b-lg"
-          onClick={(e) => {
-            makeConfetti(
-              e.target.parentElement,
-              e.clientX,
-              e.clientY,
-              10,
-              "💥"
-            );
-            startSaveAnim(e);
-            saveLCItem(
-              linkOut,
-              image,
-              caption,
-              window.location.pathname.substring(1)
-            );
-          }}
-        >
-          save
-        </button>
+        {allowSave && (
+          <button
+            className="font-bold cursor-pointer relative bg-emerald-800 p-2 -top-1 drop-shadow-lg text-white rounded-b-lg"
+            onClick={(e) => {
+              setShowToast(true);
+              setTimeout(() => {
+                setShowToast(false);
+              }, 1000);
+              saveLCItem(
+                linkOut,
+                image,
+                caption,
+                window.location.pathname.substring(1)
+              );
+            }}
+          >
+            save
+          </button>
+        )}
       </div>
       {caption && (
         <div className="italic font-serif text-sm p-2">{caption}</div>
       )}
+      {showToast && <Toast message="Saved to travel log" />}
     </div>
   );
 }
