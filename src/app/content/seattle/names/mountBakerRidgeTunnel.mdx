@@ -16,10 +16,15 @@ stickers: []
 ---
 
 <ComicSection elements={[
-    {type:"text", src:"Entering Seattle on the I-90, you'll be greeted by an **excellent** view...", position:{col:1, row:1}, size:{width:3, height:1}, style:{outline: "box",backgroundColor:"white"}, bubbleStyle: {tailDegree: 0}},
-    {type:"image", src:"/loc/seattle/bridgeAndTunnel/driving.png", position:{col:1, row:1}, size:{width:3, height:2}},
+    {type:"text", src:"Entering Seattle on the I-90, you'll be greeted by an **excellent** view...", position:{col:1, row:1}, size:{width:3, height:1}, style:{outline: "box",backgroundColor:"white"}},
+    {type:"image", src:"/loc/seattle/bridgeAndTunnel/driving.png", position:{col:1, row:1}, size:{width:3, height:3}},
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/mountain.png", position:{col:1, row:3}, size:{width:3, height:2}},
-    {type:"text", src:"", position:{col:1, row:4}, size:{width:1, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
+    {type:"text", style:{outline:"box", backgroundColor: "white"}, position:{col:1, row:3}, size:{width:1, height:1}, src:"Not the mountain - it’s too fickle. "},
+    {type:"text", style:{outline:"box", backgroundColor:"white"}, position:{col:3, row:5}, size:{width:1, height:1}, src:"Focus your eyes closer, and you’ll see the best view of..."},
+    {type:"image", src:"/loc/seattle/bridgeAndTunnel/bridge.png", position:{col:1, row:6}, size:{width:3, height:2}},
+    {type:"text", src:"The I-90 Floating Bridge", position:{col:1, row:8}, size:{width:3, height:1}, style:{outline: "box",backgroundColor:"white", fontSize:"2rem"}},
+    {type:"image", src:"/loc/seattle/bridgeAndTunnel/tunnel.png", position:{col:1, row:9}, size:{width:3, height:3}},
+    {type:"text", src:"and the Mount Baker Ridge tunnel!", position:{col:1, row:12}, size:{width:3, height:1}, style:{outline: "box",backgroundColor:"white", fontSize:"2rem"}},
 
 ]}/> 
 
@@ -27,22 +32,52 @@ Built in 1940,  it had been a dream of Seattle engineer Homer Hadley since the 1
 
 <LOCItem image="/loc/seattle/bridgeAndTunnel/seattleMap.png" linkOut="https://www.loc.gov/resource/g4284s.pm009770/?r=-0.032,-0.055,1.111,0.761,0" alt="" caption=""/>
 
-<ComicSection rowHeight="4rem" overlap={50} elements={[
+<ComicSection overlap={50} rowHeight="4rem" elements={[
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/homer1.png",position:{col:3, row:3}, size:{width:1, height:2}}, 
-    {type:"text", src:"As a port town, we should be very easy to get to! We must connect Seattle across Lake Washington.", position:{col:1, row:1}, size:{width:2, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
-     {type:"text", src:"Homer Hadley, a Seattle engineer who first dreamed of building a bridge across Lake Washington", position:{col:3, row:1}, size:{width:1, height:1}, style:{outline: "none", textAlign:"right"}, bubbleStyle: {tailDegree: 0}},
+    {type:"text", src:"As a port town, we should be very easy to get to! We must connect Seattle across Lake Washington.", position:{col:1, row:1}, size:{width:2, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 30}},
+     {type:"text", src:"Homer Hadley, a Seattle engineer who first dreamed of building a bridge across Lake Washington", position:{col:3, row:2}, size:{width:1, height:1}, style:{outline: "none", textAlign:"right"}, bubbleStyle: {tailDegree: 0}},
     {type:"text", src:"That’s why I’m proposing this:", position:{col:2, row:3}, size:{width:1, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/diagram.png",position:{col:1, row:5}, size:{width:3, height:4}}, 
     {type:"text", src:"A bunch of barges, connected together, with a road built on top", position:{col:1, row:8}, size:{width:2, height:2}, style:{outline: "box", backgroundColor: "white"}, bubbleStyle: {tailDegree: 0}},
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/homer2.png",position:{col:2, row:6}, size:{width:2, height:2}}, 
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/murrow.png",position:{col:1, row:9}, size:{width:1, height:2}}, 
-    {type:"text", src:"Lacey V. Murrow, director of Washington state highways", position:{col:2, row:10}, size:{width:2, height:2}, style:{outline: "none"}, bubbleStyle: {tailDegree: 0}},
+    {type:"text", src:"No, no, you’re right. I’ll think of something else", position:{col:2, row:9}, size:{width:2, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
     {type:"image", src:"/loc/seattle/bridgeAndTunnel/homer3.png",position:{col:3, row:11}, size:{width:1, height:2}}, 
-    {type:"text", src:"No, no, you’re right. I’ll think of something else", position:{col:1, row:11}, size:{width:2, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},
+    {type:"text", src:"Lacey V. Murrow, director of Washington state highways", position:{col:1, row:11}, size:{width:1, height:2}, style:{outline: "none"}, bubbleStyle: {tailDegree: 0}},
 ]}/>
 
 The solution he came up with was not far off from his original idea. A bridge suspended over the water would have been difficult because of the size of the lake. At its widest, Lake Washington can span 4 miles and some parts reach 220 feet deep. Homer Hadley proposed that, instead, the lake should be crossed with a pontoon bridge. 
 
+<ComicSection elements={[
+    {type:"image", src:"/loc/seattle/bridgeAndTunnel/pontoon.png", position:{col:1, row:1}, size:{width:3, height:3}},
+    {type:"text", src:"A pontoon is a structure that is hollow and airtight, providing buoyancy on water.", position:{col:1, row:1}, size:{width:2, height:1}, style:{outline: "bubble"}},
+    {type:"text", src:"They’re used for boats, seaplanes, and bridges!", position:{col:2, row:3}, size:{width:2, height:1}, style:{outline: "bubble"},}
+]}/> 
+
+<LOCItem image="/loc/seattle/bridgeAndTunnel/james.jpg" linkOut="https://www.loc.gov/resource/cwpb.01892/" caption="This pontoon bridge was built during the Civil War in 7 hours. It was deconstructed after 3 days."/>
+
+However, with the bridge approaching the land at water level, a tunnel would have to be carved through the tall Mount Baker Ridge that guards Seattle on the east. Thus, two feats of engineering were created:
+
+<ComicSection elements={[
+    {type:'text', position:{col:1, row:1}, size:{width:3, height:1}, style:{outline:"box", fontSize:"1rem", backgroundColor:"white"}, src:"A tunnel through the soft clay of Mount Baker Ridge, which is difficult because it kept collapsing on itself. The result is the largest diameter soft-bodied tunnel in the world."},]}/>
+<LOCItem image="/loc/seattle/bridgeAndTunnel/tunnel.jpg" linkOut="https://www.loc.gov/resource/hhh.wa0182.photos/?sp=1" />
+<ComicSection overlap={50} elements={[
+    {type:"image",position:{col:2, row:1}, size:{width:1, height:2},src:"/loc/seattle/bridgeAndTunnel/medal.png"}
+]}/>
+
+<ComicSection elements={[
+    {type:'text', position:{col:1, row:1}, size:{width:3, height:1}, style:{outline:"box", fontSize:"1rem", backgroundColor:"white"}, src:"A bridge made of concrete that floats on water that is stable enough to transport cars. And it is...the second longest floating bridge in the world (the first is the SR520 Evergreen Point Floating Bridge only a couple miles north)."},]}/>
+<LOCItem image="/loc/seattle/bridgeAndTunnel/bridge.jpg" linkOut="https://www.loc.gov/item/wa0442/" />
+<ComicSection overlap={50} elements={[
+    {type:"image",position:{col:2, row:1}, size:{width:1, height:2},src:"/loc/seattle/bridgeAndTunnel/medal2.png"}
+]}/>
+
+*Footnote:*
+There are two bridges supporting I-90. The one that moves traffic eastward is named after Lacey V. Murrow, the director whose support of the floating bridge actually got it built. The one that moves traffic westward is the Third Lake Washington Bridge, and was dedicated in 1993 to the first person to dream of crossing Lake Washington with concrete and chose its site, Homer Hadley.
+
+If you want to learn more about the engineering details of the bridge, you can learn more in its Historic American Engineering Record here:
+
+<BigLink link="https://tile.loc.gov/storage-services/master/pnp/habshaer/wa/wa0100/wa0182/data/wa0182data.pdf" thumbnail="/loc/seattle/bridgeAndTunnel/haer.png" title="LACEY V. MURROW MEMORIAL BRIDGE Historic American Engineering Record"/>
 
 {/* 
 Sticker template: 

@@ -43,6 +43,7 @@ export default function ComicSection({
       className="comic-section relative w-full h-fit"
       style={{
         top: `-${overlap}px`,
+        marginBottom: `-${overlap}px`,
       }}
     >
       <div
