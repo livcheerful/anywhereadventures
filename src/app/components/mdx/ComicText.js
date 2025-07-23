@@ -76,34 +76,27 @@ export default function ComicText({ textInfo }) {
       >
         {tailDegree && (
           <path
-            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
-              y - b
-            } l${c - x} ${d - y}`}
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${y - b
+              } l${c - x} ${d - y}`}
             strokeLinejoin="round"
             style={{ strokeWidth: `${2}px` }}
             className="fill-white"
           />
         )}
         <path
-          d={`m${viewboxCenterX + xOffset} ${
-            viewboxCenterY - bubbleHei + yOffset
-          } c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
-            bubbleHei - bubbleDrop - 0
-          }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${
-            bubbleHei - 0
-          } c-${
-            bubbleWid - bubbleDrop
-          } 0, -${bubbleWid} -${bubbleDrop}, -${bubbleWid} -${bubbleHei} c0 -${
-            bubbleHei - bubbleDrop
-          }, ${bubbleDrop} -${bubbleHei}, ${bubbleWid} -${bubbleHei}`}
+          d={`m${viewboxCenterX + xOffset} ${viewboxCenterY - bubbleHei + yOffset
+            } c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${bubbleHei - bubbleDrop - 0
+            }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${bubbleHei - 0
+            } c-${bubbleWid - bubbleDrop
+            } 0, -${bubbleWid} -${bubbleDrop}, -${bubbleWid} -${bubbleHei} c0 -${bubbleHei - bubbleDrop
+            }, ${bubbleDrop} -${bubbleHei}, ${bubbleWid} -${bubbleHei}`}
           style={{ strokeWidth: `${strokeWidth}px` }}
           className="fill-white  "
         />
         {tailDegree && (
           <path
-            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
-              y - b
-            } l${c - x} ${d - y}`}
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${y - b
+              } l${c - x} ${d - y}`}
             style={{ strokeWidth: `${2}px` }}
             className="fill-white stroke-transparent"
           />
@@ -112,70 +105,31 @@ export default function ComicText({ textInfo }) {
     );
   }
 
-  function createTextStyles() {
-    let alignStyle = {};
-    if (textInfo.style.outline != "bubble") {
-      switch (textInfo.style.textAlign) {
-        case "left":
-          alignStyle = { alignItems: "flex-start" };
-          break;
-        case "center":
-          alignStyle = { alignItems: "center" };
-          break;
-        case "right":
-          alignStyle = { alignItems: "flex-end" };
-          break;
-        default:
-          alignStyle = { alignItems: "flex-start" };
-      }
-    } else {
-      alignStyle = { alignItems: "center" };
+  function generateTextBubblePadding() {
+    if (textInfo.style.outline !== "bubble") {
+      return "";
     }
-    return { ...alignStyle };
-  }
-
-  function generateTextBubbleMargins() {
-    console.log("VVN in generate text bubble margins");
-    let style = "";
 
     const tailDegree = textInfo.bubbleStyle?.tailDegree;
     const tailRadians = (tailDegree * Math.PI) / 180;
 
-    function pxToRem(px) {
-      return px / 16;
+    let top = 10;
+    let bottom = 10;
+    let left = 14;
+    let right = 14;
+
+    if (Number.isFinite(tailRadians)) {
+      const xOffset = tailLength * Math.cos(Math.PI + tailRadians);
+      const yOffset = tailLength * Math.sin(Math.PI + tailRadians) * .5;
+      top += yOffset;
+      bottom -= yOffset;
+      left += xOffset;
+      right -= xOffset;
     }
 
-    switch (textInfo.style.outline) {
-      case "none":
-        break;
-      case "border":
-        break;
-      case "bubble":
-        let top = 1;
-        let bottom = 1;
-        let left = 1.4;
-        let right = 1.4;
-
-        const xOffset = tailLength * Math.cos(Math.PI + tailRadians);
-        const yOffset = tailLength * Math.sin(Math.PI + tailRadians);
-        if (yOffset > 0) {
-          top += pxToRem(yOffset);
-        } else {
-          bottom += pxToRem(yOffset * -1);
-        }
-
-        if (xOffset > 0) {
-          left += pxToRem(xOffset);
-        } else {
-          right += pxToRem(xOffset * -1);
-        }
-        tailLength;
-
-        style = `${top}rem ${right}rem ${bottom}rem ${left}rem`;
-        break;
-    }
-    return style;
+    return `${top}% ${right}% ${bottom}% ${left}%`;
   }
+
   function createBubbleStyles() {
     let borderStyles = {};
     let backgroundStyles = {};
@@ -205,26 +159,52 @@ export default function ComicText({ textInfo }) {
     return {
       fontFamily: `Overpass`,
       fontWeight: "bold",
-      margin: generateTextBubbleMargins(),
       ...spacers,
       ...borderStyles,
       ...backgroundStyles,
     };
   }
+
+  function createTextStyles() {
+    let alignStyle = {};
+    if (textInfo.style.outline != "bubble") {
+      // textAlign here refers to the position of the entire block of text, not the text justify.
+      switch (textInfo.style.textAlign) {
+        case "left":
+          alignStyle = { alignItems: "flex-start" };
+          break;
+        case "center":
+          alignStyle = { alignItems: "center" };
+          break;
+        case "right":
+          alignStyle = { alignItems: "flex-end" };
+          break;
+        default:
+          alignStyle = { alignItems: "flex-start" };
+      }
+    } else {
+      alignStyle = { alignItems: "center" };
+    }
+
+    return {
+      ...alignStyle,
+      textAlign: textInfo.style.outline === "box" ? "left" : "center",
+      padding: generateTextBubblePadding(),
+    };
+  }
+
   return (
     <div
-      className={`relative  ${
-        textInfo.style.outline == "bubble" ? "w-full h-full" : "w-full h-fit"
-      }`}
+      className={`relative  ${textInfo.style.outline == "bubble" ? "w-full h-full" : "w-full h-fit"
+        }`}
       style={createBubbleStyles()}
     >
       {textInfo.style.outline == "bubble" && makeBubble()}
       <div
-        className={`flex flex-col ${
-          textInfo.style.outline == "bubble"
-            ? "relative items-center justify-center w-full h-full"
-            : "w-full"
-        }`}
+        className={`flex flex-col ${textInfo.style.outline == "bubble"
+          ? "relative items-center justify-center w-full h-full"
+          : "w-full"
+          }`}
         style={createTextStyles()}
       >
         <div
