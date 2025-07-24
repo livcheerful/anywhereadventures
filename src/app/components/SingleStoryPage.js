@@ -12,7 +12,7 @@ import { getMdx } from "../lib/clientPostHelper";
 
 import * as storageHelpers from "../lib/storageHelpers";
 
-function button(label, enabled, action) {
+function Button(label, enabled, action) {
   const classList = [
     "border-gray-900",
     "border-2",
@@ -98,6 +98,15 @@ export default function SingleStoryPage({
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
   }, [contentArray, contentIndex]);
 
+  useEffect(() => {
+    if (!contentArray) return;
+    console.log(`vvn entrance slug: [${entranceSlug}]`);
+    if (!entranceSlug) {
+      setContentIndex(0);
+      setCurrentSlug(contentArray[0].slug);
+    }
+  }, [entranceSlug, contentArray]);
+
   if (!contentArray) {
     return "Loading...";
   }
@@ -107,6 +116,7 @@ export default function SingleStoryPage({
 
   const hasPrevious = contentIndex > 0;
   const hasNext = contentIndex < contentArray.length - 1;
+
   function goToPrevious() {
     hasPrevious && setContentIndex(contentIndex - 1);
   }
@@ -134,8 +144,8 @@ export default function SingleStoryPage({
         />
       </div>
       <div className="flex justify-between">
-        {button("PREVIOUS STORY", hasPrevious, goToPrevious)}
-        {button("NEXT STORY", hasNext, goToNext)}
+        {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
+        {Button("NEXT STORY", hasNext, goToNext)}
       </div>
       {contentIndex < contentArray.length - 1 && (
         <hr className="py-4 " style={{ color: "#FF2244" }}></hr>

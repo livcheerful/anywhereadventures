@@ -101,21 +101,23 @@ export default function BasePage({ entranceSlug }) {
         </a>
       )}
 
-      <ContentPane
-        entranceSlug={entranceSlug}
-        chosenLocation={chosenLocation}
-        mainMap={mainMap}
-        paneOpen={paneOpen}
-        setPaneOpen={setPaneOpen}
-        exploringContent={exploringContent}
-        setExploringContent={setExploringContent}
-        currentSlug={currentSlug}
-        setCurrentSlug={setCurrentSlug}
-        post={post}
-        setPost={setPost}
-        setShowingWelcomeScreen={setShowingWelcomeScreen}
-        setViewingPin={setViewingPin}
-      />
+      {!showingWelcomeScreen && (
+        <ContentPane
+          entranceSlug={entranceSlug}
+          chosenLocation={chosenLocation}
+          mainMap={mainMap}
+          paneOpen={paneOpen}
+          setPaneOpen={setPaneOpen}
+          exploringContent={exploringContent}
+          setExploringContent={setExploringContent}
+          currentSlug={currentSlug}
+          setCurrentSlug={setCurrentSlug}
+          post={post}
+          setPost={setPost}
+          setShowingWelcomeScreen={setShowingWelcomeScreen}
+          setViewingPin={setViewingPin}
+        />
+      )}
 
       {showingWelcomeScreen && (
         <WelcomeScreen
