@@ -99,11 +99,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  const article = document.querySelector(`#${mdx.slug}`);
-                  if (article) {
-                    article.scrollIntoView({ behavior: "smooth" });
-                    setPaneOpen(true);
-                  }
+                  setPaneOpen(true);
                 }}
                 className="border-gray-900 border-2 text-black bg-sky-100 px-4 py-2 font-black text-sm rounded-full"
               >

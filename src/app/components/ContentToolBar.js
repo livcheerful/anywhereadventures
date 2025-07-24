@@ -1,25 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-export default function ContentToolBar({
-  post,
-  paneOpen,
-  setPaneOpen,
-  exploringContent,
-  currentSlug,
-  setCurrentSlug,
-}) {
-  const router = useRouter();
-
-  const [shouldShowAddToMapButton, setShouldShowAddToMapButton] = useState(
-    exploringContent && currentSlug != "discover"
-  );
+export default function ContentToolBar({ post, paneOpen, setPaneOpen }) {
   const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
-
-  useEffect(() => {
-    setShouldShowAddToMapButton(exploringContent && currentSlug != "discover");
-  });
-
   return (
     <div
       className="md:w-limiter rounded-t-lg relative bg-lime-200 h-2 p-2 text-xs font-bold flex flex-row gap-2 border-t-gray-800 border-t-2  dark:text-black"

@@ -1,7 +1,5 @@
 import { Suspense } from "react";
 import { allSlugs } from "../lib/MdxQueries";
-import { getAllPosts, getPostBySlug } from "../lib/postHelper";
-import { serialize } from "next-mdx-remote-client/serialize";
 import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
@@ -16,9 +14,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const { slug } = await params;
-  console.log("VVN this is the slug!");
-  console.log(slug);
-  let postSlug;
   return (
     <div className="relative flex w-full overflow-hidden">
       <Suspense>

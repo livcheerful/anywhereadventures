@@ -222,26 +222,6 @@ export default function MyMap({
     mapCB(myMap);
     setMapManager(myMap);
   }, []);
-  function addExploreMarkerWithAnims(location) {
-    mapManager.addExploreMarker(
-      location.slug,
-      location,
-      location.latlon,
-      location.cardImage || location.cameraImage,
-      (marker) => {
-        mapManager.flyTo(
-          [location.latlon[1], location.latlon[0]],
-          location.zoom
-        );
-
-        mapManager.map.dragPan.disable();
-
-        mapManager.map.once("moveend", () => {
-          mapManager.map.dragPan.enable();
-        });
-      }
-    );
-  }
 
   // Update Map State between explore and my map
   useEffect(() => {

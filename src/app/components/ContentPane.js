@@ -15,20 +15,13 @@ export default function ContentPane({
   mainMap,
   paneOpen,
   setPaneOpen,
-  exploringContent,
-  setExploringContent,
   currentSlug,
   setCurrentSlug,
   post,
   setViewingPin,
   setShowingWelcomeScreen,
 }) {
-  const router = useRouter();
-  const [viewAsGrid, setViewAsGrid] = useState(false);
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
-  const [thumbnailView, setThumbnailView] = useState(
-    exploringContent == true && currentSlug == "discover"
-  );
   const scrollValue = useRef();
   const contentPaneRef = useRef(null);
 
@@ -66,14 +59,6 @@ export default function ContentPane({
             post={post}
             paneOpen={paneOpen}
             setPaneOpen={setPaneOpen}
-            exploringContent={exploringContent}
-            setExploringContent={setExploringContent}
-            currentSlug={currentSlug}
-            setCurrentSlug={setCurrentSlug}
-            mainMap={mainMap}
-            viewAsGrid={viewAsGrid}
-            setViewAsGrid={setViewAsGrid}
-            setShowingWelcomeScreen={setShowingWelcomeScreen}
           />
         </div>
         <div
@@ -90,16 +75,16 @@ export default function ContentPane({
             setPaneOpen(true);
           }}
         >
-          {!exploringContent && (
-            <SingleStoryPage
-              entranceSlug={entranceSlug}
-              focusOnPin={focusOnPin}
-              setPaneOpen={setPaneOpen}
-              scrollRef={scrollValue}
-              paneOpen={paneOpen}
-              contentPaneRef={contentPaneRef}
-            />
-          )}
+          <SingleStoryPage
+            currentSlug={currentSlug}
+            setCurrentSlug={setCurrentSlug}
+            entranceSlug={entranceSlug}
+            focusOnPin={focusOnPin}
+            setPaneOpen={setPaneOpen}
+            scrollRef={scrollValue}
+            paneOpen={paneOpen}
+            contentPaneRef={contentPaneRef}
+          />
         </div>
       </div>
     </div>

@@ -29,19 +29,21 @@ function button(label, enabled, action) {
   ];
 
   if (!enabled) {
-    classList.push("bg-gray-100");
+    classList.push(["bg-gray-100", "text-gray-700", "border-gray-700"]);
+  } else {
   }
 
-  return (<div
-    className={classList.join(' ')}
-    onClick={enabled ? action : undefined}
-  >
-    {label}
-  </div>);
+  return (
+    <div className={classList.join(" ")} onClick={enabled ? action : undefined}>
+      {label}
+    </div>
+  );
 }
 
 export default function SingleStoryPage({
   entranceSlug,
+  currentSlug,
+  setCurrentSlug,
   myLocationSlugs,
   focusOnPin,
   paneOpen,
@@ -64,7 +66,7 @@ export default function SingleStoryPage({
       setContentArray(res);
 
       // Find the content corresponding to the entrance slug, otherwise use the first one
-      let index = res.findIndex(content => content.slug == entranceSlug);
+      let index = res.findIndex((content) => content.slug == entranceSlug);
       if (index < 0) {
         index = 0;
       }
@@ -81,27 +83,29 @@ export default function SingleStoryPage({
 
     const newSlug = contentArray[contentIndex].slug;
     updateRoute(`/${newSlug}`);
-    contentPaneRef.current?.scroll({ top: 0, behavior: 'smooth' });
+    setCurrentSlug(newSlug);
+    // Update slug
+    contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
   }, [contentArray, contentIndex]);
 
   if (!contentArray) {
-    return 'Loading...';
+    return "Loading...";
   }
 
   const contentDesc = contentArray[contentIndex];
   const slug = contentDesc.slug;
 
   const hasPrevious = contentIndex > 0;
-  const hasNext = contentIndex < (contentArray.length - 1);
+  const hasNext = contentIndex < contentArray.length - 1;
   function goToPrevious() {
     hasPrevious && setContentIndex(contentIndex - 1);
-  };
+  }
   function goToNext() {
     hasNext && setContentIndex(contentIndex + 1);
-  };
+  }
 
   return (
-    <div key={contentIndex} className="article" id={slug} articleslug={slug} >
+    <div key={contentIndex} className="article" id={slug} articleslug={slug}>
       <StickyHeader
         post={contentDesc}
         contentSlug={slug}
@@ -120,14 +124,12 @@ export default function SingleStoryPage({
         />
       </div>
       <div className="flex justify-between">
-        {button('PREVIOUS STORY', hasPrevious, goToPrevious)}
-        {button('NEXT STORY', hasNext, goToNext)}
+        {button("PREVIOUS STORY", hasPrevious, goToPrevious)}
+        {button("NEXT STORY", hasNext, goToNext)}
       </div>
-      {
-        contentIndex < contentArray.length - 1 && (
-          <hr className="py-4 " style={{ color: "#FF2244" }}></hr>
-        )
-      }
+      {contentIndex < contentArray.length - 1 && (
+        <hr className="py-4 " style={{ color: "#FF2244" }}></hr>
+      )}
     </div>
   );
 }
