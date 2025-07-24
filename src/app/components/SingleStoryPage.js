@@ -100,7 +100,6 @@ export default function SingleStoryPage({
 
   useEffect(() => {
     if (!contentArray) return;
-    console.log(`vvn entrance slug: [${entranceSlug}]`);
     if (!entranceSlug) {
       setContentIndex(0);
       setCurrentSlug(contentArray[0].slug);
