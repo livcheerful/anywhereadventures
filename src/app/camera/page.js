@@ -184,6 +184,12 @@ export default function Page({}) {
         </div>
       )}
 
+      <a href={`/${locationId}`} className="fixed left-0 top-4">
+        <div className="py-1 px-6 text-center bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
+          Back
+        </div>
+      </a>
+
       <div
         className="absolute w-full flex flex-col bottom-0  bg-gray-300 "
         style={{ height: "75%" }}
@@ -232,7 +238,7 @@ export default function Page({}) {
         <div className="hidden h-sm:block w-full text-center font-mono  text-gray-500 font-bold scale-y-95">
           Anywhere Adventures COOLCam
         </div>
-        <div className="grid grid-rows-2 grid-cols-2 w-full flex-grow gap-3 px-3 justify-between items-center">
+        <div className="flex flex-row w-full flex-grow gap-3 px-3 justify-between items-center">
           <button
             className="h-16 w-32 row-start-1 row-span-1 col-start-1 col-span-1 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
             style={{
@@ -248,79 +254,78 @@ export default function Page({}) {
           >
             Flip
           </button>
-          <a href={`/${locationId}`} className=" flex-grow">
-            <div className="row-start-2 row-span-1 col-start-1 col-span-1 p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow">
-              Back
-            </div>
-          </a>
-          <button
-            className=" row-start-2 row-span-1 col-start-2 col-span-1 p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow"
-            onClick={() => {
-              setProcessPhotos(true);
-            }}
-          >
-            Finish
-          </button>
-          <div
-            className="row-start-1 row-span-1 col-start-2 col-span-1 bg-purple-400 rounded-full cursor-pointer w-16 h-16 h-lg:w-24 h-lg:h-24"
-            style={{
-              backgroundImage: "url(/shutter.png)",
-              backgroundSize: "cover",
-            }}
-            onClick={() => {
-              if (reel.length != 5) {
-                const newPhotos = Array.from(reel);
+          <div className="flex flex-col gap-2 items-center w-fit">
+            <div
+              className=" bg-purple-400 rounded-full cursor-pointer w-16 h-16 h-lg:w-24 h-lg:h-24"
+              style={{
+                backgroundImage: "url(/shutter.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => {
+                if (reel.length != 5) {
+                  const newPhotos = Array.from(reel);
 
-                function snapPhoto() {
-                  const videoWrapper = document.getElementById("videoWrapper");
-                  const destinationWidth =
-                    videoWrapper.getBoundingClientRect().width;
-                  const destinationHeight =
-                    videoWrapper.getBoundingClientRect().height;
-                  const video = document.getElementById("video");
-                  const videoDimensions = video.width / video.height;
+                  function snapPhoto() {
+                    const videoWrapper =
+                      document.getElementById("videoWrapper");
+                    const destinationWidth =
+                      videoWrapper.getBoundingClientRect().width;
+                    const destinationHeight =
+                      videoWrapper.getBoundingClientRect().height;
+                    const video = document.getElementById("video");
+                    const videoDimensions = video.width / video.height;
 
-                  let sourceX = 0,
-                    sourceY = 0,
-                    sourceWidth = video.videoWidth,
-                    sourceHeight = video.videoHeight;
-                  if (videoDimensions > aspectRatio) {
-                    // Too Wide
-                    sourceWidth = video.videoHeight * aspectRatio;
-                    sourceX = (video.videoWidth - sourceWidth) / 2;
-                  } else {
-                    // Too Tall
-                    sourceHeight = video.videoWidth / aspectRatio;
-                    sourceY = (video.videoHeight - sourceHeight) / 2;
+                    let sourceX = 0,
+                      sourceY = 0,
+                      sourceWidth = video.videoWidth,
+                      sourceHeight = video.videoHeight;
+                    if (videoDimensions > aspectRatio) {
+                      // Too Wide
+                      sourceWidth = video.videoHeight * aspectRatio;
+                      sourceX = (video.videoWidth - sourceWidth) / 2;
+                    } else {
+                      // Too Tall
+                      sourceHeight = video.videoWidth / aspectRatio;
+                      sourceY = (video.videoHeight - sourceHeight) / 2;
+                    }
+                    const tempCanvas = document.createElement("canvas");
+                    const tempCtx = tempCanvas.getContext("2d");
+                    tempCanvas.width = destinationWidth;
+                    tempCanvas.height = destinationHeight;
+                    tempCtx.drawImage(
+                      video,
+                      sourceX,
+                      sourceY,
+                      sourceWidth,
+                      sourceHeight,
+                      0, // Where to draw on canvas, X
+                      0,
+                      tempCanvas.width,
+                      tempCanvas.height
+                    );
+
+                    var img = tempCanvas.toDataURL("image/png");
+                    return img;
                   }
-                  const tempCanvas = document.createElement("canvas");
-                  const tempCtx = tempCanvas.getContext("2d");
-                  tempCanvas.width = destinationWidth;
-                  tempCanvas.height = destinationHeight;
-                  tempCtx.drawImage(
-                    video,
-                    sourceX,
-                    sourceY,
-                    sourceWidth,
-                    sourceHeight,
-                    0, // Where to draw on canvas, X
-                    0,
-                    tempCanvas.width,
-                    tempCanvas.height
-                  );
 
-                  var img = tempCanvas.toDataURL("image/png");
-                  return img;
+                  const photo = snapPhoto();
+                  newPhotos.push({ img: photo, timeTaken: new Date() });
+                  setReel(newPhotos);
+                } else {
+                  // process photos
                 }
+              }}
+            ></div>
 
-                const photo = snapPhoto();
-                newPhotos.push({ img: photo, timeTaken: new Date() });
-                setReel(newPhotos);
-              } else {
-                // process photos
-              }
-            }}
-          ></div>
+            <button
+              className="text-sm font-mono text-gray-700 w-fit h-fit underline"
+              onClick={() => {
+                setProcessPhotos(true);
+              }}
+            >
+              FINISH
+            </button>
+          </div>
         </div>
       </div>
       {processPhotos && (

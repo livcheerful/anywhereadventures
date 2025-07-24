@@ -7,11 +7,11 @@ export default function PinJournal({ page }) {
     const smallScreen = screenWidth < 768;
     gsap.fromTo(
       "#journalPage",
-      { right: 0, bottom: "-20rem", rotate: 0 },
+      { left: 0, bottom: "-20rem", rotate: 0 },
       {
-        right: smallScreen ? -10 : 10,
+        left: smallScreen ? -10 : 10,
         bottom: "20%",
-        rotate: 20,
+        rotate: -20,
         delay: 0.5,
         duration: 0.8,
       }

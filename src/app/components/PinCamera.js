@@ -8,10 +8,10 @@ export default function PinCamera({ mdx }) {
     const smallScreen = screenWidth < 768;
     gsap.fromTo(
       "#camera",
-      { rotate: -100, left: "-30rem", bottom: smallScreen ? "20%" : "50%" },
+      { rotate: 100, right: "-30rem", bottom: smallScreen ? "20%" : "50%" },
       {
-        rotate: smallScreen ? -9 : -13,
-        left: smallScreen ? "-3rem" : "-8rem",
+        rotate: smallScreen ? 9 : 13,
+        right: smallScreen ? "-3rem" : "-8rem",
         delay: 0.2,
         duration: 1.2,
       }

@@ -132,7 +132,7 @@ export default function Camera({
           id="videoWrapper"
           className={`${
             picture ? "hidden" : "visible"
-          } w-3/5 h-md:w-4/5 h-lg:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
+          } w-3/5 h-md:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
             aspectRatio: aspectRatio,
           }}

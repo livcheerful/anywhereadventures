@@ -13,7 +13,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
     }, 2000);
   }, [copiedAlert]);
   return (
-    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 md:top-32 h-full  ">
+    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 h-md:top-32 h-full  ">
       <div
         className="h-48 top-6 relative w-full"
         style={{
