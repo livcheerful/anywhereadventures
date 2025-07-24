@@ -169,7 +169,7 @@ export default function Page({}) {
               >
                 START
               </button>
-              <a href="/" className="underline">
+              <a href={`/${locationId}`} className="underline">
                 Back to reading
               </a>
             </div>
