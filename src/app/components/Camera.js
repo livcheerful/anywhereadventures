@@ -13,10 +13,6 @@ export default function Camera({
   const searchParams = useSearchParams();
   const cameraType = searchParams.get("type");
   const frameImage = searchParams.get("frame");
-  const imagePlacement = searchParams.get("place");
-  const imageDimensions = searchParams.get("size");
-  const [showSayCheese, setShowSayCheese] = useState(false);
-  const [countdown, setCountdown] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [height, setHeight] = useState();
   const [width, setWidth] = useState(0);
@@ -131,12 +127,12 @@ export default function Camera({
   return (
     <div className="">
       <div className="hidden">{loadImageResources()}</div>
-      <div className="filmStrip  overflow-hidden">
+      <div className="filmStrip overflow-hidden">
         <div
           id="videoWrapper"
           className={`${
             picture ? "hidden" : "visible"
-          } w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
+          } w-3/5 h-md:w-4/5 h-lg:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
             aspectRatio: aspectRatio,
           }}

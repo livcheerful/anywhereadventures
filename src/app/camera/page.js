@@ -229,12 +229,12 @@ export default function Page({}) {
             </div>
           </div>
         </div>
-        <div className="w-full text-center font-mono  text-gray-500 font-bold scale-y-95">
+        <div className="hidden h-sm:block w-full text-center font-mono  text-gray-500 font-bold scale-y-95">
           Anywhere Adventures COOLCam
         </div>
-        <div className="flex flex-row w-full flex-grow gap-3 p-3 justify-between items-center">
+        <div className="grid grid-rows-2 grid-cols-2 w-full flex-grow gap-3 px-3 justify-between items-center">
           <button
-            className="h-16 w-32 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
+            className="h-16 w-32 row-start-1 row-span-1 col-start-1 col-span-1 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
             style={{
               backgroundImage: `url(cameraButton.png)`,
               backgroundSize: "cover",
@@ -248,9 +248,21 @@ export default function Page({}) {
           >
             Flip
           </button>
-
+          <a href={`/${locationId}`} className=" flex-grow">
+            <div className="row-start-2 row-span-1 col-start-1 col-span-1 p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow">
+              Back
+            </div>
+          </a>
+          <button
+            className=" row-start-2 row-span-1 col-start-2 col-span-1 p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow"
+            onClick={() => {
+              setProcessPhotos(true);
+            }}
+          >
+            Finish
+          </button>
           <div
-            className="bg-purple-400 rounded-full cursor-pointer  w-24 h-24"
+            className="row-start-1 row-span-1 col-start-2 col-span-1 bg-purple-400 rounded-full cursor-pointer w-16 h-16 h-lg:w-24 h-lg:h-24"
             style={{
               backgroundImage: "url(/shutter.png)",
               backgroundSize: "cover",
@@ -309,25 +321,6 @@ export default function Page({}) {
               }
             }}
           ></div>
-        </div>
-
-        <div
-          className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
-          style={{ height: "15%" }}
-        >
-          <a href={`/${locationId}`} className=" flex-grow">
-            <div className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono">
-              Back
-            </div>
-          </a>
-          <button
-            className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow"
-            onClick={() => {
-              setProcessPhotos(true);
-            }}
-          >
-            Finish
-          </button>
         </div>
       </div>
       {processPhotos && (

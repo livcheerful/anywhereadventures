@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,6 +10,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "h-sm": { raw: "(min-height: 351px)" }, // Phones up
+        "h-md": { raw: "(min-height: 580px)" }, // Medium heights
+        "h-lg": { raw: "(min-height: 800px)" }, // Laptops up
+        "h-xl": { raw: "(min-height: 1000px)" }, // Very tall screens
+      },
       width: {
         limiter: "30rem",
         sComic: "6rem",
