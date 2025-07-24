@@ -75,6 +75,15 @@ export default function SingleStoryPage({
     });
   }, [myLocationSlugs]);
 
+  useEffect(() => {
+    // find index of slug
+    if (!contentArray) return;
+    const index = contentArray.findIndex(
+      (content) => content.slug == currentSlug
+    );
+    setContentIndex(index);
+  }, [currentSlug, contentArray]);
+
   // Update route and return to the top when going to previous or next.
   useEffect(() => {
     if (!contentArray) {
@@ -84,6 +93,7 @@ export default function SingleStoryPage({
     const newSlug = contentArray[contentIndex].slug;
     updateRoute(`/${newSlug}`);
     setCurrentSlug(newSlug);
+
     // Update slug
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
   }, [contentArray, contentIndex]);

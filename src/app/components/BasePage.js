@@ -66,6 +66,7 @@ export default function BasePage({ entranceSlug }) {
           viewingPin={viewingPin}
           setViewingPin={setViewingPin}
           chosenLocation={chosenLocation}
+          setCurrentSlug={setCurrentSlug}
         />
       }
       {!viewingPin && (

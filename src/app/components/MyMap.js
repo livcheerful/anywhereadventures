@@ -193,6 +193,7 @@ export default function MyMap({
   viewingPin,
   setViewingPin,
   chosenLocation,
+  setCurrentSlug,
 }) {
   const router = useRouter();
   const [zoom, setZoom] = useState(defaultLocation.zoom);
@@ -259,6 +260,9 @@ export default function MyMap({
         mdxInfo.zoom,
         true
       );
+
+      // Update reading pane
+      setCurrentSlug(mdxInfo.slug);
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
