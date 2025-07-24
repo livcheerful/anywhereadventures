@@ -7,6 +7,7 @@ import { Map, Marker, Popup } from "maplibre-gl";
 
 // Components
 import RiverFeed from "./RiverFeed";
+import SingleStoryPage from "./SingleStoryPage";
 import ContentToolBar from "./ContentToolBar";
 
 export default function ContentPane({
@@ -29,6 +30,7 @@ export default function ContentPane({
     exploringContent == true && currentSlug == "discover"
   );
   const scrollValue = useRef();
+  const contentPaneRef = useRef(null);
 
   function focusOnPin(slug, post) {
     setPaneOpen(false);
@@ -79,6 +81,7 @@ export default function ContentPane({
           className="w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10"
           style={{ paddingTop: "1rem" }}
           id="content-pane"
+          ref={contentPaneRef}
           onDrag={(e) => {
             e.preventDefault();
             setPaneOpen(true);
@@ -88,14 +91,13 @@ export default function ContentPane({
           }}
         >
           {!exploringContent && (
-            <RiverFeed
+            <SingleStoryPage
               entranceSlug={entranceSlug}
               focusOnPin={focusOnPin}
               setPaneOpen={setPaneOpen}
-              viewAsGrid={viewAsGrid}
-              setViewAsGrid={setViewAsGrid}
               scrollRef={scrollValue}
               paneOpen={paneOpen}
+              contentPaneRef={contentPaneRef}
             />
           )}
         </div>
