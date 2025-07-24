@@ -315,7 +315,7 @@ export default function Page({}) {
           className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
           style={{ height: "15%" }}
         >
-          <a href="/" className=" flex-grow">
+          <a href={`/${locationId}`} className=" flex-grow">
             <div className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono">
               Back
             </div>
