@@ -1,5 +1,5 @@
-import localFont from "next/font/local";
 import "./globals.css";
+import localFont from "next/font/local";
 import ComicSection from "./components/mdx/ComicSection";
 
 const vivianFont = localFont({
