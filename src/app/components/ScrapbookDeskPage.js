@@ -145,7 +145,7 @@ export default function ScrapbookDeskPage({
           id="collageImage"
           className="draggable z-20 w-1/2 -rotate-6 drop-shadow-2xl border-2 border-black select-none"
         />
-        <a href="/">
+        <a href={`/${locationId}`}>
           <div
             id="backToMap"
             className="  absolute z-30 left-0 rotate-6 drop-shadow-xl"
