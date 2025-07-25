@@ -159,6 +159,8 @@ export default function ContentPane({
             contentIndex={contentIndex}
             contentArray={contentArray}
             setContentIndex={setContentIndex}
+            setViewingPin={setViewingPin}
+            mainMap={mainMap}
           />
         </div>
       </div>

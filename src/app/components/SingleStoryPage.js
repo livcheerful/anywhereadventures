@@ -9,6 +9,7 @@ import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
 
 import * as storageHelpers from "../lib/storageHelpers";
+import { savedLocationToObj } from "../lib/locationHelpers";
 
 function Button(label, enabled, action) {
   const classList = [
@@ -16,7 +17,7 @@ function Button(label, enabled, action) {
     "px-4",
     "py-2",
     "font-black",
-    "text-sm",
+    "text-xs",
     "rounded-full",
     "w-48",
     "text-center",
@@ -25,7 +26,9 @@ function Button(label, enabled, action) {
   if (!enabled) {
     classList.push(...["bg-gray-100/70", "text-gray-400", "border-gray-300"]);
   } else {
-    classList.push(...["bg-amber-300", "text-gray-800", "border-gray-900"]);
+    classList.push(
+      ...["bg-amber-300", "text-gray-800", "border-gray-900", "drop-shadow-sm"]
+    );
   }
 
   return (
@@ -45,6 +48,8 @@ export default function SingleStoryPage({
   scrollRef,
   contentIndex,
   setContentIndex,
+  setViewingPin,
+  mainMap,
 }) {
   if (!contentArray) {
     return (
@@ -93,9 +98,22 @@ export default function SingleStoryPage({
       </div>
 
       <hr className="border-amber-500"></hr>
-      <div className="flex justify-between py-4 bg-amber-100">
+      <div className="flex justify-between gap-1 py-4 bg-amber-100">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
-        {Button("NEXT STORY", hasNext, goToNext)}
+        {Button("MAP", true, (e) => {
+          console.log("In browse map");
+
+          e.preventDefault();
+          e.stopPropagation();
+          setPaneOpen(false);
+          setViewingPin(undefined);
+
+          const homeLoc = storageHelpers.getHomeLocation();
+          const homeLocationData = savedLocationToObj(homeLoc);
+          console.log(homeLocationData);
+          mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
+        })}
+        ,{Button("NEXT STORY", hasNext, goToNext)}
       </div>
     </div>
   );
