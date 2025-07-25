@@ -29,6 +29,16 @@ export default function ContentToolBar({
           >
             <div> Menu</div>
           </button>
+          <a
+            href="/journal"
+            className={`${
+              paneOpen ? " bg-lime-200" : ""
+            }  flex flex-col justify-center px-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-sm`}
+          >
+            <div>
+              <div>Travel Log</div>
+            </div>
+          </a>
 
           <div className="flex flex-row justify-center gap-2 border-b-2 border-l-2 border-r-2 border-gray-800 w-3/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm">
             <button

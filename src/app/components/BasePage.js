@@ -68,37 +68,6 @@ export default function BasePage({ entranceSlug }) {
           setCurrentSlug={setCurrentSlug}
         />
       }
-      {!viewingPin && (
-        <a
-          href="/journal"
-          className="absolute left-4 md:left-10 -bottom-14 md:bottom-0 -rotate-12 drop-shadow-xl"
-        >
-          <div
-            id="toJournal"
-            className="relative"
-            style={{
-              width: "15rem",
-              height: "25rem",
-              backgroundImage: "url(/notebook3.png)",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <div
-              className="stickyNote w-28 h-28 top-4 left-5 absolute md:bottom-14 right-7  p-2 flex flex-col justify-center  -rotate-6"
-              style={{
-                backgroundImage: `url(/stickynote.png)`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <div className="font-mono text-gray-900 font-bold text-sm text-center">
-                Travel Log
-              </div>
-            </div>
-          </div>
-        </a>
-      )}
 
       {!showingWelcomeScreen && (
         <ContentPane
