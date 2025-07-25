@@ -240,6 +240,11 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
 
     return imgDiv;
   };
+  this.bringToFront = function (element) {
+    this.topZ++;
+    element.z = this.topZ;
+    element.elem.style.zIndex = this.topZ;
+  }
 }
 
 export default function Scrapbook({
@@ -326,8 +331,8 @@ export default function Scrapbook({
     const dropZone = interact("#trashZone").dropzone({
       accept: ".trashable",
       overlap: "pointer",
-      ondropactivate: (event) => {},
-      ondropenter: (event) => {},
+      ondropactivate: (event) => { },
+      ondropenter: (event) => { },
       ondrop: (event) => {
         console.log("Dropped!");
         console.log(event);
@@ -348,11 +353,11 @@ export default function Scrapbook({
     }
     fetchPost();
   }, [slug]);
-  useEffect(() => {}, []);
 
   function handleDraggingItem(element) {
     if (element) {
       draggingItemRef.current = element;
+      scrapbookPage.bringToFront(element);
       setDraggingItem(element);
     } else {
       setTimeout(() => {
@@ -614,9 +619,8 @@ export default function Scrapbook({
       <div
         id="trashZone"
         ref={trashRef}
-        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
-          draggingItem ? "visible" : "invisible"
-        }`}
+        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${draggingItem ? "visible" : "invisible"
+          }`}
       >
         <div className="font-mono font-bold">TRASH</div>
       </div>
