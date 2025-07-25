@@ -19,24 +19,23 @@ export default function Page() {
   const [showSavedItems, setShowSavedItems] = useState(false);
 
   useEffect(() => {
-    let found = false;
-
-    if (!categories) return;
-    categories.values().forEach((category, i) => {
-      console.log(category.locations);
-      category.locations.forEach((location, j) => {
-        if (found) {
-          return;
-        }
-        if (location.slug == refSlug) {
-          found = true;
-          const page = document.querySelector(
-            `#page-${category.tag}-${Math.floor(j / 4)}`
-          );
-          page.scrollIntoView({ behavior: "smooth" });
-        }
-      });
-    });
+    // let found = false;
+    // if (!categories) return;
+    // categories.values().forEach((category, i) => {
+    //   console.log(category.locations);
+    //   category.locations.forEach((location, j) => {
+    //     if (found) {
+    //       return;
+    //     }
+    //     if (location.slug == refSlug) {
+    //       found = true;
+    //       const page = document.querySelector(
+    //         `#page-${category.tag}-${Math.floor(j / 4)}`
+    //       );
+    //       page.scrollIntoView({ behavior: "smooth" });
+    //     }
+    //   });
+    // });
   }, [refSlug]);
 
   function handleSearchParams(kvp) {
