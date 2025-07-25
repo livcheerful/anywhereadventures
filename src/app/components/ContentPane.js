@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Map, Marker, Popup } from "maplibre-gl";
-import { getHomeLocation } from "../lib/storageHelpers";
+import { getHomeLocation, clearAll } from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
@@ -109,14 +109,25 @@ export default function ContentPane({
 
       {showingMenu && (
         <div className="fixed pt-24 z-50 top-16 left-0 w-full md:w-limiter h-dvh bg-white">
-          <div className="bg-white flex flex-col">
+          <div className="bg-white flex flex-col gap-2 p-2">
             <button
+              className="p-2 bg-yellow-200"
               onClick={() => {
                 updateRoute(`/`);
                 setShowingWelcomeScreen(true);
               }}
             >
               <div>Reset Home</div>
+            </button>
+            <button
+              className="p-2 bg-yellow-200"
+              onClick={() => {
+                clearAll();
+                setShowingMenu(false);
+                setShowingWelcomeScreen(true);
+              }}
+            >
+              <div>Clear all data</div>
             </button>
           </div>
         </div>
