@@ -10,21 +10,19 @@ export default function JournalLog({ mdx }) {
     <div className="flex flex-col items-center justify-between w-full h-full">
       {/* Show the image */}
       {visited ? (
-        <div className="relative font-mono text-xs justify-center grow">
-          <div className="w-fit h-10 relative">
-            <img className="h-full w-fit" src={getPage(slug).image} />
-            <div className="absolute top-1/3 -left-16 mix-blend-hard-light rotate-12 opacity-20">
-              <img className="w-36 h-fit" src="/seattle-general-2.svg" />
-            </div>
-            <img
-              className="absolute top-4 -left-4 w-12 -rotate-45"
-              src="/tape1.png"
-            ></img>
-            <img
-              className="absolute bottom-4 -right-4 w-12 -rotate-45"
-              src="/tape1.png"
-            ></img>
+        <div className="relative font-mono text-xs justify-center grow w-fit h-0">
+          <img className="h-full w-fit" src={getPage(slug).image} />
+          <div className="absolute top-1/3 -left-16 mix-blend-hard-light rotate-12 opacity-20">
+            <img className="w-36 h-fit" src="/seattle-general-2.svg" />
           </div>
+          <img
+            className="absolute top-4 -left-4 w-12 -rotate-45"
+            src="/tape1.png"
+          ></img>
+          <img
+            className="absolute bottom-4 -right-4 w-12 -rotate-45"
+            src="/tape1.png"
+          ></img>
         </div>
       ) : (
         // Show image placeholder
