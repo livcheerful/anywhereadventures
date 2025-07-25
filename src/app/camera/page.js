@@ -185,7 +185,7 @@ export default function Page({}) {
       )}
 
       <a href={`/${locationId}`} className="fixed left-0 top-4">
-        <div className="py-1 px-6 text-center bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
+        <div className="py-1 px-6 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
           Back
         </div>
       </a>
@@ -235,28 +235,30 @@ export default function Page({}) {
             </div>
           </div>
         </div>
-        <div className="hidden h-sm:block w-full text-center font-mono  text-gray-500 font-bold scale-y-95">
+        <div className="hidden h-sm:block w-full  grow text-center font-mono  text-gray-500 font-bold scale-y-95">
           Anywhere Adventures COOLCam
         </div>
-        <div className="flex flex-row w-full flex-grow gap-3 px-3 justify-between items-center">
-          <button
-            className="h-16 w-32 row-start-1 row-span-1 col-start-1 col-span-1 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
-            style={{
-              backgroundImage: `url(cameraButton.png)`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
-            onClick={() => {
-              setCameraDirectionIdx(
-                (cameraDirectionIdx + 1) % cameraDirectionStates.length
-              );
-            }}
-          >
-            Flip
-          </button>
-          <div className="flex flex-col gap-2 items-center w-fit">
+        <div className="flex flex-row shrink-0 w-full grow px-3 justify-between items-center">
+          <div className="flex-1 ">
+            <button
+              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
+              style={{
+                backgroundImage: `url(cameraButton.png)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+              onClick={() => {
+                setCameraDirectionIdx(
+                  (cameraDirectionIdx + 1) % cameraDirectionStates.length
+                );
+              }}
+            >
+              Flip
+            </button>
+          </div>
+          <div className="flex flex-col gap-2 flex-1 shrink-0 items-center w-fit">
             <div
-              className=" bg-purple-400 rounded-full cursor-pointer w-16 h-16 h-lg:w-24 h-lg:h-24"
+              className=" bg-purple-400 rounded-full cursor-pointer w-24 h-24"
               style={{
                 backgroundImage: "url(/shutter.png)",
                 backgroundSize: "cover",
@@ -316,14 +318,20 @@ export default function Page({}) {
                 }
               }}
             ></div>
-
+          </div>
+          <div className="flex-1 flex flex-row justify-end">
             <button
-              className="text-sm font-mono text-gray-700 w-fit h-fit underline"
+              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
+              style={{
+                backgroundImage: `url(cameraButton.png)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
               onClick={() => {
                 setProcessPhotos(true);
               }}
             >
-              FINISH
+              Finish
             </button>
           </div>
         </div>
