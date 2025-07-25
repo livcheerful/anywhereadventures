@@ -12,20 +12,21 @@ export default function ContentToolBar({
   const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
   return (
     <div
-      className="md:w-limiter rounded-t-lg relative bg-lime-200 h-2 p-2 text-xs font-bold flex flex-row gap-2 border-t-gray-800 border-t-2  dark:text-black"
+      className="md:w-limiter rounded-t-lg relative text-xs font-bold flex flex-row gap-2 border-t-gray-800 border-t-2 dark:text-black"
       onClick={() => {
         setPaneOpen(true);
       }}
     >
-      {paneOpen && (
-        <div className="absolute w-full gap-2 left-0 top-4 flex justify-start pl-2 items-stretch">
+      <div className="h-2 p-2  bg-lime-200 w-full rounded-t-lg"></div>
+      {
+        <div className="absolute w-full gap-2 left-0 flex justify-start pl-2 items-stretch">
           <button
             onClick={(e) => {
               setShowingMenu(!showingMenu);
             }}
             className={`${
               paneOpen ? " bg-lime-200" : ""
-            }  flex flex-col justify-center px-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs`}
+            }  flex flex-col justify-center px-2 py-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs`}
           >
             <div> Menu</div>
           </button>
@@ -40,7 +41,7 @@ export default function ContentToolBar({
             </div>
           </a>
 
-          <div className="flex flex-row justify-center gap-2 border-b-2 border-l-2 border-r-2 border-gray-800 w-3/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-xs">
+          <div className="flex flex-row items-center justify-center gap-2 border-b-2 border-l-2 border-r-2 border-gray-800 w-3/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-xs">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -62,7 +63,7 @@ export default function ContentToolBar({
             </button>
           </div>
         </div>
-      )}
+      }
       <div
         className={`absolute -top-10 left-0 w-full bg-white h-10 flex flex-col justify-center pointer-events-none ${
           focusOnMapSwitcher ? "opacity-100" : "opacity-0"

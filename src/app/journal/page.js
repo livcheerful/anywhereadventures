@@ -81,6 +81,7 @@ export default function Page() {
     console.log("in makeJournalPages()");
     if (!categories) return;
     console.log("categories");
+    console.log(categories);
     const allPages = categories.values().map((category, i) => {
       const catMeta = categoryInfo[category.tag];
       const numberPerPage = 4;
@@ -154,68 +155,69 @@ export default function Page() {
                   </div>
                 </div>
                 <hr className="w-full border-slate-700 pb-4"></hr>
-                {categories.values().map((category, i) => {
-                  const catMeta = categoryInfo[category.tag];
-                  return (
-                    <div className="pb-2" key={i}>
-                      <a
-                        href={`#page-${category.tag}-0`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setShowToc(false);
-                          const page = document.querySelector(
-                            `#page-${category.tag}-0`
-                          );
-                          page.scrollIntoView({ behavior: "smooth" });
-                        }}
-                      >
-                        <div className="font-mono text-gray-900 font-bold underline">
-                          {catMeta?.title}
-                        </div>
-                      </a>
-                      {category?.locations.map((categoryLocation, j) => {
-                        if (!categoryLocation) return;
-                        return (
-                          <div
-                            key={j}
-                            className="text-md font-mono text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
-                          >
-                            <div>
-                              {hasLocationBeenVisited(categoryLocation.slug)
-                                ? "✅"
-                                : "⬜️"}
-                            </div>
-                            <a
-                              className="overflow-x-clip shrink-0 pointer"
-                              href={`/${categoryLocation.slug}`}
-                            >
-                              <div className="flex-none w-fit">
-                                {categoryLocation.locationTitle ||
-                                  categoryLocation.title}
-                              </div>
-                            </a>
-                            <div className="grow w-0 overflow-clip text-gray-600 text-xs">
-                              ........................................................
-                            </div>
-                            <a
-                              className="overflow-x-clip shrink-0 cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setShowToc(false);
-                                const page = document.querySelector(
-                                  `#page-${category.tag}-${Math.floor(j / 4)}`
-                                );
-                                page.scrollIntoView({ behavior: "smooth" });
-                              }}
-                            >
-                              <div>{"LOG"}</div>
-                            </a>
+                {categories &&
+                  categories.values().map((category, i) => {
+                    const catMeta = categoryInfo[category.tag];
+                    return (
+                      <div className="pb-2" key={i}>
+                        <a
+                          href={`#page-${category.tag}-0`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowToc(false);
+                            const page = document.querySelector(
+                              `#page-${category.tag}-0`
+                            );
+                            page.scrollIntoView({ behavior: "smooth" });
+                          }}
+                        >
+                          <div className="font-mono text-gray-900 font-bold underline">
+                            {catMeta?.title}
                           </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                        </a>
+                        {category?.locations.map((categoryLocation, j) => {
+                          if (!categoryLocation) return;
+                          return (
+                            <div
+                              key={j}
+                              className="text-md font-mono text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
+                            >
+                              <div>
+                                {hasLocationBeenVisited(categoryLocation.slug)
+                                  ? "✅"
+                                  : "⬜️"}
+                              </div>
+                              <a
+                                className="overflow-x-clip shrink-0 pointer"
+                                href={`/${categoryLocation.slug}`}
+                              >
+                                <div className="flex-none w-fit">
+                                  {categoryLocation.locationTitle ||
+                                    categoryLocation.title}
+                                </div>
+                              </a>
+                              <div className="grow w-0 overflow-clip text-gray-600 text-xs">
+                                ........................................................
+                              </div>
+                              <a
+                                className="overflow-x-clip shrink-0 cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setShowToc(false);
+                                  const page = document.querySelector(
+                                    `#page-${category.tag}-${Math.floor(j / 4)}`
+                                  );
+                                  page.scrollIntoView({ behavior: "smooth" });
+                                }}
+                              >
+                                <div>{"LOG"}</div>
+                              </a>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
 
                 <a
                   href={`#explore`}
