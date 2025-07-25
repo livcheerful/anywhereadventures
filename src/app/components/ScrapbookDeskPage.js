@@ -18,17 +18,13 @@ function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
   const drag = interact(htmlElem);
   drag.draggable({
     listeners: {
-      start: (event) => {
-        console.log("VVN DRAGGING");
-      },
+      start: (event) => {},
       move: (event) => {
         this.x += event.dx;
         this.y += event.dy;
         updateTransform();
       },
-      end: (event) => {
-        console.log("done moving");
-      },
+      end: (event) => {},
     },
   });
 }

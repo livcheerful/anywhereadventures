@@ -39,7 +39,6 @@ export default function Page() {
   }, [refSlug]);
 
   function handleSearchParams(kvp) {
-    console.log("IN HANDLE SEARCH PARAMS");
     setRefSlug(kvp["id"]);
   }
 

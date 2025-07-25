@@ -74,7 +74,6 @@ export function getPage(slug) {
 }
 
 export function savePage(slug, imgData, date) {
-  console.log(`in savePage(), slug: [${slug}]`);
   const pages = getAllPages();
 
   pages[slug] = { image: imgData, date: date };
@@ -112,7 +111,6 @@ export function getNumberOfStamps() {
 
 export function saveStamp(stampList) {
   const stampsSoFar = getAll(stampKey);
-  console.log(stampsSoFar);
   for (let i = 0; i < stampList.length; i++) {
     const currStamp = stampList[i];
     stampsSoFar[currStamp.slug] = stampList[i];

@@ -39,7 +39,6 @@ export default function WelcomeScreen({
               key={k}
               onClick={() => {
                 setChosenLocation(l);
-                console.log(l);
 
                 setHomeLocation(l.name);
                 mainMap.flyTo(l.center, l.zoom, false);

@@ -148,7 +148,6 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     canvas.width = width + 2;
     canvas.height = height + 2;
 
-    console.log(textStyle);
     if (textStyle.backgroundColor) {
       ctx.fillStyle = textStyle.backgroundColor;
       ctx.fillRect(0, 0, width + 2, height + 2);
@@ -169,7 +168,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     const placeItHere = document.querySelector("#scrapbookPlayground");
     const canvas = document.createElement("canvas");
     // position:relative is needed for z-index to work
-    canvas.style.position = 'relative';
+    canvas.style.position = "relative";
     canvas.id = `sticker-${this.numElems}`;
 
     drawTextToCanvas(canvas, text, textStyle);
@@ -246,7 +245,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     this.topZ++;
     element.z = this.topZ;
     element.elem.style.zIndex = this.topZ;
-  }
+  };
 }
 
 export default function Scrapbook({
@@ -333,8 +332,8 @@ export default function Scrapbook({
     const dropZone = interact("#trashZone").dropzone({
       accept: ".trashable",
       overlap: "pointer",
-      ondropactivate: (event) => { },
-      ondropenter: (event) => { },
+      ondropactivate: (event) => {},
+      ondropenter: (event) => {},
       ondrop: (event) => {
         console.log("Dropped!");
         console.log(event);
@@ -621,8 +620,9 @@ export default function Scrapbook({
       <div
         id="trashZone"
         ref={trashRef}
-        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${draggingItem ? "visible" : "invisible"
-          }`}
+        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
+          draggingItem ? "visible" : "invisible"
+        }`}
       >
         <div className="font-mono font-bold">TRASH</div>
       </div>

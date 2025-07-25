@@ -26,7 +26,6 @@ export function makeConfetti(element, x, y, amount = 10, emoji = "🌼") {
   }
   gsap.registerPlugin(MotionPathPlugin);
   const confettis = document.querySelectorAll(".confetti");
-  console.log(confettis);
   // Give it motion
   confettis.forEach((c) => {
     // Make a set of points for it to travel along

@@ -64,7 +64,6 @@ export default function SingleStoryPage({
     );
   }
 
-  console.log(contentIndex);
   const post = contentArray[contentIndex];
   const slug = post.slug;
 
@@ -101,8 +100,6 @@ export default function SingleStoryPage({
       <div className="flex justify-between gap-1 py-4 bg-amber-100">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("MAP", true, (e) => {
-          console.log("In browse map");
-
           e.preventDefault();
           e.stopPropagation();
           setPaneOpen(false);
