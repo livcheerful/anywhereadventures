@@ -19,7 +19,7 @@ export default function JournalNav({
     setSavedLcItems(asArray);
   }, []);
   return (
-    <div className="absolute bottom-0 z-10  ">
+    <div className="absolute bottom-0 z-10 w-full md:w-limiter ">
       <div className="flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-lime-200 border-t-black border-2 drop-shadow-xl">
         <a className="grow" href="/">
           <div className="text-sm font-black text-gray-800 underline">

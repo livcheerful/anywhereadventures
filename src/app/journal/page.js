@@ -19,23 +19,22 @@ export default function Page() {
   const [showSavedItems, setShowSavedItems] = useState(false);
 
   useEffect(() => {
-    // let found = false;
-    // if (!categories) return;
-    // categories.values().forEach((category, i) => {
-    //   console.log(category.locations);
-    //   category.locations.forEach((location, j) => {
-    //     if (found) {
-    //       return;
-    //     }
-    //     if (location.slug == refSlug) {
-    //       found = true;
-    //       const page = document.querySelector(
-    //         `#page-${category.tag}-${Math.floor(j / 4)}`
-    //       );
-    //       page.scrollIntoView({ behavior: "smooth" });
-    //     }
-    //   });
-    // });
+    let found = false;
+    if (!categories) return;
+    [...categories.values()].forEach((category, i) => {
+      category.locations.forEach((location, j) => {
+        if (found) {
+          return;
+        }
+        if (location.slug == refSlug) {
+          found = true;
+          const page = document.querySelector(
+            `#page-${category.tag}-${Math.floor(j / 4)}`
+          );
+          page.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
   }, [refSlug]);
 
   function handleSearchParams(kvp) {
@@ -78,7 +77,6 @@ export default function Page() {
 
   function makeJournalPages() {
     let pageCount = 1;
-    console.log("in makeJournalPages()");
     if (!categories || !categories.values()) return;
     const allPages = [...categories.values()].map((category, i) => {
       const catMeta = categoryInfo[category.tag];
@@ -189,13 +187,13 @@ export default function Page() {
                                 className="overflow-x-clip shrink-0 pointer"
                                 href={`/${categoryLocation.slug}`}
                               >
-                                <div className="flex-none w-fit">
+                                <div className="flex-none h-fit text-sm w-fit text-wrap">
                                   {categoryLocation.locationTitle ||
                                     categoryLocation.title}
                                 </div>
                               </a>
                               <div className="grow w-0 overflow-clip text-gray-600 text-xs">
-                                ........................................................
+                                ...........................................................................
                               </div>
                               <a
                                 className="overflow-x-clip shrink-0 cursor-pointer"
@@ -208,7 +206,7 @@ export default function Page() {
                                   page.scrollIntoView({ behavior: "smooth" });
                                 }}
                               >
-                                <div>{"LOG"}</div>
+                                <div className="font-black">{"LOG"}</div>
                               </a>
                             </div>
                           );
