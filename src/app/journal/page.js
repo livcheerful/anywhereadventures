@@ -75,9 +75,12 @@ export default function Page() {
         break;
     }
   }
+
   function makeJournalPages() {
     let pageCount = 1;
+    console.log("in makeJournalPages()");
     if (!categories) return;
+    console.log("categories");
     const allPages = categories.values().map((category, i) => {
       const catMeta = categoryInfo[category.tag];
       const numberPerPage = 4;

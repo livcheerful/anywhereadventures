@@ -2,7 +2,7 @@ import { categoryInfo } from "../content/meta";
 
 export default function UnstickyHeader({ post }) {
   return (
-    <div className="pb-8 pt-2">
+    <div className="pb-4 pt-2">
       <h1 className=" font-bold text-2xl px-2 text-black">{post?.title}</h1>
       {post.tags.length > 0 && (
         <div className="p-2 font-mono text-gray-500 text-xs  flex flex-row gap-2 ">
