@@ -277,6 +277,7 @@ export default function MyMap({
       className="w-full overflow-clip"
       onClick={() => {
         mapClickHandler();
+        mapManager.map.dragPan.enable();
       }}
     >
       <div className="bg-slate-800 w-full h-dvh" id="map"></div>

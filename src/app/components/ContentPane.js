@@ -149,6 +149,8 @@ export default function ContentPane({
               focusOnPin={focusOnPin}
               showingMenu={showingMenu}
               setShowingMenu={setShowingMenu}
+              setViewingPin={setViewingPin}
+              mainMap={mainMap}
             />
           )}
         </div>

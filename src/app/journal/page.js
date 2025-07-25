@@ -79,10 +79,8 @@ export default function Page() {
   function makeJournalPages() {
     let pageCount = 1;
     console.log("in makeJournalPages()");
-    if (!categories) return;
-    console.log("categories");
-    console.log(categories);
-    const allPages = categories.values().map((category, i) => {
+    if (!categories || !categories.values()) return;
+    const allPages = [...categories.values()].map((category, i) => {
       const catMeta = categoryInfo[category.tag];
       const numberPerPage = 4;
       const numOfPagesNeeded = Math.ceil(
@@ -156,7 +154,7 @@ export default function Page() {
                 </div>
                 <hr className="w-full border-slate-700 pb-4"></hr>
                 {categories &&
-                  categories.values().map((category, i) => {
+                  [...categories.values()].map((category, i) => {
                     const catMeta = categoryInfo[category.tag];
                     return (
                       <div className="pb-2" key={i}>
