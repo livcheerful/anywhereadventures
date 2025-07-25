@@ -14,7 +14,6 @@ export default function BasePage({ entranceSlug }) {
 
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
   const [exploringContent, setExploringContent] = useState(false);
-  const [post, setPost] = useState();
 
   // VVN These store the same things, just one gets initialized...?
   const [savedLocation, setSavedLocation] = useState(getHomeLocation());
@@ -112,8 +111,6 @@ export default function BasePage({ entranceSlug }) {
           setExploringContent={setExploringContent}
           currentSlug={currentSlug}
           setCurrentSlug={setCurrentSlug}
-          post={post}
-          setPost={setPost}
           setShowingWelcomeScreen={setShowingWelcomeScreen}
           setViewingPin={setViewingPin}
         />

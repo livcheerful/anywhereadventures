@@ -4,14 +4,7 @@ import { registerNewIO } from "../lib/intersectionObserverHelper";
 import { useRouter } from "next/navigation";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 import { gsap } from "gsap";
-export default function StickyHeader({
-  post,
-  contentSlug,
-  focusOnPin,
-  paneOpen,
-  setPaneOpen,
-  isAdded = false,
-}) {
+export default function StickyHeader({ post, contentSlug, isAdded = false }) {
   const router = useRouter();
   const io = useRef();
 
@@ -50,31 +43,6 @@ export default function StickyHeader({
           backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,
         }}
       >
-        <div className="absolute w-full left-0 top-0 flex items-center justify-center">
-          {paneOpen && (
-            <div className=" flex flex-row justify-center gap-2 border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setPaneOpen(false);
-                }}
-              >
-                🗺️
-              </button>
-              <div>|</div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  focusOnPin(post.slug, post);
-                }}
-              >
-                Open in Map
-              </button>
-            </div>
-          )}
-        </div>
         <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">
           <div className="flex flex-row justify-between items-end">
             <div className="font-mono font-black px-2 text-lg">

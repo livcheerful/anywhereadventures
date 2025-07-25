@@ -7,8 +7,6 @@ import PostContent from "./PostContent";
 import StickyHeader from "./StickyHeader";
 import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
-import { savedLocationToObj } from "../lib/locationHelpers";
-import { getMdx } from "../lib/clientPostHelper";
 
 import * as storageHelpers from "../lib/storageHelpers";
 
@@ -22,7 +20,6 @@ function Button(label, enabled, action) {
     "rounded-full",
     "w-48",
     "text-center",
-    "cursor-pointer",
   ];
 
   if (!enabled) {
@@ -32,84 +29,30 @@ function Button(label, enabled, action) {
   }
 
   return (
-    <div className={classList.join(" ")} onClick={enabled ? action : undefined}>
+    <button
+      className={classList.join(" ")}
+      onClick={enabled ? action : undefined}
+    >
       {label}
-    </div>
+    </button>
   );
 }
 
 export default function SingleStoryPage({
-  entranceSlug,
-  currentSlug,
-  setCurrentSlug,
-  myLocationSlugs,
-  focusOnPin,
+  contentArray,
   paneOpen,
   setPaneOpen,
   scrollRef,
-  contentPaneRef,
+  contentIndex,
+  setContentIndex,
 }) {
-  const [contentArray, setContentArray] = useState(undefined);
-  const [contentIndex, setContentIndex] = useState(0);
-
-  // Load up the content based on stored home location
-  useEffect(() => {
-    const homeLoc = storageHelpers.getHomeLocation();
-    const homeLocationData = savedLocationToObj(homeLoc);
-    if (!homeLocationData) return;
-    const locSlugs = homeLocationData.locs.map((l) => {
-      return l.slug;
-    });
-    getMdx(locSlugs, (res) => {
-      setContentArray(res);
-
-      // Find the content corresponding to the entrance slug, otherwise use the first one
-      let index = res.findIndex((content) => content.slug == entranceSlug);
-      if (index < 0) {
-        index = 0;
-      }
-
-      setContentIndex(index);
-    });
-  }, [myLocationSlugs]);
-
-  useEffect(() => {
-    // find index of slug
-    if (!contentArray) return;
-    const index = contentArray.findIndex(
-      (content) => content.slug == currentSlug
-    );
-    setContentIndex(index);
-  }, [currentSlug, contentArray]);
-
-  // Update route and return to the top when going to previous or next.
-  useEffect(() => {
-    if (!contentArray) {
-      return;
-    }
-
-    const newSlug = contentArray[contentIndex].slug;
-    updateRoute(`/${newSlug}`);
-    setCurrentSlug(newSlug);
-
-    // Update slug
-    contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
-  }, [contentArray, contentIndex]);
-
-  useEffect(() => {
-    if (!contentArray) return;
-    if (!entranceSlug) {
-      setContentIndex(0);
-      setCurrentSlug(contentArray[0].slug);
-    }
-  }, [entranceSlug, contentArray]);
-
   if (!contentArray) {
     return "Loading...";
   }
 
-  const contentDesc = contentArray[contentIndex];
-  const slug = contentDesc.slug;
+  console.log(contentIndex);
+  const post = contentArray[contentIndex];
+  const slug = post.slug;
 
   const hasPrevious = contentIndex > 0;
   const hasNext = contentIndex < contentArray.length - 1;
@@ -124,19 +67,18 @@ export default function SingleStoryPage({
   return (
     <div key={contentIndex} className="article" id={slug} articleslug={slug}>
       <StickyHeader
-        post={contentDesc}
+        post={post}
         contentSlug={slug}
-        focusOnPin={focusOnPin}
         isAdded={true}
         scrollRef={scrollRef}
         paneOpen={paneOpen}
         setPaneOpen={setPaneOpen}
       />
-      <UnstickyHeader post={contentDesc} />
-      <PostContent post={contentDesc} />
+      <UnstickyHeader post={post} />
+      <PostContent post={post} />
       <div className="w-full p-4">
         <PhotoPrompt
-          mdx={contentDesc}
+          mdx={post}
           visited={storageHelpers.hasLocationBeenVisited(slug)}
         />
       </div>
