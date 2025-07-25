@@ -5,7 +5,7 @@ import SearchParamHandler from "../components/SearchParamHandler";
 import JournalNav from "../components/JournalNav";
 import { categoryInfo } from "../content/meta";
 import { savedLocationToObj } from "../lib/locationHelpers";
-import { getHomeLocation } from "../lib/storageHelpers";
+import { getHomeLocation, hasLocationBeenVisited } from "../lib/storageHelpers";
 import CornerTape from "../components/CornerTape";
 
 export default function Page() {
@@ -174,8 +174,13 @@ export default function Page() {
                         return (
                           <div
                             key={j}
-                            className="text-md font-mono pl-4 text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
+                            className="text-md font-mono text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
                           >
+                            <div>
+                              {hasLocationBeenVisited(categoryLocation.slug)
+                                ? "✅"
+                                : "⬜️"}
+                            </div>
                             <a
                               className="overflow-x-clip shrink-0 pointer"
                               href={`/${categoryLocation.slug}`}
@@ -185,9 +190,11 @@ export default function Page() {
                                   categoryLocation.title}
                               </div>
                             </a>
-                            <div className="grow bg-amber-300 h-1"></div>
+                            <div className="grow w-0 overflow-clip text-gray-600 text-xs">
+                              ........................................................
+                            </div>
                             <a
-                              className="overflow-x-clip shrink-0"
+                              className="overflow-x-clip shrink-0 cursor-pointer"
                               onClick={(e) => {
                                 e.preventDefault();
                                 setShowToc(false);
@@ -197,7 +204,7 @@ export default function Page() {
                                 page.scrollIntoView({ behavior: "smooth" });
                               }}
                             >
-                              <div>LOG</div>
+                              <div>{"LOG"}</div>
                             </a>
                           </div>
                         );
