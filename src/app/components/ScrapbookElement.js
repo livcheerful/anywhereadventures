@@ -27,6 +27,8 @@ export function ScrapbookElem({
   this.textSrc = textSrc;
   this.props = props;
 
+  this.elem.style.zIndex = z;
+
   htmlElem.style.touchAction = "none";
   this.originalWidth = origWidth;
   this.originalHeight = origHeight;
