@@ -41,6 +41,8 @@ export default function BasePage({ entranceSlug }) {
     setMainMap(m);
   }
   function mapClickHandler() {
+    console.log("vvn map click handler");
+    setViewingPin(undefined);
     setPaneOpen(false);
   }
 

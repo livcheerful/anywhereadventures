@@ -26,7 +26,13 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
       ></div>
       <PinJournal page={getPage(mdx.slug)} slug={mdx.slug} />
       <PinCamera mdx={mdx} />
-      <div className="absolute flex flex-col w-11/12 md:w-4/5  bg-white drop-shadow-2xl border-2 border-gray-900 ">
+      <div
+        className="absolute flex flex-col w-11/12 md:w-4/5  bg-white drop-shadow-2xl border-2 border-gray-900 "
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
         <button
           onClick={() => {
             onCloseCB();
