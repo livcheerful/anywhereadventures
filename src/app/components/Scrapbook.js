@@ -168,6 +168,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
   ) {
     const placeItHere = document.querySelector("#scrapbookPlayground");
     const canvas = document.createElement("canvas");
+    // position:relative is needed for z-index to work
+    canvas.style.position = 'relative';
     canvas.id = `sticker-${this.numElems}`;
 
     drawTextToCanvas(canvas, text, textStyle);
