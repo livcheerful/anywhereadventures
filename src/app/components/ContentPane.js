@@ -9,7 +9,6 @@ import { savedLocationToObj } from "../lib/locationHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
 // Components
-import RiverFeed from "./RiverFeed";
 import SingleStoryPage from "./SingleStoryPage";
 import ContentToolBar from "./ContentToolBar";
 import { updateRoute } from "../lib/routeHelpers";
@@ -55,7 +54,6 @@ export default function ContentPane({
   }, []);
 
   useEffect(() => {
-    console.log(contentIndex);
     if (!contentArray) return;
     if (!contentIndex) return;
 
@@ -78,6 +76,15 @@ export default function ContentPane({
     );
     setContentIndex(index);
   }, [entranceSlug, contentArray]);
+
+  useEffect(() => {
+    if (!contentArray) return;
+    if (!currentSlug) return;
+    const index = contentArray.findIndex(
+      (content) => content.slug == currentSlug
+    );
+    setContentIndex(index);
+  }, [currentSlug, contentArray]);
 
   function focusOnPin(slug, post) {
     setPaneOpen(false);
