@@ -1,11 +1,7 @@
 "use client";
-import {
-  getAllLCItems,
-  removeLCItem,
-  getAllPages,
-} from "../lib/storageHelpers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import JournalPage from "../components/JournalPage";
+import SearchParamHandler from "../components/SearchParamHandler";
 import JournalNav from "../components/JournalNav";
 import { categoryInfo } from "../content/meta";
 import { savedLocationToObj } from "../lib/locationHelpers";
@@ -18,7 +14,34 @@ export default function Page() {
   );
 
   const [showToc, setShowToc] = useState(false);
+  const [pagesExist, setPagesExist] = useState(false);
+  const [refSlug, setRefSlug] = useState(undefined);
   const [showSavedItems, setShowSavedItems] = useState(false);
+
+  useEffect(() => {
+    let found = false;
+
+    categories.values().forEach((category, i) => {
+      console.log(category.locations);
+      category.locations.forEach((location, j) => {
+        if (found) {
+          return;
+        }
+        if (location.slug == refSlug) {
+          found = true;
+          const page = document.querySelector(
+            `#page-${category.tag}-${Math.floor(j / 4)}`
+          );
+          page.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  }, [refSlug]);
+
+  function handleSearchParams(kvp) {
+    console.log("IN HANDLE SEARCH PARAMS");
+    setRefSlug(kvp["id"]);
+  }
 
   function addHomeLocationStickers(homeLocation) {
     switch (homeLocation) {
@@ -81,6 +104,7 @@ export default function Page() {
       }
       return pages;
     });
+
     return allPages;
   }
 
@@ -91,7 +115,6 @@ export default function Page() {
     const gatheredCategoriesMap = new Map();
     for (let mdxIdx in locData.locs) {
       const mdx = locData.locs[mdxIdx];
-      console.log(mdx);
       mdx.tags.forEach((tag, i) => {
         if (!gatheredCategoriesMap.has(tag)) {
           gatheredCategoriesMap.set(tag, { tag: tag, locations: [] });
@@ -111,6 +134,9 @@ export default function Page() {
 
   return (
     <div className="h-dvh md:w-limiter bg-white overflow-y-hidden">
+      <Suspense>
+        <SearchParamHandler paramsToFetch={["id"]} cb={handleSearchParams} />
+      </Suspense>
       <div>
         <div
           id="journal-holder"
@@ -118,7 +144,7 @@ export default function Page() {
         >
           {showToc && (
             <div className="absolute z-10 left-0 top-0 bg-white w-full md:w-limiter h-full overflow-y-auto">
-              <div className="w-full shrink-0 snap-start flex flex-col pl-8 p-2 text-black min-h-dvh bg-yellow-100 pb-20">
+              <div className="w-full shrink-0 snap-start flex flex-col p-2 text-black min-h-dvh bg-yellow-100 pb-20">
                 <div className="w-full  flex flex-row justify-between p-2 text-xs text-gray-700 font-mono">
                   <div className="font-bold text-xs text-gray-700 font-mono">
                     Table of Contents
@@ -148,23 +174,30 @@ export default function Page() {
                         return (
                           <div
                             key={j}
-                            className="text-sm font-mono pl-4 text-gray-800"
+                            className="text-md font-mono pl-4 text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
                           >
                             <a
-                              href={`#page-${category.tag}-0`}
+                              className="overflow-x-clip shrink-0 pointer"
+                              href={`/${categoryLocation.slug}`}
+                            >
+                              <div className="flex-none w-fit">
+                                {categoryLocation.locationTitle ||
+                                  categoryLocation.title}
+                              </div>
+                            </a>
+                            <div className="grow bg-amber-300 h-1"></div>
+                            <a
+                              className="overflow-x-clip shrink-0"
                               onClick={(e) => {
                                 e.preventDefault();
                                 setShowToc(false);
-                                console.log("Trying to scroll:");
-                                console.log(`#page-${category.tag}-${j % 4}`);
                                 const page = document.querySelector(
                                   `#page-${category.tag}-${Math.floor(j / 4)}`
                                 );
                                 page.scrollIntoView({ behavior: "smooth" });
                               }}
                             >
-                              {categoryLocation.locationTitle ||
-                                categoryLocation.title}
+                              <div>LOG</div>
                             </a>
                           </div>
                         );

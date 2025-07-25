@@ -72,7 +72,7 @@ export default function BasePage({ entranceSlug }) {
       {!viewingPin && (
         <a
           href="/journal"
-          className="absolute -right-24 md:-right-10 -bottom-32 md:bottom-0 -rotate-6 drop-shadow-xl"
+          className="absolute left-4 md:left-10 -bottom-14 md:bottom-0 -rotate-12 drop-shadow-xl"
         >
           <div
             id="toJournal"

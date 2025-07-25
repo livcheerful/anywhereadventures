@@ -33,8 +33,6 @@ export default function Page({}) {
 
   useEffect(() => {
     getMdx([locationId], (res) => {
-      console.log(typeof res);
-      console.log(res);
       setMdx(res[0]);
     });
   }, [locationId]);
@@ -50,32 +48,6 @@ export default function Page({}) {
   function handleSearchParams(kvp) {
     setLocationId(kvp["locationId"]);
   }
-
-  const menuOptions = [
-    {
-      text: "Back to map",
-      onClick: () => {
-        router.push("/");
-        setShowMenu(false);
-      },
-    },
-    {
-      text: "Reset Camera",
-      onClick: () => {
-        setReel([]);
-        setShowMenu(false);
-      },
-    },
-    {
-      text: "Swap Camera",
-      onClick: () => {
-        setCameraDirectionIdx(
-          (cameraDirectionIdx + 1) % cameraDirectionStates.length
-        );
-        setShowMenu(false);
-      },
-    },
-  ];
 
   async function checkPermissions(cb) {
     const permissions = await navigator.permissions.query({ name: "camera" });
