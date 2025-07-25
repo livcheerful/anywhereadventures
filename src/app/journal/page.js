@@ -21,6 +21,7 @@ export default function Page() {
   useEffect(() => {
     let found = false;
 
+    if (!categories) return;
     categories.values().forEach((category, i) => {
       console.log(category.locations);
       category.locations.forEach((location, j) => {
