@@ -32,20 +32,23 @@ export default function JournalPage({
       <hr className="w-full border-slate-700 "></hr>
       <div className="h-full grow p-2 w-full grid grid-cols-2 grid-rows-2 gap-2">
         {locations.map((locMdx, i) => {
-          return <JournalLog key={i} mdx={locMdx} />;
+          return (
+            <div
+              key={i}
+              className="w-full h-full overflow-clip grow-0"
+              style={{
+                gridRowStart: Math.floor(i / 2) + 1,
+                gridColumnStart: (i % 2) + 1,
+                gridColumnEnd: `span 1`,
+                gridRowEnd: `span 1`,
+              }}
+            >
+              <JournalLog key={i} mdx={locMdx} />
+            </div>
+          );
         })}
       </div>
-      <div className="w-full ">
-        <hr className="w-3/4 border-slate-700 "></hr>
-      </div>
-      <div className="flex shrink-0 flex-row justify-between p-4 w-full font-mono text-xs text-gray-800">
-        <div className="flex flex-row gap-2 select-none">
-          <div className="font-bold">{pageNumber}</div>
-          <div>|</div>
-          <div className="">Anywhere Adventures</div>
-        </div>
-        <div className="select-none">with the Library of Congress</div>
-      </div>
+      <div className="h-10"></div>
     </div>
   );
 }

@@ -108,9 +108,6 @@ export default function Page() {
     }
     return gatheredCategoriesMap;
   }
-  const homeLocation = getHomeLocation();
-
-  const values = new Array(categories.values());
 
   return (
     <div className="h-dvh md:w-limiter bg-white overflow-y-hidden">

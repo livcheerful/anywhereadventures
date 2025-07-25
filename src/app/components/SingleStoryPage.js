@@ -14,10 +14,7 @@ import * as storageHelpers from "../lib/storageHelpers";
 
 function Button(label, enabled, action) {
   const classList = [
-    "border-gray-900",
     "border-2",
-    "text-black",
-    "bg-amber-100",
     "px-4",
     "py-2",
     "font-black",
@@ -29,8 +26,9 @@ function Button(label, enabled, action) {
   ];
 
   if (!enabled) {
-    classList.push(["bg-gray-100", "text-gray-700", "border-gray-700"]);
+    classList.push(...["bg-gray-100/70", "text-gray-400", "border-gray-300"]);
   } else {
+    classList.push(...["bg-amber-300", "text-gray-800", "border-gray-900"]);
   }
 
   return (
@@ -142,13 +140,12 @@ export default function SingleStoryPage({
           visited={storageHelpers.hasLocationBeenVisited(slug)}
         />
       </div>
-      <div className="flex justify-between">
+
+      <hr className="border-amber-500"></hr>
+      <div className="flex justify-between py-4 bg-amber-100">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>
-      {contentIndex < contentArray.length - 1 && (
-        <hr className="py-4 " style={{ color: "#FF2244" }}></hr>
-      )}
     </div>
   );
 }

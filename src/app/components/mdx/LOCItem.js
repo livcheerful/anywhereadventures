@@ -36,7 +36,7 @@ export default function LOCItem({ image, linkOut, caption, allowSave, alt }) {
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut} target="_blank" rel="noopener noreferrer">
-            <button className=" relative cursor-pointer  bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg">
+            <button className=" relative cursor-pointer font-mono bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg text-sm">
               source
             </button>
           </a>
