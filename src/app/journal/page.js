@@ -171,7 +171,8 @@ export default function Page() {
                           {catMeta?.title}
                         </div>
                       </a>
-                      {category.locations.map((categoryLocation, j) => {
+                      {category?.locations.map((categoryLocation, j) => {
+                        if (!categoryLocation) return;
                         return (
                           <div
                             key={j}
