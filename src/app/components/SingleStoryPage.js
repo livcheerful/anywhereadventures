@@ -47,7 +47,16 @@ export default function SingleStoryPage({
   setContentIndex,
 }) {
   if (!contentArray) {
-    return "Loading...";
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center w-32">
+          <div>
+            <img src="/mapAnim.png" />
+          </div>
+          <div className="font-black text-gray-600">Loading...</div>
+        </div>
+      </div>
+    );
   }
 
   console.log(contentIndex);
