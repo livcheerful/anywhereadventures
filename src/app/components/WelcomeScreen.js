@@ -2,87 +2,140 @@
 import { useEffect, useState } from "react";
 import { locationData } from "../lib/locationHelpers";
 import { setHomeLocation } from "../lib/storageHelpers";
+
+function H1({ children }) {
+  return (<h1 className="font-bold text-xl">{children}</h1>);
+}
+
+function Box({ style, isModal, children }) {
+  let outerClassNames = "absolute w-full h-full";
+  // Don't capture outside clicks
+  if (!isModal) {
+    outerClassNames += " pointer-events-none";
+  }
+  return (
+    <div
+      className={outerClassNames}
+    >
+      <div
+        className="relative bg-yellow-300 border-2 border-black p-2"
+        style={{
+          ...style,
+          boxShadow: "5px 5px black",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function BaseButton({ classes, onClick, children }) {
+  const className = "rounded-lg p-2 border-2 border-black " + classes.join(" ");
+  return (
+    <button
+      className={className}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function WelcomeScreen({
   onFinishWelcoming,
   setChosenLocation,
   mainMap,
 }) {
-  const [welcomeTextState, setWelcomeTextState] = useState();
+  const [index, setIndex] = useState(0);
+  const [clickedLocation, setClickedLocation] = useState();
 
-  function generateNextButton() {
+  function NextButton() {
     return (
-      <div
-        className=" cursor-pointer"
+      <BaseButton
+        classes={["bg-green-600"]}
         onClick={() => {
-          if (welcomeTextState < lines.length - 1) {
-            setWelcomeTextState(welcomeTextState + 1);
-          } else {
-            setWelcomeTextState(undefined);
-            onFinishWelcoming();
+          if (index < screens.length - 1) {
+            setIndex(index + 1);
           }
-        }}
-      >
-        Next &gt;{" "}
-      </div>
+        }}>
+        Next &gt;&nbsp;
+      </BaseButton>
     );
   }
-  const lines = [
-    <div>Welcome to Anywhere Adventures! {generateNextButton()}</div>,
-    <div className="w-full h-full top-0 left-0 absolute z-20 flex flex-col items-center ">
-      <div className=" font-bold">Choose your location:</div>
-      <div className="flex flex-col gap-2  overflow-x-auto font-bold text-white">
-        {Object.keys(locationData).map((lName, k) => {
-          const l = locationData[lName];
-          return (
-            <button
-              className=" bg-green-700 rounded-lg  p-2 "
-              key={k}
-              onClick={() => {
-                setChosenLocation(l);
 
-                setHomeLocation(l.name);
-                mainMap.flyTo(l.center, l.zoom, false);
-                if (welcomeTextState < lines.length - 1) {
-                  setWelcomeTextState(welcomeTextState + 1);
-                } else {
-                  setWelcomeTextState(undefined);
-                  onFinishWelcoming(l);
-                }
-              }}
-            >
-              {l.name}
-            </button>
+  function LocationButton({ data, mapKey, children }) {
+    const color = clickedLocation == mapKey ? "bg-blue-600" : "bg-blue-400";
+    return (
+      <BaseButton
+        classes={[color]}
+        onClick={() => {
+          setClickedLocation(mapKey)
+        }}>
+        {children}
+      </BaseButton>
+    );
+  };
+
+  function Popup({ data }) {
+    return (
+      <Box style={{ left: "10%", top: "60%", width: "40%", height: "30%" }}>
+        <H1>{data.name}</H1>
+        {/* TODO image and blurb */}
+      </Box>
+    )
+  }
+
+  function StartButton() {
+    return (
+      <BaseButton
+        classes={["absolute", "right-2", "bottom-2"]}
+        onClick={() => {
+          const data = locationData[clickedLocation];
+          console.log(data);
+          setChosenLocation(data);
+          setHomeLocation(data.name);
+          mainMap.flyTo(data.center, data.zoom, false);
+          onFinishWelcoming(data);
+        }}
+      >
+        Start
+      </BaseButton>
+    );
+  }
+
+  const screens = [
+    <>
+      <H1>Welcome to Anywhere Adventures!</H1>
+      <p>Welcome text goes here! This section explains what the site is and what the point is.</p>
+    </>,
+
+    <>
+      <p>Choose your location:</p>
+      <div className="flex flex-col gap-5">
+        {Object.keys(locationData).map((name, idx) => {
+          if (name === "all") {
+            return;
+          }
+          const data = locationData[name];
+          return (
+            <LocationButton key={idx} mapKey={name} data={data}>
+              {data.name}
+            </LocationButton>
           );
         })}
       </div>
-    </div>,
+    </>
   ];
-  useEffect(() => {
-    setTimeout(() => {
-      setWelcomeTextState(0);
-    }, 1000);
-  }, []);
+
   return (
     <div className="w-full h-full absolute top-0 left-0 bg-white/90 z-30">
-      <div
-        className="absolute top-0 left-0 z-40"
-        style={{ width: "100%", height: "100%" }}
-      >
-        <div
-          className="absolute flex-grow w-full h-full flex flex-col items-center pt-16 px-4 top-0 left-0 -rotate-6 "
-          style={{
-            backgroundImage: `url(/paperAnim.png)`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          {welcomeTextState != undefined && (
-            <div className="text-black text-lg p-16 font-bold -rotate-2 h-full">
-              <div>{lines[welcomeTextState]}</div>
-            </div>
-          )}
-        </div>
-      </div>
+      <Box isModal style={{ left: "25%", top: "25%", width: "50%", height: "50%" }}>
+        {screens[index]},
+        {index < screens.length - 1 && (<NextButton index={index} setIndex={setIndex} />)}
+        {clickedLocation && <StartButton />}
+      </Box>
+      {clickedLocation && (<Popup data={locationData[clickedLocation]} />)}
     </div>
   );
 }
