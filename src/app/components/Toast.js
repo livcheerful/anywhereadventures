@@ -7,14 +7,15 @@ export default function Toast({ message }) {
   useEffect(() => {
     gsap.fromTo(
       toastRef.current,
-      { opacity: 0 },
-      { duration: 0.4, opacity: 1 }
+      { yPercent: 100, opacity: 0.2 },
+      { yPercent: 0, duration: 0.4, opacity: 1 }
     );
   }, []);
+  console.log("VVN toast");
   return (
     <div
       ref={toastRef}
-      className="fixed text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-lime-600 rounded-lg"
+      className="fixed z-10 text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg"
     >
       {message}
     </div>
