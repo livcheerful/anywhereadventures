@@ -28,13 +28,13 @@ export default function ContentToolBar({
             onClick={(e) => {
               setShowingMenu(!showingMenu);
             }}
-            className={`bg-lime-200 flex flex-col justify-center px-2 py-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs`}
+            className={`bg-lime-200  text-black flex flex-col justify-center px-2 py-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs`}
           >
             <div> Menu</div>
           </button>
           <a
             href="/journal"
-            className={`bg-amber-200 flex flex-col justify-center px-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs`}
+            className={`bg-emerald-700 flex flex-col justify-center px-2 border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-2xl text-center text-xs text-white`}
           >
             <div>
               <div>Journal</div>

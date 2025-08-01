@@ -124,7 +124,7 @@ export default function ContentPane({
                 setShowingWelcomeScreen(true);
               }}
             >
-              <div>Reset Home</div>
+              <div>Change Home Location</div>
             </button>
             <button
               className="p-2 bg-yellow-200"
