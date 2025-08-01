@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import gsap from "gsap";
+import { useEffect, useState, useRef } from "react";
 import { locationData } from "../lib/locationHelpers";
 import { setHomeLocation } from "../lib/storageHelpers";
 
@@ -81,7 +82,7 @@ export default function WelcomeScreen({
     return (
       <Box style={{ left: "10%", top: "60%", width: "40%", height: "30%" }}>
         <H1>{data.name}</H1>
-        {/* TODO image and blurb */}
+        {data.welcome?.thumbnail && <img src={data.welcome.thumbnail}></img>}
       </Box>
     )
   }
@@ -130,6 +131,35 @@ export default function WelcomeScreen({
     </>
   ];
 
+  function Sticker({ which }) {
+    const ref = useRef(null);
+    const src = locationData[clickedLocation]?.welcome?.stickers?.[which];
+    const className = which == 0 ? "absolute left-0 top-0 h-1/4" : "absolute right-0 bottom-0 h-1/4";
+
+    const animA = {
+      rotation: -10,
+      translateX: "-10%",
+    };
+    const animB = {
+      rotation: 10,
+      translateX: "10%",
+    }
+
+    useEffect(() => {
+      if (which == 0) {
+        gsap.fromTo(ref.current, animA, animB).duration(.5);
+      } else {
+        gsap.fromTo(ref.current, animB, animA).duration(.5);
+      }
+    });
+
+    return <img
+      ref={ref}
+      className={className}
+      src={src}
+    ></img>
+  }
+
   return (
     <div className="w-full h-full absolute top-0 left-0 bg-white/90 z-30">
       <Box isModal style={{ left: "25%", top: "25%", width: "50%", height: "50%" }}>
@@ -137,7 +167,13 @@ export default function WelcomeScreen({
         {index < screens.length - 1 && (<NextButton index={index} setIndex={setIndex} />)}
         {clickedLocation && <StartButton />}
       </Box>
-      {clickedLocation && (<Popup data={locationData[clickedLocation]} />)}
+      {clickedLocation && (
+        <>
+          <Popup data={locationData[clickedLocation]} />
+          <Sticker which={0} />
+          <Sticker which={1} />
+        </>
+      )}
     </div>
   );
 }
