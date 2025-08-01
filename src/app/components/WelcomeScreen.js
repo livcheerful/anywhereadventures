@@ -18,7 +18,7 @@ function Box({ style, isModal, children }) {
       className={outerClassNames}
     >
       <div
-        className="relative bg-yellow-300 border-2 border-black p-2"
+        className="relative bg-yellow-300 border-2 border-black p-2 text-center"
         style={{
           ...style,
           boxShadow: "5px 5px black",
@@ -107,11 +107,13 @@ export default function WelcomeScreen({
   const screens = [
     <>
       <H1>Welcome to Anywhere Adventures!</H1>
-      <p>Welcome text goes here! This section explains what the site is and what the point is.</p>
+      <p>Here you can read interesting stories about your area's history and see where it happened too!</p>
     </>,
-
     <>
-      <p>Choose your location:</p>
+      <p>Choose your area, visit the places, and <i>scrapbook about it!</i></p>
+    </>,
+    <>
+      <p>Choose:</p>
       <div className="flex flex-col gap-5">
         {Object.keys(locationData).map((name, idx) => {
           if (name === "all") {
