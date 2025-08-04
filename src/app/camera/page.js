@@ -37,12 +37,13 @@ export default function Page({}) {
     });
   }, [locationId]);
 
-  function onFinishedScrapbooking(imagedata) {
+  function onFinishedScrapbooking(imagedata, compressedImageData) {
     setShowSummaryPage(true);
     setCollageImage(imagedata);
+
     // save image to local storage
 
-    savePage(locationId, imagedata, new Date());
+    savePage(locationId, compressedImageData, new Date());
   }
 
   function handleSearchParams(kvp) {

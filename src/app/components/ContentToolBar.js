@@ -68,34 +68,26 @@ export default function ContentToolBar({
               style={{ fontSize: "8px" }}
             ></div>
           </button>
-          <div className="relative w-2/5">
-            <div className="flex  flex-col justify-center  bg-lime-800 overflow-clip border-2 border-t-0 border-gray-800 rounded-b-2xl text-center">
-              <div className="flex flex-row items-stretch justify-center grow border-b-2 border-gray-800">
-                <a
-                  className={`flex flex-col justify-center bg-lime-400 basis-1 grow text-xs text-gray-800 cursor-pointer`}
-                  href="/journal"
-                >
-                  OPEN
-                </a>
-                <a
-                  className="flex flex-col justify-center grow basis-1 bg-lime-200 cursor-pointer text-gray-800"
-                  href={`/camera?locationId=${post.slug}`}
-                >
-                  LOG VISIT
-                </a>
-              </div>
-              <div
-                className="h-3 grow-0 text-lime-500/90 flex flex-col items-center justify-center font-stretch-extra-expanded w-full"
-                style={{ fontSize: "8px" }}
+          <div className="flex flex-col justify-center  bg-lime-800 overflow-clip w-2/5 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center">
+            <div className="flex flex-row items-stretch justify-center grow border-b-2 border-gray-800">
+              <a
+                className={`flex flex-col justify-center bg-lime-400 basis-1 grow text-xs text-gray-800 cursor-pointer`}
+                href="/journal"
               >
-                TRAVEL LOG
-              </div>
+                OPEN
+              </a>
+              <a
+                className="flex flex-col justify-center grow basis-1 bg-lime-200 cursor-pointer text-gray-800"
+                href={`/camera?locationId=${post.slug}`}
+              >
+                LOG VISIT
+              </a>
             </div>
             <div
-              className="absolute w-8 text-left -left-2 top-3 -rotate-1 drop-shadow-lg"
-              style={{ fontSize: "32px" }}
+              className="h-3 grow-0 text-lime-500/90 flex flex-col items-center justify-center font-stretch-extra-expanded w-full"
+              style={{ fontSize: "8px" }}
             >
-              📒
+              TRAVEL LOG
             </div>
           </div>
 
