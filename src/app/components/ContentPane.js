@@ -64,26 +64,27 @@ export default function ContentPane({
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
   }, [contentIndex]);
 
+  function setIndexFromSlug(slug) {
+    if (!contentArray || !slug) return;
+    const index = contentArray.findIndex(
+      (content) => content.slug == slug
+    );
+    if (index >= 0) {
+      setContentIndex(index);
+    }
+  }
+
   useEffect(() => {
-    if (!contentArray) return;
-    if (!entranceSlug) {
+    if (entranceSlug) {
+      setIndexFromSlug(entranceSlug);
+    } else if (contentArray) {
       setContentIndex(0);
       setCurrentSlug(contentArray[0].slug);
-      return;
     }
-    const index = contentArray.findIndex(
-      (content) => content.slug == entranceSlug
-    );
-    setContentIndex(index);
   }, [entranceSlug, contentArray]);
 
   useEffect(() => {
-    if (!contentArray) return;
-    if (!currentSlug) return;
-    const index = contentArray.findIndex(
-      (content) => content.slug == currentSlug
-    );
-    setContentIndex(index);
+    setIndexFromSlug(currentSlug);
   }, [currentSlug, contentArray]);
 
   function focusOnPin(slug, post) {
