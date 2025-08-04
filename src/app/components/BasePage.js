@@ -92,6 +92,7 @@ export default function BasePage({ entranceSlug }) {
           onFinishWelcoming={finishWelcome}
           setChosenLocation={setChosenLocation}
           mainMap={mainMap}
+          setPaneOpen={setPaneOpen}
         />
       )}
     </div>

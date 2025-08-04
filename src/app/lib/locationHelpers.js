@@ -18,6 +18,11 @@ export function savedLocationToObj(l) {
   return locObj;
 }
 
+export const worldData = {
+  center: [40.49668158884047, -100.10594069434062],
+  zoom: 4,
+};
+
 export const locationData = {
   seattle: {
     name: "Seattle",
