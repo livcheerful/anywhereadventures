@@ -99,9 +99,9 @@ export default function JournalNav({
 
   return (
     <div className="absolute bottom-0 h-14 overflow-clip z-10 w-full md:w-limiter">
-      <div className="absolute bottom-0 flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-lime-200 border-t-black border-2 z-10">
+      <div className="absolute bottom-0 flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-green-800 border-t-black border-2 z-10">
         <a className="grow" href="/">
-          <div className="text-sm font-black text-gray-800 underline">
+          <div className="text-sm font-black  text-white underline">
             BACK TO MAP
           </div>
         </a>
@@ -110,18 +110,18 @@ export default function JournalNav({
             setShowSavedItems(!showSavedItems);
             setShowToc(false);
           }}
-          className="text-sm font-black text-gray-800"
+          className="text-sm font-black text-white"
         >
-          <div className="underline">SAVED ITEMS</div>
+          <div className="underline ">SAVED ITEMS</div>
         </button>
         <button
           onClick={(e) => {
             setShowToc(!showToc);
             setShowSavedItems(false);
           }}
-          className="absolute flex flex-col items-center z-40 w-16 h-16 border-2 border-black drop-shadow-sm -bottom-3 rounded-full bg-teal-400 left-1/2 -translate-x-1/2"
+          className="absolute flex flex-col items-center z-40 w-16 h-16 border-2 border-black drop-shadow-sm -bottom-3 rounded-full bg-yellow-400 left-1/2 -translate-x-1/2"
         >
-          <svg viewBox="0 0 100 100" id="menu-icon" className="fill-white">
+          <svg viewBox="0 0 100 100" id="menu-icon" className="fill-yellow-800">
             <rect
               className="line"
               id="line1"
@@ -181,7 +181,7 @@ export default function JournalNav({
                 <div className="relative w-fit h-full">
                   <div className="absolute w-full justify-between flex flex-row gap-2 px-1">
                     <a
-                      className="flex flex-col items-center justify-center   decoration-black bg-lime-300 font-mono text-xs font-bold text-black p-1 border-2 border-gray-900 drop-shadow-sm rounded-b-lg"
+                      className="flex flex-col items-center justify-center   decoration-black bg-yellow-300 font-mono text-xs font-bold text-black p-1 border-2 border-gray-900 drop-shadow-sm rounded-b-lg"
                       href={`/${item.fromSlug}`}
                     >
                       <div>back to story</div>

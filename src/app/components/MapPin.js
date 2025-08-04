@@ -13,7 +13,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
     }, 2000);
   }, [copiedAlert]);
   return (
-    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 h-md:top-32 h-full  ">
+    <div className="absolute w-full flex flex-col items-center justify-start left-0 top-4 h-lg:top-32 h-full  ">
       <div
         className="h-48 top-6 relative w-full"
         style={{
@@ -92,8 +92,8 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
           <div className="p-2  text-gray-600 text-sm">{mdx.blurb}</div>
         )}
 
-        <div className="flex flex-row relative pt-2">
-          <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pb-2 overflow-clip border-x-0 w-1/3">
+        <div className="flex flex-row items-stretch relative pt-2">
+          <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pb-2 overflow-clip border-x-0 w-1/3 h-full flex flex-col justify-between">
             <div className="text-xs w-full text-center text-sky-600 font-black">
               READ
             </div>
@@ -111,7 +111,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               <div className="">READ</div>
             </button>
           </div>
-          <div className="w-2/3">
+          <div className="w-2/3 h-full">
             <PhotoPrompt mdx={mdx} visited={visited} />
           </div>
         </div>

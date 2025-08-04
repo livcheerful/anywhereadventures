@@ -1,5 +1,6 @@
 import { getPage } from "../lib/storageHelpers";
-export default function PhotoPrompt({ mdx, visited }) {
+import Link from "next/link";
+export default function PhotoPrompt({ mdx, visited, fill }) {
   const page = getPage(mdx.slug);
   const visitedDate = new Date(page?.date);
   const genericPhotoPromptText = mdx.locationTitle
@@ -8,7 +9,7 @@ export default function PhotoPrompt({ mdx, visited }) {
   return (
     <div className="relative bg-amber-300 border-2 border-gray-900 p-2 overflow-clip">
       {visited ? (
-        <div className="">
+        <div>
           <img
             src="/seattle-general-2.svg"
             className="absolute w-36 top-0 -left-16 mix-blend-hard-light rotate-12 opacity-30"
@@ -27,12 +28,12 @@ export default function PhotoPrompt({ mdx, visited }) {
             </div>
           </div>
           <div className="w-full flex flex-col items-center pt-2">
-            <a
+            <Link
               href={`/camera?locationId=${mdx.slug}`}
-              className=" underline text-gray-900/50 text-sm"
+              className="underline text-gray-900/50 text-sm"
             >
               retake your photos
-            </a>
+            </Link>
           </div>
         </div>
       ) : (

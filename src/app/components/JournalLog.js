@@ -11,23 +11,18 @@ export default function JournalLog({ mdx }) {
       {/* Show the image */}
       {visited ? (
         <div className="relative font-mono text-xs justify-center grow w-fit h-0">
-          <img className="h-full w-fit" src={getPage(slug).image} />
+          <img
+            className="h-fit w-fit drop-shadow-lg"
+            src={getPage(slug).image}
+          />
           <div className="absolute top-1/3 -left-16 mix-blend-hard-light rotate-12 opacity-20">
             <img className="w-36 h-fit" src="/seattle-general-2.svg" />
           </div>
-          <img
-            className="absolute top-4 -left-4 w-12 -rotate-45"
-            src="/tape1.png"
-          ></img>
-          <img
-            className="absolute bottom-4 -right-4 w-12 -rotate-45"
-            src="/tape1.png"
-          ></img>
         </div>
       ) : (
         // Show image placeholder
-        <div className="shrink-0 grow w-full flex flex-col items-center justify-center">
-          <div className="flex flex-col font-mono text-xs text-gray-800 select-none opacity-50 w-2/3 h-fit border-2 border-amber-400 rounded-md items-center justify-center gap-2 p-2">
+        <div className="shrink-0 grow w-full flex flex-col items-center justify-center ">
+          <div className="flex flex-col font-mono text-xs bg-white/50 backdrop-blur-lg text-gray-800 select-none  w-2/3 h-fit border-2 border-amber-400 rounded-md items-center justify-center gap-2 p-2">
             <div className=" text-amber-500 text-center">{mdx.title}</div>
             <div className=" text-amber-500 uppercase text-lg rotate-3 font-bold tracking-wider">
               Unvisited

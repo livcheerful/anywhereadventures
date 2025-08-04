@@ -4,9 +4,42 @@ import interact from "interactjs";
 
 import ScrapbookCornerDisplay from "./ScrapbookCornerDisplay";
 import { ScrapbookElem } from "./ScrapbookElement";
+import ScrapbookToolMenu from "./ScrapbookToolMenu";
 import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems, getHomeLocation } from "../lib/storageHelpers";
+
+const backgroundOptions = [
+  {
+    type: "image",
+    src: "/defaultpaper.png",
+    snippet: "/defaultpapersnippet.png",
+  },
+  { type: "color", hex: "#ffffff" },
+  { type: "color", hex: "#F5EB7E" },
+  { type: "color", hex: "#E8D7F1" },
+  { type: "color", hex: "#DBFEB8" },
+  {
+    type: "image",
+    src: "/musicpaper.png",
+    snippet: "/musicpapersnippet.png",
+  },
+  {
+    type: "image",
+    src: "/loc/sba-journal-blank.jpg",
+    snippet: "/loc/sba-journal-blank.jpg",
+  },
+  {
+    type: "image",
+    src: "/magazineBack.png",
+    snippet: "/magazineBacksnippet.png",
+  },
+  {
+    type: "image",
+    src: "/passport/page1.jpg",
+    snippet: "/passport/page1snippet.png",
+  },
+];
 
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
@@ -32,8 +65,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
   pictureDiv.remove();
 
   this.startFlatten = async function (onFlattenEnd) {
-    const dataUrl = await this.flatten();
-    onFlattenEnd(dataUrl);
+    const [dataUrl, compressed] = await this.flatten();
+    onFlattenEnd(dataUrl, compressed);
   };
 
   this.flatten = async function () {
@@ -42,12 +75,33 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
 
     const placeItHere = document.querySelector("#scrapbookPlayground");
     canvas.width = placeItHere.getBoundingClientRect().width;
-    canvas.height = window.innerHeight;
+    canvas.height = placeItHere.getBoundingClientRect().height;
     ctx.beginPath();
-    ctx.fillStyle = "white";
+    ctx.fillStyle = placeItHere.style.backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke();
+    // Handle background image
+    const bgImgStyle = placeItHere.style.backgroundImage;
+    if (bgImgStyle && bgImgStyle !== "none") {
+      // Extract URL from style string like: url(".../image.png")
+      const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
+      if (urlMatch) {
+        const bgImgUrl = urlMatch[1];
+        const bgImage = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous"; // in case it's needed
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = bgImgUrl;
+        });
 
+        // Draw background image to cover canvas
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    const leftOff = placeItHere.getBoundingClientRect().left;
+    const topOff = placeItHere.getBoundingClientRect().top;
     function loadImage(src, width, height) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -76,7 +130,10 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
             originalHeight
           );
 
-          ctx.translate(box.left + box.width / 2, box.top + box.height / 2);
+          ctx.translate(
+            box.left + box.width / 2 - leftOff,
+            box.top + box.height / 2 - topOff
+          );
           ctx.rotate((sticker.rotation * Math.PI) / 180);
           ctx.scale(sticker.scale, sticker.scale);
 
@@ -109,7 +166,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
 
           ctx.textBaseline = "hanging";
 
-          ctx.font = "16px Arial";
+          ctx.font = sticker.props.font;
           ctx.fillText(
             sticker.textSrc,
             -originalWidth / 2 + 1,
@@ -126,9 +183,13 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
 
     const dataURL = document
       .getElementById("scrapbookCanvas")
-      .toDataURL("image/jpeg", 0.9);
+      .toDataURL("image/jpeg", 1);
+
+    const dataURLCompressed = document
+      .getElementById("scrapbookCanvas")
+      .toDataURL("image/jpeg", 0.8);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    return dataURL;
+    return [dataURL, dataURLCompressed];
   };
 
   this.deleteSticker = function (draggable) {
@@ -142,7 +203,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
   function drawTextToCanvas(canvas, text, textStyle) {
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "16px Arial";
+    ctx.font = textStyle.font;
     const width = ctx.measureText(text).width;
     const height = 20;
     canvas.width = width + 2;
@@ -154,7 +215,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     }
 
     ctx.fillStyle = textStyle.textColor;
-    ctx.font = "16px Arial";
+    ctx.font = textStyle.font;
     ctx.textBaseline = "hanging";
 
     ctx.fillText(text, 1, 4);
@@ -219,8 +280,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     imgDiv.style.zIndex = this.topZ;
     imgDiv.style.width = `${width}px`;
     imgDiv.style.height = `${height}px`;
-    imgDiv.style.top = "0px";
-    imgDiv.style.left = "0px";
+    imgDiv.style.top = `${Math.random() * 40}px`;
+    imgDiv.style.left = `${Math.random() * 40}px`;
 
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
@@ -245,6 +306,11 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     this.topZ++;
     element.z = this.topZ;
     element.elem.style.zIndex = this.topZ;
+    const cropped = this.elements.filter((e) => {
+      return e != element;
+    });
+    cropped.push(element);
+    this.elements = cropped;
   };
 }
 
@@ -267,10 +333,12 @@ export default function Scrapbook({
     useState(undefined);
   const [draggingItem, setDraggingItem] = useState(undefined);
   const draggingItemRef = useRef(undefined);
+  const [scrapbookBackgroundIdx, setScrapbookBackgroundIdx] = useState(0);
 
   const [textStyle, setTextStyle] = useState({
     backgroundColor: undefined,
     textColor: "#000000",
+    font: "16px Arial",
   });
 
   const trashRef = useRef();
@@ -294,18 +362,13 @@ export default function Scrapbook({
     },
     {
       title: "Text",
-      image: "/tape1.png",
+      image: "/text.png",
       onClickHandler: () => {
         setShowTextModal(true);
       },
     },
   ];
 
-  useEffect(() => {
-    if (!showTextModal) return;
-    const textInput = document.getElementById("textStickerInput");
-    textInput.focus();
-  }, [showTextModal]);
   useEffect(() => {
     // get all saved LC items
     const lcItems = getAllLCItems();
@@ -369,7 +432,6 @@ export default function Scrapbook({
   }
 
   function handleEditingTextSticker(sticker) {
-    console.log("hello vivian in handle editing text sticker");
     setShowTextModal(true);
     setEditingTextSticker(sticker);
   }
@@ -400,7 +462,10 @@ export default function Scrapbook({
 
   function makeToolbar() {
     return (
-      <div className="w-fit flex flex-row gap-2 pl-2" id="scrapbook-tool-wheel">
+      <div
+        className="w-full overflow-x-auto flex flex-row gap-2 pl-2"
+        id="scrapbook-tool-wheel"
+      >
         {itemsOnWheel.map((item, i) => {
           return (
             <button
@@ -444,176 +509,198 @@ export default function Scrapbook({
   return (
     <div className="overflow-y-hidden z-30">
       {reel && (
-        <div className="flex flex-col  w-full h-full absolute top-0 left-0 bg-white"></div>
-      )}
-      <canvas className="absolute top-0 left-0" id="scrapbookCanvas" />
-
-      <div
-        id="scrapbookPlayground"
-        className="w-full h-full top-0 left-0 absolute overflow-clip z-10 touch-none select-none"
-      ></div>
-      {showMyPhotos && (
         <div
-          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50 shadow-t-lg"
-          onClick={() => {
+          className="flex flex-col  w-full h-full absolute top-0 left-0 bg-yellow-100"
+          style={{
+            backgroundImage: `url(/passport/page1.jpg)`,
+            backgroundSize: "cover",
+          }}
+        ></div>
+      )}
+      <canvas
+        className="absolute top-0 left-0 w-4/5 h-fit"
+        style={{ aspectRatio: 3 / 4 }}
+        id="scrapbookCanvas"
+      />
+      <div className="absolute w-full h-full top-0 left-0 flex flex-col items-center gap-6 md:pt-10 ">
+        <div
+          id="scrapbookPlayground"
+          style={{
+            aspectRatio: 3 / 4,
+            backgroundColor: backgroundOptions[scrapbookBackgroundIdx].hex,
+            backgroundImage: `url(${backgroundOptions[scrapbookBackgroundIdx].src})`,
+            backgroundSize: "cover",
+          }}
+          className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
+        ></div>
+        <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl">
+          Create your travel log
+        </div>
+      </div>
+      {showMyPhotos && (
+        <ScrapbookToolMenu
+          title={"Your Photos"}
+          onClose={(e) => {
             setShowMyPhotos(false);
+            e.stopPropagation();
           }}
         >
-          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
-            <div className="w-full  p-2 flex flex-row justify-end">
-              <svg
-                className="w-4 cursor-pointer"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 384 512"
-                onClick={(e) => {
-                  setShowMyPhotos(false);
-                  e.stopPropagation();
-                }}
-              >
-                <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
-              </svg>
-            </div>
-            <div className="p-4 text-2xl font-bold">Your Photos</div>
-            <div className="flex flex-row flex-wrap gap-2 items-center justify-center p-2">
-              {reel?.map((photoObj, i) => {
-                return (
-                  <div
-                    key={i}
-                    style={{ width: "300px" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      scrapbookPage.addNewPageSticker(
-                        photoObj.img,
-                        defaultStickerWidth,
-                        defaultStickerHeight
-                      );
-                      setShowMyPhotos(false);
-                    }}
-                  >
-                    <img src={photoObj.img}></img>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="flex flex-row flex-wrap gap-2 items-center justify-center p-2">
+            {reel?.map((photoObj, i) => {
+              return (
+                <div
+                  key={i}
+                  style={{ width: "300px" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    scrapbookPage.addNewPageSticker(
+                      photoObj.img,
+                      defaultStickerWidth,
+                      defaultStickerHeight
+                    );
+                    setShowMyPhotos(false);
+                  }}
+                >
+                  <img src={photoObj.img}></img>
+                </div>
+              );
+            })}
           </div>
-          <ScrapbookCornerDisplay imgUrl="/rotatedFilm.png" />
-        </div>
+        </ScrapbookToolMenu>
       )}
       {showStickerModal && (
-        <div
-          className="md:w-limiter w-full h-full bg-white/80 absolute top-0 flex flex-col justify-end items-center z-50"
-          onClick={() => {
+        <ScrapbookToolMenu
+          onClose={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
             setShowStickerModal(false);
           }}
+          title={"Add a sticker to your collage"}
         >
-          <div className="rounded-t-lg bg-white h-[90%] w-[95%] overflow-y-auto dark:text-black">
-            <div className="w-full  p-2 flex flex-row justify-end">
-              <svg
-                className="w-4 cursor-pointer"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 384 512"
-                onClick={(e) => {
-                  setShowStickerModal(false);
-                  e.stopPropagation();
-                }}
-              >
-                <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
-              </svg>
-            </div>
-            {pageStickers && pageStickers.length > 0 && (
-              <div>
-                <div className=" p-4 text-2xl font-bold">From the page</div>
-                <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
-                  {pageStickers?.map((item, i) => {
-                    return (
-                      <div
-                        key={`myStickers-${i}`}
-                        style={{ width: "200px" }}
-                        onClick={(e) => {
-                          const htmlEl = e.target;
-                          e.stopPropagation();
-                          e.preventDefault();
-                          scrapbookPage.addNewPageSticker(
-                            item.image,
-                            200,
-                            htmlEl.getBoundingClientRect().height,
-                            item.linkOut,
-                            item.title
-                          );
-                          setShowStickerModal(false);
-                        }}
-                      >
-                        <img src={item.image} />
-                      </div>
-                    );
-                  })}
-                </div>
+          {pageStickers && pageStickers.length > 0 && (
+            <div>
+              <div className=" p-4 text-2xl font-bold">From the page</div>
+              <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
+                {pageStickers?.map((item, i) => {
+                  return (
+                    <div
+                      key={`myStickers-${i}`}
+                      style={{ width: "200px" }}
+                      onClick={(e) => {
+                        const htmlEl = e.target;
+                        e.stopPropagation();
+                        e.preventDefault();
+                        scrapbookPage.addNewPageSticker(
+                          item.image,
+                          200,
+                          htmlEl.getBoundingClientRect().height,
+                          item.linkOut,
+                          item.title
+                        );
+                        setShowStickerModal(false);
+                      }}
+                    >
+                      <img src={item.image} />
+                    </div>
+                  );
+                })}
               </div>
-            )}
-            <div className="px-4 pb-4 text-2xl font-bold">Stickers</div>
-            <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
-              {getDefaultStickerPack().map((stickerInfo, i) => {
-                return (
-                  <div
-                    key={`myStickers-${i}`}
-                    style={{ width: "200px" }}
-                    onClick={(e) => {
-                      const htmlEl = e.target;
-                      console.log(htmlEl.getBoundingClientRect());
-                      e.stopPropagation();
-                      e.preventDefault();
-                      scrapbookPage.addNewPageSticker(
-                        stickerInfo.img,
-                        200,
-                        htmlEl.getBoundingClientRect().height,
-                        stickerInfo.linkOut,
-                        stickerInfo.title
-                      );
-                      setShowStickerModal(false);
-                    }}
-                  >
-                    <img src={stickerInfo.img} />
-                  </div>
-                );
-              })}
             </div>
-            <div className="p-4 text-2xl font-bold">Your Stickers</div>
-            <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
-              {stickers.map((item, i) => {
+          )}
+          <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
+            {getDefaultStickerPack().map((stickerInfo, i) => {
+              return (
+                <div
+                  key={`myStickers-${i}`}
+                  style={{ width: "200px" }}
+                  onClick={(e) => {
+                    const htmlEl = e.target;
+                    e.stopPropagation();
+                    e.preventDefault();
+                    scrapbookPage.addNewPageSticker(
+                      stickerInfo.img,
+                      200,
+                      htmlEl.getBoundingClientRect().height,
+                      stickerInfo.linkOut,
+                      stickerInfo.title
+                    );
+                    setShowStickerModal(false);
+                  }}
+                >
+                  <img src={stickerInfo.img} />
+                </div>
+              );
+            })}
+          </div>
+          <hr></hr>
+          <div className="p-4 text-lg font-bold">
+            Stickers from your saved items
+          </div>
+          <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
+            {stickers.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  style={{ width: "200px" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    scrapbookPage.addNewSticker(item.image, 200);
+                    setShowStickerModal(false);
+                  }}
+                >
+                  <img src={item.image} />
+                </div>
+              );
+            })}
+          </div>
+        </ScrapbookToolMenu>
+      )}
+      {showTextModal && (
+        <ScrapbookToolMenu
+          title="Add Text"
+          onClose={(e) => {
+            setShowTextModal(false);
+            setEditingTextSticker(undefined);
+          }}
+        >
+          <TextEditor
+            scrapbookPage={scrapbookPage}
+            setShowTextModal={setShowTextModal}
+            setEditingTextSticker={setEditingTextSticker}
+            editingTextSticker={editingTextSticker}
+            setTextStyle={setTextStyle}
+            textStyle={textStyle}
+            handleEditingTextSticker={handleEditingTextSticker}
+          />
+        </ScrapbookToolMenu>
+      )}
+      {reel && (
+        <div className="fixed w-full md:w-limiter z-10 bg-white bottom-0 left-0 h-fit ">
+          <div className="flex flex-row p-2 pr-0 gap-4 stretch items-center w-full overflow-clip">
+            <div className="text-md font-bold shrink-0">Background:</div>
+            <div className="flex flex-row gap-3 grow overflow-x-auto">
+              {backgroundOptions.map((op, i) => {
                 return (
-                  <div
+                  <button
                     key={i}
-                    style={{ width: "200px" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      scrapbookPage.addNewSticker(item.image, 200);
-                      setShowStickerModal(false);
+                    className="w-10 h-10 shrink-0 rounded-full border-2"
+                    style={{
+                      backgroundColor: op.hex || "white",
+                      backgroundImage: `url(${op.snippet})`,
+                      backgroundSize: "cover",
+                      borderColor:
+                        i == scrapbookBackgroundIdx ? "red" : "#cccccc",
                     }}
-                  >
-                    <img src={item.image} />
-                  </div>
+                    onClick={() => {
+                      setScrapbookBackgroundIdx(i);
+                    }}
+                  ></button>
                 );
               })}
             </div>
           </div>
-          <ScrapbookCornerDisplay imgUrl="/tempStickerImage.png" />
-        </div>
-      )}
-      {showTextModal && (
-        <TextEditor
-          scrapbookPage={scrapbookPage}
-          setShowTextModal={setShowTextModal}
-          setEditingTextSticker={setEditingTextSticker}
-          editingTextSticker={editingTextSticker}
-          setTextStyle={setTextStyle}
-          textStyle={textStyle}
-          handleEditingTextSticker={handleEditingTextSticker}
-        />
-      )}
-      {reel && (
-        <div className="fixed w-full md:w-limiter z-10  bottom-0 left-0 h-fit  overflow-x-auto">
           {makeToolbar()}
         </div>
       )}

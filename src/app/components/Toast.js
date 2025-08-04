@@ -11,11 +11,10 @@ export default function Toast({ message }) {
       { yPercent: 0, duration: 0.4, opacity: 1 }
     );
   }, []);
-  console.log("VVN toast");
   return (
     <div
       ref={toastRef}
-      className="fixed z-10 text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg"
+      className="fixed z-[100] text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg"
     >
       {message}
     </div>
