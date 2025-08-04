@@ -88,7 +88,7 @@ export default function ScrapbookDeskPage({
     <div
       className="w-full h-full absolute top-0 left-0  z-20 overflow-clip touch-none select-none flex flex-col items-center"
       style={{
-        backgroundImage: "url(woodendesk.png)",
+        backgroundImage: "url(woodendesk.jpg)",
         backgroundSize: "cover",
       }}
     >
