@@ -25,6 +25,13 @@ export const locationData = {
     zoom: 11,
     locs: seattleLocs,
     byCategory: seattleByCategory,
+    welcome: {
+      thumbnail: "loc/triangle.jpg",
+      stickers: [
+        "loc/seattle/bridgeAndTunnel/seattleMap.png",
+        "loc/seattle/montlakeBridge/tower.png",
+      ],
+    },
   },
   sewy: {
     name: "Southeast Wyoming",
@@ -32,6 +39,13 @@ export const locationData = {
     zoom: 8,
     locs: seWYLocs,
     byCategory: seWYByCategory,
+    welcome: {
+      thumbnail: "loc/sewy/wypack.png",
+      stickers: [
+        "stickerpacks/sewy/bill.png",
+        "stickerpacks/sewy/grahamMarket.png",
+      ],
+    },
   },
   chicago: {
     name: "Chicago",
