@@ -82,6 +82,7 @@ export default function ContentToolBar({
               setPaneOpen(false);
               const homeLocation = getHomeLocation();
               const homeLocationData = savedLocationToObj(homeLocation);
+              setViewingPin(undefined);
               mainMap.flyTo(
                 homeLocationData.center,
                 homeLocationData.zoom,

@@ -119,9 +119,13 @@ export default function JournalNav({
             setShowToc(!showToc);
             setShowSavedItems(false);
           }}
-          className="absolute flex flex-col items-center z-40 w-16 h-16 border-2 border-black drop-shadow-sm -bottom-3 rounded-full bg-yellow-400 left-1/2 -translate-x-1/2"
+          className="absolute flex flex-col items-center justify-center z-40 w-16 h-16 border-2 border-black drop-shadow-xl -bottom-3 rounded-full bg-amber-300 left-1/2 -translate-x-1/2"
         >
-          <svg viewBox="0 0 100 100" id="menu-icon" className="fill-yellow-800">
+          <svg
+            viewBox="0 0 100 100"
+            id="menu-icon"
+            className="fill-gray-800 w-10 h-10"
+          >
             <rect
               className="line"
               id="line1"

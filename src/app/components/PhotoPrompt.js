@@ -1,6 +1,14 @@
 import { getPage } from "../lib/storageHelpers";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 export default function PhotoPrompt({ mdx, visited, fill }) {
+  const [copiedAlert, setCopiedAlert] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCopiedAlert(false);
+    }, 2000);
+  }, [copiedAlert]);
   const page = getPage(mdx.slug);
   const visitedDate = new Date(page?.date);
   const genericPhotoPromptText = mdx.locationTitle
@@ -38,9 +46,35 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
         </div>
       ) : (
         <div>
-          <div className="text-xs w-full text-center text-amber-500 font-black">
-            VISIT
-          </div>
+          {mdx.address && (
+            <>
+              <div className="flex flex-row w-full items-center justify-between  ">
+                <div className="flex flex-col text-gray-800 ">
+                  <div
+                    className="pr-4 text-xs font-mono h-full "
+                    style={{ alignSelf: "start" }}
+                  >
+                    Address:
+                  </div>
+                  <div className="flex-grow text-xs font-mono">
+                    {mdx.address}
+                  </div>
+                </div>
+                <button
+                  className={`${
+                    copiedAlert ? "bg-white" : "bg-yellow-300"
+                  } transition-colors px-4 py-1 rounded-lg border-2 border-slate-900 font-black`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(mdx.address);
+                    setCopiedAlert(true);
+                  }}
+                >
+                  {copiedAlert ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <hr className="my-2 border-amber-600 "></hr>
+            </>
+          )}
           <div className="font-bold text-sm text-black">
             {mdx.photoPrompt || genericPhotoPromptText}
           </div>

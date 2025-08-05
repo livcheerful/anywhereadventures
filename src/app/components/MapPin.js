@@ -5,13 +5,7 @@ import PinJournal from "./PinJournal";
 import PhotoPrompt from "./PhotoPrompt";
 
 export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
-  const [copiedAlert, setCopiedAlert] = useState(false);
   const visited = hasLocationBeenVisited(mdx.slug);
-  useEffect(() => {
-    setTimeout(() => {
-      setCopiedAlert(false);
-    }, 2000);
-  }, [copiedAlert]);
   return (
     <div className="absolute w-full flex flex-col items-center justify-start z-10 left-0 top-4 h-lg:top-32 h-full overflow-visible">
       <div
@@ -69,41 +63,18 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             )}, ${mdx.latlon[1].toFixed(4)}`}</div>
           </div>
           <hr className="pt-1" />
-          {mdx.address && (
-            <div className="flex flex-row w-full items-center justify-between px-2 ">
-              <div className="flex flex-col">
-                <div
-                  className="text-gray-500 pr-4 text-xs font-mono h-full "
-                  style={{ alignSelf: "start" }}
-                >
-                  Address:
-                </div>
-                <div className="text-gray-600 flex-grow text-xs font-mono">
-                  {mdx.address}
-                </div>
-              </div>
-              <button
-                className={`${
-                  copiedAlert ? "bg-white" : "bg-yellow-300"
-                } transition-colors px-4 py-1 rounded-lg border-2 border-slate-900 font-black`}
-                onClick={() => {
-                  navigator.clipboard.writeText(mdx.address);
-                  setCopiedAlert(true);
-                }}
-              >
-                {copiedAlert ? "Copied!" : "Copy"}
-              </button>
-            </div>
-          )}
 
-          <div className="flex flex-col items-stretch relative pt-2 overflow-visible">
-            <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pb-2 border-x-0 w-full h-full flex flex-col justify-between items-center overflow-visible">
-              <div className="bg-lime-200 rounded-full absolute w-8 h-8 -top-3 left-3 border-2 border-gray-800">
-                <div className="font-bold text-center text-lg">1</div>
+          <div className="flex flex-col items-stretch relative pt-5 overflow-visible">
+            <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pt-4 border-x-0 w-full h-full flex flex-col justify-between items-center overflow-visible">
+              <div className=" absolute -top-3 left-0 flex flex-row ">
+                <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-sky-800 font-bold  bg-sky-100 text-sm">
+                  READ
+                </div>
+                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0">
+                  1
+                </div>
               </div>
-              <div className="text-xs w-full text-center text-sky-600 font-black">
-                READ
-              </div>
+
               <div className="font-bold text-sm text-black">
                 {mdx.blurb ? (
                   <div className="p-2 text-sm">{mdx.blurb}</div>
@@ -122,10 +93,15 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
                 OPEN
               </button>
             </div>
-            <div className="w-full h-full relative">
+            <div className="w-full h-full relative pt-2 bg-amber-300">
               <PhotoPrompt mdx={mdx} visited={visited} />
-              <div className=" bg-lime-200 rounded-full absolute w-8 h-8 -top-3 left-3 border-2 border-gray-800 ">
-                <div className="font-bold text-center text-lg">2</div>
+              <div className=" absolute -top-3 left-0 flex flex-row ">
+                <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-yellow-800 font-bold  bg-amber-100 text-sm">
+                  VISIT
+                </div>
+                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0">
+                  2
+                </div>
               </div>
             </div>
           </div>

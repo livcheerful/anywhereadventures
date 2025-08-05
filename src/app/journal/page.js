@@ -30,11 +30,103 @@ export default function Page() {
   const tocRef = useRef();
   const tocAnim = useRef();
 
+  function addHomeLocationStickers() {
+    const homeLocation = getHomeLocation();
+    switch (homeLocation) {
+      case "Seattle":
+        return [
+          <div
+            className="rotate-3 w-48 h-fit bottom-10 absolute left-3 "
+            key={1}
+          >
+            <CornerTape directions={{ ne: true, nw: true }}>
+              <img src="/loc/seattle/montlakeBridge/canalRoutes.png" />
+            </CornerTape>
+          </div>,
+          <div
+            className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 text-black font-bold"
+            key={2}
+          >
+            Seattle
+          </div>,
+          <div
+            className="-rotate-6 w-48 h-fit top-10 absolute right-0 "
+            key={3}
+          >
+            <CornerTape directions={{ nw: true, se: true }}>
+              <img src="/loc/regrade-results.jpg" />
+            </CornerTape>
+          </div>,
+        ];
+      case "Chicago":
+        break;
+      case "Southeast Wyoming":
+        const wyStickers = [];
+        wyStickers.push(
+          <div className="absolute left-3 bottom-1/3 " key={1}>
+            <CornerTape>
+              <img
+                className="w-56 h-auto rotate-2 drop-shadow-2xl text-black"
+                src="/loc/sewy/wypack.png"
+              />
+            </CornerTape>
+          </div>
+        );
+        wyStickers.push(
+          <div
+            className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 font-bold text-lg"
+            key={2}
+          >
+            Wyoming
+          </div>
+        );
+        return wyStickers;
+        break;
+      default:
+        break;
+    }
+  }
+
   const screens = [
     <div className="flex flex-col justify-between h-full pb-2">
       <div className="flex flex-col">
-        <img src="/placeholderThumbnail.png" />
-        <h1 className="font-bold text-lg">This is your travel journal</h1>
+        <img
+          src="/placeholderThumbnail.png"
+          className="border-b-2 border-gray-800"
+        />
+        <div className="p-2">
+          <h1 className="font-bold text-lg">This is your travel journal</h1>
+          <div>
+            As you visit story locations, collect photos and fill up your logs.
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          onClick={() => {
+            setScreenIdx(screenIdx + 1);
+          }}
+          classes={["bg-lime-200"]}
+        >
+          Next
+        </BaseButton>
+      </div>
+    </div>,
+    <div className="flex flex-col justify-between h-full pb-2">
+      <div className="flex flex-col">
+        <img
+          src="/placeholderThumbnail.png"
+          className="border-b-2 border-gray-800"
+        />
+        <div className="p-2">
+          <h1 className="font-bold text-lg">
+            See where you haven't visited yet
+          </h1>
+          <div>
+            Swipe to see the logs you've created and the places you still
+            haven't been. You can also navigate via the table of contents.
+          </div>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
@@ -46,16 +138,29 @@ export default function Page() {
           Next
         </BaseButton>
 
-        <a href={`/`} className="underline text-sm">
-          Back to map
-        </a>
+        <button
+          onClick={() => {
+            setScreenIdx(screenIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
       </div>
     </div>,
     <div className="flex flex-col justify-between h-full pb-2">
       <div className="flex flex-col">
-        <img src="/placeholderThumbnail.png" />
-        <div>
-          As you visit sites and log your visit, your journal will fill up
+        <img
+          src="/placeholderThumbnail.png"
+          className="border-b-2 border-gray-800"
+        />
+        <div className="p-2">
+          <h1 className="font-bold text-lg">Save archive items for later</h1>
+          <div>
+            You can also see all your saved archives items here for easy
+            reference later. You can also use them in your travel logs as
+            stickers.
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -211,6 +316,25 @@ export default function Page() {
           className="flex flex-row snap-x snap-mandatory overflow-x-auto pb-20 gap-4"
         >
           <div
+            className="w-full shrink-0 h-dvh snap-start flex flex-col items-center relative"
+            style={{
+              backgroundImage: "url(/notebook3.png)",
+              backgroundSize: "contain",
+            }}
+          >
+            <div className="bg-yellow-200 border-2 border-gray-800 w-fit h-fit top-1/4 relative p-4 rounded-lg drop-shadow-sm flex flex-col gap-2">
+              <div className="text-center">my</div>
+              <div className="font-mono text-gray-800 font-bold text-2xl">
+                Anywhere Adventures
+              </div>
+              <div className="text-center font-mono text-sm">
+                with the Library of Congress
+              </div>
+            </div>
+            {addHomeLocationStickers()}
+          </div>
+          {makeJournalPages()}
+          <div
             ref={tocRef}
             style={{ visibility: "hidden" }}
             className="fixed z-10 left-0 top-0 bg-white w-full md:w-limiter h-full overflow-y-auto drop-shadow-2xl"
@@ -310,7 +434,6 @@ export default function Page() {
               </a>
             </div>
           </div>
-          {makeJournalPages()}
         </div>
       </div>
       <JournalNav
