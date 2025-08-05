@@ -17,6 +17,7 @@ assignees: izzybrador
 - [ ] Collection images link back to proper Library item
 - [ ] Copyright is clear for each Library Image
 - [ ] Copyright cleared for non-Library images 
+- [ ] Contacted __________ for permissions
 - [ ] Images do not obstruct text
  
 **Comics**
