@@ -86,30 +86,26 @@ export default function SingleStoryPage({
         scrollRef={scrollRef}
         paneOpen={paneOpen}
         setPaneOpen={setPaneOpen}
+        mainMap={mainMap}
       />
+      <div className="flex justify-between gap-1 py-4 bg-white px-2">
+        {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
+        {Button("NEXT STORY", hasNext, goToNext)}
+      </div>
       <UnstickyHeader post={post} />
       <PostContent post={post} />
       <div className="w-full p-4">
-        <PhotoPrompt
-          mdx={post}
-          visited={storageHelpers.hasLocationBeenVisited(slug)}
-        />
+        <div className="border-2 border-gray-900 ">
+          <PhotoPrompt
+            mdx={post}
+            visited={storageHelpers.hasLocationBeenVisited(slug)}
+          />
+        </div>
       </div>
 
       <hr className="border-amber-500"></hr>
       <div className="flex justify-between gap-1 py-4 bg-amber-100">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
-        {Button("MAP", true, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setPaneOpen(false);
-          setViewingPin(undefined);
-
-          const homeLoc = storageHelpers.getHomeLocation();
-          const homeLocationData = savedLocationToObj(homeLoc);
-          console.log(homeLocationData);
-          mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
-        })}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>
     </div>

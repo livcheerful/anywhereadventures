@@ -4,7 +4,13 @@ import { registerNewIO } from "../lib/intersectionObserverHelper";
 import { useRouter } from "next/navigation";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 import { gsap } from "gsap";
-export default function StickyHeader({ post, contentSlug, isAdded = false }) {
+export default function StickyHeader({
+  post,
+  contentSlug,
+  mainMap,
+  setPaneOpen,
+  isAdded = false,
+}) {
   const router = useRouter();
   const io = useRef();
 
@@ -37,7 +43,7 @@ export default function StickyHeader({ post, contentSlug, isAdded = false }) {
       className="sticky top-0 bg-white z-30 dark:text-black "
     >
       <div
-        className={`flex flex-row gap-2 pt-5 md:pt-8 pb-2 p-2 w-full items-center`}
+        className={`flex flex-row gap-2 pt-9 pb-2 p-2 w-full items-center`}
         style={{
           backgroundSize: "cover",
           backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,
@@ -48,8 +54,25 @@ export default function StickyHeader({ post, contentSlug, isAdded = false }) {
             <div className="font-mono font-black px-2 text-lg">
               {post.locationTitle}
             </div>
-            <div className="font-mono text-xs text-gray-700">
-              {hasLocationBeenVisited(post.slug) ? "VISITED" : "UNVISITED"}
+            <div className="font-mono text-xs text-gray-700 flex flex-row gap-2 items-baseline">
+              <div>
+                {hasLocationBeenVisited(post.slug) ? "VISITED" : "UNVISITED"}
+              </div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPaneOpen(false);
+                  mainMap.flyTo(
+                    [post.latlon[1], post.latlon[0]],
+                    post.zoom,
+                    false
+                  );
+                }}
+                className="bg-yellow-50 rounded-md border-2 border-gray-800 text-lg px-1 drop-shadow-lg"
+              >
+                📍
+              </button>
             </div>
           </div>
           <hr className="border-black w-full "></hr>

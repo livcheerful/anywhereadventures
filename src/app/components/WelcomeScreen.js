@@ -148,7 +148,7 @@ export default function WelcomeScreen({
 
     <Box
       isModal
-      className={`left-[12.5%] top-[25%] h-1/2 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
+      className={`left-[12.5%] top-[25%] h-1/2 w-3/4 flex flex-col justify-between pb-2 bg-yellow-200`}
     >
       <div className="flex flex-col justify-center gap-3 h-full">
         <div>First, you have to...</div>

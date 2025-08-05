@@ -258,7 +258,7 @@ export default function MyMap({
       mapManager.flyTo(
         [mdxInfo.latlon[1], mdxInfo.latlon[0]],
         mdxInfo.zoom,
-        true
+        false
       );
 
       // Update reading pane

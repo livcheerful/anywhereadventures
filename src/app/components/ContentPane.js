@@ -66,9 +66,7 @@ export default function ContentPane({
 
   function setIndexFromSlug(slug) {
     if (!contentArray || !slug) return;
-    const index = contentArray.findIndex(
-      (content) => content.slug == slug
-    );
+    const index = contentArray.findIndex((content) => content.slug == slug);
     if (index >= 0) {
       setContentIndex(index);
     }
@@ -141,7 +139,7 @@ export default function ContentPane({
         </div>
       )}
       <div className="h-full w-full">
-        <div className="w-full text-2xl font-bold fixed  z-40">
+        <div className="w-full text-2xl font-bold fixed z-40">
           {contentArray && (
             <ContentToolBar
               post={contentArray[contentIndex]}
@@ -158,7 +156,7 @@ export default function ContentPane({
         <div
           aria-disabled={!paneOpen}
           className="w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10"
-          style={{ paddingTop: "1rem" }}
+          style={{ paddingTop: "0rem" }}
           id="content-pane"
           ref={contentPaneRef}
           onDrag={(e) => {

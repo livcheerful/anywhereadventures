@@ -11,6 +11,7 @@ const scrapbookPageKey = "scrapbook";
 const userIdKey = "userId";
 const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
+const journalViewedKey = "journalViewed";
 
 export function clearAll() {
   if (typeof window !== "undefined") {
@@ -20,6 +21,7 @@ export function clearAll() {
     localStorage.removeItem(userIdKey);
     localStorage.removeItem(stampKey);
     localStorage.removeItem(homeLocationKey);
+    localStorage.removeItem(journalViewedKey);
   }
 }
 
@@ -53,6 +55,14 @@ export function removeLCItem(lcItem) {
   }
 
   return locs;
+}
+
+export function setHaveSeenJournal(viewed) {
+  localStorage.setItem(journalViewedKey, viewed);
+}
+
+export function haveSeenJournal() {
+  return localStorage.getItem(journalViewedKey);
 }
 
 export function getAllPages() {

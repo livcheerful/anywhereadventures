@@ -2,11 +2,18 @@
 import { useState, useEffect, Suspense, useRef } from "react";
 import JournalPage from "../components/JournalPage";
 import SearchParamHandler from "../components/SearchParamHandler";
+import Box from "../components/ui/Box";
+import BaseButton from "../components/ui/BaseButton";
 import JournalNav from "../components/JournalNav";
 import { categoryInfo } from "../content/meta";
 import gsap from "gsap";
 import { savedLocationToObj } from "../lib/locationHelpers";
-import { getHomeLocation, hasLocationBeenVisited } from "../lib/storageHelpers";
+import {
+  getHomeLocation,
+  hasLocationBeenVisited,
+  haveSeenJournal,
+  setHaveSeenJournal,
+} from "../lib/storageHelpers";
 import CornerTape from "../components/CornerTape";
 
 export default function Page() {
@@ -18,8 +25,60 @@ export default function Page() {
   const [pagesExist, setPagesExist] = useState(false);
   const [refSlug, setRefSlug] = useState(undefined);
   const [showSavedItems, setShowSavedItems] = useState(false);
+  const [showIntro, setShowIntro] = useState(!haveSeenJournal());
+  const [screenIdx, setScreenIdx] = useState(0);
   const tocRef = useRef();
   const tocAnim = useRef();
+
+  const screens = [
+    <div className="flex flex-col justify-between h-full pb-2">
+      <div className="flex flex-col">
+        <img src="/placeholderThumbnail.png" />
+        <h1 className="font-bold text-lg">This is your travel journal</h1>
+      </div>
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          onClick={() => {
+            setScreenIdx(screenIdx + 1);
+          }}
+          classes={["bg-lime-200"]}
+        >
+          Next
+        </BaseButton>
+
+        <a href={`/`} className="underline text-sm">
+          Back to map
+        </a>
+      </div>
+    </div>,
+    <div className="flex flex-col justify-between h-full pb-2">
+      <div className="flex flex-col">
+        <img src="/placeholderThumbnail.png" />
+        <div>
+          As you visit sites and log your visit, your journal will fill up
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          onClick={() => {
+            setShowIntro(false);
+            setHaveSeenJournal(true);
+          }}
+          classes={["bg-lime-200"]}
+        >
+          Start
+        </BaseButton>
+        <button
+          onClick={() => {
+            setScreenIdx(screenIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
+      </div>
+    </div>,
+  ];
 
   useEffect(() => {
     if (!tocRef.current) return;
@@ -132,7 +191,17 @@ export default function Page() {
   }
 
   return (
-    <div className="h-dvh md:w-limiter bg-white overflow-y-hidden">
+    <div className="h-dvh md:w-limiter relative bg-white overflow-y-hidden">
+      {showIntro && (
+        <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-20 border-2 border-black">
+          <Box
+            isModal
+            className={"bg-yellow-200 left-[12.5%] top-[18%] h-2/3 w-3/4"}
+          >
+            {screens[screenIdx]}
+          </Box>
+        </div>
+      )}
       <Suspense>
         <SearchParamHandler paramsToFetch={["id"]} cb={handleSearchParams} />
       </Suspense>

@@ -40,6 +40,8 @@ export default function Page({}) {
     });
   }, [locationId]);
 
+  //VVN TODO FIX TEXT HERE FOR DARK MODE
+
   const screens = [
     <Box
       isModal

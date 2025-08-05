@@ -7,7 +7,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
     ? `Visit ${mdx.locationTitle} in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.`
     : "Visit this location in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
   return (
-    <div className="relative bg-amber-300 border-2 border-gray-900 p-2 overflow-clip">
+    <div className="relative bg-amber-300 p-4 overflow-clip">
       {visited ? (
         <div>
           <img

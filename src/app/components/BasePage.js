@@ -10,7 +10,7 @@ import { getHomeLocation } from "../lib/storageHelpers";
 export default function BasePage({ entranceSlug }) {
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
-  const [paneOpen, setPaneOpen] = useState(!isNewUser);
+  const [paneOpen, setPaneOpen] = useState(false);
 
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
   const [exploringContent, setExploringContent] = useState(false);
@@ -41,7 +41,6 @@ export default function BasePage({ entranceSlug }) {
     setMainMap(m);
   }
   function mapClickHandler() {
-    console.log("vvn map click handler");
     setViewingPin(undefined);
     setPaneOpen(false);
   }
