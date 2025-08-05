@@ -24,6 +24,7 @@ assignees: izzybrador
 - [ ] Speech bubbles free of misspelling, typos, grammatical errors
 - [ ] Comics do not obstruct text
 - [ ] Comic panels load quickly
+- [ ] Speech bubbles have tails where needed and the tails point in a sensible direction
  
 **Architecture/Organization of Story** 
 - [ ] Title
