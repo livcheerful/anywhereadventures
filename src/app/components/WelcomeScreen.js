@@ -3,40 +3,11 @@ import gsap from "gsap";
 import { useEffect, useState, useRef } from "react";
 import { locationData, worldData } from "../lib/locationHelpers";
 import { setHomeLocation } from "../lib/storageHelpers";
+import Box from "./ui/Box";
+import BaseButton from "./ui/BaseButton";
 
 function H1({ children }) {
   return <h1 className="font-bold text-2xl">{children}</h1>;
-}
-
-function Box({ isModal, children, className }) {
-  let outerClassNames = "absolute w-full h-full";
-  // Don't capture outside clicks
-  if (!isModal) {
-    outerClassNames += " pointer-events-none";
-  }
-  return (
-    <div className={outerClassNames}>
-      <div
-        className={`relative bg-yellow-300 border-2 border-black text-center ${className}`}
-        style={{
-          boxShadow: "5px 5px black",
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function BaseButton({ classes, onClick, children }) {
-  const className = "rounded-lg p-2 border-2 border-black " + classes.join(" ");
-  return (
-    <div>
-      <button className={`font-bold ${className}`} onClick={onClick}>
-        {children}
-      </button>
-    </div>
-  );
 }
 
 export default function WelcomeScreen({
@@ -96,7 +67,7 @@ export default function WelcomeScreen({
 
   function Popup({ data }) {
     return (
-      <Box className={"l-[10%] w-[50%] h-fit top-[65%] "}>
+      <Box className={"l-[10%] w-[50%] h-fit top-[65%] bg-yellow-300"}>
         {data.welcome?.thumbnail && <img src={data.welcome.thumbnail}></img>}
         <H1>{data.name}</H1>
       </Box>
@@ -124,7 +95,7 @@ export default function WelcomeScreen({
   const screens = [
     <Box
       isModal
-      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2`}
+      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
     >
       <div className="">
         <img className="w-full pb-4" src="/loc/triangle.jpg"></img>
@@ -147,7 +118,7 @@ export default function WelcomeScreen({
     </Box>,
     <Box
       isModal
-      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2`}
+      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
     >
       <div className="flex flex-col gap-2">
         <img className="shrink" src="/illustrations/read.png"></img>
@@ -177,7 +148,7 @@ export default function WelcomeScreen({
 
     <Box
       isModal
-      className={`left-[12.5%] top-[25%] h-1/2 w-3/4 flex flex-col justify-between pb-2`}
+      className={`left-[12.5%] top-[25%] h-1/2 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
     >
       <div className="flex flex-col justify-center gap-3 h-full">
         <div>First, you have to...</div>

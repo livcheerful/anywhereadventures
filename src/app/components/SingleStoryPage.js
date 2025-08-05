@@ -110,7 +110,7 @@ export default function SingleStoryPage({
           console.log(homeLocationData);
           mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
         })}
-        ,{Button("NEXT STORY", hasNext, goToNext)}
+        {Button("NEXT STORY", hasNext, goToNext)}
       </div>
     </div>
   );

@@ -3,6 +3,8 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 
 import FilmReel from "../components/FilmReel";
+import Box from "../components/ui/Box";
+import BaseButton from "../components/ui/BaseButton";
 import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
@@ -28,6 +30,7 @@ export default function Page({}) {
   const [cameraDirectionIdx, setCameraDirectionIdx] = useState(0); // can be user or environment
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const [mdx, setMdx] = useState(undefined);
+  const [introIdx, setIntroIdx] = useState(0);
 
   const router = useRouter();
 
@@ -36,6 +39,104 @@ export default function Page({}) {
       setMdx(res[0]);
     });
   }, [locationId]);
+
+  const screens = [
+    <Box
+      isModal
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-1">
+        <img src="/placeholderThumbnail.png" className="w-full" />
+        <h1 className="font-bold text-lg">Create your travel log</h1>
+        <div className="px-2">
+          Fill up your camera roll with photos and then collage and save your
+          page to your journal
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          classes={["bg-yellow-300 grow-0 "]}
+          onClick={() => {
+            setIntroIdx(introIdx + 1);
+          }}
+        >
+          Next
+        </BaseButton>
+        <a href={`/${locationId}`} className="underline text-sm">
+          Back to reading
+        </a>
+      </div>
+    </Box>,
+    <Box
+      isModal
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-1">
+        <img src="/placeholderThumbnail.png" className="w-full" />
+        <h1 className="font-bold text-lg">Gather photos</h1>
+        <div className="px-2">
+          Fill up your camera roll with photos and then collage and save your
+          page to your journal
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          classes={["bg-yellow-300 grow-0"]}
+          onClick={() => {
+            setIntroIdx(introIdx + 1);
+          }}
+        >
+          Next
+        </BaseButton>
+        <button
+          onClick={() => {
+            setIntroIdx(introIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
+      </div>
+    </Box>,
+    <Box
+      isModal={true}
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-1">
+        <img src="/placeholderThumbnail.png" className="w-full" />
+        <h1 className="font-bold text-lg">Customize</h1>
+        <div className="px-2">
+          Fill up your camera roll with photos and then collage and save your
+          page to your journal
+        </div>
+      </div>
+      <div className="w-full flex flex-col items-center pb-2 gap-2">
+        <button
+          onClick={() => {
+            setHaveShownHelp(true);
+          }}
+          className="bg-yellow-300 border-2 border-gray-800 font-bold rounded-lg p-2"
+        >
+          START
+        </button>
+        <button
+          onClick={() => {
+            setIntroIdx(introIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
+      </div>
+    </Box>,
+  ];
 
   function onFinishedScrapbooking(imagedata, compressedImageData) {
     setShowSummaryPage(true);
@@ -122,31 +223,9 @@ export default function Page({}) {
           cb={handleSearchParams}
         />
       </Suspense>
-      {cameraPermissionState == "prompt" && !haveShownHelp && (
-        <div className="absolute w-full h-full top-0 left-0 bg-white/85 flex flex-col items-center justify-center z-20">
-          <div
-            className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2  text-black "
-            style={{ maxWidth: "80%" }}
-          >
-            <div className="font-bold text-lg">Explore the area</div>
-            <div>
-              Fill up your camera roll with photos and then collage and save
-              your page to your journal
-            </div>
-            <div className="w-full flex flex-col items-center">
-              <button
-                onClick={() => {
-                  setHaveShownHelp(true);
-                }}
-                className="bg-white  font-bold rounded-lg p-2 py-4"
-              >
-                START
-              </button>
-              <a href={`/${locationId}`} className="underline">
-                Back to reading
-              </a>
-            </div>
-          </div>
+      {cameraPermissionState && !haveShownHelp && (
+        <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-50">
+          {screens[introIdx]}
         </div>
       )}
       {!processPhotos && (

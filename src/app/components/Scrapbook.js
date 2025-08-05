@@ -398,8 +398,6 @@ export default function Scrapbook({
       ondropactivate: (event) => {},
       ondropenter: (event) => {},
       ondrop: (event) => {
-        console.log("Dropped!");
-        console.log(event);
         scrapbookPage.deleteSticker(event.draggable.target);
       },
     });

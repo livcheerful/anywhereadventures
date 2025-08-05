@@ -164,7 +164,7 @@ export default function ScrapbookDeskPage({
           className="visible md:hidden -rotate-6 w-32 h-32"
           position={{ right: 10, top: 10 }}
         >
-          <div>Tap and hold the image to save</div>
+          <div>Tap and hold the image to save to your phone</div>
         </StickyNote>
         <a href={`/${locationId}`}>
           <div
