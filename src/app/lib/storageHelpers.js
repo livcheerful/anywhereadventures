@@ -13,7 +13,7 @@ const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
 const journalViewedKey = "journalViewed";
 const cameraViewedKey = "cameraViewed";
-
+const newTravelLogPagesKey = "newTravelLogPages";
 export function clearAll() {
   if (typeof window !== "undefined") {
     localStorage.removeItem(localStorageKey);
@@ -57,6 +57,20 @@ export function removeLCItem(lcItem) {
   }
 
   return locs;
+}
+
+export function addNewTravelLogPage() {
+  let soFar = parseInt(localStorage.getItem(newTravelLogPagesKey)) || 0;
+  localStorage.setItem(newTravelLogPagesKey, soFar + 1);
+}
+
+export function getNumNewTravelLogPages() {
+  let soFar = parseInt(localStorage.getItem(newTravelLogPagesKey)) || 0;
+  return soFar;
+}
+
+export function clearNewTravelLogPages() {
+  localStorage.setItem(newTravelLogPagesKey, 0);
 }
 
 export function setHaveSeenCamera(viewed) {

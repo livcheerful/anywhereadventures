@@ -79,12 +79,12 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
             {mdx.photoPrompt || genericPhotoPromptText}
           </div>
           <div className="flex flex-col items-center pt-2">
-            <a
+            <Link
               href={`/camera?locationId=${mdx.slug}`}
               className="border-gray-900 border-2 text-black bg-amber-100 px-4 py-2 font-black text-sm rounded-full"
             >
               I'M HERE
-            </a>
+            </Link>
           </div>
         </div>
       )}

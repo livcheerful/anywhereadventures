@@ -14,6 +14,7 @@ import {
   savePage,
   haveSeenCamera,
   setHaveSeenCamera,
+  addNewTravelLogPage,
 } from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
@@ -59,7 +60,7 @@ export default function Page({}) {
         <h1 className="font-bold text-lg">Create your travel log</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
-          page to your journal
+          page to your travel log
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -87,7 +88,7 @@ export default function Page({}) {
         <h1 className="font-bold text-lg">Gather photos</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
-          page to your journal
+          page to your travel log
         </div>
       </div>
 
@@ -121,7 +122,7 @@ export default function Page({}) {
         <h1 className="font-bold text-lg">Customize</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
-          page to your journal
+          page to your travel log
         </div>
       </div>
       <div className="w-full flex flex-col items-center pb-2 gap-2">
@@ -151,8 +152,8 @@ export default function Page({}) {
     setCollageImage(imagedata);
 
     // save image to local storage
-
     savePage(locationId, compressedImageData, new Date());
+    addNewTravelLogPage();
   }
 
   function handleSearchParams(kvp) {

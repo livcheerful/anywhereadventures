@@ -13,6 +13,7 @@ import {
   hasLocationBeenVisited,
   haveSeenJournal,
   setHaveSeenJournal,
+  clearNewTravelLogPages,
 } from "../lib/storageHelpers";
 import CornerTape from "../components/CornerTape";
 
@@ -32,6 +33,7 @@ export default function Page() {
 
   useEffect(() => {
     setShowIntro(!haveSeenJournal());
+    clearNewTravelLogPages();
   }, []);
 
   function addHomeLocationStickers() {

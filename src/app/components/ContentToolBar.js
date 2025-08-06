@@ -1,7 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getHomeLocation } from "../lib/storageHelpers";
+import {
+  getHomeLocation,
+  getNumNewTravelLogPages,
+} from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 export default function ContentToolBar({
   post,
@@ -65,14 +68,23 @@ export default function ContentToolBar({
             </svg>
           </button>
           <a
-            className=" w-1/5 py-1 flex flex-col justify-end items-center text-green-100 bg-green-800 overflow-clip  border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
+            className="relative w-1/5 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
             href={`/journal?id=${post.slug}`}
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            <div style={{ fontSize: "30px" }}>📒</div>
-            <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
+            <div className=" overflow-clip ">
+              <div style={{ fontSize: "30px" }}>📒</div>
+              <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
+            </div>
+            {getNumNewTravelLogPages() > 0 ? (
+              <div className="bg-red-600 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
+                {getNumNewTravelLogPages()}
+              </div>
+            ) : (
+              <></>
+            )}
           </a>
 
           <button
@@ -92,7 +104,7 @@ export default function ContentToolBar({
             className="flex flex-col items-center justify-end w-2/3 font-bold text-yellow-900 overflow-clip border-2 border-gray-800 border-t-0 bg-yellow-300 rounded-b-2xl drop-shadow-2xl cursor-default text-center text-xs"
           >
             <div style={{ fontSize: "30px" }}>🗺️</div>
-            <div style={{ fontSize: "10px" }}>OPEN MAP</div>
+            <div style={{ fontSize: "10px" }}>BACK TO MAP</div>
           </button>
         </div>
       }
