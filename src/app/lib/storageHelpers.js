@@ -12,6 +12,7 @@ const userIdKey = "userId";
 const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
 const journalViewedKey = "journalViewed";
+const cameraViewedKey = "cameraViewed";
 
 export function clearAll() {
   if (typeof window !== "undefined") {
@@ -22,6 +23,7 @@ export function clearAll() {
     localStorage.removeItem(stampKey);
     localStorage.removeItem(homeLocationKey);
     localStorage.removeItem(journalViewedKey);
+    localStorage.removeItem(cameraViewedKey);
   }
 }
 
@@ -55,6 +57,14 @@ export function removeLCItem(lcItem) {
   }
 
   return locs;
+}
+
+export function setHaveSeenCamera(viewed) {
+  localStorage.setItem(cameraViewedKey, viewed);
+}
+
+export function haveSeenCamera() {
+  return localStorage.getItem(cameraViewedKey);
 }
 
 export function setHaveSeenJournal(viewed) {

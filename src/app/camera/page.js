@@ -10,7 +10,11 @@ import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
 import ScrapbookDeskPage from "../components/ScrapbookDeskPage";
 
-import { savePage, numberOfPages } from "../lib/storageHelpers";
+import {
+  savePage,
+  haveSeenCamera,
+  setHaveSeenCamera,
+} from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
@@ -19,7 +23,7 @@ const cameraDirectionStates = ["user", "environment"];
 const aspectRatio = 16 / 9;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
-  const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
+  const [haveShownHelp, setHaveShownHelp] = useState(haveSeenCamera()); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -123,6 +127,7 @@ export default function Page({}) {
         <button
           onClick={() => {
             setHaveShownHelp(true);
+            setHaveSeenCamera(true);
           }}
           className="bg-yellow-300 border-2 border-gray-800 font-bold rounded-lg p-2"
         >
