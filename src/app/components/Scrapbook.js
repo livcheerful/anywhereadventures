@@ -34,11 +34,6 @@ const backgroundOptions = [
     src: "/magazineBack.png",
     snippet: "/magazineBacksnippet.png",
   },
-  {
-    type: "image",
-    src: "/passport/page1.jpg",
-    snippet: "/passport/page1snippet.png",
-  },
 ];
 
 const defaultStickerWidth = 300;
@@ -510,7 +505,6 @@ export default function Scrapbook({
         <div
           className="flex flex-col  w-full h-full absolute top-0 left-0 bg-yellow-100"
           style={{
-            backgroundImage: `url(/passport/page1.jpg)`,
             backgroundSize: "cover",
           }}
         ></div>

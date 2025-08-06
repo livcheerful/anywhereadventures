@@ -21,10 +21,9 @@ export default function JournalPage({
       className="relative w-full bg-yellow-100 h-dvh shrink-0 snap-start flex flex-col items-center justify-around"
       style={{
         backgroundSize: "cover",
-        backgroundImage: `url(/passport/page1.jpg)`,
       }}
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-white/80">
+      <div className="absolute top-0 left-0 w-full h-full bg-white/80 flex flex-col">
         <div className="w-full  flex flex-row justify-between p-2 text-xs text-gray-700 font-mono">
           <div className="font-bold">{categoryMeta?.title}</div>
           <div>{`${countVisitedLocationsInCategory()} / ${
@@ -32,7 +31,7 @@ export default function JournalPage({
           } visited`}</div>
         </div>
         <hr className="w-full border-slate-700 "></hr>
-        <div className="h-full grow p-2 w-full grid grid-cols-2 grid-rows-2 gap-2">
+        <div className=" grow p-2 w-full grid grid-cols-2 grid-rows-2 gap-2">
           {locations.map((locMdx, i) => {
             return (
               <div
@@ -50,7 +49,7 @@ export default function JournalPage({
             );
           })}
         </div>
-        <div className="h-10"></div>
+        <div className="h-10 shrink-0"></div>
       </div>
     </div>
   );

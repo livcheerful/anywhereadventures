@@ -95,7 +95,7 @@ export default function Page() {
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">
-          <h1 className="font-bold text-lg">This is your travel journal</h1>
+          <h1 className="font-bold text-lg">This is your travel log</h1>
           <div>
             As you visit story locations, collect photos and fill up your logs.
           </div>
@@ -253,7 +253,7 @@ export default function Page() {
         pages.push(
           <div
             key={i}
-            className="w-full h-full shrink-0"
+            className="w-full shrink-0"
             id={`page-${category.tag}-${i}`}
           >
             <JournalPage

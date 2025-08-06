@@ -53,13 +53,15 @@ export default function JournalLog({ mdx }) {
             <div className="text-xs font-mono">
               {visited ? (
                 <div className="flex flex-row  ">
-                  <div className="text-red-700 ">
+                  <div className="text-red-600 font-bold font-vivian">
                     {visitedDate.getMonth() + 1}
                   </div>
                   <div>/</div>
-                  <div className="text-red-700">{visitedDate.getDate()}</div>
+                  <div className="text-red-600 font-bold font-vivian">
+                    {visitedDate.getDate()}
+                  </div>
                   <div>/</div>
-                  <div className="text-red-700">
+                  <div className="text-red-600 font-bold font-vivian">
                     {visitedDate.getFullYear()}
                   </div>
                 </div>
@@ -73,11 +75,17 @@ export default function JournalLog({ mdx }) {
             <div>
               {visited ? (
                 <div className="flex flex-row ">
-                  <div className="text-red-700">{visitedDate.getHours()}</div>
+                  <div className="text-red-600 font-bold font-vivian">
+                    {visitedDate.getHours()}
+                  </div>
                   <div>:</div>
-                  <div className="text-red-700">{visitedDate.getMinutes()}</div>
+                  <div className=" text-red-600 font-bold font-vivian">
+                    {visitedDate.getMinutes()}
+                  </div>
                   <div>:</div>
-                  <div className="text-red-700">{visitedDate.getSeconds()}</div>
+                  <div className="text-red-600 font-bold font-vivian">
+                    {visitedDate.getSeconds()}
+                  </div>
                 </div>
               ) : (
                 <div className="flex flex-row gap-2 pr-3">
