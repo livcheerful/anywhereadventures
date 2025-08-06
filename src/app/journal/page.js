@@ -25,10 +25,14 @@ export default function Page() {
   const [pagesExist, setPagesExist] = useState(false);
   const [refSlug, setRefSlug] = useState(undefined);
   const [showSavedItems, setShowSavedItems] = useState(false);
-  const [showIntro, setShowIntro] = useState(!haveSeenJournal());
+  const [showIntro, setShowIntro] = useState(false);
   const [screenIdx, setScreenIdx] = useState(0);
   const tocRef = useRef();
   const tocAnim = useRef();
+
+  useEffect(() => {
+    setShowIntro(!haveSeenJournal());
+  }, []);
 
   function addHomeLocationStickers() {
     const homeLocation = getHomeLocation();

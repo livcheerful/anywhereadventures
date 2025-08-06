@@ -23,10 +23,9 @@ const cameraDirectionStates = ["user", "environment"];
 const aspectRatio = 16 / 9;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
-  const [haveShownHelp, setHaveShownHelp] = useState(haveSeenCamera()); //TODO update this based on cookie
+  const [haveShownHelp, setHaveShownHelp] = useState(true); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
-  const [showMenu, setShowMenu] = useState(false);
   const [processPhotos, setProcessPhotos] = useState(false);
   const [showSummaryPage, setShowSummaryPage] = useState(false);
   const [collageImage, setCollageImage] = useState(undefined);
@@ -36,7 +35,9 @@ export default function Page({}) {
   const [mdx, setMdx] = useState(undefined);
   const [introIdx, setIntroIdx] = useState(0);
 
-  const router = useRouter();
+  useEffect(() => {
+    setHaveShownHelp(haveSeenCamera());
+  }, []);
 
   useEffect(() => {
     getMdx([locationId], (res) => {

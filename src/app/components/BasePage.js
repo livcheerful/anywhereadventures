@@ -9,7 +9,7 @@ import { locationData, savedLocationToObj } from "../lib/locationHelpers";
 import { getHomeLocation } from "../lib/storageHelpers";
 export default function BasePage({ entranceSlug }) {
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
-  const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
+  const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(false);
   const [paneOpen, setPaneOpen] = useState(false);
 
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
@@ -28,6 +28,10 @@ export default function BasePage({ entranceSlug }) {
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
+
+  useEffect(() => {
+    setShowingWelcomeScreen(isNewUser);
+  }, []);
 
   useEffect(() => {
     if (savedLocation && !chosenLocation) {
