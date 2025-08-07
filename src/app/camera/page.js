@@ -239,8 +239,17 @@ export default function Page({}) {
       )}
       {!processPhotos && (
         <div className=" w-full flex flex-row  pl-2 ">
-          <div className="absolute" style={{ width: "45%", bottom: "80%" }}>
-            <FilmReel snapshots={reel} />
+          <div
+            className="absolute h-[20%]"
+            style={{ width: "45%", bottom: "80%" }}
+          >
+            <div className="h-full overflow-y-auto overflow-x-hidden">
+              <FilmReel snapshots={reel} />
+            </div>
+            <img
+              src="/filmcanister.png"
+              className="absolute shrink w-full -bottom-[80px] z-10"
+            />
           </div>
         </div>
       )}
