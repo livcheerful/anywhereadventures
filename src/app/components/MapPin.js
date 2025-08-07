@@ -70,7 +70,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
                 <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-sky-800 font-bold  bg-sky-100 text-sm">
                   READ
                 </div>
-                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0">
+                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0 text-gray-800">
                   1
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
                 <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-yellow-800 font-bold  bg-amber-100 text-sm">
                   VISIT
                 </div>
-                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0">
+                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0  text-gray-800">
                   2
                 </div>
               </div>

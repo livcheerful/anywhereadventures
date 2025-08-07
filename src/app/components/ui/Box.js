@@ -7,7 +7,7 @@ export default function Box({ isModal, children, className }) {
   return (
     <div className={outerClassNames}>
       <div
-        className={`relative border-2 border-black text-center ${className}`}
+        className={`relative border-2 border-black text-center text-gray-800 ${className}`}
         style={{
           boxShadow: "5px 5px black",
         }}

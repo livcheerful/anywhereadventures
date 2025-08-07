@@ -63,7 +63,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
                 <button
                   className={`${
                     copiedAlert ? "bg-white" : "bg-yellow-300"
-                  } transition-colors px-4 py-1 rounded-lg border-2 border-slate-900 font-black`}
+                  } transition-colors text-gray-800 px-4 py-1 rounded-lg border-2 border-slate-900 font-black`}
                   onClick={() => {
                     navigator.clipboard.writeText(mdx.address);
                     setCopiedAlert(true);

@@ -21,7 +21,9 @@ export default function TextEditor({
     { hex: "#d62409" },
   ];
 
-  const [previewText, setPreviewText] = useState(editingTextSticker?.textSrc);
+  const [previewText, setPreviewText] = useState(
+    editingTextSticker?.textSrc || ""
+  );
   const canvasRef = useRef();
 
   const fontStyles = [
@@ -101,7 +103,7 @@ export default function TextEditor({
         setEditingTextSticker(undefined);
       }}
     >
-      <canvas className="" id="textPreview" ref={canvasRef}></canvas>
+      <canvas className="pb-3" id="textPreview" ref={canvasRef}></canvas>
       <div className="w-full flex flex-row gap-2 px-2 items-center">
         <input
           type="text"

@@ -525,7 +525,7 @@ export default function Scrapbook({
           }}
           className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
         ></div>
-        <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl">
+        <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl text-gray-800">
           Create your travel log
         </div>
       </div>
@@ -671,7 +671,9 @@ export default function Scrapbook({
       {reel && (
         <div className="fixed w-full md:w-limiter z-10 bg-white bottom-0 left-0 h-fit ">
           <div className="flex flex-row p-2 pr-0 gap-4 stretch items-center w-full overflow-clip">
-            <div className="text-md font-bold shrink-0">Background:</div>
+            <div className="text-md font-bold shrink-0 text-gray-800">
+              Background:
+            </div>
             <div className="flex flex-row gap-3 grow overflow-x-auto">
               {backgroundOptions.map((op, i) => {
                 return (
