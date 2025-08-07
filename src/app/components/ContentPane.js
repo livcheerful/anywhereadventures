@@ -39,6 +39,8 @@ export default function ContentPane({
   const [showingMenu, setShowingMenu] = useState(false);
   const menuRef = useRef();
   const menuAnimRef = useRef();
+  const startY = useRef();
+  const isAtTop = useRef();
 
   // Load up the content based on stored home location
   useEffect(() => {
@@ -87,7 +89,6 @@ export default function ContentPane({
         menuRef.current.style.visibility = "visible";
         menuRef.current.style.transform = "translateY(0%)";
       } else {
-        console.log("Shouldn't show");
         menuRef.current.style.visibility = "hidden";
         menuRef.current.style.transform = "translateY(-100%)";
       }
@@ -243,6 +244,19 @@ export default function ContentPane({
           }}
           onClick={() => {
             setPaneOpen(true);
+          }}
+          onTouchStart={(e) => {
+            startY.current = e.touches[0].clientY;
+            console.log(contentPaneRef.current);
+            isAtTop.current = contentPaneRef.current.scrollTop === 0;
+          }}
+          onTouchMove={(e) => {
+            const currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY.current;
+            if (deltaY > 30) {
+              console.log(deltaY);
+              if (isAtTop.current && deltaY > 10) setPaneOpen(false);
+            }
           }}
         >
           <SingleStoryPage

@@ -13,6 +13,7 @@ export default function StickyHeader({
 }) {
   const router = useRouter();
   const io = useRef();
+  const startY = useRef();
 
   function kickOffAnimations() {
     if (!isAdded) {
@@ -41,6 +42,20 @@ export default function StickyHeader({
     <div
       id={`header-${contentSlug}`}
       className="sticky top-0 bg-white z-30 dark:text-black "
+      onTouchStart={(e) => {
+        startY.current = e.touches[0].clientY;
+      }}
+      onTouchMove={(e) => {
+        const currentY = e.touches[0].clientY;
+        const deltaY = currentY - startY.current;
+        console.log("DeltaY");
+        if (deltaY > 30) {
+          setPaneOpen(false);
+        }
+        if (deltaY < -30) {
+          setPaneOpen(true);
+        }
+      }}
     >
       <div
         className={`flex flex-row gap-2 pt-9 pb-2 p-2 w-full items-center`}
