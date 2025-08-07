@@ -329,11 +329,11 @@ export default function Page() {
             }}
           >
             <div className="bg-yellow-200 border-2 border-gray-800 w-fit h-fit top-1/4 relative p-4 rounded-lg drop-shadow-sm flex flex-col gap-2">
-              <div className="text-center">my</div>
+              <div className="text-center text-black">my</div>
               <div className="font-mono text-gray-800 font-bold text-2xl">
                 Anywhere Adventures
               </div>
-              <div className="text-center font-mono text-sm">
+              <div className="text-center font-mono text-sm text-black">
                 with the Library of Congress
               </div>
             </div>
@@ -415,29 +415,6 @@ export default function Page() {
                     </div>
                   );
                 })}
-
-              <a
-                href={`#explore`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const page = document.querySelector(`#explore`);
-                  page.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <div className="flex flex-row gap-2 text-md font-bold">
-                  Explore the library more
-                </div>
-              </a>
-              <a
-                href={`#about`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const page = document.querySelector(`#about`);
-                  page.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <div>About the project</div>
-              </a>
             </div>
           </div>
         </div>

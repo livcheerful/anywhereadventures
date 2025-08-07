@@ -1,6 +1,8 @@
 "use client";
+
+import gsap from "gsap";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   getHomeLocation,
   getNumNewTravelLogPages,
@@ -16,7 +18,55 @@ export default function ContentToolBar({
   setViewingPin,
   mainMap,
 }) {
+  const menuAnimRef = useRef();
   const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
+  useEffect(() => {
+    menuAnimRef.current = gsap.timeline({ paused: true });
+
+    menuAnimRef.current.to(
+      "#line1",
+      {
+        y: 15,
+        rotate: 45,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+      },
+      0
+    );
+
+    menuAnimRef.current.to(
+      "#line3",
+      {
+        y: -15,
+        x: 0,
+        rotate: -45,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+      },
+      0
+    );
+
+    menuAnimRef.current.to(
+      "#line2",
+      {
+        scaleX: 0,
+        opacity: 0,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+      },
+      0
+    );
+  }, []);
+
+  useEffect(() => {
+    showMenuAnim(showingMenu);
+  }, [showingMenu]);
+
+  function showMenuAnim(shouldShow) {
+    const tl = menuAnimRef.current;
+    shouldShow ? tl.play() : tl.reverse();
+  }
+
   return (
     <div
       className="md:w-limiter rounded-t-lg relative text-xs font-bold flex flex-row gap-2 border-t-gray-800 border-t-2 dark:text-black"
@@ -79,7 +129,7 @@ export default function ContentToolBar({
               <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
             </div>
             {getNumNewTravelLogPages() > 0 ? (
-              <div className="bg-red-600 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
+              <div className="bg-red-600 border-2 drop-shadow-lg border-gray-800 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
                 {getNumNewTravelLogPages()}
               </div>
             ) : (

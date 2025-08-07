@@ -8,6 +8,8 @@ import { getHomeLocation, clearAll } from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
+import gsap from "gsap";
+
 // Components
 import SingleStoryPage from "./SingleStoryPage";
 import ContentToolBar from "./ContentToolBar";
@@ -32,6 +34,9 @@ export default function ContentPane({
 
   const [showingMenu, setShowingMenu] = useState(false);
 
+  const menuRef = useRef();
+  const menuAnimRef = useRef();
+
   // Load up the content based on stored home location
   useEffect(() => {
     const homeLoc = getHomeLocation();
@@ -51,7 +56,34 @@ export default function ContentPane({
 
       setContentIndex(index);
     });
+
+    if (!menuRef.current) return;
+    menuAnimRef.current = gsap.timeline({ paused: true });
+
+    menuAnimRef.current.fromTo(
+      menuRef.current,
+      { y: "-100%" },
+      {
+        y: "0%",
+        duration: 0.4,
+        ease: "power2.out",
+        onReverseComplete: () => {
+          menuRef.current.style.visibility = "hidden";
+        },
+        onStart: () => {
+          menuRef.current.style.visibility = "visible";
+        },
+      }
+    );
   }, []);
+
+  useEffect(() => {
+    showMenuAnim(showingMenu);
+  }, [showingMenu]);
+  function showMenuAnim(shouldShow) {
+    const tl = menuAnimRef.current;
+    shouldShow ? tl.play() : tl.reverse();
+  }
 
   useEffect(() => {
     if (!contentArray) return;
@@ -113,31 +145,35 @@ export default function ContentPane({
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
 
-      {showingMenu && (
-        <div className="fixed pt-24 z-50 top-16 left-0 w-full md:w-limiter h-dvh bg-white">
-          <div className="bg-white flex flex-col gap-2 p-2">
-            <button
-              className="p-2 bg-yellow-200"
-              onClick={() => {
-                updateRoute(`/`);
-                setShowingWelcomeScreen(true);
-              }}
-            >
-              <div>Change Home Location</div>
-            </button>
-            <button
-              className="p-2 bg-yellow-200"
-              onClick={() => {
-                clearAll();
-                setShowingMenu(false);
-                setShowingWelcomeScreen(true);
-              }}
-            >
-              <div>Clear all data</div>
-            </button>
-          </div>
+      <div
+        className="fixed pt-16 z-40 top-0 left-0 w-full md:w-limiter h-dvh bg-white overflow-y-auto"
+        ref={menuRef}
+        style={{ visibility: "hidden" }}
+      >
+        <div className="bg-white flex flex-col gap-2 p-2 text-black font-bold">
+          <div>Menu</div>
+          <hr className="border-gray-300 pb-2"></hr>
+          <button
+            className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+            onClick={() => {
+              updateRoute(`/`);
+              setShowingWelcomeScreen(true);
+            }}
+          >
+            <div>Change home location</div>
+          </button>
+          <button
+            className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+            onClick={() => {
+              clearAll();
+              setShowingMenu(false);
+              setShowingWelcomeScreen(true);
+            }}
+          >
+            <div>Clear all data</div>
+          </button>
         </div>
-      )}
+      </div>
       <div className="h-full w-full">
         <div className="w-full text-2xl font-bold fixed z-40">
           {contentArray && (
@@ -155,7 +191,9 @@ export default function ContentPane({
         </div>
         <div
           aria-disabled={!paneOpen}
-          className="w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10"
+          className={`w-full h-full  overflow-x-hidden ${
+            paneOpen ? "overflow-y-auto" : "overflow-y-hidden"
+          } flex flex-col z-10`}
           style={{ paddingTop: "0rem" }}
           id="content-pane"
           ref={contentPaneRef}
