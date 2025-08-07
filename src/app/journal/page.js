@@ -14,6 +14,7 @@ import {
   haveSeenJournal,
   setHaveSeenJournal,
   clearNewTravelLogPages,
+  getSettings,
 } from "../lib/storageHelpers";
 import CornerTape from "../components/CornerTape";
 
@@ -214,10 +215,21 @@ export default function Page() {
 
   useEffect(() => {
     if (!tocAnim.current) return;
-    if (showToc) {
-      tocAnim.current.play();
+    const reduceAnims = getSettings().reduceAnims;
+    if (reduceAnims) {
+      if (showToc) {
+        tocRef.current.style.transform = "translateY(0%)";
+        tocRef.current.style.visibility = "visible";
+      } else {
+        tocRef.current.style.transform = "translateY(100%)";
+        tocRef.current.style.visibility = "hidden";
+      }
     } else {
-      tocAnim.current.reverse();
+      if (showToc) {
+        tocAnim.current.play();
+      } else {
+        tocAnim.current.reverse();
+      }
     }
   }, [showToc]);
 
@@ -231,10 +243,11 @@ export default function Page() {
         }
         if (location.slug == refSlug) {
           found = true;
+          const reduceAnim = getSettings().reduceAnims;
           const page = document.querySelector(
             `#page-${category.tag}-${Math.floor(j / 4)}`
           );
-          page.scrollIntoView({ behavior: "smooth" });
+          page.scrollIntoView({ behavior: reduceAnim ? "auto" : "smooth" });
         }
       });
     });

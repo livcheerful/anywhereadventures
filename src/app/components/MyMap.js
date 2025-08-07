@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getMdx } from "../lib/clientPostHelper";
 import MapPin from "./MapPin";
+import { getSettings } from "../lib/storageHelpers";
 
 function updateMarkerTabAccess(visible) {
   if (visible) {
@@ -142,13 +143,24 @@ function MapManager(map, router) {
   }
 
   this.flyTo = function (center, zoom, shift = true) {
-    this.map.flyTo({
-      center: shift
-        ? shiftUp(center[1], center[0], zoom || 13)
-        : { lat: center[1], lon: center[0] },
-      zoom: zoom || 13,
-      speed: 0.9,
-    });
+    const reduceAnim = getSettings().reduceAnims;
+    if (reduceAnim) {
+      console.log("HI vivian");
+      this.map.jumpTo({
+        center: shift
+          ? shiftUp(center[1], center[0], zoom || 13)
+          : { lat: center[1], lon: center[0] },
+        zoom: zoom || 13,
+      });
+    } else {
+      this.map.flyTo({
+        center: shift
+          ? shiftUp(center[1], center[0], zoom || 13)
+          : { lat: center[1], lon: center[0] },
+        zoom: zoom || 13,
+        speed: 0.9,
+      });
+    }
   };
 
   this.updatePins = function (pinCb, chosenLocation, router) {

@@ -1,10 +1,13 @@
 "use client";
 
 // Libraries
-import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Map, Marker, Popup } from "maplibre-gl";
-import { getHomeLocation, clearAll } from "../lib/storageHelpers";
+import {
+  getHomeLocation,
+  clearAll,
+  getSettings,
+  updateSettings,
+} from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
@@ -31,9 +34,9 @@ export default function ContentPane({
   const scrollValue = useRef();
   const contentPaneRef = useRef(null);
   const [contentArray, setContentArray] = useState(undefined);
+  const [reduceAnims, setReduceAnims] = useState(false);
 
   const [showingMenu, setShowingMenu] = useState(false);
-
   const menuRef = useRef();
   const menuAnimRef = useRef();
 
@@ -75,13 +78,27 @@ export default function ContentPane({
         },
       }
     );
+    setReduceAnims(getSettings().reduceAnims);
   }, []);
 
   useEffect(() => {
-    showMenuAnim(showingMenu);
+    if (reduceAnims) {
+      if (showingMenu) {
+        menuRef.current.style.visibility = "visible";
+        menuRef.current.style.transform = "translateY(0%)";
+      } else {
+        console.log("Shouldn't show");
+        menuRef.current.style.visibility = "hidden";
+        menuRef.current.style.transform = "translateY(-100%)";
+      }
+    } else {
+      showMenuAnim(showingMenu);
+    }
   }, [showingMenu]);
+
   function showMenuAnim(shouldShow) {
     const tl = menuAnimRef.current;
+
     shouldShow ? tl.play() : tl.reverse();
   }
 
@@ -140,7 +157,9 @@ export default function ContentPane({
   return (
     <div
       style={{ height: paneHeight }}
-      className={`md:w-limiter w-screen bg-white fixed self-end drop-shadow-2xl shadow-t-lg  flex flex-col transition-[height] ease-linear z-10`}
+      className={`md:w-limiter w-screen bg-white fixed self-end drop-shadow-2xl shadow-t-lg  flex flex-col ${
+        reduceAnims ? "transition-none" : "transition-[height]"
+      } ease-linear z-10`}
       id="pane"
     >
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
@@ -152,6 +171,21 @@ export default function ContentPane({
       >
         <div className="bg-white flex flex-col gap-2 p-2 text-black font-bold">
           <div>Menu</div>
+          <hr className="border-gray-300 pb-2"></hr>
+          <label
+            className="flex flex-row gap-2 items-baseline"
+            onClick={() => {}}
+          >
+            <input
+              type="checkbox"
+              checked={reduceAnims}
+              onChange={(e) => {
+                updateSettings("reduceAnims", e.target.checked);
+                setReduceAnims(e.target.checked);
+              }}
+            />
+            <div>Reduce animations</div>
+          </label>
           <hr className="border-gray-300 pb-2"></hr>
           <button
             className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
@@ -172,6 +206,12 @@ export default function ContentPane({
           >
             <div>Clear all data</div>
           </button>
+          <hr className="border-gray-300 pb-2"></hr>
+          <div className="bg-lime-300 p-2 rounded-lg border-2 border-gray-800 flex flex-col items-center">
+            <h1 className="text-2xl">CTA</h1>
+            <div>words words words words words words words words </div>
+            <a className="underline">Nominate your hometown</a>
+          </div>
         </div>
       </div>
       <div className="h-full w-full">

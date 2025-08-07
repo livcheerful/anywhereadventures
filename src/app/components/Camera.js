@@ -28,23 +28,6 @@ export default function Camera({
     });
   }, [cameraDirection]);
 
-  function flash() {
-    const tl = gsap.timeline();
-    tl.fromTo(
-      "#white-background",
-      {
-        backgroundColor: "#FFFFFF99",
-      },
-      {
-        duration: 0.2,
-        backgroundColor: "#FFFFFFFF",
-      }
-    );
-    tl.to("#white-background", {
-      duration: 0.5,
-      backgroundColor: "#FFFFFF99",
-    });
-  }
   useEffect(() => {
     const w = Math.min(window.innerWidth - 10, 400);
     const h = w / aspectRatio;

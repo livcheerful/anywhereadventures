@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { getAllLCItems } from "../lib/storageHelpers";
+import { getAllLCItems, getSettings } from "../lib/storageHelpers";
 import LOCItem from "./mdx/LOCItem";
 
 export default function JournalNav({
@@ -80,15 +80,49 @@ export default function JournalNav({
   }, []);
 
   useEffect(() => {
-    showMenuAnim(showToc);
+    const reduceAnims = getSettings().reduceAnims;
+    if (reduceAnims) {
+      const l1 = document.querySelector("#line1");
+      const l2 = document.querySelector("#line2");
+      const l3 = document.querySelector("#line3");
+      if (showToc) {
+        l1.style.transform = "translateY(15px) rotate(45deg)";
+        l1.style.transformOrigin = "50% 50%";
+
+        l2.style.visibility = "hidden";
+
+        l3.style.transform = "translateY(-15px) rotate(-45deg)";
+        l3.style.transformOrigin = "50% 50%";
+      } else {
+        l1.style.transform = "translateY(0px) rotate(-0deg)";
+        l1.style.transformOrigin = "50% 50%";
+
+        l2.style.visibility = "visible";
+
+        l3.style.transform = "translateY(0px) rotate(0deg)";
+        l3.style.transformOrigin = "50% 50%";
+      }
+    } else {
+      showMenuAnim(showToc);
+    }
   }, [showToc]);
 
   useEffect(() => {
     if (!savedItemsAnim.current) return;
-    if (showSavedItems) {
-      savedItemsAnim.current.play();
+    const reduceAnims = getSettings().reduceAnims;
+    if (reduceAnims) {
+      if (showSavedItems) {
+        savedItemsRef.current.style.visibility = "visible";
+        savedItemsRef.current.style.transform = "translateY(0%)";
+      } else {
+        savedItemsRef.current.style.visibility = "hidden";
+      }
     } else {
-      savedItemsAnim.current.reverse();
+      if (showSavedItems) {
+        savedItemsAnim.current.play();
+      } else {
+        savedItemsAnim.current.reverse();
+      }
     }
   }, [showSavedItems]);
 

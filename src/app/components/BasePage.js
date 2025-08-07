@@ -4,7 +4,6 @@ import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
 import { useState, useEffect } from "react";
-import { updateRoute } from "../lib/routeHelpers";
 import { locationData, savedLocationToObj } from "../lib/locationHelpers";
 import { getHomeLocation } from "../lib/storageHelpers";
 export default function BasePage({ entranceSlug }) {

@@ -6,6 +6,8 @@ import interact from "interactjs";
 import StickyNote from "./StickyNote";
 import Toast from "./Toast";
 import LibraryIndexCard from "./scrapbook/LibraryIndexCard";
+import { getSettings } from "../lib/storageHelpers";
+
 function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
   this.x = x0;
   this.y = y0;
@@ -39,10 +41,19 @@ export default function ScrapbookDeskPage({
 }) {
   const [showToast, setShowToast] = useState(false);
   useGSAP(() => {
+    const reduceAnims = getSettings().reduceAnims;
     const tl = gsap.timeline();
     new ScrapbookDeskItem(document.querySelector("#collageImage"), -6, 0, 0);
-    tl.fromTo("#pens", { top: "-33rem", delay: 1 }, { top: "-4rem" });
-    tl.fromTo("#backToMap", { bottom: "-30rem" }, { bottom: "-10rem" });
+    tl.fromTo(
+      "#pens",
+      { top: "-33rem", delay: 1 },
+      { top: "-4rem", duration: reduceAnims ? 0 : 0.5 }
+    );
+    tl.fromTo(
+      "#backToMap",
+      { bottom: "-30rem" },
+      { bottom: "-10rem", duration: reduceAnims ? 0 : 0.5 }
+    );
     tl.fromTo(
       ".stickyNote",
       { zoom: 2, visibility: "hidden" },
@@ -50,6 +61,7 @@ export default function ScrapbookDeskPage({
         zoom: 1,
         visibility: "visible",
         stagger: ".1",
+        duration: reduceAnims ? 0 : 0.5,
       }
     );
     tl.fromTo(
@@ -58,6 +70,7 @@ export default function ScrapbookDeskPage({
       {
         scale: 1,
         display: "block",
+        duration: reduceAnims ? 0 : 0.5,
         onComplete: () => {
           setShowToast(true);
           setTimeout(() => {

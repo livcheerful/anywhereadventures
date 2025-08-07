@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import {
   getHomeLocation,
   getNumNewTravelLogPages,
+  getSettings,
 } from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 export default function ContentToolBar({
@@ -20,6 +21,8 @@ export default function ContentToolBar({
 }) {
   const menuAnimRef = useRef();
   const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
+  const [reduceAnims, setReduceAnims] = useState(false);
+
   useEffect(() => {
     menuAnimRef.current = gsap.timeline({ paused: true });
 
@@ -56,10 +59,34 @@ export default function ContentToolBar({
       },
       0
     );
+    setReduceAnims(getSettings().reduceAnims);
   }, []);
 
   useEffect(() => {
-    showMenuAnim(showingMenu);
+    if (reduceAnims) {
+      const l1 = document.querySelector("#line1");
+      const l2 = document.querySelector("#line2");
+      const l3 = document.querySelector("#line3");
+      if (showingMenu) {
+        l1.style.transform = "translateY(15px) rotate(45deg)";
+        l1.style.transformOrigin = "50% 50%";
+
+        l2.style.visibility = "hidden";
+
+        l3.style.transform = "translateY(-15px) rotate(-45deg)";
+        l3.style.transformOrigin = "50% 50%";
+      } else {
+        l1.style.transform = "translateY(0px) rotate(-0deg)";
+        l1.style.transformOrigin = "50% 50%";
+
+        l2.style.visibility = "visible";
+
+        l3.style.transform = "translateY(0px) rotate(0deg)";
+        l3.style.transformOrigin = "50% 50%";
+      }
+    } else {
+      showMenuAnim(showingMenu);
+    }
   }, [showingMenu]);
 
   function showMenuAnim(shouldShow) {

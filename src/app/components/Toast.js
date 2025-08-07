@@ -1,15 +1,23 @@
 "use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { getSettings } from "../lib/storageHelpers";
 
 export default function Toast({ message }) {
   const toastRef = useRef();
+
   useEffect(() => {
-    gsap.fromTo(
-      toastRef.current,
-      { yPercent: 100, opacity: 0.2 },
-      { yPercent: 0, duration: 0.4, opacity: 1 }
-    );
+    const reduceAnims = getSettings().reduceAnims;
+    if (reduceAnims) {
+      toastRef.current.style.opacity = 1;
+      toastRef.current.style.transform = "translateY(0%)";
+    } else {
+      gsap.fromTo(
+        toastRef.current,
+        { yPercent: 100, opacity: 0.2 },
+        { yPercent: 0, duration: 0.4, opacity: 1 }
+      );
+    }
   }, []);
   return (
     <div

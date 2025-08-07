@@ -14,6 +14,8 @@ const homeLocationKey = "homeLoc";
 const journalViewedKey = "journalViewed";
 const cameraViewedKey = "cameraViewed";
 const newTravelLogPagesKey = "newTravelLogPages";
+const settingsKey = "userSettings";
+
 export function clearAll() {
   if (typeof window !== "undefined") {
     localStorage.removeItem(localStorageKey);
@@ -24,6 +26,7 @@ export function clearAll() {
     localStorage.removeItem(homeLocationKey);
     localStorage.removeItem(journalViewedKey);
     localStorage.removeItem(cameraViewedKey);
+    localStorage.removeItem(settingsKey);
   }
 }
 
@@ -41,6 +44,21 @@ function getAll(key) {
 export function isAdded(storageKey, key) {
   const locs = getAll(storageKey);
   return Object.keys(locs).includes(key);
+}
+
+export function updateSettings(key, value) {
+  let settings = JSON.parse(localStorage.getItem(settingsKey)) || {};
+  settings[key] = value;
+  localStorage.setItem(settingsKey, JSON.stringify(settings));
+}
+
+export function getSettings() {
+  const mediaQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  return (
+    JSON.parse(localStorage.getItem(settingsKey)) || { reduceAnims: mediaQuery }
+  );
 }
 
 export function getAllLCItems() {
