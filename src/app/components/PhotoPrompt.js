@@ -71,13 +71,13 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
                 >
                   {copiedAlert ? "Copied!" : "Copy"}
                 </button>
-                <a
+                <Link
                   className="bg-yellow-300 text-black"
                   href={`maps://?q=${mdx.latlon[0]},${mdx.latlon[1]}}`}
                   target="_blank"
                 >
                   Open in maps
-                </a>
+                </Link>
               </div>
               <hr className="my-2 border-amber-600 "></hr>
             </>
