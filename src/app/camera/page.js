@@ -63,8 +63,11 @@ export default function Page({}) {
         "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
       }
     >
-      <div className="flex flex-col gap-1">
-        <img src="/placeholderThumbnail.png" className="w-full" />
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t1.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
         <h1 className="font-bold text-lg">Create your travel log</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
@@ -91,8 +94,11 @@ export default function Page({}) {
         "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
       }
     >
-      <div className="flex flex-col gap-1">
-        <img src="/placeholderThumbnail.png" className="w-full" />
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t2.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
         <h1 className="font-bold text-lg">Gather photos</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
@@ -125,8 +131,11 @@ export default function Page({}) {
         "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between bg-lime-200"
       }
     >
-      <div className="flex flex-col gap-1">
-        <img src="/placeholderThumbnail.png" className="w-full" />
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t3.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
         <h1 className="font-bold text-lg">Customize</h1>
         <div className="px-2">
           Fill up your camera roll with photos and then collage and save your
