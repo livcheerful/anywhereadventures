@@ -100,6 +100,7 @@ export default function ContentPane({
   function showMenuAnim(shouldShow) {
     const tl = menuAnimRef.current;
 
+    if (!tl) return;
     shouldShow ? tl.play() : tl.reverse();
   }
 
