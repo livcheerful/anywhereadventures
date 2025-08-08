@@ -227,6 +227,7 @@ export default function JournalNav({
                     <a
                       className="flex flex-col items-center justify-center  underline decoration-white bg-emerald-700 font-mono text-xs font-bold text-white p-1 border-2 border-gray-900 drop-shadow-sm rounded-b-lg"
                       href={item.link}
+                      target="_blank"
                     >
                       <div>source</div>
                     </a>

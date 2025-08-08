@@ -84,7 +84,7 @@ export default function StickyHeader({
                     false
                   );
                 }}
-                className="bg-yellow-50 rounded-md border-2 border-gray-800 text-lg px-1 drop-shadow-lg"
+                className="bg-yellow-200 rounded-md border-2 border-gray-800 text-lg px-1 drop-shadow-2xl"
               >
                 📍
               </button>

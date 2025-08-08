@@ -20,7 +20,11 @@ export default function LibraryIndexCard({ stickerObj }) {
         <div className="flex flex-row gap-2">
           <img className="w-1/3" src={stickerObj.image} />
           <div className="flex flex-col">
-            <a className="underline font-bold" href={stickerObj.linkOut}>
+            <a
+              className="underline font-bold"
+              target="_blank"
+              href={stickerObj.linkOut}
+            >
               {"View source >"}
             </a>
           </div>
