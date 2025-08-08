@@ -73,7 +73,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
                 </button>
                 <a
                   className="bg-yellow-300 text-black"
-                  href="geo:124.028582,-29.201930"
+                  href={`maps://?q=${mdx.latlon[0]},${mdx.latlon[1]}}`}
                   target="_blank"
                 >
                   Open in maps
