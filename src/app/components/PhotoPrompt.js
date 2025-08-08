@@ -71,6 +71,13 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
                 >
                   {copiedAlert ? "Copied!" : "Copy"}
                 </button>
+                <a
+                  className="bg-yellow-300 text-black"
+                  href="geo:124.028582,-29.201930"
+                  target="_blank"
+                >
+                  Open in maps
+                </a>
               </div>
               <hr className="my-2 border-amber-600 "></hr>
             </>
