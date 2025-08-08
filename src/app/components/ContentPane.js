@@ -241,9 +241,7 @@ export default function ContentPane({
         </div>
         <div
           aria-disabled={!paneOpen}
-          className={`w-full h-full  overflow-x-hidden ${
-            paneOpen ? "overflow-y-auto" : "overflow-y-hidden"
-          } flex flex-col z-10`}
+          className={`w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10`}
           style={{ paddingTop: "0rem" }}
           id="content-pane"
           ref={contentPaneRef}
