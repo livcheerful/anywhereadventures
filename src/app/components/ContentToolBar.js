@@ -108,7 +108,7 @@ export default function ContentToolBar({
             onClick={(e) => {
               setShowingMenu(!showingMenu);
             }}
-            className={`bg-lime-200 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl `}
+            className={`bg-lime-200 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black `}
           >
             <svg
               viewBox="0 0 100 100"
