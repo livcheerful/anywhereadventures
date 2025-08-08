@@ -144,54 +144,58 @@ export default function ContentToolBar({
               />
             </svg>
           </button>
-          <a
-            className="relative w-1/5 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
-            href={`/journal?id=${post.slug}`}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            <div className=" overflow-clip ">
-              <div style={{ fontSize: "30px" }}>📒</div>
-              <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
-            </div>
-            {getNumNewTravelLogPages() > 0 ? (
-              <div className="bg-red-600 border-2 drop-shadow-lg border-gray-800 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
-                {getNumNewTravelLogPages()}
+          {!showingMenu && (
+            <a
+              className="relative w-1/5 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
+              href={`/journal?id=${post.slug}`}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className=" overflow-clip ">
+                <div style={{ fontSize: "30px" }}>📒</div>
+                <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
               </div>
-            ) : (
-              <></>
-            )}
-          </a>
+              {getNumNewTravelLogPages() > 0 ? (
+                <div className="bg-red-600 border-2 drop-shadow-lg border-gray-800 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
+                  {getNumNewTravelLogPages()}
+                </div>
+              ) : (
+                <></>
+              )}
+            </a>
+          )}
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setPaneOpen(false);
-              const homeLocation = getHomeLocation();
-              const homeLocationData = savedLocationToObj(homeLocation);
-              setViewingPin(undefined);
-              mainMap.flyTo(
-                homeLocationData.center,
-                homeLocationData.zoom,
-                false
-              );
-            }}
-            className="flex flex-col items-center justify-end w-3/5 font-bold text-yellow-900 overflow-clip border-2 border-gray-800 border-t-0 bg-yellow-300 rounded-b-2xl drop-shadow-2xl cursor-default text-center text-xs"
-          >
-            <div style={{ fontSize: "30px" }}>🗺️</div>
-            <div style={{ fontSize: "10px" }}>BACK TO MAP</div>
-          </button>
+          {!showingMenu && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setPaneOpen(false);
+                const homeLocation = getHomeLocation();
+                const homeLocationData = savedLocationToObj(homeLocation);
+                setViewingPin(undefined);
+                mainMap.flyTo(
+                  homeLocationData.center,
+                  homeLocationData.zoom,
+                  false
+                );
+              }}
+              className="flex flex-col items-center justify-end w-3/5 font-bold text-yellow-900 overflow-clip border-2 border-gray-800 border-t-0 bg-yellow-300 rounded-b-2xl drop-shadow-2xl cursor-default text-center text-xs"
+            >
+              <div style={{ fontSize: "30px" }}>🗺️</div>
+              <div style={{ fontSize: "10px" }}>BACK TO MAP</div>
+            </button>
+          )}
 
-          {paneOpen && (
+          {paneOpen && !showingMenu && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 setPaneOpen(false);
               }}
-              className=" w-8 h-8 p-1 flex items-center justify-center bg-transparent text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
+              className="bg-white/80 w-8 h-8 p-1 flex items-center justify-center text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                 <path d="M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z" />

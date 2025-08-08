@@ -17,6 +17,7 @@ import gsap from "gsap";
 import SingleStoryPage from "./SingleStoryPage";
 import ContentToolBar from "./ContentToolBar";
 import { updateRoute } from "../lib/routeHelpers";
+import Footer from "./Footer";
 
 export default function ContentPane({
   entranceSlug,
@@ -146,7 +147,7 @@ export default function ContentPane({
 
   function getPaneHeight() {
     if (!paneOpen) {
-      return "23%";
+      return "20%";
     } else {
       return "100%";
     }
@@ -167,52 +168,59 @@ export default function ContentPane({
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
 
       <div
-        className="fixed pt-16 z-40 top-0 left-0 w-full md:w-limiter h-dvh bg-white overflow-y-auto"
+        className="fixed pt-16 z-40 top-0 left-0 w-full md:w-limiter h-dvh bg-white overflow-y-auto border-2 border-black  rounded-b-md"
         ref={menuRef}
         style={{ visibility: "hidden" }}
       >
-        <div className="bg-white flex flex-col gap-2 p-2 text-black font-bold">
-          <div>Menu</div>
-          <hr className="border-gray-300 pb-2"></hr>
-          <label
-            className="flex flex-row gap-2 items-baseline"
-            onClick={() => {}}
-          >
-            <input
-              type="checkbox"
-              checked={reduceAnims}
-              onChange={(e) => {
-                updateSettings("reduceAnims", e.target.checked);
-                setReduceAnims(e.target.checked);
+        <div className="bg-white flex flex-col justify-between h-full gap-2 text-black font-bold overflow-y-auto">
+          <div className="p-2 flex flex-col gap-2">
+            <div>Menu</div>
+            <hr className="border-gray-300 pb-2"></hr>
+            <label
+              className="flex flex-row gap-2 items-baseline"
+              onClick={() => {}}
+            >
+              <input
+                type="checkbox"
+                checked={reduceAnims}
+                onChange={(e) => {
+                  updateSettings("reduceAnims", e.target.checked);
+                  setReduceAnims(e.target.checked);
+                }}
+              />
+              <div>Reduce animations</div>
+            </label>
+            <hr className="border-gray-300 pb-2"></hr>
+            <button
+              className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+              onClick={() => {
+                updateRoute(`/`);
+                setShowingWelcomeScreen(true);
               }}
-            />
-            <div>Reduce animations</div>
-          </label>
-          <hr className="border-gray-300 pb-2"></hr>
-          <button
-            className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
-            onClick={() => {
-              updateRoute(`/`);
-              setShowingWelcomeScreen(true);
-            }}
-          >
-            <div>Change home location</div>
-          </button>
-          <button
-            className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
-            onClick={() => {
-              clearAll();
-              setShowingMenu(false);
-              setShowingWelcomeScreen(true);
-            }}
-          >
-            <div>Clear all data</div>
-          </button>
-          <hr className="border-gray-300 pb-2"></hr>
-          <div className="bg-lime-300 p-2 rounded-lg border-2 border-gray-800 flex flex-col items-center">
-            <h1 className="text-2xl">CTA</h1>
-            <div>words words words words words words words words </div>
-            <a className="underline">Nominate your hometown</a>
+            >
+              <div>Change home location</div>
+            </button>
+            <button
+              className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+              onClick={() => {
+                clearAll();
+                setShowingMenu(false);
+                setShowingWelcomeScreen(true);
+              }}
+            >
+              <div>Clear all data</div>
+            </button>
+            <hr className="border-gray-300 pb-2"></hr>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="px-2">
+              <div className="bg-lime-300 p-2  rounded-lg border-2 border-gray-800 flex flex-col items-center">
+                <h1 className="text-2xl">CTA</h1>
+                <div>words words words words words words words words </div>
+                <a className="underline">Nominate your hometown</a>
+              </div>
+            </div>
+            <Footer />
           </div>
         </div>
       </div>
