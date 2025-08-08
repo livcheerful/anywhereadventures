@@ -6,7 +6,7 @@ import interact from "interactjs";
 import StickyNote from "./StickyNote";
 import Toast from "./Toast";
 import LibraryIndexCard from "./scrapbook/LibraryIndexCard";
-import { getSettings } from "../lib/storageHelpers";
+import { getSettings, clearPhotoReel } from "../lib/storageHelpers";
 
 function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
   this.x = x0;
@@ -76,6 +76,7 @@ export default function ScrapbookDeskPage({
           setTimeout(() => {
             setShowToast(false);
           }, 1500);
+          clearPhotoReel();
         },
       }
     );

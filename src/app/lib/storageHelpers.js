@@ -15,6 +15,7 @@ const journalViewedKey = "journalViewed";
 const cameraViewedKey = "cameraViewed";
 const newTravelLogPagesKey = "newTravelLogPages";
 const settingsKey = "userSettings";
+const photoReelKey = "photoReel";
 
 export function clearAll() {
   if (typeof window !== "undefined") {
@@ -27,7 +28,37 @@ export function clearAll() {
     localStorage.removeItem(journalViewedKey);
     localStorage.removeItem(cameraViewedKey);
     localStorage.removeItem(settingsKey);
+    localStorage.removeItem(photoReelKey);
   }
+}
+
+export function addPhotoToReel(locationId, photoObj) {
+  let photoData = JSON.parse(localStorage.getItem(photoReelKey));
+
+  if (!photoData || photoData.locationId != locationId) {
+    photoData = {
+      locationId: locationId,
+      photos: [],
+    };
+  }
+  console.log(photoObj);
+  photoData.photos.push(photoObj);
+
+  localStorage.setItem(photoReelKey, JSON.stringify(photoData));
+}
+
+export function getPhotoReel(locationId) {
+  let photoData = JSON.parse(localStorage.getItem(photoReelKey));
+  console.log(photoData);
+  if (!photoData || photoData.locationId != locationId) {
+    return [];
+  } else {
+    return photoData.photos;
+  }
+}
+
+export function clearPhotoReel() {
+  localStorage.removeItem(photoReelKey);
 }
 
 function getAll(key) {

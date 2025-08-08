@@ -15,6 +15,8 @@ import {
   haveSeenCamera,
   setHaveSeenCamera,
   addNewTravelLogPage,
+  addPhotoToReel,
+  getPhotoReel,
 } from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
@@ -41,6 +43,12 @@ export default function Page({}) {
   }, []);
 
   useEffect(() => {
+    if (!locationId) return;
+    const photosSoFar = getPhotoReel(locationId);
+    const parsedPhotos = photosSoFar.map((p, i) => {
+      return { ...p, timeTaken: new Date(p.timeTaken) };
+    });
+    setReel(parsedPhotos);
     getMdx([locationId], (res) => {
       setMdx(res[0]);
     });
@@ -383,7 +391,9 @@ export default function Page({}) {
                   }
 
                   const photo = snapPhoto();
-                  newPhotos.push({ img: photo, timeTaken: new Date() });
+                  const photoObj = { img: photo, timeTaken: new Date() };
+                  newPhotos.push(photoObj);
+                  addPhotoToReel(locationId, photoObj);
                   setReel(newPhotos);
                 } else {
                   // process photos
