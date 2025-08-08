@@ -243,12 +243,14 @@ export default function Page({}) {
             className="absolute h-[20%]"
             style={{ width: "45%", bottom: "80%" }}
           >
-            <div className="h-full overflow-y-auto overflow-x-hidden">
-              <FilmReel snapshots={reel} />
+            <div className="h-full relative overflow-y-auto overflow-x-hidden flex flex-col-reverse">
+              <div>
+                <FilmReel snapshots={reel} />
+              </div>
             </div>
             <img
               src="/filmcanister.png"
-              className="absolute shrink w-full -bottom-[80px] z-10"
+              className="absolute shrink w-full top-[90%] left-[4%] z-10"
             />
           </div>
         </div>
