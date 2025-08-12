@@ -6,7 +6,7 @@ import Toast from "./Toast";
 export default function TableOfContents({ setShowToc, setCopiedAlert }) {
   const homeLoc = getHomeLocation();
   const locData = savedLocationToObj(homeLoc);
-  const allLocs = locData.locs;
+  const allLocs = locData?.locs;
   function ListItem({ mdx, i }) {
     return (
       <div className="bg-gray-50  drop-shadow-lg flex flex-col pt-2 gap-2 w-full">
@@ -86,7 +86,7 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
       </div>
       <hr className="w-full border-slate-700 "></hr>
       <div className="flex flex-col gap-2">
-        {allLocs.map((locMdx, i) => {
+        {allLocs?.map((locMdx, i) => {
           return (
             <div key={i}>
               <ListItem mdx={locMdx} i={i} />
