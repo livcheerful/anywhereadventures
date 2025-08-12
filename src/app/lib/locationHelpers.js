@@ -9,6 +9,7 @@ import {
   allByCategory,
 } from "./MdxQueries";
 export function savedLocationToObj(l) {
+  if (!l) return {};
   const locsArray = Object.keys(locationData).map((name) => {
     return locationData[name];
   });
