@@ -215,7 +215,7 @@ export default function ContentPane({
                 <div className="text-gray-400 font-mono text-xs font-light">
                   Home Location
                 </div>
-                <div className="flex flex-row items-baseline gap-2">
+                <div className="flex flex-row items-baseline gap-4">
                   <div className="text-md text-gray-800 ">{homeLoc}</div>
                   <button
                     className="underline text-black"
