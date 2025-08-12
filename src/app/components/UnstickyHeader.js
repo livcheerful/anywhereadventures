@@ -27,7 +27,7 @@ export default function UnstickyHeader({
           <div className="flex flex-row w-full overflow-x-auto gap-2 px-2 text-nowrap text-xs pb-2  font-bold">
             <a
               href={`/journal?id=${post.slug}`}
-              className="bg-lime-300 rounded-2xl drop-shadow-sm px-4 py-2 flex flex-col items-center justify-center"
+              className="bg-lime-300 text-black  active:bg-lime-400 rounded-2xl drop-shadow-sm px-4 py-2 flex flex-col items-center justify-center"
             >
               See log
             </a>
@@ -43,7 +43,7 @@ export default function UnstickyHeader({
                   false
                 );
               }}
-              className="bg-yellow-300 rounded-2xl drop-shadow-md px-4 py-2"
+              className="bg-yellow-300 text-black  active:bg-yellow-400 rounded-2xl drop-shadow-md px-4 py-2"
             >
               Show on map
             </button>
@@ -52,7 +52,7 @@ export default function UnstickyHeader({
                 navigator.clipboard.writeText(post.address);
                 setToastMessage("Copied address to clipboard");
               }}
-              className="border-yellow-300 active:bg-yellow-400 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+              className="border-yellow-300 active:bg-yellow-400 text-black bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
             >
               Copy address
             </button>
@@ -63,7 +63,7 @@ export default function UnstickyHeader({
                 );
                 setToastMessage("Copied URL to clipboard");
               }}
-              className="border-yellow-300 active:bg-yellow-400 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2"
+              className="border-yellow-300 active:bg-yellow-400 text-black bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2"
             >
               Share
             </button>

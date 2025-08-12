@@ -36,19 +36,19 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
               );
               page.scrollIntoView({ behavior: "smooth" });
             }}
-            className="bg-lime-300 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="bg-lime-300 text-black active:text-white rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             See Log
           </button>
           <a
             href={`/${mdx.slug}`}
-            className="bg-yellow-300 rounded-2xl drop-shadow-md px-4 py-2 flex flex-col items-center justify-center"
+            className="bg-yellow-300 text-black active:text-white rounded-2xl drop-shadow-md px-4 py-2 flex flex-col items-center justify-center"
           >
             Read Story
           </a>
           <a
             href={`/${mdx.slug}`}
-            className="border-yellow-300 active:bg-yellow-400 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="border-yellow-300 active:bg-yellow-400 text-black bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             Show on map
           </a>
@@ -57,7 +57,7 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
               navigator.clipboard.writeText(mdx.address);
               setCopiedAlert("Copied address to clipboard");
             }}
-            className="border-yellow-300 active:bg-yellow-400 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="border-yellow-300 active:bg-yellow-400 text-black bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             Copy address
           </button>
