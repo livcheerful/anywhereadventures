@@ -103,70 +103,71 @@ export default function ContentToolBar({
     >
       <div className="h-2 p-2 w-full rounded-t-lg"></div>
       {
-        <div className="absolute w-full gap-2 h-10 left-0 flex flex-row justify-start pl-2  items-stretch cursor-default ">
-          <button
-            onClick={(e) => {
-              setShowingMenu(!showingMenu);
-            }}
-            className={`bg-lime-200 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black `}
-          >
-            <svg
-              viewBox="0 0 100 100"
-              id="menu-icon"
-              className="fill-gray-800 w-6 h-6 grow"
-            >
-              <rect
-                className="line"
-                id="line1"
-                x="20"
-                y="30"
-                width="60"
-                height="8"
-                rx="5"
-              />
-              <rect
-                className="line"
-                id="line2"
-                x="20"
-                y="45"
-                width="60"
-                height="8"
-                rx="5"
-              />
-              <rect
-                className="line"
-                id="line3"
-                x="20"
-                y="60"
-                width="60"
-                height="8"
-                rx="5"
-              />
-            </svg>
-          </button>
-          {!showingMenu && (
-            <a
-              className="relative w-1/5 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
-              href={`/journal?id=${post.slug}`}
+        <div className="absolute w-full gap-2 h-10 left-0 flex flex-row justify-between pl-2  items-stretch cursor-default ">
+          <div className="w-3/4 gap-2 flex flex-row">
+            <button
               onClick={(e) => {
-                e.stopPropagation();
+                setShowingMenu(!showingMenu);
               }}
+              className={`bg-lime-200 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black `}
             >
-              <div className=" overflow-clip ">
-                <div style={{ fontSize: "30px" }}>📒</div>
-                <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
-              </div>
-              {getNumNewTravelLogPages() > 0 ? (
-                <div className="bg-red-600 border-2 drop-shadow-lg border-gray-800 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
-                  {getNumNewTravelLogPages()}
+              <svg
+                viewBox="0 0 100 100"
+                id="menu-icon"
+                className="fill-gray-800 w-6 h-6 grow"
+              >
+                <rect
+                  className="line"
+                  id="line1"
+                  x="20"
+                  y="30"
+                  width="60"
+                  height="8"
+                  rx="5"
+                />
+                <rect
+                  className="line"
+                  id="line2"
+                  x="20"
+                  y="45"
+                  width="60"
+                  height="8"
+                  rx="5"
+                />
+                <rect
+                  className="line"
+                  id="line3"
+                  x="20"
+                  y="60"
+                  width="60"
+                  height="8"
+                  rx="5"
+                />
+              </svg>
+            </button>
+            {!showingMenu && (
+              <a
+                className="relative w-1/2 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
+                href={`/journal?id=${post.slug}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <div className=" overflow-clip ">
+                  <div style={{ fontSize: "30px" }}>📒</div>
+                  <div style={{ fontSize: "8px" }}>TRAVEL LOG</div>
                 </div>
-              ) : (
-                <></>
-              )}
-            </a>
-          )}
-
-          {!showingMenu && (
+                {getNumNewTravelLogPages() > 0 ? (
+                  <div className="bg-red-600 border-2 drop-shadow-lg border-gray-800 text-white font-bold absolute -right-2 -bottom-2 rounded-full w-6 h-6 flex flex-col items-center justify-center">
+                    {getNumNewTravelLogPages()}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </a>
+            )}
+          </div>
+          {/*           {!showingMenu && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -186,7 +187,7 @@ export default function ContentToolBar({
               <div style={{ fontSize: "30px" }}>🗺️</div>
               <div style={{ fontSize: "10px" }}>BACK TO MAP</div>
             </button>
-          )}
+          )} */}
 
           {paneOpen && !showingMenu && (
             <button
@@ -195,7 +196,8 @@ export default function ContentToolBar({
                 e.preventDefault();
                 setPaneOpen(false);
               }}
-              className="bg-white/80 w-8 h-8 p-1 flex items-center justify-center text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
+              style={{ alignSelf: "end" }}
+              className=" bg-white/80 w-8 h-8 p-1 flex items-center justify-center text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                 <path d="M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z" />

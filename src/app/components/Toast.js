@@ -22,7 +22,7 @@ export default function Toast({ message }) {
   return (
     <div
       ref={toastRef}
-      className="fixed z-[100] text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg"
+      className="fixed z-[120] text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       {message}
     </div>

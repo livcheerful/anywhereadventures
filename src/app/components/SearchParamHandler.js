@@ -3,14 +3,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 export default function SearchParamHandler({ paramsToFetch, cb }) {
   const searchParams = useSearchParams({});
-
-  let res = {};
-  paramsToFetch.forEach((p, i) => {
-    const val = searchParams.get(p);
-    res[p] = val;
-  });
-
-  cb(res);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const kvp = {};
+    paramsToFetch.forEach((key) => {
+      kvp[key] = searchParams.get(key);
+    });
+    cb(kvp);
+  }, [searchParams, paramsToFetch, cb]);
   return <></>;
 }

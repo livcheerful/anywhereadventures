@@ -4,10 +4,12 @@ import JournalPage from "../components/JournalPage";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Box from "../components/ui/Box";
 import BaseButton from "../components/ui/BaseButton";
+import TableOfContents from "../components/TableOfContents";
+import Toast from "../components/Toast";
 import JournalNav from "../components/JournalNav";
 import { categoryInfo } from "../content/meta";
 import gsap from "gsap";
-import { savedLocationToObj } from "../lib/locationHelpers";
+import { savedLocationToObj, locationData } from "../lib/locationHelpers";
 import {
   getHomeLocation,
   hasLocationBeenVisited,
@@ -24,13 +26,19 @@ export default function Page() {
   );
 
   const [showToc, setShowToc] = useState(false);
-  const [pagesExist, setPagesExist] = useState(false);
   const [refSlug, setRefSlug] = useState(undefined);
   const [showSavedItems, setShowSavedItems] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
   const [screenIdx, setScreenIdx] = useState(0);
   const tocRef = useRef();
   const tocAnim = useRef();
+  const [copiedAlert, setCopiedAlert] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCopiedAlert(false);
+    }, 2000);
+  }, [copiedAlert]);
 
   useEffect(() => {
     setShowIntro(!haveSeenJournal());
@@ -117,12 +125,15 @@ export default function Page() {
         >
           Next
         </BaseButton>
+        <a href="/" className="underline text-sm">
+          Back to map
+        </a>
       </div>
     </div>,
-    <div className="flex flex-col justify-between h-full pb-2">
+    <div className="flex flex-col justify-between h-full pb-2  overflow-y-auto">
       <div className="flex flex-col">
         <img
-          src="/placeholderThumbnail.png"
+          src="/illustrations/swipe.gif"
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">
@@ -235,22 +246,19 @@ export default function Page() {
 
   useEffect(() => {
     let found = false;
-    if (!categories) return;
-    [...categories.values()].forEach((category, i) => {
-      category.locations.forEach((location, j) => {
-        if (found) {
-          return;
-        }
-        if (location.slug == refSlug) {
-          found = true;
-          const reduceAnim = getSettings().reduceAnims;
-          const page = document.querySelector(
-            `#page-${category.tag}-${Math.floor(j / 4)}`
-          );
-          page.scrollIntoView({ behavior: reduceAnim ? "auto" : "smooth" });
-        }
-      });
+
+    const homeLoc = getHomeLocation();
+    const locData = savedLocationToObj(homeLoc);
+    const reduceAnim = getSettings().reduceAnims;
+    const allLocs = locData.locs;
+
+    if (!refSlug) return;
+
+    const index = allLocs.findIndex((l) => {
+      return l.slug == refSlug;
     });
+    const page = document.querySelector(`#page-${Math.floor(index / 2) + 1}`);
+    page.scrollIntoView({ behavior: reduceAnim ? "auto" : "smooth" });
   }, [refSlug]);
 
   function handleSearchParams(kvp) {
@@ -259,39 +267,46 @@ export default function Page() {
 
   function makeJournalPages() {
     let pageCount = 1;
-    if (!categories || !categories.values()) return;
-    const allPages = [...categories.values()].map((category, i) => {
-      const catMeta = categoryInfo[category.tag];
-      const numberPerPage = 4;
-      const numOfPagesNeeded = Math.ceil(
-        category.locations.length / numberPerPage
-      );
-      const pages = [];
-      for (let i = 0; i < numOfPagesNeeded; i++) {
-        const base = i * numberPerPage;
-        pages.push(
-          <div
-            key={i}
-            className="w-full shrink-0"
-            id={`page-${category.tag}-${i}`}
-          >
-            <JournalPage
-              pageNumber={pageCount++}
-              category={category}
-              categoryMeta={catMeta}
-              locations={category.locations.slice(base, base + numberPerPage)}
-            />
-          </div>
-        );
+
+    const homeLoc = getHomeLocation();
+    const locData = savedLocationToObj(homeLoc);
+    const allLocs = locData.locs;
+
+    const allPages = [];
+
+    function countVisitedLocations() {
+      let visitedCount = 0;
+      for (let i = 0; i < allLocs.length; i++) {
+        const slug = allLocs[i].slug;
+        if (hasLocationBeenVisited(slug)) {
+          visitedCount++;
+        }
       }
-      return pages;
-    });
+      return visitedCount;
+    }
+
+    for (let i = 0; i < allLocs.length; i += 2) {
+      allPages.push(
+        <div
+          key={pageCount}
+          className="w-full shrink-0"
+          id={`page-${pageCount}`}
+        >
+          <JournalPage
+            pageNumber={pageCount++}
+            locations={[allLocs[i], allLocs[i + 1]]}
+            totalNumLocs={allLocs.length}
+            numVisited={countVisitedLocations()}
+          />
+        </div>
+      );
+    }
 
     return allPages;
   }
 
   function transformSavedLocationsToCategories() {
-    const homeLoc = getHomeLocation() || "World";
+    const homeLoc = getHomeLocation();
     const locData = savedLocationToObj(homeLoc);
 
     const gatheredCategoriesMap = new Map();
@@ -358,80 +373,15 @@ export default function Page() {
             style={{ visibility: "hidden" }}
             className="fixed z-10 left-0 top-0 bg-white w-full md:w-limiter h-full overflow-y-auto drop-shadow-2xl"
           >
-            <div className="w-full shrink-0 snap-start flex flex-col p-2 text-black min-h-dvh bg-yellow-100 pb-20">
-              <div className="w-full  flex flex-row justify-between p-2 text-xs text-gray-700 font-mono">
-                <div className="font-bold text-xs text-gray-700 font-mono">
-                  Table of Contents
-                </div>
-              </div>
-              <hr className="w-full border-slate-700 pb-4"></hr>
-              {categories &&
-                [...categories.values()].map((category, i) => {
-                  const catMeta = categoryInfo[category.tag];
-                  return (
-                    <div className="pb-2" key={i}>
-                      <a
-                        href={`#page-${category.tag}-0`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setShowToc(false);
-                          const page = document.querySelector(
-                            `#page-${category.tag}-0`
-                          );
-                          page.scrollIntoView({ behavior: "smooth" });
-                        }}
-                      >
-                        <div className="font-mono text-gray-900 font-bold underline">
-                          {catMeta?.title}
-                        </div>
-                      </a>
-                      {category?.locations.map((categoryLocation, j) => {
-                        if (!categoryLocation) return;
-                        return (
-                          <div
-                            key={j}
-                            className="text-md font-mono text-gray-800 flex flex-row w-full items-center gap-2 justify-between "
-                          >
-                            <div>
-                              {hasLocationBeenVisited(categoryLocation.slug)
-                                ? "✅"
-                                : "⬜️"}
-                            </div>
-                            <a
-                              className="overflow-x-clip shrink-0 pointer"
-                              href={`/${categoryLocation.slug}`}
-                            >
-                              <div className="flex-none h-fit text-sm w-fit text-wrap">
-                                {categoryLocation.locationTitle ||
-                                  categoryLocation.title}
-                              </div>
-                            </a>
-                            <div className="grow w-0 overflow-clip text-gray-600 text-xs">
-                              ...........................................................................
-                            </div>
-                            <a
-                              className="overflow-x-clip shrink-0 cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setShowToc(false);
-                                const page = document.querySelector(
-                                  `#page-${category.tag}-${Math.floor(j / 4)}`
-                                );
-                                page.scrollIntoView({ behavior: "smooth" });
-                              }}
-                            >
-                              <div className="font-black">{"LOG"}</div>
-                            </a>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-            </div>
+            <TableOfContents
+              setShowToc={setShowToc}
+              copiedAlert={copiedAlert}
+              setCopiedAlert={setCopiedAlert}
+            />
           </div>
         </div>
       </div>
+      {copiedAlert && <Toast message={copiedAlert} />}
       <JournalNav
         showToc={showToc}
         setShowToc={setShowToc}
