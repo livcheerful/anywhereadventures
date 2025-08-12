@@ -52,7 +52,7 @@ export default function UnstickyHeader({
                 navigator.clipboard.writeText(post.address);
                 setToastMessage("Copied address to clipboard");
               }}
-              className="border-yellow-300 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+              className="border-yellow-300 active:bg-yellow-400 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
             >
               Copy address
             </button>
@@ -63,7 +63,7 @@ export default function UnstickyHeader({
                 );
                 setToastMessage("Copied URL to clipboard");
               }}
-              className="border-yellow-300 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2"
+              className="border-yellow-300 active:bg-yellow-400 bg-white border-2 rounded-2xl drop-shadow-sm px-4 py-2"
             >
               Share
             </button>

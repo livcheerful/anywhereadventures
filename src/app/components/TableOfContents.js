@@ -48,7 +48,7 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
           </a>
           <a
             href={`/${mdx.slug}`}
-            className="border-yellow-300 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="border-yellow-300 active:bg-yellow-400 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             Show on map
           </a>
@@ -57,7 +57,7 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
               navigator.clipboard.writeText(mdx.address);
               setCopiedAlert("Copied address to clipboard");
             }}
-            className="border-yellow-300 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="border-yellow-300 active:bg-yellow-400 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             Copy address
           </button>
