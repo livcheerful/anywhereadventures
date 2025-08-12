@@ -38,15 +38,16 @@ export default function ContentPane({
   const [reduceAnims, setReduceAnims] = useState(false);
 
   const [showingMenu, setShowingMenu] = useState(false);
+  const [showClearWarning, setShowClearWarning] = useState(false);
   const menuRef = useRef();
   const menuAnimRef = useRef();
   const startY = useRef();
   const isAtTop = useRef();
 
+  const homeLoc = getHomeLocation();
+  const homeLocationData = savedLocationToObj(homeLoc);
   // Load up the content based on stored home location
   useEffect(() => {
-    const homeLoc = getHomeLocation();
-    const homeLocationData = savedLocationToObj(homeLoc);
     if (!homeLocationData) return;
     const locSlugs = homeLocationData.locs.map((l) => {
       return l.slug;
@@ -196,25 +197,28 @@ export default function ContentPane({
               <div>Reduce animations</div>
             </label>
             <hr className="border-gray-300 pb-2"></hr>
+            <div className="text-black">Home Location</div>
+            <div className="flex flex-row ">
+              <div className="text-md text-gray-800 font-mono">{homeLoc}</div>
+              <button
+                className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+                onClick={() => {
+                  updateRoute(`/`);
+                  setShowingWelcomeScreen(true);
+                }}
+              >
+                <div>Change home location</div>
+              </button>
+            </div>
             <button
-              className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+              className="p-2 bg-red-600 text-white rounded-lg border-2 border-gray-800"
               onClick={() => {
-                updateRoute(`/`);
-                setShowingWelcomeScreen(true);
-              }}
-            >
-              <div>Change home location</div>
-            </button>
-            <button
-              className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
-              onClick={() => {
-                clearAll();
-                setShowingMenu(false);
-                setShowingWelcomeScreen(true);
+                setShowClearWarning(true);
               }}
             >
               <div>Clear all data</div>
             </button>
+
             <hr className="border-gray-300 pb-2"></hr>
           </div>
           <div className="flex flex-col gap-2">
@@ -229,6 +233,40 @@ export default function ContentPane({
           </div>
         </div>
       </div>
+      {showClearWarning && (
+        <div className="fixed bg-white/90 w-full h-full flex flex-col items-center justify-center z-50 p-4">
+          <div className="bg-white flex flex-col gap-2 w-4/5 p-3 border-2 border-gray-800 ">
+            <div className="font-bold text-center text-xl pb-2">
+              Are you sure you want to clear all your data?
+            </div>
+            <div>
+              This action cannot be undone. All your saved visits will be
+              deleted.
+            </div>
+            <div className="flex flex-row gap-2 w-full">
+              <button
+                className="bg-red-600 font-bold text-white py-1 px-2 grow border-2 border-gray-800 rounded-lg"
+                onClick={() => {
+                  clearAll();
+                  setShowingMenu(false);
+                  setShowingWelcomeScreen(true);
+                  setShowClearWarning(false);
+                }}
+              >
+                Yes, delete
+              </button>
+              <button
+                onClick={() => {
+                  setShowClearWarning(false);
+                }}
+                className="bg-white font-bold grow py-1 px-2 border-2 border-gray-400 rounded-lg"
+              >
+                No, take me back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="h-full w-full">
         <div className="w-full text-2xl font-bold fixed z-40">
           {contentArray && (
