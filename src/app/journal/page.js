@@ -247,7 +247,8 @@ export default function Page() {
   useEffect(() => {
     let found = false;
 
-    const homeLoc = getHomeLocation();
+    if (!refSlug) return;
+    const homeLoc = getHomeLocation() || "World";
     const locData = savedLocationToObj(homeLoc);
     const reduceAnim = getSettings().reduceAnims;
     const allLocs = locData.locs;
@@ -268,8 +269,8 @@ export default function Page() {
   function makeJournalPages() {
     let pageCount = 1;
 
-    const homeLoc = getHomeLocation();
-    const locData = savedLocationToObj(homeLoc) || "World";
+    const homeLoc = getHomeLocation() || "World";
+    const locData = savedLocationToObj(homeLoc);
     const allLocs = locData.locs;
 
     const allPages = [];
@@ -306,7 +307,7 @@ export default function Page() {
   }
 
   function transformSavedLocationsToCategories() {
-    const homeLoc = getHomeLocation();
+    const homeLoc = getHomeLocation() || "World";
     const locData = savedLocationToObj(homeLoc);
 
     const gatheredCategoriesMap = new Map();
