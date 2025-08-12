@@ -3,11 +3,7 @@ import { getHomeLocation } from "../lib/storageHelpers";
 import { savedLocationToObj } from "../lib/locationHelpers";
 import { useState, useEffect } from "react";
 import Toast from "./Toast";
-export default function TableOfContents({
-  setShowToc,
-  copiedAlert,
-  setCopiedAlert,
-}) {
+export default function TableOfContents({ setShowToc, setCopiedAlert }) {
   const homeLoc = getHomeLocation();
   const locData = savedLocationToObj(homeLoc);
   const allLocs = locData.locs;

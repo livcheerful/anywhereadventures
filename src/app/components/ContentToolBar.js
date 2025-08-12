@@ -148,7 +148,7 @@ export default function ContentToolBar({
             {!showingMenu && (
               <a
                 className="relative w-1/2 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
-                href={`/journal?id=${post.slug}`}
+                href={`/journal`}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

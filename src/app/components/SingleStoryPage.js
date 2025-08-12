@@ -50,6 +50,7 @@ export default function SingleStoryPage({
   setContentIndex,
   setViewingPin,
   mainMap,
+  setToastMessage,
 }) {
   if (!contentArray) {
     return (
@@ -88,11 +89,17 @@ export default function SingleStoryPage({
         setPaneOpen={setPaneOpen}
         mainMap={mainMap}
       />
-      <div className="flex justify-between gap-1 py-4 bg-white px-2">
+      <div className="flex justify-between gap-1 pt-4 pb-2 bg-white px-2">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>
-      <UnstickyHeader post={post} />
+
+      <UnstickyHeader
+        post={post}
+        setToastMessage={setToastMessage}
+        mainMap={mainMap}
+        setPaneOpen={setPaneOpen}
+      />
       <PostContent post={post} />
       <div className="w-full p-4 relative">
         {!hasLocationBeenVisited(slug) && (

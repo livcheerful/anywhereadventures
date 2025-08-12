@@ -17,6 +17,7 @@ import gsap from "gsap";
 import SingleStoryPage from "./SingleStoryPage";
 import ContentToolBar from "./ContentToolBar";
 import { updateRoute } from "../lib/routeHelpers";
+import Toast from "./Toast";
 import Footer from "./Footer";
 
 export default function ContentPane({
@@ -40,6 +41,7 @@ export default function ContentPane({
 
   const [showingMenu, setShowingMenu] = useState(false);
   const [showClearWarning, setShowClearWarning] = useState(false);
+  const [toastMessage, setToastMessage] = useState(undefined);
   const menuRef = useRef();
   const menuAnimRef = useRef();
   const startY = useRef();
@@ -47,6 +49,13 @@ export default function ContentPane({
 
   const homeLoc = getHomeLocation();
   const homeLocationData = savedLocationToObj(homeLoc);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setToastMessage(undefined);
+    }, 2000);
+  }, [toastMessage]);
+
   // Load up the content based on stored home location
   useEffect(() => {
     if (!homeLocationData) return;
@@ -175,62 +184,103 @@ export default function ContentPane({
       <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
 
       <div
-        className="fixed pt-16 z-40 top-0 left-0 w-full md:w-limiter h-dvh bg-white overflow-y-auto border-2 border-black  rounded-b-md"
+        className="fixed pt-12 z-40 top-0 left-0 w-full md:w-limiter h-dvh bg-white overflow-y-auto border-2 border-black  rounded-b-md"
         ref={menuRef}
         style={{ visibility: "hidden" }}
       >
         <div className="bg-white flex flex-col justify-between h-full gap-2 text-black font-bold overflow-y-auto">
-          <div className="p-2 flex flex-col gap-2">
-            <div>Menu</div>
-            <hr className="border-gray-300 pb-2"></hr>
-            <label
-              className="flex flex-row gap-2 items-baseline"
-              onClick={() => {}}
-            >
-              <input
-                type="checkbox"
-                checked={reduceAnims}
-                onChange={(e) => {
-                  updateSettings("reduceAnims", e.target.checked);
-                  setReduceAnims(e.target.checked);
-                }}
-              />
-              <div>Reduce animations</div>
-            </label>
-            <hr className="border-gray-300 pb-2"></hr>
-            <div className="text-black">Home Location</div>
-            <div className="flex flex-row items-baseline gap-2">
-              <div className="text-md text-gray-800 font-mono">{homeLoc}</div>
-              <button
-                className="underline text-black"
-                onClick={() => {
-                  updateRoute(`/`);
-                  setShowingWelcomeScreen(true);
-                  setWelcomeScreenStartIndex(2);
-                }}
+          <div className="flex flex-col pb-3">
+            <div className="w-full text-center text-lg">Menu</div>
+            <hr></hr>
+            <div>
+              <div className=" bg-lime-100 px-2 pt-3">Settings</div>
+              <hr className="border-gray-300 pb-2"></hr>
+            </div>
+            <div className="flex flex-col gap-2 px-2">
+              <label
+                className="flex flex-row gap-2 items-baseline"
+                onClick={() => {}}
               >
-                <div>Change</div>
-              </button>
+                <input
+                  type="checkbox"
+                  checked={reduceAnims}
+                  onChange={(e) => {
+                    updateSettings("reduceAnims", e.target.checked);
+                    setReduceAnims(e.target.checked);
+                  }}
+                />
+                <div>Reduce animations</div>
+              </label>
+              <div>
+                <div className="text-gray-400 font-mono text-xs font-light">
+                  Home Location
+                </div>
+                <div className="flex flex-row items-baseline gap-2">
+                  <div className="text-md text-gray-800 ">{homeLoc}</div>
+                  <button
+                    className="underline text-black"
+                    onClick={() => {
+                      updateRoute(`/`);
+                      setShowingWelcomeScreen(true);
+                      setWelcomeScreenStartIndex(2);
+                    }}
+                  >
+                    <div>Change</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 text-gray-700">
+            <div>
+              <hr className="border-gray-300"></hr>
+              <div className="px-2 text-black bg-lime-100 pt-3">
+                Want more Anywhere Adventures?
+              </div>
+              <hr></hr>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="px-2">
+                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm font-normal">
+                  <h1 className=" py-2 font-bold">Try doing research</h1>
+                  <hr className="w-full border-lime-300 pb-2"></hr>
+                  <div>words words words words words words words words </div>
+                  <a className="underline font-light pt-2">
+                    Link to research guide
+                  </a>
+                </div>
+              </div>
+
+              <div className="px-2">
+                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm  font-normal">
+                  <h1 className="py-2 font-bold">
+                    Have a story you want to share?
+                  </h1>
+                  <hr className="w-full border-lime-300 pb-2"></hr>
+                  <div>words words words words words words words words </div>
+                </div>
+              </div>
+              <div className="px-2">
+                <div className="bg-lime-300 p-2  rounded-lg border-2 border-gray-800 flex flex-col items-center drop-shadow-sm">
+                  <h1 className="text-2xl py-3 font-bold">
+                    Nominate your hometown
+                  </h1>
+                  <hr className="w-full border-lime-600 pb-2"></hr>
+                  <div>words words words words words words words words </div>
+                  <a className="underline font-light pt-2">
+                    Nominate your hometown
+                  </a>
+                </div>
+              </div>
             </div>
             <button
-              className="p-2 bg-red-600 text-white rounded-lg border-2 border-gray-800"
+              className="p-2 m-2 bg-red-600 text-white rounded-lg border-2 border-gray-800"
               onClick={() => {
                 setShowClearWarning(true);
               }}
             >
               <div>Clear all data</div>
             </button>
-
-            <hr className="border-gray-300 pb-2"></hr>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="px-2">
-              <div className="bg-lime-300 p-2  rounded-lg border-2 border-gray-800 flex flex-col items-center">
-                <h1 className="text-2xl">CTA</h1>
-                <div>words words words words words words words words </div>
-                <a className="underline">Nominate your hometown</a>
-              </div>
-            </div>
             <Footer />
           </div>
         </div>
@@ -299,7 +349,6 @@ export default function ContentPane({
           }}
           onTouchStart={(e) => {
             startY.current = e.touches[0].clientY;
-            console.log(contentPaneRef.current);
             isAtTop.current = contentPaneRef.current.scrollTop === 0;
           }}
           onTouchMove={(e) => {
@@ -324,7 +373,9 @@ export default function ContentPane({
             setContentIndex={setContentIndex}
             setViewingPin={setViewingPin}
             mainMap={mainMap}
+            setToastMessage={setToastMessage}
           />
+          {toastMessage && <Toast message={toastMessage} />}
         </div>
       </div>
     </div>

@@ -375,7 +375,6 @@ export default function Page() {
           >
             <TableOfContents
               setShowToc={setShowToc}
-              copiedAlert={copiedAlert}
               setCopiedAlert={setCopiedAlert}
             />
           </div>

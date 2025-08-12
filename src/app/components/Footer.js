@@ -10,9 +10,10 @@ export default function Footer() {
           <div>Terms of Use</div>
         </div>
       </div>
-      <div className="text-sm text-center italic">
+      <div className="text-sm text-center text-pretty italic">
         Anywhere Adventures is a project from the 2025 Innovator in Residence at
-        the Library of Congress, Vivian Li.
+        the Library of Congress, Vivian Li and the Library of Congress's Labs
+        team.
       </div>
     </div>
   );

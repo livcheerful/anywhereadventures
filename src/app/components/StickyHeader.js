@@ -58,7 +58,7 @@ export default function StickyHeader({
       }}
     >
       <div
-        className={`flex flex-row gap-2 pt-9 pb-2 p-2 w-full items-center`}
+        className={`flex flex-row gap-2 pt-9 pb-2  w-full items-center`}
         style={{
           backgroundSize: "cover",
           backgroundImage: `linear-gradient(
@@ -68,39 +68,16 @@ export default function StickyHeader({
 ), url('${post.cardImage}')`,
         }}
       >
-        <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">
-          <div className="flex flex-row justify-between items-end">
-            <div className="font-mono font-black px-2 text-lg">
+        <div className="flex flex-col pt-3 md:pt-6 w-full">
+          <div className="flex flex-row justify-between items-baseline px-2">
+            <div className="font-mono font-black text-lg italic">
               {post.locationTitle}
             </div>
             <div className="font-mono text-xs text-gray-700 flex flex-row gap-2 items-baseline">
-              <div>
-                {hasLocationBeenVisited(post.slug) ? "VISITED" : "UNVISITED"}
-              </div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setPaneOpen(false);
-                  mainMap.flyTo(
-                    [post.latlon[1], post.latlon[0]],
-                    post.zoom,
-                    false
-                  );
-                }}
-                className="bg-yellow-200 rounded-md border-2 border-gray-800 text-lg px-1 drop-shadow-2xl"
-              >
-                📍
-              </button>
+              {hasLocationBeenVisited(post.slug) ? "VISITED" : "UNVISITED"}
             </div>
           </div>
           <hr className="border-black w-full "></hr>
-          <div className="font-mono text-xs flex flex-row justify-between px-2 text-gray-700 ">
-            <div>{post.neighborhood}</div>
-            <div>{`${post.latlon[0].toFixed(4)}, ${post.latlon[1].toFixed(
-              4
-            )}`}</div>
-          </div>
         </div>
       </div>
     </div>
