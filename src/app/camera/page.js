@@ -84,7 +84,7 @@ export default function Page({}) {
           Next
         </BaseButton>
         <a href={`/${locationId}`} className="underline text-sm">
-          Back to reading
+          Back to map
         </a>
       </div>
     </Box>,

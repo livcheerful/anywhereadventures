@@ -15,8 +15,9 @@ export default function WelcomeScreen({
   setChosenLocation,
   setPaneOpen,
   mainMap,
+  startIndex = 0,
 }) {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(startIndex);
   const [clickedLocation, setClickedLocation] = useState();
 
   useEffect(() => {

@@ -28,6 +28,7 @@ export default function ContentPane({
   setCurrentSlug,
   setViewingPin,
   setShowingWelcomeScreen,
+  setWelcomeScreenStartIndex,
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
 
@@ -198,16 +199,17 @@ export default function ContentPane({
             </label>
             <hr className="border-gray-300 pb-2"></hr>
             <div className="text-black">Home Location</div>
-            <div className="flex flex-row ">
+            <div className="flex flex-row items-baseline gap-2">
               <div className="text-md text-gray-800 font-mono">{homeLoc}</div>
               <button
-                className="p-2 bg-yellow-200 rounded-lg border-2 border-gray-800"
+                className="underline text-black"
                 onClick={() => {
                   updateRoute(`/`);
                   setShowingWelcomeScreen(true);
+                  setWelcomeScreenStartIndex(2);
                 }}
               >
-                <div>Change home location</div>
+                <div>Change</div>
               </button>
             </div>
             <button

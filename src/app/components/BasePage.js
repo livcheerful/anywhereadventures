@@ -20,6 +20,8 @@ export default function BasePage({ entranceSlug }) {
     savedLocationToObj(savedLocation) || locationData.all
   );
 
+  const [welcomeScreenStartIndex, setWelcomeScreenStartIndex] = useState(0);
+
   const [mainMap, setMainMap] = useState(undefined);
   // Elements to control map
   const [viewingPin, setViewingPin] = useState(undefined);
@@ -85,6 +87,7 @@ export default function BasePage({ entranceSlug }) {
           currentSlug={currentSlug}
           setCurrentSlug={setCurrentSlug}
           setShowingWelcomeScreen={setShowingWelcomeScreen}
+          setWelcomeScreenStartIndex={setWelcomeScreenStartIndex}
           setViewingPin={setViewingPin}
         />
       )}
@@ -95,6 +98,7 @@ export default function BasePage({ entranceSlug }) {
           setChosenLocation={setChosenLocation}
           mainMap={mainMap}
           setPaneOpen={setPaneOpen}
+          startIndex={welcomeScreenStartIndex}
         />
       )}
     </div>

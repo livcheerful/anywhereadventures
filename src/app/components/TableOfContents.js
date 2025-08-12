@@ -13,12 +13,21 @@ export default function TableOfContents({
   const allLocs = locData.locs;
   function ListItem({ mdx, i }) {
     return (
-      <div className="bg-gray-50  drop-shadow-lg flex flex-col pt-2 gap-2">
+      <div className="bg-gray-50  drop-shadow-lg flex flex-col pt-2 gap-2 w-full">
         <div className=" flex flex-row">
-          <img src={mdx.cardImage} className="h-32 w-2/5 rounded-r-lg" />
-          <div className="flex flex-col px-2 ">
+          <img
+            src={mdx.cardImage}
+            className="h-32 w-2/5 rounded-r-lg shrink-0"
+          />
+          <div className="flex flex-col px-2 w-full">
             <div className="font-bold text-lg">{mdx.locationTitle}</div>
-            <div className="text-xs">{mdx.neighborhood}</div>
+            <hr className="w-full"></hr>
+            <div className="text-xs text-gray-500 self-end">
+              {mdx.neighborhood}
+            </div>
+            <div className="text-gray-700 font-mono text-sm text-pretty leading-4">
+              {mdx.address}
+            </div>
           </div>
         </div>
         <div className="flex flex-row w-full overflow-x-auto gap-2 pb-4 px-2 text-nowrap text-sm  font-bold">
@@ -45,7 +54,7 @@ export default function TableOfContents({
             href={`/${mdx.slug}`}
             className="border-yellow-300 bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
-            Open in map
+            Show on map
           </a>
           <button
             onClick={() => {

@@ -134,11 +134,11 @@ export default function JournalNav({
   return (
     <div className="absolute bottom-0 h-14 overflow-clip z-10 w-full md:w-limiter">
       <div className="absolute bottom-0 flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-green-800 border-t-black border-2 z-10">
-        <a className="grow" href="/">
-          <div className="text-sm font-black  text-white underline">
+        <div className="text-sm font-black grow text-white underline">
+          <a className="" href="/">
             BACK TO MAP
-          </div>
-        </a>
+          </a>
+        </div>
         <button
           onClick={() => {
             setShowSavedItems(!showSavedItems);
