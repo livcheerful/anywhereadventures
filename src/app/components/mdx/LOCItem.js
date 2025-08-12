@@ -36,14 +36,14 @@ export default function LOCItem({ image, linkOut, caption, allowSave, alt }) {
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
           <a href={linkOut} target="_blank" rel="noopener noreferrer">
-            <button className="h-full relative cursor-pointer font-mono bg-emerald-700 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg text-sm">
+            <button className="h-full relative cursor-pointer font-mono bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg text-sm">
               source
             </button>
           </a>
         )}
         {allowSave && (
           <button
-            className="font-bold cursor-pointer relative bg-emerald-700 p-2 -top-1 drop-shadow-2xl text-white rounded-b-lg h-fit"
+            className="font-bold cursor-pointer relative bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl text-white rounded-b-lg h-fit"
             onClick={(e) => {
               setShowToast(true);
               setTimeout(() => {

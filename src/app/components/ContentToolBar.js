@@ -109,7 +109,7 @@ export default function ContentToolBar({
               onClick={(e) => {
                 setShowingMenu(!showingMenu);
               }}
-              className={`bg-lime-200 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black `}
+              className={`bg-lime-200 active:bg-lime-300 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black `}
             >
               <svg
                 viewBox="0 0 100 100"
@@ -147,7 +147,7 @@ export default function ContentToolBar({
             </button>
             {!showingMenu && (
               <a
-                className="relative w-1/2 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
+                className="relative w-1/2 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 active:bg-green-900 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
                 href={`/journal`}
                 onClick={(e) => {
                   e.stopPropagation();

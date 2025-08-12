@@ -27,7 +27,13 @@ function Button(label, enabled, action) {
     classList.push(...["bg-gray-100/70", "text-gray-400", "border-gray-300"]);
   } else {
     classList.push(
-      ...["bg-amber-300", "text-gray-800", "border-gray-900", "drop-shadow-sm"]
+      ...[
+        "bg-amber-300",
+        "active:bg-amber-400",
+        "text-gray-800",
+        "border-gray-900",
+        "drop-shadow-sm",
+      ]
     );
   }
 

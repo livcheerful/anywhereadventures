@@ -27,9 +27,9 @@ export default function TextEditor({
   const canvasRef = useRef();
 
   const fontStyles = [
-    { display: "Simple", font: "16px Arial" },
-    { display: "Serif", font: "16px Georgia" },
-    { display: "Handwritten", font: "16px VivianFont" },
+    { display: "Simple", font: "24px Arial" },
+    { display: "Serif", font: "24px Georgia" },
+    { display: "Handwritten", font: "24px VivianFont" },
   ];
   function drawTextToCanvas(canvas, text, ts) {
     var ctx = canvas.getContext("2d");

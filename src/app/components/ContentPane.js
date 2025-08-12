@@ -274,7 +274,7 @@ export default function ContentPane({
               </div>
             </div>
             <button
-              className="p-2 m-2 bg-red-600 text-white rounded-lg border-2 border-gray-800"
+              className="p-2 m-2 bg-red-600 active:bg-red-700 text-white rounded-lg border-2 border-gray-800"
               onClick={() => {
                 setShowClearWarning(true);
               }}
@@ -297,7 +297,7 @@ export default function ContentPane({
             </div>
             <div className="flex flex-row gap-2 w-full">
               <button
-                className="bg-red-600 font-bold text-white py-1 px-2 grow border-2 border-gray-800 rounded-lg"
+                className="bg-red-600 active:bg-red-700 font-bold text-white py-1 px-2 grow border-2 border-gray-800 rounded-lg"
                 onClick={() => {
                   clearAll();
                   setShowingMenu(false);
@@ -311,7 +311,7 @@ export default function ContentPane({
                 onClick={() => {
                   setShowClearWarning(false);
                 }}
-                className="bg-white font-bold grow py-1 px-2 border-2 border-gray-400 rounded-lg"
+                className="bg-white active:bg-lime-100 font-bold grow py-1 px-2 border-2 border-gray-400 rounded-lg"
               >
                 No, take me back
               </button>

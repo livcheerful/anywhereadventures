@@ -120,7 +120,7 @@ export default function JournalClient({ params }) {
           onClick={() => {
             setScreenIdx(screenIdx + 1);
           }}
-          classes={["bg-lime-200"]}
+          classes={["bg-lime-200", "active:bg-lime-300"]}
         >
           Next
         </BaseButton>
@@ -150,7 +150,7 @@ export default function JournalClient({ params }) {
           onClick={() => {
             setScreenIdx(screenIdx + 1);
           }}
-          classes={["bg-lime-200"]}
+          classes={["bg-lime-200", "active:bg-lime-300"]}
         >
           Next
         </BaseButton>
@@ -186,7 +186,7 @@ export default function JournalClient({ params }) {
             setShowIntro(false);
             setHaveSeenJournal(true);
           }}
-          classes={["bg-lime-200"]}
+          classes={["bg-lime-200", "active:bg-lime-300"]}
         >
           Start
         </BaseButton>

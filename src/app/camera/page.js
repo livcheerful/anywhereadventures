@@ -76,7 +76,7 @@ export default function Page({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
-          classes={["bg-yellow-300 grow-0 "]}
+          classes={["bg-yellow-300 active:bg-yellow-400 grow-0 "]}
           onClick={() => {
             setIntroIdx(introIdx + 1);
           }}

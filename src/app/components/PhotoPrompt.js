@@ -93,7 +93,9 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
                 <div className="flex flex-col gap-2">
                   <button
                     className={`${
-                      copiedAlert ? "bg-white" : "bg-yellow-300"
+                      copiedAlert
+                        ? "bg-white"
+                        : "bg-yellow-300 active:bg-yellow-400"
                     } transition-colors text-gray-800 px-4 py-1 rounded-lg border-2 border-slate-900 font-black`}
                     onClick={() => {
                       navigator.clipboard.writeText(mdx.address);
@@ -113,7 +115,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
           <div className="flex flex-col items-center pt-2">
             <Link
               href={`/camera?locationId=${mdx.slug}`}
-              className="border-gray-900 border-2 text-black bg-amber-100 px-4 py-2 font-black text-sm rounded-full"
+              className="border-gray-900 border-2 text-black bg-amber-100 active:bg-amber-200 px-4 py-2 font-black text-sm rounded-full"
             >
               I'M HERE
             </Link>
