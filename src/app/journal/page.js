@@ -269,7 +269,7 @@ export default function Page() {
     let pageCount = 1;
 
     const homeLoc = getHomeLocation();
-    const locData = savedLocationToObj(homeLoc);
+    const locData = savedLocationToObj(homeLoc) || "World";
     const allLocs = locData.locs;
 
     const allPages = [];
