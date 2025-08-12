@@ -109,11 +109,16 @@ export default function ContentPane({
     if (!contentArray) return;
     if (!contentIndex) return;
 
-    const newSlug = contentArray[contentIndex].slug;
+    const loc = contentArray[contentIndex];
+    const newSlug = loc.slug;
     updateRoute(`/${newSlug}`);
     setCurrentSlug(newSlug);
+
     // Update slug
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
+
+    // Update map
+    mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
   }, [contentIndex]);
 
   function setIndexFromSlug(slug) {
