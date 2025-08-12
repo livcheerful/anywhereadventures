@@ -271,8 +271,9 @@ export default function Page() {
 
     const homeLoc = getHomeLocation();
     const locData = savedLocationToObj(homeLoc);
-    const allLocs = locData.locs;
 
+    if (!locData?.locs) return [];
+    const allLocs = locData.locs;
     const allPages = [];
 
     function countVisitedLocations() {
