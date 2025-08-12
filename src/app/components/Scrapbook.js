@@ -200,7 +200,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = textStyle.font;
     const width = ctx.measureText(text).width;
-    const height = 20;
+    const height = 28;
     canvas.width = width + 2;
     canvas.height = height + 2;
 
@@ -213,7 +213,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
     ctx.font = textStyle.font;
     ctx.textBaseline = "hanging";
 
-    ctx.fillText(text, 1, 4);
+    ctx.fillText(text, 1, 5);
   }
 
   this.addNewTextSticker = function (
@@ -333,7 +333,7 @@ export default function Scrapbook({
   const [textStyle, setTextStyle] = useState({
     backgroundColor: undefined,
     textColor: "#000000",
-    font: "16px Arial",
+    font: "24px Arial",
   });
 
   const trashRef = useRef();

@@ -210,6 +210,18 @@ export default function JournalNav({
           </button>
         </div>
         <div className="flex flex-row w-full h-72 overflow-y-clip overflow-x-auto snap-x snap-mandatory ">
+          {!savedLcItems ||
+            (savedLcItems.length == 0 && (
+              <div className="text-black h-full w-full grow shrink-0 snap-start flex flex-col p-2">
+                <div className="w-full text-center font-bold">
+                  You don't have any saved items yet!
+                </div>
+                <div>
+                  Read stories and collect archives items here to use them in
+                  your travel log entries and for easy reference later.
+                </div>
+              </div>
+            ))}
           {savedLcItems?.map((item, i) => {
             return (
               <div

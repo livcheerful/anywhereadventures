@@ -166,13 +166,16 @@ export default function ScrapbookDeskPage({
           id="collageImage"
           className="draggable z-20 w-1/2 absolute top-10 -rotate-6 drop-shadow-2xl border-2 border-black select-none"
         />
-        <a href={collageImage} download={`anywhere-adventures-${locationId}`}>
-          <StickyNote
-            className={"hidden md:visible -rotate-6 left-0 bottom-10"}
+        <StickyNote className={"hidden md:block -rotate-6 right-0 top-10"}>
+          Save your travel log
+          <a
+            href={collageImage}
+            download={`anywhere-adventures-${locationId}`}
+            className="underline"
           >
-            Save your travel log
-          </StickyNote>
-        </a>
+            <div>Download</div>
+          </a>
+        </StickyNote>
 
         <StickyNote
           className="visible md:hidden -rotate-6 w-32 h-32"

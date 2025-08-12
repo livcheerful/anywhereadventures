@@ -292,8 +292,8 @@ export default function ContentPane({
               Are you sure you want to clear all your data?
             </div>
             <div>
-              This action cannot be undone. All your saved visits will be
-              deleted.
+              This action cannot be undone. All your saved visits and archive
+              items will be deleted.
             </div>
             <div className="flex flex-row gap-2 w-full">
               <button

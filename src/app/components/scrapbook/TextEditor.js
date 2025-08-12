@@ -36,7 +36,7 @@ export default function TextEditor({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = ts.font;
     const width = ctx.measureText(text).width;
-    const height = 20;
+    const height = 28;
     canvas.width = width + 2;
     canvas.height = height + 2;
 
@@ -49,7 +49,7 @@ export default function TextEditor({
     ctx.font = ts.font;
     ctx.textBaseline = "hanging";
 
-    ctx.fillText(text, 1, 4);
+    ctx.fillText(text, 1, 5);
   }
 
   useEffect(() => {
