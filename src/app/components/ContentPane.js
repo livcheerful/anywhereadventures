@@ -128,6 +128,7 @@ export default function ContentPane({
     const newSlug = loc.slug;
     updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
     setCurrentSlug(newSlug);
+    setViewingPin(undefined);
 
     // Update slug
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });

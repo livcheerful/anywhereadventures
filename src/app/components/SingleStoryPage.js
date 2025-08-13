@@ -94,7 +94,12 @@ export default function SingleStoryPage({
         setPaneOpen={setPaneOpen}
         mainMap={mainMap}
       />
-      <div className="flex justify-between gap-1 pt-4 pb-2 bg-white px-2">
+
+      <div
+        className={`flex justify-between gap-1 pt-4 pb-2 bg-white px-2 ${
+          paneOpen ? "visible" : "invisible"
+        }`}
+      >
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>
