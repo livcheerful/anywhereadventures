@@ -8,13 +8,21 @@ const vivianFont = localFont({
   weight: "300",
 });
 
-export const metadata = {
-  title: "Anywhere Adventures",
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className="">
+      <head>
+        <title>Anywhere Adventures</title>
+        <meta
+          name="description"
+          content="Learn local history through archival items."
+        />
+        <link rel="icon" href="/location.ico" />
+        <script
+          src="https://assets.adobedtm.com/f94f5647937d/624e2240e90d/launch-0610ec681aff.min.js"
+          async
+        ></script>
+      </head>
       <body className={`${vivianFont.variable} antialiased`}>
         <div className="md:w-limiter">{children}</div>
 
