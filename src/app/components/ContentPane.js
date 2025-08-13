@@ -126,7 +126,7 @@ export default function ContentPane({
 
     const loc = contentArray[contentIndex];
     const newSlug = loc.slug;
-    updateRoute(`/${newSlug}`);
+    updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
     setCurrentSlug(newSlug);
 
     // Update slug
@@ -307,6 +307,7 @@ export default function ContentPane({
                   setShowingMenu(false);
                   setShowingWelcomeScreen(true);
                   setShowClearWarning(false);
+                  updateRoute(`/`);
                 }}
               >
                 Yes, delete

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { updateRoute } from "../lib/routeHelpers";
 import PostContent from "./PostContent";
 import StickyHeader from "./StickyHeader";
 import PhotoPrompt from "./PhotoPrompt";

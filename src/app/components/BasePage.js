@@ -16,9 +16,7 @@ export default function BasePage({ entranceSlug }) {
 
   // VVN These store the same things, just one gets initialized...?
   const [savedLocation, setSavedLocation] = useState(getHomeLocation());
-  const [chosenLocation, setChosenLocation] = useState(
-    savedLocationToObj(savedLocation) || locationData.all
-  );
+  const [chosenLocation, setChosenLocation] = useState(locationData.all);
 
   const [welcomeScreenStartIndex, setWelcomeScreenStartIndex] = useState(0);
 
@@ -37,6 +35,8 @@ export default function BasePage({ entranceSlug }) {
   useEffect(() => {
     if (savedLocation && !chosenLocation) {
       const locObj = savedLocationToObj(savedLocation);
+      console.log("Hello, vivian");
+      console.log(locObj);
       setChosenLocation(locObj);
       mainMap?.flyTo(locObj.center, locObj.zoom);
     }

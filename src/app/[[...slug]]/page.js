@@ -1,23 +1,23 @@
 import { Suspense } from "react";
-import { allSlugs } from "../lib/MdxQueries";
+import { allLocs } from "../lib/MdxQueries";
 import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
-  const slugs = allSlugs;
-  slugs.push("", "journal");
-  // Grab file
-  const slugmap = slugs.map((s) => ({
-    slug: [s],
-  }));
-  return slugmap;
+  const locs = allLocs;
+  const slugs = [{ slug: [""] }, { slug: ["journal"] }];
+  locs.forEach((l, i) => {
+    slugs.push({ slug: [l.location[0].toLowerCase(), l.slug] });
+  });
+  return slugs;
 }
 
 export default async function Page({ params }) {
   const { slug } = await params;
+  const entranceSlug = slug ? slug[slug.length - 1] : "";
   return (
     <div className="relative flex w-full overflow-hidden">
       <Suspense>
-        <BasePage entranceSlug={slug}></BasePage>
+        <BasePage entranceSlug={entranceSlug}></BasePage>
       </Suspense>
     </div>
   );
