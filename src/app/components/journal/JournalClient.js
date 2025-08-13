@@ -364,6 +364,12 @@ export default function JournalClient({}) {
               </div>
             </div>
             {addHomeLocationStickers()}
+            <div className="absolute right-2 bottom-24 -rotate-6 flex flex-col items-center justify-center">
+              <div className="text-xl font-vivian bg-lime-200 text-blue-800 p-1">
+                Swipe to open
+              </div>
+              <img className="w-12 ml-10" src="/arrow.svg" />
+            </div>
           </div>
           {makeJournalPages()}
           <div

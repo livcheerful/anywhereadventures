@@ -701,7 +701,7 @@ export default function Scrapbook({
       <div
         id="trashZone"
         ref={trashRef}
-        className={`fixed w-full md:w-limiter bg-blue-300 left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
+        className={`fixed w-full md:w-limiter bg-blue-300 text-black left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
           draggingItem ? "visible" : "invisible"
         }`}
       >

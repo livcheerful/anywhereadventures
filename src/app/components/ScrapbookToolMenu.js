@@ -17,10 +17,10 @@ export default function ScrapbookToolMenu({ title, onClose, children }) {
         duration: 0.4,
         ease: "power2.out",
         onReverseComplete: () => {
-          menuRef.current.style.visibility = "hidden";
+          if (menuRef.current) menuRef.current.style.visibility = "hidden";
         },
         onStart: () => {
-          menuRef.current.style.visibility = "visible";
+          if (menuRef.current) menuRef.current.style.visibility = "visible";
         },
       },
       0
