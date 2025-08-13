@@ -4,8 +4,13 @@ import { savedLocationToObj } from "../lib/locationHelpers";
 import { useState, useEffect } from "react";
 import Toast from "./Toast";
 export default function TableOfContents({ setShowToc, setCopiedAlert }) {
-  const homeLoc = getHomeLocation();
-  const locData = savedLocationToObj(homeLoc);
+  const [homeLoc, setHomeLoc] = useState(undefined);
+  const [locData, setLocData] = useState(undefined);
+  useEffect(() => {
+    const l = getHomeLocation();
+    setHomeLoc(l);
+    setLocData(savedLocationToObj(l));
+  }, []);
   const allLocs = locData?.locs;
   function ListItem({ mdx, i }) {
     return (

@@ -93,13 +93,13 @@ export default function Camera({
             <img
               id="film-left"
               className="absolute top-0 left-0"
-              style={{ height: height * 3 }}
+              style={{ height: height * 3 || 0 }}
               src="film-left.png"
             />
             <img
               id="film-right"
               className="absolute right-0 top-0"
-              style={{ height: height * 3 }}
+              style={{ height: height * 3 || 0 }}
               src="film-right.png"
             />
           </div>

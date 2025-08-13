@@ -19,11 +19,7 @@ import {
 } from "../../lib/storageHelpers";
 import CornerTape from "../CornerTape";
 
-export default function JournalClient({ params }) {
-  const [categories, setCategories] = useState(
-    transformSavedLocationsToCategories()
-  );
-
+export default function JournalClient({}) {
   const [showToc, setShowToc] = useState(false);
   const [refSlug, setRefSlug] = useState(undefined);
   const [showSavedItems, setShowSavedItems] = useState(false);
@@ -32,6 +28,8 @@ export default function JournalClient({ params }) {
   const tocRef = useRef();
   const tocAnim = useRef();
   const [copiedAlert, setCopiedAlert] = useState(false);
+  const [homeLoc, setHomeLoc] = useState(undefined);
+  const [locData, setLocData] = useState(undefined);
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,11 +40,13 @@ export default function JournalClient({ params }) {
   useEffect(() => {
     setShowIntro(!haveSeenJournal());
     clearNewTravelLogPages();
+    const loc = getHomeLocation();
+    setHomeLoc(loc);
+    setLocData(savedLocationToObj(loc));
   }, []);
 
   function addHomeLocationStickers() {
-    const homeLocation = getHomeLocation();
-    switch (homeLocation) {
+    switch (homeLoc) {
       case "Seattle":
         return [
           <div
@@ -267,9 +267,6 @@ export default function JournalClient({ params }) {
 
   function makeJournalPages() {
     let pageCount = 1;
-
-    const homeLoc = getHomeLocation();
-    const locData = savedLocationToObj(homeLoc);
 
     if (!locData?.locs) return [];
     const allLocs = locData.locs;
