@@ -46,10 +46,14 @@ export default function ContentPane({
   const menuAnimRef = useRef();
   const startY = useRef();
   const isAtTop = useRef();
+  const [homeLoc, setHomeLoc] = useState(undefined);
+  const [homeLocationData, setHomeLocationData] = useState(undefined);
 
-  const homeLoc = getHomeLocation();
-  const homeLocationData = savedLocationToObj(homeLoc);
-
+  useEffect(() => {
+    const loc = getHomeLocation(); // now runs only in client
+    setHomeLoc(loc);
+    setHomeLocationData(savedLocationToObj(loc));
+  }, []);
   useEffect(() => {
     setTimeout(() => {
       setToastMessage(undefined);
@@ -93,7 +97,7 @@ export default function ContentPane({
       }
     );
     setReduceAnims(getSettings().reduceAnims);
-  }, []);
+  }, [homeLocationData]);
 
   useEffect(() => {
     if (reduceAnims) {

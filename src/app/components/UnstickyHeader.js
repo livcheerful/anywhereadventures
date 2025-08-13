@@ -12,7 +12,7 @@ export default function UnstickyHeader({
         {post?.title}
       </h1>
       <div className="relative flex flex-col pt-4 px-2">
-        <div className="border-2 border-lime-400 rounded-lg text-md bg-white ">
+        <div className="border-2 border-lime-400 bg-lime-50 rounded-lg text-md bg-white drop-shadow-lg">
           <div className="p-2 px-4 pt-4 text-sm flex flex-col gap-2">
             <div className="font-bold text-md">{post.locationTitle}</div>
             <hr className="border-dashed"></hr>

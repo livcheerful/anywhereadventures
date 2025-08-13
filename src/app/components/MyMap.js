@@ -6,14 +6,13 @@ import {
   NavigationControl,
   LngLatBounds,
 } from "maplibre-gl";
-import { locationData } from "../lib/locationHelpers";
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getMdx } from "../lib/clientPostHelper";
 import MapPin from "./MapPin";
-import { getSettings } from "../lib/storageHelpers";
+import { getSettings, hasLocationBeenVisited } from "../lib/storageHelpers";
 
 function updateMarkerTabAccess(visible) {
   if (visible) {
@@ -127,9 +126,17 @@ function MapManager(map, router) {
       "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
     el.style.backgroundImage = `url(${image})`;
     el.style.backgroundSize = `cover`;
-    el.style.borderWidth = "1px";
-    el.style.width = `3rem`;
-    el.style.height = `3rem`;
+    el.style.width = `4rem`;
+    el.style.height = `4rem`;
+
+    const hasBeenVisited = hasLocationBeenVisited(info.slug);
+    el.style.filter = hasBeenVisited ? " brightness(90%) contrast(40%)" : "";
+    el.style.borderColor = hasBeenVisited ? "gray" : "rgb(217 249 157)";
+    el.style.borderWidth = hasBeenVisited ? "1px" : "0px";
+    el.style.zIndex = hasBeenVisited ? "1" : "2";
+    el.style.boxShadow = hasBeenVisited
+      ? ""
+      : "0 0 10px 4px rgba(255, 255, 0, 0.1)";
 
     const marker = new Marker({ element: el }).setLngLat([
       info.latlon[1],
@@ -145,7 +152,6 @@ function MapManager(map, router) {
   this.flyTo = function (center, zoom, shift = true) {
     const reduceAnim = getSettings().reduceAnims;
     if (reduceAnim) {
-      console.log("HI vivian");
       this.map.jumpTo({
         center: shift
           ? shiftUp(center[1], center[0], zoom || 13)
