@@ -111,7 +111,8 @@ export default function JournalClient({}) {
         <div className="p-2">
           <h1 className="font-bold text-lg">This is your travel log</h1>
           <div>
-            As you visit story locations, collect photos and fill up your logs.
+            As you visit story locations, collect photos and create entries for
+            your visits.
           </div>
         </div>
       </div>
@@ -140,7 +141,7 @@ export default function JournalClient({}) {
             See where you haven't visited yet
           </h1>
           <div>
-            Swipe to see the logs you've created and the places you still
+            Swipe to see the entries you've created and the places you still
             haven't been. You can also navigate via the table of contents.
           </div>
         </div>
@@ -175,8 +176,7 @@ export default function JournalClient({}) {
           <h1 className="font-bold text-lg">Save archive items for later</h1>
           <div>
             You can also see all your saved archives items here for easy
-            reference later. You can also use them in your travel logs as
-            stickers.
+            reference later. You can also use them in your entries as stickers.
           </div>
         </div>
       </div>

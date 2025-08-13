@@ -13,6 +13,11 @@ export function JournalHeader({ mdx }) {
       <div className="absolute left-0 -top-1 font-bold text-md uppercase bg-lime-300 pl-4 pr-2 p-1 shadow-lg z-10">
         {mdx.locationTitle}
       </div>
+      <a href={`/${mdx.location[0].toLowerCase()}/${mdx.slug}`}>
+        <div className="absolute right-2 top-5 z-10 text-black text-xs border-2 px-2 py-1 border-black rounded-md bg-yellow-300 text-center font-bold">
+          Open in map
+        </div>
+      </a>
       <hr className="w-full"></hr>
       <div className="font-mono text-xs font-light text-gray-400">
         {visited ? "VISITED" : "UNVISITED"}
@@ -65,65 +70,66 @@ export function JournalLogInfo({ mdx }) {
           <img className="w-36 h-fit" src="/seattle-general-2.svg" />
         </div>
       )}
-
-      <div className="font-mono flex flex-row justify-between text-xs text-gray-600  p-1 ">
-        <div>{mdx.neighborhood}</div>
-      </div>
-      <div className="flex flex-row text-xs font-mono text-gray-500 justify-between  p-1 ">
-        <div className="text-xs font-mono">
-          {visited ? (
-            <div className="flex flex-row  ">
-              <div className="text-red-600 font-bold font-vivian">
-                {visitedDate.getMonth() + 1}
-              </div>
-              <div>/</div>
-              <div className="text-red-600 font-bold font-vivian">
-                {visitedDate.getDate()}
-              </div>
-              <div>/</div>
-              <div className="text-red-600 font-bold font-vivian">
-                {visitedDate.getFullYear()}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-row gap-2 pl-3">
-              <div>/</div>
-              <div>/</div>
-            </div>
-
-            // <button
-            //   className="w-full h-full shrink-0 "
-            //   onClick={() => {
-            //     router.push(`/${mdx.slug}`);
-            //   }}
-            // >
-            //   Open in Map
-            // </button>
-          )}
+      <div className="flex flex-col">
+        <div className="font-mono flex flex-row justify-between text-xs text-gray-600  p-1 ">
+          <div>{mdx.neighborhood}</div>
         </div>
-        <div>
-          {visited ? (
-            <div className="flex flex-row ">
-              <div className="text-red-600 font-bold font-vivian">
-                {visitedDate.getHours()}
+        <div className="flex flex-row text-xs font-mono text-gray-500 justify-between  p-1 ">
+          <div className="text-xs font-mono">
+            {visited ? (
+              <div className="flex flex-row  ">
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getMonth() + 1}
+                </div>
+                <div>/</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getDate()}
+                </div>
+                <div>/</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getFullYear()}
+                </div>
               </div>
-              <div>:</div>
-              <div className=" text-red-600 font-bold font-vivian">
-                {visitedDate.getMinutes()}
+            ) : (
+              <div className="flex flex-row gap-2 pl-3">
+                <div>/</div>
+                <div>/</div>
               </div>
-              <div>:</div>
-              <div className="text-red-600 font-bold font-vivian">
-                {visitedDate.getSeconds()}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-row gap-2 pr-3">
-              <div>:</div>
-              <div>:</div>
-            </div>
 
-            // <button>Log visit</button>
-          )}
+              // <button
+              //   className="w-full h-full shrink-0 "
+              //   onClick={() => {
+              //     router.push(`/${mdx.slug}`);
+              //   }}
+              // >
+              //   Open in Map
+              // </button>
+            )}
+          </div>
+          <div>
+            {visited ? (
+              <div className="flex flex-row ">
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getHours()}
+                </div>
+                <div>:</div>
+                <div className=" text-red-600 font-bold font-vivian">
+                  {visitedDate.getMinutes()}
+                </div>
+                <div>:</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getSeconds()}
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-row gap-2 pr-3">
+                <div>:</div>
+                <div>:</div>
+              </div>
+
+              // <button>Log visit</button>
+            )}
+          </div>
         </div>
       </div>
       <hr className="border-lime-500 border-dashed"></hr>
