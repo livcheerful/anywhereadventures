@@ -33,7 +33,7 @@ export default function ContentPane({
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
 
-  const [contentIndex, setContentIndex] = useState(0);
+  const [contentIndex, setContentIndex] = useState(undefined);
   const scrollValue = useRef();
   const contentPaneRef = useRef(null);
   const [contentArray, setContentArray] = useState(undefined);
@@ -122,7 +122,7 @@ export default function ContentPane({
 
   useEffect(() => {
     if (!contentArray) return;
-    if (!contentIndex) return;
+    if (contentIndex == undefined) return;
 
     const loc = contentArray[contentIndex];
     const newSlug = loc.slug;
