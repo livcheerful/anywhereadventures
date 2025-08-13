@@ -192,7 +192,7 @@ export default function ContentPane({
         ref={menuRef}
         style={{ visibility: "hidden" }}
       >
-        <div className="bg-white flex flex-col justify-between h-full gap-2 text-black font-bold overflow-y-auto">
+        <div className="bg-white flex flex-col justify-between h-full gap-8 text-black font-bold overflow-y-auto">
           <div className="flex flex-col pb-3">
             <div className="w-full text-center text-lg">Menu</div>
             <hr></hr>
@@ -200,38 +200,41 @@ export default function ContentPane({
               <div className=" bg-lime-100 px-2 pt-3">Settings</div>
               <hr className="border-gray-300 pb-2"></hr>
             </div>
-            <div className="flex flex-col gap-2 px-2">
-              <label
-                className="flex flex-row gap-2 items-baseline"
-                onClick={() => {}}
-              >
-                <input
-                  type="checkbox"
-                  checked={reduceAnims}
-                  onChange={(e) => {
-                    updateSettings("reduceAnims", e.target.checked);
-                    setReduceAnims(e.target.checked);
-                  }}
-                />
-                <div>Reduce animations</div>
-              </label>
-              <div>
-                <div className="text-gray-400 font-mono text-xs font-light">
-                  Home Location
+            <div className="px-2">
+              <div className="w-full bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col gap-2 items-center drop-shadow-sm font-normal">
+                <div className="w-full">
+                  <div className="text-gray-400 font-mono text-xs font-light">
+                    Home Location
+                  </div>
+                  <div className="flex flex-row items-baseline gap-4">
+                    <div className="text-md text-gray-800 ">{homeLoc}</div>
+                    <button
+                      className="underline text-black"
+                      onClick={() => {
+                        updateRoute(`/`);
+                        setShowingWelcomeScreen(true);
+                        setWelcomeScreenStartIndex(2);
+                      }}
+                    >
+                      <div className="font-bold">Change</div>
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-row items-baseline gap-4">
-                  <div className="text-md text-gray-800 ">{homeLoc}</div>
-                  <button
-                    className="underline text-black"
-                    onClick={() => {
-                      updateRoute(`/`);
-                      setShowingWelcomeScreen(true);
-                      setWelcomeScreenStartIndex(2);
+                <hr className="w-full"></hr>
+                <label
+                  className="flex flex-row gap-2 items-baseline w-full"
+                  onClick={() => {}}
+                >
+                  <input
+                    type="checkbox"
+                    checked={reduceAnims}
+                    onChange={(e) => {
+                      updateSettings("reduceAnims", e.target.checked);
+                      setReduceAnims(e.target.checked);
                     }}
-                  >
-                    <div>Change</div>
-                  </button>
-                </div>
+                  />
+                  <div className="font-bold">Reduce animations</div>
+                </label>
               </div>
             </div>
           </div>
@@ -266,7 +269,7 @@ export default function ContentPane({
               </div>
               <div className="px-2">
                 <div className="bg-lime-300 p-2  rounded-lg border-2 border-gray-800 flex flex-col items-center drop-shadow-sm">
-                  <h1 className="text-2xl py-3 font-bold">
+                  <h1 className="text-2xl py-3 font-bold text-black">
                     Nominate your hometown
                   </h1>
                   <hr className="w-full border-lime-600 pb-2"></hr>

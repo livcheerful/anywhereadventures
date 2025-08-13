@@ -137,6 +137,7 @@ export default function WelcomeScreen({
       </div>
 
       <NextButton index={index} setIndex={setIndex} />
+      <button>Back</button>
       {clickedLocation && <StartButton />}
       {clickedLocation && (
         <>
