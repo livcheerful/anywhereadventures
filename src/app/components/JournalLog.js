@@ -8,7 +8,7 @@ export function JournalHeader({ mdx }) {
     <hr key={0} className="absolute top-1"></hr>,
     <div
       key={1}
-      className="text-sm relative flex flex-row justify-between items-center"
+      className="text-sm relative flex flex-row justify-between items-center text-black"
     >
       <div className="absolute left-0 -top-1 font-bold text-md uppercase bg-lime-300 pl-4 pr-2 p-1 shadow-lg z-10">
         {mdx.locationTitle}
@@ -127,7 +127,7 @@ export function JournalLogInfo({ mdx }) {
         </div>
       </div>
       <hr className="border-lime-500 border-dashed"></hr>
-      <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col">
+      <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col text-black">
         <div className="text-bold text-center font-bold">{mdx.title}</div>
         <div>{mdx.blurb}</div>
       </div>
