@@ -71,11 +71,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
           <div className="flex flex-col items-stretch relative pt-5 overflow-visible">
             <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pt-4 border-x-0 w-full h-full flex flex-col justify-between items-center overflow-visible">
               <div className=" absolute -top-3 left-0 flex flex-row ">
-                <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-sky-800 font-bold  bg-sky-100 text-sm">
-                  READ
-                </div>
-                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0 text-gray-800">
-                  1
+                <div className="h-fit absolute top-1 flex flex-row gap-2 left-0 pr-5 pl-4 text-nowrap text-sky-800 font-bold  bg-sky-100 text-sm">
+                  <div className="">1:</div>
+                  <div className="font-black">READ</div>
                 </div>
               </div>
 
@@ -100,11 +98,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             <div className="w-full h-full relative pt-2 bg-amber-300">
               <PhotoPrompt mdx={mdx} visited={visited} />
               <div className=" absolute -top-3 left-0 flex flex-row ">
-                <div className="h-fit absolute top-1 left-0 pr-5 pl-10 text-yellow-800 font-bold  bg-amber-100 text-sm">
-                  VISIT
-                </div>
-                <div className="font-bold z-10 w-8 h-8 text-center text-lg bg-lime-200 rounded-full border-2 border-gray-800 shrink-0  text-gray-800">
-                  2
+                <div className="h-fit absolute top-1 left-0 pr-5 pl-4 text-yellow-800 font-bold text-nowrap bg-amber-100 text-sm  flex flex-row gap-2">
+                  <div className="">2:</div>
+                  <div className="font-black">VISIT</div>
                 </div>
               </div>
             </div>
