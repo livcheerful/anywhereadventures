@@ -41,19 +41,13 @@ export default function TableOfContents({ setShowToc, setCopiedAlert }) {
               );
               page.scrollIntoView({ behavior: "smooth" });
             }}
-            className="bg-lime-300 text-black active:text-white rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="bg-lime-300 text-black active:bg-lime-400 rounded-2xl drop-shadow-sm px-4 py-2 "
           >
             See Log
           </button>
           <a
             href={`/${mdx.slug}`}
-            className="bg-yellow-300 text-black active:text-white rounded-2xl drop-shadow-md px-4 py-2 flex flex-col items-center justify-center"
-          >
-            Read Story
-          </a>
-          <a
-            href={`/${mdx.slug}`}
-            className="border-yellow-300 active:bg-yellow-400 text-black bg-gray-50 border-2 rounded-2xl drop-shadow-sm px-4 py-2 "
+            className="bg-yellow-300 active:bg-yellow-400 text-black rounded-2xl drop-shadow-sm px-4 py-2 flex flex-col justify-center"
           >
             Show on map
           </a>
