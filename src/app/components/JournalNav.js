@@ -196,8 +196,8 @@ export default function JournalNav({
         ref={savedItemsRef}
         style={{ visibility: "hidden" }}
       >
-        <div className="sticky text-xs font-bold p-1 px-2 border-y-2 border-black flex flex-row justify-between bg-lime-200 w-full text-black">
-          <div>SAVED ITEMS</div>
+        <div className="sticky h-10 font-bold p-1 px-2 border-y-2 border-black flex flex-row justify-between items-center bg-lime-200 w-full text-black">
+          <div className="text-mg">SAVED ITEMS</div>
           <button
             className="w-4 h-4"
             onClick={() => {
