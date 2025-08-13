@@ -4,7 +4,7 @@ import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
   const locs = allLocs;
-  const slugs = [{ slug: [""] }, { slug: ["journal"] }];
+  const slugs = [{ slug: [""] }, { slug: ["journal"] }, { slug: ["camera"] }];
   locs.forEach((l, i) => {
     slugs.push({ slug: [l.location[0].toLowerCase(), l.slug] });
   });
