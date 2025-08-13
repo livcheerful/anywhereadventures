@@ -34,6 +34,7 @@ function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
 }
 
 export default function ScrapbookDeskPage({
+  mdx,
   collageImage,
   locationId,
   stickerRefs,
@@ -183,7 +184,7 @@ export default function ScrapbookDeskPage({
         >
           <div>Tap and hold the image to save to your phone</div>
         </StickyNote>
-        <a href={`/${locationId}`}>
+        <a href={`/${mdx.location[0].toLowerCase()}/${locationId}`}>
           <div
             id="backToMap"
             className="  absolute z-30 -right-10 -rotate-6 drop-shadow-xl"

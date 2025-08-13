@@ -13,7 +13,8 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const { slug } = await params;
-  const entranceSlug = slug ? slug[slug.length - 1] : "";
+  let entranceSlug = slug ? slug[slug.length - 1] : "";
+  if (slug && slug.length == 1) entranceSlug == slug[0];
   return (
     <div className="relative flex w-full overflow-hidden">
       <Suspense>

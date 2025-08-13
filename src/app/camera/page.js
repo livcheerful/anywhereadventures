@@ -437,6 +437,7 @@ export default function Page({}) {
       )}
       {showSummaryPage && (
         <ScrapbookDeskPage
+          mdx={mdx}
           collageImage={collageImage}
           locationId={locationId}
           stickerRefs={stickerRefs}
