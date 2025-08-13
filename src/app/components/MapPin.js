@@ -45,8 +45,9 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
             <path d="M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z" />
           </svg>
         </button>
-        <div className=" overflow-y-auto overflow-x-visible">
+        <div className=" overflow-y-auto overflow-x-visible flex flex-col">
           <button
+            className="w-full"
             onClick={(e) => {
               const article = document.querySelector(`#${mdx.slug}`);
               if (article) {
@@ -55,18 +56,20 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               }
             }}
           >
-            <div className="text-md md:text-xl font-bold text-black px-2 pt-1 ">
-              {mdx.title}
+            <div className="w-full text-2xl md:text-xl text-center font-bold text-black px-2 pt-2 ">
+              {mdx.locationTitle}
             </div>
           </button>
-
-          <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-3 px-2 ">
-            {mdx.neighborhood && <div>{mdx.neighborhood}</div>}
-            <div className="text-gray-500 font-mono text-xs w-fit">{`${mdx.latlon[0].toFixed(
+          <div className="flex flex-row justify-between text-gray-500 font-mono text-xs pt-1 px-2 ">
+            {<div>{mdx.neighborhood}</div>}
+            <div className="text-gray-500 font-mono w-fit">{`${mdx.latlon[0].toFixed(
               4
             )}, ${mdx.latlon[1].toFixed(4)}`}</div>
           </div>
-          <hr className="pt-1" />
+          <hr></hr>
+          <div className="text-sm w-full text-center font-serif italic text-black">
+            {mdx.title}
+          </div>
 
           <div className="flex flex-col items-stretch relative pt-5 overflow-visible">
             <div className="relative bg-sky-300 border-2 border-gray-900 p-2 pt-4 border-x-0 w-full h-full flex flex-col justify-between items-center overflow-visible">

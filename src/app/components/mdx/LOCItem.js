@@ -64,7 +64,7 @@ export default function LOCItem({ image, linkOut, caption, allowSave, alt }) {
       {caption && (
         <div className="italic font-serif text-sm p-2">{caption}</div>
       )}
-      {showToast && <Toast message="Saved to journal!" />}
+      {showToast && <Toast message="Saved to travel log" />}
     </div>
   );
 }
