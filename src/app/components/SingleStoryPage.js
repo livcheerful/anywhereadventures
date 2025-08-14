@@ -6,9 +6,13 @@ import PostContent from "./PostContent";
 import StickyHeader from "./StickyHeader";
 import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
+import Box from "./ui/Box";
+import BaseButton from "./ui/BaseButton";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
 import * as storageHelpers from "../lib/storageHelpers";
+import TableOfContents from "./TableOfContents";
+import Footer from "./Footer";
 
 function Button(label, enabled, action) {
   const classList = [
@@ -56,6 +60,7 @@ export default function SingleStoryPage({
   setViewingPin,
   mainMap,
   setToastMessage,
+  homeLocationData,
 }) {
   if (!contentArray) {
     return (
@@ -66,6 +71,58 @@ export default function SingleStoryPage({
           </div>
           <div className="font-black text-gray-600">Loading...</div>
         </div>
+      </div>
+    );
+  }
+
+  if (!contentIndex) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-between">
+        <div className="flex flex-col items-start w-full relative">
+          <div
+            className={`flex flex-row gap-2 pt-20 h-48 w-full items-center`}
+            style={{
+              backgroundSize: "cover",
+              backgroundImage: `linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 1) 90%
+              ), url('${homeLocationData.welcome.thumbnail}')`,
+            }}
+          ></div>
+          <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
+            <div className="relative p-2 w-full h-fit">
+              <Box
+                float={true}
+                className="bg-yellow-200 flex flex-col gap-2 p-2"
+              >
+                <div>Select a location on the map to get started.</div>
+                <BaseButton
+                  classes={[
+                    "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
+                  ]}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPaneOpen(false);
+                  }}
+                >
+                  Open Map
+                </BaseButton>
+              </Box>
+              <div className="absolute top-4 -left-3 bg-lime-200 w-12 overflow-clip h-12 border-2 border-gray-800 rounded-full flex flex-col items-center">
+                <img
+                  src="/placeholderThumbnail.png"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="opacity-40 flex flex-col items-center relative">
+            <img className="w-2/3 -top-5 h-auto pb-4" src="/path.png" />
+          </div>
+          {/* <TableOfContents /> */}
+        </div>
+        <Footer />
       </div>
     );
   }
@@ -95,7 +152,7 @@ export default function SingleStoryPage({
         mainMap={mainMap}
       />
 
-      <div className={`flex justify-between gap-1 pt-4 pb-2 bg-white px-2 `}>
+      <div className={`flex justify-between gap-1 pt-4 bg-white px-2 `}>
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>

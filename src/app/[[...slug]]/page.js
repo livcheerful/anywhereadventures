@@ -1,13 +1,18 @@
 import { Suspense } from "react";
 import { allLocs } from "../lib/MdxQueries";
+import { locationData } from "../lib/locationHelpers";
 import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
-  const locs = allLocs;
   const slugs = [{ slug: [""] }, { slug: ["journal"] }, { slug: ["camera"] }];
-  locs.forEach((l, i) => {
+  allLocs.forEach((l, i) => {
     slugs.push({ slug: [l.location[0].toLowerCase(), l.slug] });
   });
+
+  Object.keys(locationData).forEach((l) => {
+    slugs.push({ slug: [l] });
+  });
+
   return slugs;
 }
 

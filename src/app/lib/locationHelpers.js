@@ -26,6 +26,7 @@ export const worldData = {
 
 export const locationData = {
   seattle: {
+    id: "seattle",
     name: "Seattle",
     center: [-122.341077, 47.519161],
     zoom: 11,
@@ -40,6 +41,7 @@ export const locationData = {
     },
   },
   sewy: {
+    id: "sewy",
     name: "Southeast Wyoming",
     center: [-105.195416, 41.269038],
     zoom: 8,
@@ -54,6 +56,7 @@ export const locationData = {
     },
   },
   chicago: {
+    id: "chicago",
     name: "Chicago",
     center: [-87.633226, 41.871438],
     zoom: 13,

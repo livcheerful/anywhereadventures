@@ -72,7 +72,8 @@ export default function ContentPane({
       // Find the content corresponding to the entrance slug, otherwise use the first one
       let index = res.findIndex((content) => content.slug == entranceSlug);
       if (index < 0) {
-        index = 0;
+        // index = 0;
+        index = undefined;
       }
 
       setContentIndex(index);
@@ -122,23 +123,32 @@ export default function ContentPane({
 
   useEffect(() => {
     if (!contentArray) return;
-    if (contentIndex == undefined) return;
+    if (contentIndex == undefined) {
+      console.log("Hello vivian...?");
+      mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
+      updateRoute(`/${homeLocationData.id}`);
+      console.log("");
+    } else {
+      const loc = contentArray[contentIndex];
+      const newSlug = loc.slug;
+      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
+      setCurrentSlug(newSlug);
+      setViewingPin(undefined);
 
-    const loc = contentArray[contentIndex];
-    const newSlug = loc.slug;
-    updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
-    setCurrentSlug(newSlug);
-    setViewingPin(undefined);
+      // Update slug
+      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
 
-    // Update slug
-    contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
-
-    // Update map
-    mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
-  }, [contentIndex]);
+      // Update map
+      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
+    }
+  }, [contentIndex, contentArray]);
 
   function setIndexFromSlug(slug) {
-    if (!contentArray || !slug) return;
+    if (!contentArray) return;
+    if (!slug) {
+      setContentIndex(undefined);
+      return;
+    }
     const index = contentArray.findIndex((content) => content.slug == slug);
     if (index >= 0) {
       setContentIndex(index);
@@ -149,8 +159,8 @@ export default function ContentPane({
     if (entranceSlug) {
       setIndexFromSlug(entranceSlug);
     } else if (contentArray) {
-      setContentIndex(0);
-      setCurrentSlug(contentArray[0].slug);
+      setContentIndex(undefined);
+      setCurrentSlug(undefined);
     }
   }, [entranceSlug, contentArray]);
 
@@ -382,6 +392,7 @@ export default function ContentPane({
             setViewingPin={setViewingPin}
             mainMap={mainMap}
             setToastMessage={setToastMessage}
+            homeLocationData={homeLocationData}
           />
           {toastMessage && <Toast message={toastMessage} />}
         </div>

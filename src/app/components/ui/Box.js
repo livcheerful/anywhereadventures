@@ -1,5 +1,11 @@
-export default function Box({ isModal, children, className }) {
-  let outerClassNames = "absolute w-full h-full";
+export default function Box({
+  children,
+  className,
+  isModal = true,
+  float = false,
+}) {
+  let outerClassNames = "w-full h-full";
+  if (!float) outerClassNames += " absolute";
   // Don't capture outside clicks
   if (!isModal) {
     outerClassNames += " pointer-events-none";
