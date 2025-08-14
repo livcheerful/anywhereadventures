@@ -38,26 +38,10 @@ const backgroundOptions = [
 
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
-function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
+function ScrapbookPage(getDraggingItem, handleDraggingItem) {
   this.topZ = 10;
   this.elements = []; // array for now, maybe diff structure in future
   this.numElems = 0;
-
-  this.picture = picture;
-
-  const pictureDiv = document.createElement("img");
-  pictureDiv.src = picture;
-  let adjustedWidth = pictureDiv.width;
-  let adjustedHeight = pictureDiv.height;
-  if (adjustedWidth > adjustedHeight) {
-    adjustedWidth = Math.min(480, window.innerWidth);
-    adjustedHeight = (pictureDiv.height / pictureDiv.width) * adjustedWidth;
-  } else {
-    adjustedWidth = (pictureDiv.width / pictureDiv.height) * adjustedHeight;
-  }
-  this.adjustedWidth = adjustedWidth;
-  this.adjustedHeight = adjustedHeight;
-  pictureDiv.remove();
 
   this.startFlatten = async function (onFlattenEnd) {
     const [dataUrl, compressed] = await this.flatten();
@@ -82,6 +66,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem, picture) {
       const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
       if (urlMatch) {
         const bgImgUrl = urlMatch[1];
+        console.log(`trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`);
         const bgImage = await new Promise((resolve, reject) => {
           const img = new Image();
           img.crossOrigin = "anonymous"; // in case it's needed
@@ -390,8 +375,8 @@ export default function Scrapbook({
     const dropZone = interact("#trashZone").dropzone({
       accept: ".trashable",
       overlap: "pointer",
-      ondropactivate: (event) => {},
-      ondropenter: (event) => {},
+      ondropactivate: (event) => { },
+      ondropenter: (event) => { },
       ondrop: (event) => {
         scrapbookPage.deleteSticker(event.draggable.target);
       },
@@ -499,6 +484,10 @@ export default function Scrapbook({
     );
   }
 
+  const bg = backgroundOptions[scrapbookBackgroundIdx];
+  const backgroundColor = bg.hex;
+  const backgroundImage = bg.src && `url(${bg.src})`;
+
   return (
     <div className="overflow-y-hidden z-30">
       {reel && (
@@ -519,8 +508,8 @@ export default function Scrapbook({
           id="scrapbookPlayground"
           style={{
             aspectRatio: 3 / 4,
-            backgroundColor: backgroundOptions[scrapbookBackgroundIdx].hex,
-            backgroundImage: `url(${backgroundOptions[scrapbookBackgroundIdx].src})`,
+            backgroundColor,
+            backgroundImage,
             backgroundSize: "cover",
           }}
           className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
@@ -682,7 +671,7 @@ export default function Scrapbook({
                     className="w-10 h-10 shrink-0 rounded-full border-2"
                     style={{
                       backgroundColor: op.hex || "white",
-                      backgroundImage: `url(${op.snippet})`,
+                      backgroundImage: op.snippet && `url(${op.snippet})`,
                       backgroundSize: "cover",
                       borderColor:
                         i == scrapbookBackgroundIdx ? "red" : "#cccccc",
@@ -701,9 +690,8 @@ export default function Scrapbook({
       <div
         id="trashZone"
         ref={trashRef}
-        className={`fixed w-full md:w-limiter bg-blue-300 text-black left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
-          draggingItem ? "visible" : "invisible"
-        }`}
+        className={`fixed w-full md:w-limiter bg-blue-300 text-black left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${draggingItem ? "visible" : "invisible"
+          }`}
       >
         <div className="font-mono font-bold">TRASH</div>
       </div>
