@@ -164,7 +164,7 @@ export default function SingleStoryPage({
         setPaneOpen={setPaneOpen}
       />
       <PostContent post={post} />
-      <div className="w-full p-4 relative">
+      <div className="w-full p-4 relative mt-5">
         {!hasLocationBeenVisited(slug) && (
           <div className="absolute -top-3 left-0 flex flex-row z-20">
             <div className="h-fit absolute top-2 left-0 pr-5 pl-12 text-green-800 font-bold  bg-green-100 text-lg">
