@@ -162,7 +162,7 @@ export default function WelcomeScreen({
             }
             const data = locationData[name];
             return (
-              <div className="w-full relative">
+              <div className="w-full relative" key={idx}>
                 <LocationButton key={idx} mapKey={name} data={data}>
                   {data.name}
                 </LocationButton>

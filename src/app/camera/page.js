@@ -14,7 +14,7 @@ import {
   savePage,
   haveSeenCamera,
   setHaveSeenCamera,
-  addNewTravelLogPage,
+  addNewNotification,
   addPhotoToReel,
   getPhotoReel,
 } from "../lib/storageHelpers";
@@ -170,7 +170,7 @@ export default function Page({}) {
 
     // save image to local storage
     savePage(locationId, compressedImageData, new Date());
-    addNewTravelLogPage();
+    addNewNotification("entry", locationId, { slug: locationId });
   }
 
   function handleSearchParams(kvp) {

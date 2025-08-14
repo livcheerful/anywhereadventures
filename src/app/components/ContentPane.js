@@ -161,7 +161,6 @@ export default function ContentPane({
   function focusOnPin(slug, post) {
     setPaneOpen(false);
     const pin = mainMap.getPinFromSlug(slug);
-    console.log(pin);
     mainMap.flyTo([post.latlon[1], post.latlon[0]], post.zoom, true);
     setViewingPin({ mdx: post, pin: pin });
   }
@@ -294,7 +293,7 @@ export default function ContentPane({
         </div>
       </div>
       {showClearWarning && (
-        <div className="fixed bg-white/90 w-full h-full flex flex-col items-center justify-center z-50 p-4">
+        <div className="fixed bg-white/90 w-full h-full flex flex-col items-center justify-center z-50 p-4 text-black">
           <div className="bg-white flex flex-col gap-2 w-4/5 p-3 border-2 border-gray-800 ">
             <div className="font-bold text-center text-xl pb-2">
               Are you sure you want to clear all your data?

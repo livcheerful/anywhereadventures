@@ -8,16 +8,17 @@ import TableOfContents from "../TableOfContents";
 import Toast from "../Toast";
 import JournalNav from "../JournalNav";
 import gsap from "gsap";
-import { savedLocationToObj, locationData } from "../../lib/locationHelpers";
+import { savedLocationToObj } from "../../lib/locationHelpers";
 import {
   getHomeLocation,
   hasLocationBeenVisited,
   haveSeenJournal,
   setHaveSeenJournal,
-  clearNewTravelLogPages,
   getSettings,
 } from "../../lib/storageHelpers";
 import CornerTape from "../CornerTape";
+
+import { useNotifications } from "../../lib/NotificationsContext";
 
 export default function JournalClient({}) {
   const [showToc, setShowToc] = useState(false);
@@ -30,19 +31,38 @@ export default function JournalClient({}) {
   const [copiedAlert, setCopiedAlert] = useState(false);
   const [homeLoc, setHomeLoc] = useState(undefined);
   const [locData, setLocData] = useState(undefined);
+  const [reduceAnim, setReduceAnim] = useState(true);
 
+  const { notifications } = useNotifications();
+
+  const [newSavedItems, setNewSavedItems] = useState([]);
+  const [newEntries, setNewEntries] = useState([]);
+
+  // Whenever notifications change, update saved items / entries
   useEffect(() => {
-    setTimeout(() => {
-      setCopiedAlert(false);
-    }, 2000);
+    if (!notifications) return;
+
+    const items = notifications.filter((i) => i.type === "lcItem");
+    setNewSavedItems(items);
+
+    const entries = notifications.filter((i) => i.type === "entry");
+    setNewEntries(entries);
+  }, [notifications]);
+
+  // Clear temporary copied alert
+  useEffect(() => {
+    if (!copiedAlert) return;
+    const t = setTimeout(() => setCopiedAlert(false), 2000);
+    return () => clearTimeout(t);
   }, [copiedAlert]);
 
+  // On mount, initialize home location, loc data, intro, reduceAnim
   useEffect(() => {
     setShowIntro(!haveSeenJournal());
-    clearNewTravelLogPages();
     const loc = getHomeLocation();
     setHomeLoc(loc);
     setLocData(savedLocationToObj(loc));
+    setReduceAnim(getSettings().reduceAnims);
   }, []);
 
   function addHomeLocationStickers() {
@@ -50,7 +70,7 @@ export default function JournalClient({}) {
       case "Seattle":
         return [
           <div
-            className="rotate-3 w-48 h-fit bottom-10 absolute left-3 "
+            className="rotate-3 w-48 h-fit bottom-10 absolute left-3"
             key={1}
           >
             <CornerTape directions={{ ne: true, nw: true }}>
@@ -63,46 +83,36 @@ export default function JournalClient({}) {
           >
             Seattle
           </div>,
-          <div
-            className="-rotate-6 w-48 h-fit top-10 absolute right-0 "
-            key={3}
-          >
+          <div className="-rotate-6 w-48 h-fit top-10 absolute right-0" key={3}>
             <CornerTape directions={{ nw: true, se: true }}>
               <img src="/loc/regrade-results.jpg" />
             </CornerTape>
           </div>,
         ];
-      case "Chicago":
-        break;
       case "Southeast Wyoming":
-        const wyStickers = [];
-        wyStickers.push(
-          <div className="absolute left-3 bottom-1/3 " key={1}>
+        return [
+          <div className="absolute left-3 bottom-1/3" key={1}>
             <CornerTape>
               <img
                 className="w-56 h-auto rotate-2 drop-shadow-2xl text-black"
                 src="/loc/sewy/wypack.png"
               />
             </CornerTape>
-          </div>
-        );
-        wyStickers.push(
+          </div>,
           <div
             className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 font-bold text-lg"
             key={2}
           >
             Wyoming
-          </div>
-        );
-        return wyStickers;
-        break;
+          </div>,
+        ];
       default:
-        break;
+        return [];
     }
   }
 
   const screens = [
-    <div className="flex flex-col justify-between h-full pb-2">
+    <div className="flex flex-col justify-between h-full pb-2" key={0}>
       <div className="flex flex-col">
         <img
           src="/placeholderThumbnail.png"
@@ -118,9 +128,7 @@ export default function JournalClient({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
-          onClick={() => {
-            setScreenIdx(screenIdx + 1);
-          }}
+          onClick={() => setScreenIdx(screenIdx + 1)}
           classes={["bg-lime-200", "active:bg-lime-300"]}
         >
           Next
@@ -130,7 +138,10 @@ export default function JournalClient({}) {
         </a>
       </div>
     </div>,
-    <div className="flex flex-col justify-between h-full pb-2  overflow-y-auto">
+    <div
+      className="flex flex-col justify-between h-full pb-2  overflow-y-auto"
+      key={1}
+    >
       <div className="flex flex-col">
         <img
           src="/illustrations/swipe.gif"
@@ -148,25 +159,21 @@ export default function JournalClient({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
-          onClick={() => {
-            setScreenIdx(screenIdx + 1);
-          }}
+          onClick={() => setScreenIdx(screenIdx + 1)}
           classes={["bg-lime-200", "active:bg-lime-300"]}
         >
           Next
         </BaseButton>
 
         <button
-          onClick={() => {
-            setScreenIdx(screenIdx - 1);
-          }}
+          onClick={() => setScreenIdx(screenIdx - 1)}
           className="underline text-sm"
         >
           Back
         </button>
       </div>
     </div>,
-    <div className="flex flex-col justify-between h-full pb-2">
+    <div className="flex flex-col justify-between h-full pb-2" key={2}>
       <div className="flex flex-col">
         <img
           src="/placeholderThumbnail.png"
@@ -191,9 +198,7 @@ export default function JournalClient({}) {
           Start
         </BaseButton>
         <button
-          onClick={() => {
-            setScreenIdx(screenIdx - 1);
-          }}
+          onClick={() => setScreenIdx(screenIdx - 1)}
           className="underline text-sm"
         >
           Back
@@ -205,7 +210,6 @@ export default function JournalClient({}) {
   useEffect(() => {
     if (!tocRef.current) return;
     tocAnim.current = gsap.timeline({ paused: true });
-
     tocAnim.current.fromTo(
       tocRef.current,
       { y: "100%" },
@@ -225,40 +229,26 @@ export default function JournalClient({}) {
 
   useEffect(() => {
     if (!tocAnim.current) return;
-    const reduceAnims = getSettings().reduceAnims;
-    if (reduceAnims) {
-      if (showToc) {
-        tocRef.current.style.transform = "translateY(0%)";
-        tocRef.current.style.visibility = "visible";
-      } else {
-        tocRef.current.style.transform = "translateY(100%)";
-        tocRef.current.style.visibility = "hidden";
-      }
+    const reduce = getSettings().reduceAnims;
+    if (reduce) {
+      tocRef.current.style.transform = showToc
+        ? "translateY(0%)"
+        : "translateY(100%)";
+      tocRef.current.style.visibility = showToc ? "visible" : "hidden";
     } else {
-      if (showToc) {
-        tocAnim.current.play();
-      } else {
-        tocAnim.current.reverse();
-      }
+      showToc ? tocAnim.current.play() : tocAnim.current.reverse();
     }
   }, [showToc]);
 
   useEffect(() => {
-    let found = false;
-
     if (!refSlug) return;
     const homeLoc = getHomeLocation();
     const locData = savedLocationToObj(homeLoc);
-    const reduceAnim = getSettings().reduceAnims;
+    const reduce = getSettings().reduceAnims;
     const allLocs = locData.locs;
-
-    if (!refSlug) return;
-
-    const index = allLocs.findIndex((l) => {
-      return l.slug == refSlug;
-    });
+    const index = allLocs.findIndex((l) => l.slug === refSlug);
     const page = document.querySelector(`#page-${Math.floor(index / 2) + 1}`);
-    page.scrollIntoView({ behavior: reduceAnim ? "auto" : "smooth" });
+    page?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   }, [refSlug]);
 
   function handleSearchParams(kvp) {
@@ -266,25 +256,20 @@ export default function JournalClient({}) {
   }
 
   function makeJournalPages() {
-    let pageCount = 1;
-
     if (!locData?.locs) return [];
     const allLocs = locData.locs;
-    const allPages = [];
+    let pageCount = 1;
+    const pages = [];
 
-    function countVisitedLocations() {
-      let visitedCount = 0;
-      for (let i = 0; i < allLocs.length; i++) {
-        const slug = allLocs[i].slug;
-        if (hasLocationBeenVisited(slug)) {
-          visitedCount++;
-        }
-      }
-      return visitedCount;
+    function countVisited() {
+      return allLocs.reduce(
+        (acc, loc) => acc + (hasLocationBeenVisited(loc.slug) ? 1 : 0),
+        0
+      );
     }
 
     for (let i = 0; i < allLocs.length; i += 2) {
-      allPages.push(
+      pages.push(
         <div
           key={pageCount}
           className="w-full shrink-0"
@@ -294,46 +279,22 @@ export default function JournalClient({}) {
             pageNumber={pageCount++}
             locations={[allLocs[i], allLocs[i + 1]]}
             totalNumLocs={allLocs.length}
-            numVisited={countVisitedLocations()}
+            numVisited={countVisited()}
           />
         </div>
       );
     }
 
-    return allPages;
-  }
-
-  function transformSavedLocationsToCategories() {
-    const homeLoc = getHomeLocation();
-    const locData = savedLocationToObj(homeLoc);
-
-    const gatheredCategoriesMap = new Map();
-    for (let mdxIdx in locData.locs) {
-      const mdx = locData.locs[mdxIdx];
-      mdx.tags.forEach((tag, i) => {
-        if (!gatheredCategoriesMap.has(tag)) {
-          gatheredCategoriesMap.set(tag, { tag: tag, locations: [] });
-        }
-
-        const soFar = gatheredCategoriesMap.get(tag);
-        const addAnother = Array.from(soFar.locations);
-        addAnother.push(mdx);
-        gatheredCategoriesMap.set(tag, {
-          ...soFar,
-          locations: addAnother,
-        });
-      });
-    }
-    return gatheredCategoriesMap;
+    return pages;
   }
 
   return (
-    <div className="h-dvh md:w-limiter relative bg-white overflow-y-hidden">
+    <div className="h-dvh w-full relative bg-white overflow-y-hidden">
       {showIntro && (
         <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-20 border-2 border-black">
           <Box
             isModal
-            className={"bg-yellow-200 left-[12.5%] top-[18%] h-2/3 w-3/4"}
+            className="bg-yellow-200 left-[12.5%] top-[18%] h-2/3 w-3/4"
           >
             {screens[screenIdx]}
           </Box>
@@ -364,11 +325,14 @@ export default function JournalClient({}) {
               </div>
             </div>
             {addHomeLocationStickers()}
-            <div className="absolute right-2 bottom-24 -rotate-6 flex flex-col items-center justify-center">
+            <div className="absolute right-2 bottom-24 -rotate-6 flex flex-col items-center justify-center drop-shadow-lg">
               <div className="text-xl font-vivian bg-lime-200 text-blue-800 p-1">
                 Swipe to open
               </div>
-              <img className="w-12 ml-10" src="/arrow.svg" />
+              <img
+                className={`w-12 ml-10 ${!reduceAnim && "animate-bounce-x"}`}
+                src="/arrow.svg"
+              />
             </div>
           </div>
           {makeJournalPages()}
@@ -380,16 +344,20 @@ export default function JournalClient({}) {
             <TableOfContents
               setShowToc={setShowToc}
               setCopiedAlert={setCopiedAlert}
+              newEntries={newEntries}
             />
           </div>
         </div>
       </div>
       {copiedAlert && <Toast message={copiedAlert} />}
       <JournalNav
+        notifications={notifications}
         showToc={showToc}
         setShowToc={setShowToc}
         showSavedItems={showSavedItems}
         setShowSavedItems={setShowSavedItems}
+        newEntries={newEntries}
+        newSavedItems={newSavedItems}
       />
     </div>
   );

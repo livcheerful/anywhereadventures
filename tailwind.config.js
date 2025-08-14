@@ -10,6 +10,30 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        // Horizontal bounce
+        "bounce-x": {
+          "0%, 100%": {
+            transform: "translateX(-25%)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateX(25%)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+
+        // Gentle ping (pulse-out style, slower + less frantic)
+        "gentle-ping": {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "80%": { transform: "scale(2)", opacity: "0" },
+          "100%": { opacity: "0" },
+        },
+      },
+      animation: {
+        "bounce-x": "bounce-x 2s infinite",
+        "gentle-ping": "gentle-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
+      },
       screens: {
         "h-sm": { raw: "(min-height: 351px)" }, // Phones up
         "h-md": { raw: "(min-height: 580px)" }, // Medium heights

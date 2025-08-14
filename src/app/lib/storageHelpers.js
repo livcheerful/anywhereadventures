@@ -13,8 +13,8 @@ const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
 const journalViewedKey = "journalViewed";
 const cameraViewedKey = "cameraViewed";
-const newTravelLogPagesKey = "newTravelLogPages";
 const settingsKey = "userSettings";
+const notificationsKey = "notifications";
 const photoReelKey = "photoReel";
 
 export function clearAll() {
@@ -29,6 +29,7 @@ export function clearAll() {
     localStorage.removeItem(cameraViewedKey);
     localStorage.removeItem(settingsKey);
     localStorage.removeItem(photoReelKey);
+    localStorage.removeItem(notificationsKey);
   }
 }
 
@@ -108,18 +109,35 @@ export function removeLCItem(lcItem) {
   return locs;
 }
 
-export function addNewTravelLogPage() {
-  let soFar = parseInt(localStorage.getItem(newTravelLogPagesKey)) || 0;
-  localStorage.setItem(newTravelLogPagesKey, soFar + 1);
+export function addNewNotification(type, id, details) {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  let newNotifs = { ...notifsSoFar };
+  newNotifs[id] = { type: type, id: id, ...details };
+  localStorage.setItem(notificationsKey, JSON.stringify(newNotifs));
 }
 
-export function getNumNewTravelLogPages() {
-  let soFar = parseInt(localStorage.getItem(newTravelLogPagesKey)) || 0;
-  return soFar;
+export function getNotifications() {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  return notifsSoFar;
 }
 
-export function clearNewTravelLogPages() {
-  localStorage.setItem(newTravelLogPagesKey, 0);
+export function getNumNotifications() {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  if (!notifsSoFar) return 0;
+  const k = Object.keys(notifsSoFar);
+  return k.length;
+}
+
+export function removeNotification(id) {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  let newNotifs = { ...notifsSoFar };
+  delete newNotifs[id];
+
+  localStorage.setItem(notificationsKey, JSON.stringify(newNotifs));
+}
+
+export function clearNotifications() {
+  localStorage.removeItem(notificationsKey);
 }
 
 export function setHaveSeenCamera(viewed) {
@@ -164,7 +182,7 @@ export function savePage(slug, imgData, date) {
     localStorage.setItem(scrapbookPageKey, JSON.stringify(pages));
 }
 
-export function saveLCItem(lcItem, image, caption, slug) {
+export function saveLCItem(lcItem, image, caption, type, slug) {
   const locs = getAll(itemsStorageKey);
   if (!isAdded(itemsStorageKey, lcItem)) {
     locs[lcItem] = {
@@ -173,6 +191,7 @@ export function saveLCItem(lcItem, image, caption, slug) {
       caption: caption,
       fromSlug: slug,
       timeAdded: new Date(),
+      type: type,
     };
 
     if (typeof window !== "undefined")
