@@ -29,7 +29,7 @@ export default function UnstickyHeader({
               href={`/journal?id=${post.slug}`}
               className="bg-lime-300 text-black  active:bg-lime-400 rounded-2xl drop-shadow-sm px-4 py-2 flex flex-col items-center justify-center"
             >
-              See log
+              See in log
             </a>
 
             <button

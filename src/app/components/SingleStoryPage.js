@@ -91,11 +91,15 @@ export default function SingleStoryPage({
             }}
           ></div>
           <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
-            <div className="relative p-2 w-full h-fit">
+            <div className="relative p-2 w-full h-fit z-10">
               <Box
                 float={true}
-                className="bg-yellow-200 flex flex-col gap-2 p-2"
+                className="bg-yellow-200 gap-2 flex flex-col p-2"
               >
+                <div className="text-yellow-600 text-xs uppercase">
+                  Go on an adventure
+                  <hr className="border-yellow-500"></hr>
+                </div>
                 <div>Select a location on the map to get started.</div>
                 <BaseButton
                   classes={[
@@ -109,12 +113,6 @@ export default function SingleStoryPage({
                   Open Map
                 </BaseButton>
               </Box>
-              <div className="absolute top-4 -left-3 bg-lime-200 w-12 overflow-clip h-12 border-2 border-gray-800 rounded-full flex flex-col items-center">
-                <img
-                  src="/placeholderThumbnail.png"
-                  className="object-cover w-full h-full"
-                />
-              </div>
             </div>
           </div>
           <div className="opacity-40 flex flex-col items-center relative">
@@ -190,7 +188,7 @@ export default function SingleStoryPage({
       </div>
 
       <hr className="border-amber-500"></hr>
-      <div className="flex justify-between gap-1 py-4 bg-amber-100">
+      <div className="flex justify-between gap-1 py-4 px-2 bg-amber-100">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>

@@ -115,7 +115,7 @@ export default function JournalClient({}) {
     <div className="flex flex-col justify-between h-full pb-2" key={0}>
       <div className="flex flex-col">
         <img
-          src="/placeholderThumbnail.png"
+          src="/illustrations/travellog.jpg"
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">
@@ -176,7 +176,7 @@ export default function JournalClient({}) {
     <div className="flex flex-col justify-between h-full pb-2" key={2}>
       <div className="flex flex-col">
         <img
-          src="/placeholderThumbnail.png"
+          src="/illustrations/saveitems.png"
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">

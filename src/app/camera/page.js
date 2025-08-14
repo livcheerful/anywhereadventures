@@ -83,7 +83,10 @@ export default function Page({}) {
         >
           Next
         </BaseButton>
-        <a href={`/${locationId}`} className="underline text-sm">
+        <a
+          href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
+          className="underline text-sm"
+        >
           Back to map
         </a>
       </div>
@@ -273,7 +276,10 @@ export default function Page({}) {
         </div>
       )}
 
-      <a href={`/${locationId}`} className="fixed left-0 top-4">
+      <a
+        href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
+        className="fixed left-0 top-4"
+      >
         <div className="py-1 px-6 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
           Back
         </div>
