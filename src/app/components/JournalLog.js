@@ -133,8 +133,8 @@ export function JournalLogInfo({ mdx }) {
         </div>
       </div>
       <hr className="border-lime-500 border-dashed"></hr>
-      <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col text-black">
-        <div className="text-bold text-center font-bold">{mdx.title}</div>
+      <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col text-black contain-size">
+        <div className="text-bold text-center font-bold text-pretty">{mdx.title}</div>
         <div>{mdx.blurb}</div>
       </div>
     </div>
