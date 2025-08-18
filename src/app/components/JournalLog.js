@@ -70,7 +70,7 @@ export function JournalLogInfo({ mdx }) {
     <div className="w-full h-full relative bg-lime-100 shrink-0 border-2 border-lime-200 rounded-md flex flex-col gap-1 drop-shadow-sm">
       {visited && (
         <div className="absolute top-1/3 -right-16 mix-blend-hard-light rotate-12 opacity-20">
-          <img className="w-36 h-fit" src="/seattle-general-2.svg" />
+          <img className="w-36 h-fit" src={mdx.stampName} />
         </div>
       )}
       <div className="flex flex-col">
