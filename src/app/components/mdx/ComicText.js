@@ -38,7 +38,7 @@ export default function ComicText({ textInfo }) {
     let w = viewboxWidth / 2;
     let h = viewboxHeight / 2;
 
-    if (tailDegree) {
+    if (tailDegree || tailDegree === 0) {
       if (tailDegree < degreeTurn) {
         x = w - 3;
         y = x * Math.tan(tailRadians);
@@ -56,7 +56,7 @@ export default function ComicText({ textInfo }) {
         y = x * Math.tan(tailRadians);
       }
     }
-    if (tailDegree) {
+    if (tailDegree || tailDegree === 0) {
       xOffset = tailLength * Math.cos(Math.PI + tailRadians);
       yOffset = tailLength * Math.sin(Math.PI + tailRadians);
     }
@@ -74,7 +74,7 @@ export default function ComicText({ textInfo }) {
         strokeLinejoin="round"
         viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       >
-        {tailDegree && (
+        {(tailDegree || tailDegree === 0) && (
           <path
             d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
               y - b
@@ -99,7 +99,7 @@ export default function ComicText({ textInfo }) {
           style={{ strokeWidth: `${strokeWidth}px` }}
           className="fill-white  "
         />
-        {tailDegree && (
+        {(tailDegree || tailDegree === 0) && (
           <path
             d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
               y - b
