@@ -68,7 +68,10 @@ export default function WelcomeScreen({
 
   function Popup({ data }) {
     return (
-      <Box className={"l-[10%] w-[50%] h-fit top-[65%] bg-yellow-300"}>
+      <Box
+        isModal={false}
+        className={"l-[10%] w-[50%] h-fit top-[65%] bg-yellow-300"}
+      >
         {data.welcome?.thumbnail && <img src={data.welcome.thumbnail}></img>}
         <H1>{data.name}</H1>
       </Box>
@@ -80,6 +83,7 @@ export default function WelcomeScreen({
       <BaseButton
         classes={["absolute", "right-2", "px-10", "bottom-2", "bg-lime-300"]}
         onClick={() => {
+          console.log("Hi vivian?");
           const data = locationData[clickedLocation];
           setChosenLocation(data);
           setHomeLocation(data.name);
@@ -213,7 +217,7 @@ export default function WelcomeScreen({
 
   return (
     <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-30">
-      {screens[index]},
+      {screens[index]}
       {clickedLocation && (
         <>
           <Popup data={locationData[clickedLocation]} />
