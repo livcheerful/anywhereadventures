@@ -66,7 +66,9 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
       const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
       if (urlMatch) {
         const bgImgUrl = urlMatch[1];
-        console.log(`trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`);
+        console.log(
+          `trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`
+        );
         const bgImage = await new Promise((resolve, reject) => {
           const img = new Image();
           img.crossOrigin = "anonymous"; // in case it's needed
@@ -375,8 +377,8 @@ export default function Scrapbook({
     const dropZone = interact("#trashZone").dropzone({
       accept: ".trashable",
       overlap: "pointer",
-      ondropactivate: (event) => { },
-      ondropenter: (event) => { },
+      ondropactivate: (event) => {},
+      ondropenter: (event) => {},
       ondrop: (event) => {
         scrapbookPage.deleteSticker(event.draggable.target);
       },
@@ -515,7 +517,7 @@ export default function Scrapbook({
           className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
         ></div>
         <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl text-gray-800">
-          Create your travel log
+          Create your travel log entry
         </div>
       </div>
       {showMyPhotos && (
@@ -690,8 +692,9 @@ export default function Scrapbook({
       <div
         id="trashZone"
         ref={trashRef}
-        className={`fixed w-full md:w-limiter bg-blue-300 text-black left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${draggingItem ? "visible" : "invisible"
-          }`}
+        className={`fixed w-full md:w-limiter bg-blue-300 text-black left-0 bottom-0 z-10 h-20 flex flex-col justify-center items-center ${
+          draggingItem ? "visible" : "invisible"
+        }`}
       >
         <div className="font-mono font-bold">TRASH</div>
       </div>
