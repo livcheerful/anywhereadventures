@@ -177,7 +177,7 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
 
@@ -191,7 +191,7 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
 

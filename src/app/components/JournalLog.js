@@ -38,6 +38,9 @@ export function JournalLog({ mdx }) {
             className="h-fit w-fit drop-shadow-lg rotate-3"
             src={getPage(slug).image}
           />
+          <div className="absolute left-1 bottom-0 text-gray-400 text-right">
+            Tap and hold to save to your photos
+          </div>
         </div>
       ) : (
         // Show image placeholder
@@ -134,7 +137,9 @@ export function JournalLogInfo({ mdx }) {
       </div>
       <hr className="border-lime-500 border-dashed"></hr>
       <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col text-black contain-size">
-        <div className="text-bold text-center font-bold text-pretty">{mdx.title}</div>
+        <div className="text-bold text-center font-bold text-pretty">
+          {mdx.title}
+        </div>
         <div>{mdx.blurb}</div>
       </div>
     </div>
