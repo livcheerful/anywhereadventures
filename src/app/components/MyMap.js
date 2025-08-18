@@ -125,6 +125,7 @@ function MapManager(map, router) {
     el.className =
       "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
     el.style.backgroundImage = `url(${image})`;
+    el.style.backgroundPosition = "center";
     el.style.backgroundSize = `cover`;
     el.style.width = `4rem`;
     el.style.height = `4rem`;
