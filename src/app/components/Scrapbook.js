@@ -632,8 +632,8 @@ export default function Scrapbook({
                 />
 
                 <div className="text-sm italic text-center">
-                  Items you save will appear here for you to use in your travel
-                  log entries.
+                  Collect archive items as you read stories. Items you save will
+                  appear here for you to use in your travel log entries.
                 </div>
               </div>
             ))}
