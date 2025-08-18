@@ -620,6 +620,23 @@ export default function Scrapbook({
           <div className="p-4 text-lg font-bold">
             Stickers from your saved items
           </div>
+          {!stickers ||
+            (stickers.length == 0 && (
+              <div className="px-4 text-black opacity-40 flex flex-col items-center gap-4 pt-3">
+                <div className="text-center text-lg italic font-bold">
+                  You don't have any saved items yet.
+                </div>
+                <img
+                  src="/illustrations/saveItems.png"
+                  className="w-60 rounded-2xl"
+                />
+
+                <div className="text-sm italic text-center">
+                  Items you save will appear here for you to use in your travel
+                  log entries.
+                </div>
+              </div>
+            ))}
           <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
             {stickers.map((item, i) => {
               return (
