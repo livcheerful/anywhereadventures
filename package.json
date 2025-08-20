@@ -8,7 +8,7 @@
     "mdx": "node ./queryMdx.js",
     "newSticker": "node ./addNewSticker.js",
     "newMdx": "node ./makeNewMdx.js",
-    "build": "next build",
+    "build": "npm run mdx && next build",
     "start": "next start",
     "lint": "next lint"
   },
