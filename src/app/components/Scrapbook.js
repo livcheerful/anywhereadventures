@@ -337,7 +337,27 @@ export default function Scrapbook({
     },
     {
       title: "Stickers",
-      image: "/tempStickerImage.png",
+      display: (
+        <button
+          className="h-36 w-44 overflow-clip relative "
+          onClick={() => {
+            setShowStickerModal(true);
+          }}
+        >
+          <img
+            className="absolute w-24 top-1 -rotate-2 left-0 drop-shadow-lg"
+            src="/illustrations/sticker1.png"
+          />
+          <img
+            className="absolute w-28 rotate-3 -top-2 right-0 drop-shadow-lg"
+            src="/illustrations/sticker2.png"
+          />
+          <img
+            className="absolute w-28 rotate-3 bottom-10 right-3 drop-shadow-lg"
+            src="/illustrations/sticker3.png"
+          />
+        </button>
+      ),
       onClickHandler: () => {
         setShowStickerModal(true);
       },
@@ -443,11 +463,13 @@ export default function Scrapbook({
   function makeToolbar() {
     return (
       <div
-        className="w-full overflow-x-auto flex flex-row gap-2 pl-2"
+        className="w-full overflow-x-auto flex flex-row  gap-2 pl-2"
         id="scrapbook-tool-wheel"
       >
         {itemsOnWheel.map((item, i) => {
-          return (
+          return item.display ? (
+            item.display
+          ) : (
             <button
               key={i}
               className="h-36 w-36 flex flex-col pt-2 "
@@ -522,7 +544,7 @@ export default function Scrapbook({
       </div>
       {showMyPhotos && (
         <ScrapbookToolMenu
-          title={"Your Photos"}
+          title={"Your photos"}
           onClose={(e) => {
             setShowMyPhotos(false);
             e.stopPropagation();
@@ -576,7 +598,7 @@ export default function Scrapbook({
                         e.preventDefault();
                         scrapbookPage.addNewPageSticker(
                           item.image,
-                          200,
+                          htmlEl.getBoundingClientRect().width,
                           htmlEl.getBoundingClientRect().height,
                           item.linkOut,
                           item.title
@@ -603,7 +625,7 @@ export default function Scrapbook({
                     e.preventDefault();
                     scrapbookPage.addNewPageSticker(
                       stickerInfo.img,
-                      200,
+                      htmlEl.getBoundingClientRect().width,
                       htmlEl.getBoundingClientRect().height,
                       stickerInfo.linkOut,
                       stickerInfo.title
@@ -639,6 +661,7 @@ export default function Scrapbook({
             ))}
           <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
             {stickers.map((item, i) => {
+              console.log(item);
               return (
                 <div
                   key={i}
@@ -646,7 +669,14 @@ export default function Scrapbook({
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    scrapbookPage.addNewSticker(item.image, 200);
+                    const htmlEl = e.target;
+                    scrapbookPage.addNewSticker(
+                      item.image,
+                      htmlEl.getBoundingClientRect().width,
+                      htmlEl.getBoundingClientRect().height,
+                      item.linkOut,
+                      item.title
+                    );
                     setShowStickerModal(false);
                   }}
                 >
@@ -659,7 +689,7 @@ export default function Scrapbook({
       )}
       {showTextModal && (
         <ScrapbookToolMenu
-          title="Add Text"
+          title="Add text"
           onClose={(e) => {
             setShowTextModal(false);
             setEditingTextSticker(undefined);

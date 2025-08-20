@@ -13,12 +13,16 @@ export default function TextEditor({
     { hex: "#1f96ff" },
     { hex: "#fffc4a" },
     { hex: "#2bff36" },
+    { hex: "#ff5c9d" },
   ];
   const textColors = [
     { hex: "#000000" },
-    { hex: "#560fd1" },
-    { hex: "#ffffff" },
-    { hex: "#d62409" },
+    { hex: "#C82800" },
+    { hex: "#8F07F0" },
+    { hex: "#FFFFFF" },
+    { hex: "#5AE3A8" },
+    { hex: "#E8F64B" },
+    { hex: "#F64BF0" },
   ];
 
   const [previewText, setPreviewText] = useState(
