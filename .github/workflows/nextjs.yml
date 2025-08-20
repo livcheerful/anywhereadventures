@@ -67,9 +67,11 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Initial build with Next.js
+        run: ${{ steps.detect-package-manager.outputs.runner }} next build-
       - name: Run MDX build
         run: npm run mdx
-      - name: Build with Next.js
+      - name: Final build with correct content with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
