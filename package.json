@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run mdx && next dev",
     "mdx": "node ./queryMdx.js",
     "newSticker": "node ./addNewSticker.js",
     "newMdx": "node ./makeNewMdx.js",

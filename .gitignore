@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Ignore everything inside /public/content/generated
+/public/content/generated/
+
+# Ignore a specific file
+/src/app/lib/MdxQueries.js
+
 # dependencies
 /node_modules
 /.pnp
