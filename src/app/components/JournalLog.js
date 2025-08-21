@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { hasLocationBeenVisited, getPage } from "../lib/storageHelpers";
 
 export function JournalHeader({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   return [
@@ -27,6 +28,7 @@ export function JournalHeader({ mdx }) {
 }
 
 export function JournalLog({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   return (
@@ -61,6 +63,7 @@ export function JournalLog({ mdx }) {
 }
 
 export function JournalLogInfo({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   const router = useRouter();
