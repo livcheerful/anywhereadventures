@@ -15,7 +15,7 @@ export default (phase) => {
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
     reactStrictMode: false,
     assetPrefix: isDev ? undefined : "https://anywhereadventures.vercel.app/",
-    productionBrowserSourceMaps: true,
+    productionBrowserSourceMaps: false,
     // basePath: isDev ? undefined : "/anywhereadventures",
   };
 
