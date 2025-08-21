@@ -73,18 +73,6 @@ export default function WelcomeScreen({
     );
   }
 
-  function Popup({ data }) {
-    return (
-      <Box
-        isModal={false}
-        className={"l-[10%] w-[50%] h-fit top-[65%] bg-yellow-300"}
-      >
-        {data.welcome?.thumbnail && <img src={data.welcome.thumbnail}></img>}
-        <H1>{data.name}</H1>
-      </Box>
-    );
-  }
-
   function StartButton() {
     return (
       <div className="relative">
