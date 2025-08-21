@@ -1,1 +1,27 @@
-{"/stickerpacks/sewy/bill.png":{"title":"Buffalo Bill","linkOut":"https://www.loc.gov/item/sn92066980/1909-01-02/ed-1"},"/stickerpacks/sewy/grahamMarket.png":{"title":"W.H. Graham Market ad","linkOut":"https://www.loc.gov/item/sn92066979/1910-03-18/ed-1/"}}
+{
+    "/stickerpacks/sewy/bill.png": {
+        "title": "Buffalo Bill",
+        "location": "SEWY",
+        "linkOut": "https://www.loc.gov/item/sn92066980/1909-01-02/ed-1"
+    },
+    "/stickerpacks/sewy/grahamMarket.png": {
+        "title": "W.H. Graham Market ad",
+        "location": "SEWY",
+        "linkOut": "https://www.loc.gov/item/sn92066979/1910-03-18/ed-1/"
+    },
+    "/stickerpacks/seattle/cranes.jpg": {
+        "title": "The Port of Seattle cranes load freighters near Colman Ferry Terminal on Elliott Bay in the Seattle Harbor.",
+        "location": "Seattle",
+        "linkOut": "https://www.loc.gov/resource/ppmsca.63298/"
+    },
+    "/stickerpacks/seattle/summer.jpg": {
+        "title": "Summer. A bit of lakeshore in the suburbs of Seattle",
+        "linkOut": "https://www.loc.gov/resource/gdcmassbookdig.seattle00unse/?sp=6&r=-0.409,-0.117,1.559,1.073,0",
+        "location": "Seattle"
+    },
+    "/stickerpacks/seattle/pikePlace.png": {
+        "title": "Public Market Center",
+        "linkOut": "https://www.loc.gov/resource/highsm.04426/",
+        "location": "Seattle"
+    }
+}
