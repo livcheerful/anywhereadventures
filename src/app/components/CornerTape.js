@@ -1,15 +1,34 @@
-export default function CornerTape({ children }) {
+export default function CornerTape({
+  children,
+  directions = { nw: true, sw: true },
+}) {
   return (
     <div>
-      <img
-        className="relative top-4 -left-12 w-24 z-10 -rotate-45"
-        src="/tape1.png"
-      />
+      {directions.nw && (
+        <img
+          className="absolute top-2 -left-8 w-24 z-10 -rotate-45"
+          src="/tape1.png"
+        />
+      )}
+      {directions.ne && (
+        <img
+          className="absolute top-1 -right-8 w-24 z-10 rotate-45"
+          src="/tape1.png"
+        />
+      )}
       {children}
-      <img
-        className="absolute -bottom-4 -right-10 w-24 z-10 -rotate-45"
-        src="/tape1.png"
-      />
+      {directions.sw && (
+        <img
+          className="absolute -bottom-1 -left-8 w-24 z-10 rotate-45"
+          src="/tape1.png"
+        />
+      )}
+      {directions.se && (
+        <img
+          className="absolute -bottom-1 -right-8 w-24 z-10 -rotate-45"
+          src="/tape1.png"
+        />
+      )}
     </div>
   );
 }

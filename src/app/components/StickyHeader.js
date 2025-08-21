@@ -7,13 +7,13 @@ import { gsap } from "gsap";
 export default function StickyHeader({
   post,
   contentSlug,
-  focusOnPin,
-  paneOpen,
+  mainMap,
   setPaneOpen,
   isAdded = false,
 }) {
   const router = useRouter();
   const io = useRef();
+  const startY = useRef();
 
   function kickOffAnimations() {
     if (!isAdded) {
@@ -42,55 +42,42 @@ export default function StickyHeader({
     <div
       id={`header-${contentSlug}`}
       className="sticky top-0 bg-white z-30 dark:text-black "
+      onTouchStart={(e) => {
+        startY.current = e.touches[0].clientY;
+      }}
+      onTouchMove={(e) => {
+        const currentY = e.touches[0].clientY;
+        const deltaY = currentY - startY.current;
+        console.log("DeltaY");
+        if (deltaY > 30) {
+          setPaneOpen(false);
+        }
+        if (deltaY < -30) {
+          setPaneOpen(true);
+        }
+      }}
     >
       <div
-        className={`flex flex-row gap-2 pt-5 md:pt-8 pb-2 p-2 w-full items-center`}
+        className={`flex flex-row gap-2 pt-9 pb-2  w-full items-center`}
         style={{
           backgroundSize: "cover",
-          backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('${post.cardImage}')`,
+          backgroundImage: `linear-gradient(
+  to bottom,
+  rgba(255, 255, 255, 0) 0%,
+  rgba(255, 255, 255, 1) 40%
+), url('${post.cardImage}')`,
         }}
       >
-        <div className="absolute w-full left-0 top-0 flex items-center justify-center">
-          {paneOpen && (
-            <div className=" flex flex-row justify-center gap-2 border-2 border-gray-800 w-4/5 font-bold text-black py-1 px-6  bg-lime-200  rounded-b-2xl drop-shadow-2xl cursor-pointer text-center text-sm">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setPaneOpen(false);
-                }}
-              >
-                🗺️
-              </button>
-              <div>|</div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  focusOnPin(post.slug, post);
-                }}
-              >
-                Open in Map
-              </button>
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col gap-2 pt-2 md:pt-6 w-full">
-          <div className="flex flex-row justify-between items-end">
-            <div className="font-mono font-black px-2 text-lg">
+        <div className="flex flex-col pt-3 md:pt-6 w-full">
+          <div className="flex flex-row justify-between items-baseline px-2">
+            <div className="font-mono font-black text-lg italic">
               {post.locationTitle}
             </div>
-            <div className="font-mono text-xs text-gray-700">
+            <div className="font-mono text-xs text-gray-700 flex flex-row gap-2 items-baseline">
               {hasLocationBeenVisited(post.slug) ? "VISITED" : "UNVISITED"}
             </div>
           </div>
           <hr className="border-black w-full "></hr>
-          <div className="font-mono text-xs flex flex-row justify-between px-2 text-gray-700 ">
-            <div>{post.neighborhood}</div>
-            <div>{`${post.latlon[0].toFixed(4)}, ${post.latlon[1].toFixed(
-              4
-            )}`}</div>
-          </div>
         </div>
       </div>
     </div>

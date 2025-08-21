@@ -27,6 +27,8 @@ export function ScrapbookElem({
   this.textSrc = textSrc;
   this.props = props;
 
+  this.elem.style.zIndex = z;
+
   htmlElem.style.touchAction = "none";
   this.originalWidth = origWidth;
   this.originalHeight = origHeight;
@@ -77,11 +79,11 @@ export function ScrapbookElem({
         this.rotation += event.da;
         updateTransform();
       },
-    },
-    end: (event) => {
-      //   this.rotate = this.angle + event.angle;
-      //   this.scale = this.scale * event.scale;
-      handleDraggingItem(undefined);
+      end: (event) => {
+        //   this.rotate = this.angle + event.angle;
+        //   this.scale = this.scale * event.scale;
+        handleDraggingItem(undefined);
+      },
     },
   });
 }

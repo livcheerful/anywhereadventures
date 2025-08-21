@@ -1,20 +1,28 @@
 "use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { getSettings } from "../lib/storageHelpers";
 
 export default function Toast({ message }) {
   const toastRef = useRef();
+
   useEffect(() => {
-    gsap.fromTo(
-      toastRef.current,
-      { opacity: 0 },
-      { duration: 0.4, opacity: 1 }
-    );
+    const reduceAnims = getSettings().reduceAnims;
+    if (reduceAnims) {
+      toastRef.current.style.opacity = 1;
+      toastRef.current.style.transform = "translateY(0%)";
+    } else {
+      gsap.fromTo(
+        toastRef.current,
+        { yPercent: 100, opacity: 0.2 },
+        { yPercent: 0, duration: 0.4, opacity: 1 }
+      );
+    }
   }, []);
   return (
     <div
       ref={toastRef}
-      className="fixed text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-lime-600 rounded-lg"
+      className="fixed z-[120] text-white drop-shadow-2xl text-xs font-bold p-4 bottom-4 bg-emerald-700 rounded-lg left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       {message}
     </div>

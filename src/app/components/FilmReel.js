@@ -14,7 +14,7 @@ export default function FilmReel({ snapshots }) {
           })}
         </div>
 
-        <div className="absolute top-0 w-full">
+        <div className="absolute top-0 w-full h-full overflow-y-clip">
           <img
             src="/film-left.png"
             className="left-0 top-0"
@@ -27,10 +27,6 @@ export default function FilmReel({ snapshots }) {
           />
         </div>
       </div>
-      <img
-        src="/filmcanister.png"
-        className="absolute shrink w-full -bottom-[100px] z-10"
-      />
     </div>
   );
 }

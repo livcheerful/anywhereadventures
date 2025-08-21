@@ -1,7 +1,7 @@
 export default function BigLink({ link, thumbnail, title }) {
   return (
     <div className="flex flex-col items-center pb-4">
-      <a href={link} className="">
+      <a href={link} className="" target="_blank">
         <div className="w-[15rem] h-fit rounded-lg drop-shadow-lg">
           <div
             className="w-[15rem] h-[8rem] rounded-t-lg border-2 border-black"

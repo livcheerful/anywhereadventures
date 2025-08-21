@@ -1,35 +1,54 @@
 import { useRouter } from "next/navigation";
 import { hasLocationBeenVisited, getPage } from "../lib/storageHelpers";
-export default function JournalLog({ mdx }) {
+
+export function JournalHeader({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
-  const router = useRouter();
-  const page = getPage(slug);
-  const visitedDate = new Date(page?.date);
-  if (visited) console.log(visitedDate.getMonth() + 1);
+  return [
+    <hr key={0} className="absolute top-1"></hr>,
+    <div
+      key={1}
+      className="text-sm relative flex flex-row justify-between items-center text-black"
+    >
+      <div className="absolute left-0 -top-1 font-bold text-md uppercase bg-lime-300 pl-4 pr-2 p-1 shadow-lg z-10">
+        {mdx.locationTitle}
+      </div>
+      <a href={`/${mdx.location[0].toLowerCase()}/${mdx.slug}`}>
+        <div className="absolute right-2 top-5 z-10 text-black text-xs border-2 px-2 py-1 border-black rounded-md bg-yellow-300 text-center font-bold">
+          Open in map
+        </div>
+      </a>
+      <hr className="w-full"></hr>
+      <div className="font-mono text-xs font-light text-gray-400">
+        {visited ? "VISITED" : "UNVISITED"}
+      </div>
+    </div>,
+  ];
+}
+
+export function JournalLog({ mdx }) {
+  if (!mdx) return;
+  const slug = mdx.slug;
+  const visited = hasLocationBeenVisited(slug);
   return (
-    <div className="flex flex-col items-center justify-around w-full h-full ">
+    <div className="flex flex-col items-center justify-between w-full h-full">
       {/* Show the image */}
       {visited ? (
-        <div className="relative flex flex-col font-mono text-xs  w-2/3 h-full justify-center">
-          <img src={getPage(slug).image} />
-          <div className="absolute top-1/3 -left-16 mix-blend-hard-light rotate-12 opacity-20">
-            <img className="w-36 h-fit" src="/seattle-general-2.svg" />
+        <div className="relative font-mono text-xs justify-center grow w-fit h-0">
+          <img
+            className="h-fit w-fit drop-shadow-lg rotate-3"
+            src={getPage(slug).image}
+          />
+          <div className="absolute left-1 bottom-0 text-gray-400 text-right">
+            Tap and hold to save to your photos
           </div>
-          <img
-            className="absolute top-4 -left-4 w-12 -rotate-45"
-            src="/tape1.png"
-          ></img>
-          <img
-            className="absolute bottom-4 -right-4 w-12 -rotate-45"
-            src="/tape1.png"
-          ></img>
         </div>
       ) : (
         // Show image placeholder
-        <div className="h-full w-full flex flex-col items-center justify-center">
-          <div className="flex flex-col font-mono text-xs text-gray-800 select-none opacity-50 w-2/3 h-1/2 border-2 border-amber-400 rounded-md items-center justify-center gap-2 p-2">
-            <div className=" text-amber-500 text-center">{mdx.title}</div>
+        <div className="shrink-0 grow w-full flex flex-col items-center justify-center ">
+          <div className="flex flex-col font-mono text-xs bg-white/50 backdrop-blur-lg text-gray-800 select-none  w-2/3 h-fit border-2 border-amber-400 rounded-md items-center justify-center gap-2 p-2">
+            <div className=" text-amber-500 text-center ">{mdx.title}</div>
             <div className=" text-amber-500 uppercase text-lg rotate-3 font-bold tracking-wider">
               Unvisited
             </div>
@@ -39,62 +58,93 @@ export default function JournalLog({ mdx }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
 
-      <button
-        className="w-full"
-        onClick={() => {
-          router.push(`/${mdx.slug}`);
-        }}
-      >
-        <div className="m-2 w-full bg-white shrink-0 border-2 p-1  border-gray-800 flex flex-col gap-1">
-          <div className="text-center font-black text-gray-800 text-sm ">
-            {mdx.locationTitle || mdx.title}
-          </div>
+export function JournalLogInfo({ mdx }) {
+  if (!mdx) return;
+  const slug = mdx.slug;
+  const visited = hasLocationBeenVisited(slug);
+  const router = useRouter();
+  const page = getPage(slug);
+  const visitedDate = new Date(page?.date);
+  return (
+    <div className="w-full h-full relative bg-lime-100 shrink-0 border-2 border-lime-200 rounded-md flex flex-col gap-1 drop-shadow-sm">
+      {visited && (
+        <div className="absolute top-1/3 right-0 translate-x-1/3 rotate-12 opacity-40">
+          <img className="w-36 h-fit" src={mdx.stampName} />
+        </div>
+      )}
+      <div className="flex flex-col">
+        <div className="font-mono flex flex-row justify-between text-xs text-gray-600  p-1 ">
+          <div>{mdx.neighborhood}</div>
+        </div>
+        <div className="flex flex-row text-xs font-mono text-gray-500 justify-between  p-1 ">
+          <div className="text-xs font-mono">
+            {visited ? (
+              <div className="flex flex-row  ">
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getMonth() + 1}
+                </div>
+                <div>/</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getDate()}
+                </div>
+                <div>/</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getFullYear()}
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-row gap-2 pl-3">
+                <div>/</div>
+                <div>/</div>
+              </div>
 
-          <div className="font-mono flex flex-row justify-between text-xs text-gray-600">
-            <div>{mdx.neighborhood}</div>
+              // <button
+              //   className="w-full h-full shrink-0 "
+              //   onClick={() => {
+              //     router.push(`/${mdx.slug}`);
+              //   }}
+              // >
+              //   Open in Map
+              // </button>
+            )}
           </div>
-          <hr></hr>
-          <div className="flex flex-row text-xs font-mono text-gray-500 justify-between">
-            <div className="text-xs font-mono">
-              {visited ? (
-                <div className="flex flex-row  ">
-                  <div className="text-red-700 ">
-                    {visitedDate.getMonth() + 1}
-                  </div>
-                  <div>/</div>
-                  <div className="text-red-700">{visitedDate.getDate()}</div>
-                  <div>/</div>
-                  <div className="text-red-700">
-                    {visitedDate.getFullYear()}
-                  </div>
+          <div>
+            {visited ? (
+              <div className="flex flex-row ">
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getHours()}
                 </div>
-              ) : (
-                <div className="flex flex-row gap-2 pl-3">
-                  <div>/</div>
-                  <div>/</div>
+                <div>:</div>
+                <div className=" text-red-600 font-bold font-vivian">
+                  {visitedDate.getMinutes()}
                 </div>
-              )}
-            </div>
-            <div>
-              {visited ? (
-                <div className="flex flex-row ">
-                  <div className="text-red-700">{visitedDate.getHours()}</div>
-                  <div>:</div>
-                  <div className="text-red-700">{visitedDate.getMinutes()}</div>
-                  <div>:</div>
-                  <div className="text-red-700">{visitedDate.getSeconds()}</div>
+                <div>:</div>
+                <div className="text-red-600 font-bold font-vivian">
+                  {visitedDate.getSeconds()}
                 </div>
-              ) : (
-                <div className="flex flex-row gap-2 pr-3">
-                  <div>:</div>
-                  <div>:</div>
-                </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-row gap-2 pr-3">
+                <div>:</div>
+                <div>:</div>
+              </div>
+
+              // <button>Log visit</button>
+            )}
           </div>
         </div>
-      </button>
+      </div>
+      <hr className="border-lime-500 border-dashed"></hr>
+      <div className="text-xs text-left p-1 overflow-y-auto h-full flex flex-col text-black contain-size">
+        <div className="text-bold text-center font-bold text-pretty">
+          {mdx.title}
+        </div>
+        <div>{mdx.blurb}</div>
+      </div>
     </div>
   );
 }

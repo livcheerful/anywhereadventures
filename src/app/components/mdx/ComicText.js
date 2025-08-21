@@ -38,7 +38,7 @@ export default function ComicText({ textInfo }) {
     let w = viewboxWidth / 2;
     let h = viewboxHeight / 2;
 
-    if (tailDegree) {
+    if (tailDegree || tailDegree === 0) {
       if (tailDegree < degreeTurn) {
         x = w - 3;
         y = x * Math.tan(tailRadians);
@@ -56,7 +56,7 @@ export default function ComicText({ textInfo }) {
         y = x * Math.tan(tailRadians);
       }
     }
-    if (tailDegree) {
+    if (tailDegree || tailDegree === 0) {
       xOffset = tailLength * Math.cos(Math.PI + tailRadians);
       yOffset = tailLength * Math.sin(Math.PI + tailRadians);
     }
@@ -74,29 +74,36 @@ export default function ComicText({ textInfo }) {
         strokeLinejoin="round"
         viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       >
-        {tailDegree && (
+        {(tailDegree || tailDegree === 0) && (
           <path
-            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${y - b
-              } l${c - x} ${d - y}`}
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
+              y - b
+            } l${c - x} ${d - y}`}
             strokeLinejoin="round"
             style={{ strokeWidth: `${2}px` }}
             className="fill-white"
           />
         )}
         <path
-          d={`m${viewboxCenterX + xOffset} ${viewboxCenterY - bubbleHei + yOffset
-            } c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${bubbleHei - bubbleDrop - 0
-            }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${bubbleHei - 0
-            } c-${bubbleWid - bubbleDrop
-            } 0, -${bubbleWid} -${bubbleDrop}, -${bubbleWid} -${bubbleHei} c0 -${bubbleHei - bubbleDrop
-            }, ${bubbleDrop} -${bubbleHei}, ${bubbleWid} -${bubbleHei}`}
+          d={`m${viewboxCenterX + xOffset} ${
+            viewboxCenterY - bubbleHei + yOffset
+          } c${bubbleWid} 0, ${bubbleWid} ${bubbleDrop}, ${bubbleWid} ${bubbleHei} c0 ${
+            bubbleHei - bubbleDrop - 0
+          }, -${bubbleDrop} ${bubbleHei - 0}, -${bubbleWid} ${
+            bubbleHei - 0
+          } c-${
+            bubbleWid - bubbleDrop
+          } 0, -${bubbleWid} -${bubbleDrop}, -${bubbleWid} -${bubbleHei} c0 -${
+            bubbleHei - bubbleDrop
+          }, ${bubbleDrop} -${bubbleHei}, ${bubbleWid} -${bubbleHei}`}
           style={{ strokeWidth: `${strokeWidth}px` }}
           className="fill-white  "
         />
-        {tailDegree && (
+        {(tailDegree || tailDegree === 0) && (
           <path
-            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${y - b
-              } l${c - x} ${d - y}`}
+            d={`m${a + viewboxCenterX} ${b + viewboxCenterY} l${x - a} ${
+              y - b
+            } l${c - x} ${d - y}`}
             style={{ strokeWidth: `${2}px` }}
             className="fill-white stroke-transparent"
           />
@@ -120,7 +127,7 @@ export default function ComicText({ textInfo }) {
 
     if (Number.isFinite(tailRadians)) {
       const xOffset = tailLength * Math.cos(Math.PI + tailRadians);
-      const yOffset = tailLength * Math.sin(Math.PI + tailRadians) * .5;
+      const yOffset = tailLength * Math.sin(Math.PI + tailRadians) * 0.5;
       top += yOffset;
       bottom -= yOffset;
       left += xOffset;
@@ -195,20 +202,22 @@ export default function ComicText({ textInfo }) {
 
   return (
     <div
-      className={`relative  ${textInfo.style.outline == "bubble" ? "w-full h-full" : "w-full h-fit"
-        }`}
+      className={`relative  ${
+        textInfo.style.outline == "bubble" ? "w-full h-full" : "w-full h-fit"
+      }`}
       style={createBubbleStyles()}
     >
       {textInfo.style.outline == "bubble" && makeBubble()}
       <div
-        className={`flex flex-col ${textInfo.style.outline == "bubble"
-          ? "relative items-center justify-center w-full h-full"
-          : "w-full"
-          }`}
+        className={`flex flex-col ${
+          textInfo.style.outline == "bubble"
+            ? "relative items-center justify-center w-full h-full"
+            : "w-full"
+        }`}
         style={createTextStyles()}
       >
         <div
-          className="w-fit h-fit "
+          className="w-fit h-fit text-pretty"
           style={{
             fontSize: textInfo.style.fontSize || ".8rem",
             fontFamily: textInfo.style.fontFamily || "",

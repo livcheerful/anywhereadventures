@@ -3,12 +3,21 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 
 import FilmReel from "../components/FilmReel";
+import Box from "../components/ui/Box";
+import BaseButton from "../components/ui/BaseButton";
 import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
 import ScrapbookDeskPage from "../components/ScrapbookDeskPage";
 
-import { savePage, numberOfPages } from "../lib/storageHelpers";
+import {
+  savePage,
+  haveSeenCamera,
+  setHaveSeenCamera,
+  addNewNotification,
+  addPhotoToReel,
+  getPhotoReel,
+} from "../lib/storageHelpers";
 import { getMdx } from "../lib/clientPostHelper";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
@@ -17,10 +26,9 @@ const cameraDirectionStates = ["user", "environment"];
 const aspectRatio = 16 / 9;
 export default function Page({}) {
   const [cameraPermissionState, setCameraPermissionState] = useState(undefined);
-  const [haveShownHelp, setHaveShownHelp] = useState(false); //TODO update this based on cookie
+  const [haveShownHelp, setHaveShownHelp] = useState(true); //TODO update this based on cookie
   const [picture, setPicture] = useState(undefined);
   const [reel, setReel] = useState([]);
-  const [showMenu, setShowMenu] = useState(false);
   const [processPhotos, setProcessPhotos] = useState(false);
   const [showSummaryPage, setShowSummaryPage] = useState(false);
   const [collageImage, setCollageImage] = useState(undefined);
@@ -28,54 +36,151 @@ export default function Page({}) {
   const [cameraDirectionIdx, setCameraDirectionIdx] = useState(0); // can be user or environment
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const [mdx, setMdx] = useState(undefined);
-
-  const router = useRouter();
+  const [introIdx, setIntroIdx] = useState(0);
 
   useEffect(() => {
+    setHaveShownHelp(haveSeenCamera());
+  }, []);
+
+  useEffect(() => {
+    if (!locationId) return;
+    const photosSoFar = getPhotoReel(locationId);
+    const parsedPhotos = photosSoFar.map((p, i) => {
+      return { ...p, timeTaken: new Date(p.timeTaken) };
+    });
+    setReel(parsedPhotos);
     getMdx([locationId], (res) => {
-      console.log(typeof res);
-      console.log(res);
       setMdx(res[0]);
     });
   }, [locationId]);
 
-  function onFinishedScrapbooking(imagedata) {
+  //VVN TODO FIX TEXT HERE FOR DARK MODE
+
+  const screens = [
+    <Box
+      isModal
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t1.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
+        <h1 className="font-bold text-lg">
+          Visit the location and create your travel log entry
+        </h1>
+        <div className="px-2">
+          Fill up your camera roll with photos and then collage and save your
+          page to your travel log
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          classes={["bg-yellow-300 active:bg-yellow-400 grow-0 "]}
+          onClick={() => {
+            setIntroIdx(introIdx + 1);
+          }}
+        >
+          Next
+        </BaseButton>
+        <a
+          href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
+          className="underline text-sm"
+        >
+          Back to map
+        </a>
+      </div>
+    </Box>,
+    <Box
+      isModal
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t2.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
+        <h1 className="font-bold text-lg">Gather photos</h1>
+        <div className="px-2">
+          Take pictures according to the prompt or just capture anything you
+          want to remember.
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <BaseButton
+          classes={["bg-yellow-300 grow-0"]}
+          onClick={() => {
+            setIntroIdx(introIdx + 1);
+          }}
+        >
+          Next
+        </BaseButton>
+        <button
+          onClick={() => {
+            setIntroIdx(introIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
+      </div>
+    </Box>,
+    <Box
+      isModal={true}
+      className={
+        "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between bg-lime-200"
+      }
+    >
+      <div className="flex flex-col gap-2">
+        <img
+          src="/illustrations/t3.jpg"
+          className="w-full border-b-2 border-b-black"
+        />
+        <h1 className="font-bold text-lg">Customize</h1>
+        <div className="px-2">
+          Decorate your travel log entry with text and stickers. You can save
+          archive items to use as stickers here.
+        </div>
+      </div>
+      <div className="w-full flex flex-col items-center pb-2 gap-2">
+        <button
+          onClick={() => {
+            setHaveShownHelp(true);
+            setHaveSeenCamera(true);
+          }}
+          className="bg-yellow-300 border-2 border-gray-800 font-bold rounded-lg p-2"
+        >
+          START
+        </button>
+        <button
+          onClick={() => {
+            setIntroIdx(introIdx - 1);
+          }}
+          className="underline text-sm"
+        >
+          Back
+        </button>
+      </div>
+    </Box>,
+  ];
+
+  function onFinishedScrapbooking(imagedata, compressedImageData) {
     setShowSummaryPage(true);
     setCollageImage(imagedata);
-    // save image to local storage
 
-    savePage(locationId, imagedata, new Date());
+    // save image to local storage
+    savePage(locationId, compressedImageData, new Date());
+    addNewNotification("entry", locationId, { slug: locationId });
   }
 
   function handleSearchParams(kvp) {
     setLocationId(kvp["locationId"]);
   }
-
-  const menuOptions = [
-    {
-      text: "Back to map",
-      onClick: () => {
-        router.push("/");
-        setShowMenu(false);
-      },
-    },
-    {
-      text: "Reset Camera",
-      onClick: () => {
-        setReel([]);
-        setShowMenu(false);
-      },
-    },
-    {
-      text: "Swap Camera",
-      onClick: () => {
-        setCameraDirectionIdx(
-          (cameraDirectionIdx + 1) % cameraDirectionStates.length
-        );
-        setShowMenu(false);
-      },
-    },
-  ];
 
   async function checkPermissions(cb) {
     const permissions = await navigator.permissions.query({ name: "camera" });
@@ -149,40 +254,38 @@ export default function Page({}) {
           cb={handleSearchParams}
         />
       </Suspense>
-      {cameraPermissionState == "prompt" && !haveShownHelp && (
-        <div className="absolute w-full h-full top-0 left-0 bg-white/85 flex flex-col items-center justify-center z-20">
-          <div
-            className="bg-teal-200 p-3 w-fit min-h-1/2 gap-2  text-black "
-            style={{ maxWidth: "80%" }}
-          >
-            <div className="font-bold text-lg">Explore the area</div>
-            <div>
-              Fill up your camera roll with photos and then collage and save
-              your page to your journal
-            </div>
-            <div className="w-full flex flex-col items-center">
-              <button
-                onClick={() => {
-                  setHaveShownHelp(true);
-                }}
-                className="bg-white  font-bold rounded-lg p-2 py-4"
-              >
-                START
-              </button>
-              <a href="/" className="underline">
-                Back to reading
-              </a>
-            </div>
-          </div>
+      {cameraPermissionState && !haveShownHelp && (
+        <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-50">
+          {screens[introIdx]}
         </div>
       )}
       {!processPhotos && (
         <div className=" w-full flex flex-row  pl-2 ">
-          <div className="absolute" style={{ width: "45%", bottom: "80%" }}>
-            <FilmReel snapshots={reel} />
+          <div
+            className="absolute h-[20%]"
+            style={{ width: "45%", bottom: "80%" }}
+          >
+            <div className="h-full relative overflow-y-auto overflow-x-hidden flex flex-col-reverse">
+              <div>
+                <FilmReel snapshots={reel} />
+              </div>
+            </div>
+            <img
+              src="/filmcanister.png"
+              className="absolute shrink w-full top-[90%] left-[4%] z-10"
+            />
           </div>
         </div>
       )}
+
+      <a
+        href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
+        className="fixed left-0 top-4"
+      >
+        <div className="py-1 px-6 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
+          Back
+        </div>
+      </a>
 
       <div
         className="absolute w-full flex flex-col bottom-0  bg-gray-300 "
@@ -229,105 +332,107 @@ export default function Page({}) {
             </div>
           </div>
         </div>
-        <div className="w-full text-center font-mono  text-gray-500 font-bold scale-y-95">
+        <div className="hidden h-sm:block w-full  grow text-center font-mono  text-gray-500 font-bold scale-y-95">
           Anywhere Adventures COOLCam
         </div>
-        <div className="flex flex-row w-full flex-grow gap-3 p-3 justify-between items-center">
-          <button
-            className="h-16 w-32 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold justify-center flex flex-col"
-            style={{
-              backgroundImage: `url(cameraButton.png)`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
-            onClick={() => {
-              setCameraDirectionIdx(
-                (cameraDirectionIdx + 1) % cameraDirectionStates.length
-              );
-            }}
-          >
-            Flip
-          </button>
+        <div className="flex flex-row shrink-0 w-full grow px-3 justify-between items-center">
+          <div className="flex-1 ">
+            <button
+              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
+              style={{
+                backgroundImage: `url(cameraButton.png)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+              onClick={() => {
+                setCameraDirectionIdx(
+                  (cameraDirectionIdx + 1) % cameraDirectionStates.length
+                );
+              }}
+            >
+              Flip
+            </button>
+          </div>
+          <div className="flex flex-col gap-2 flex-1 shrink-0 items-center w-fit">
+            <div
+              className=" bg-purple-400 rounded-full cursor-pointer w-24 h-24"
+              style={{
+                backgroundImage: "url(/shutter.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => {
+                if (reel.length != 5) {
+                  const newPhotos = Array.from(reel);
 
-          <div
-            className="bg-purple-400 rounded-full cursor-pointer  w-24 h-24"
-            style={{
-              backgroundImage: "url(/shutter.png)",
-              backgroundSize: "cover",
-            }}
-            onClick={() => {
-              if (reel.length != 5) {
-                const newPhotos = Array.from(reel);
+                  function snapPhoto() {
+                    const videoWrapper =
+                      document.getElementById("videoWrapper");
+                    const destinationWidth =
+                      videoWrapper.getBoundingClientRect().width;
+                    const destinationHeight =
+                      videoWrapper.getBoundingClientRect().height;
+                    const video = document.getElementById("video");
+                    const videoDimensions = video.width / video.height;
 
-                function snapPhoto() {
-                  const videoWrapper = document.getElementById("videoWrapper");
-                  const destinationWidth =
-                    videoWrapper.getBoundingClientRect().width;
-                  const destinationHeight =
-                    videoWrapper.getBoundingClientRect().height;
-                  const video = document.getElementById("video");
-                  const videoDimensions = video.width / video.height;
+                    let sourceX = 0,
+                      sourceY = 0,
+                      sourceWidth = video.videoWidth,
+                      sourceHeight = video.videoHeight;
+                    if (videoDimensions > aspectRatio) {
+                      // Too Wide
+                      sourceWidth = video.videoHeight * aspectRatio;
+                      sourceX = (video.videoWidth - sourceWidth) / 2;
+                    } else {
+                      // Too Tall
+                      sourceHeight = video.videoWidth / aspectRatio;
+                      sourceY = (video.videoHeight - sourceHeight) / 2;
+                    }
+                    const tempCanvas = document.createElement("canvas");
+                    const tempCtx = tempCanvas.getContext("2d");
+                    tempCanvas.width = destinationWidth;
+                    tempCanvas.height = destinationHeight;
+                    tempCtx.drawImage(
+                      video,
+                      sourceX,
+                      sourceY,
+                      sourceWidth,
+                      sourceHeight,
+                      0, // Where to draw on canvas, X
+                      0,
+                      tempCanvas.width,
+                      tempCanvas.height
+                    );
 
-                  let sourceX = 0,
-                    sourceY = 0,
-                    sourceWidth = video.videoWidth,
-                    sourceHeight = video.videoHeight;
-                  if (videoDimensions > aspectRatio) {
-                    // Too Wide
-                    sourceWidth = video.videoHeight * aspectRatio;
-                    sourceX = (video.videoWidth - sourceWidth) / 2;
-                  } else {
-                    // Too Tall
-                    sourceHeight = video.videoWidth / aspectRatio;
-                    sourceY = (video.videoHeight - sourceHeight) / 2;
+                    var img = tempCanvas.toDataURL("image/png");
+                    return img;
                   }
-                  const tempCanvas = document.createElement("canvas");
-                  const tempCtx = tempCanvas.getContext("2d");
-                  tempCanvas.width = destinationWidth;
-                  tempCanvas.height = destinationHeight;
-                  tempCtx.drawImage(
-                    video,
-                    sourceX,
-                    sourceY,
-                    sourceWidth,
-                    sourceHeight,
-                    0, // Where to draw on canvas, X
-                    0,
-                    tempCanvas.width,
-                    tempCanvas.height
-                  );
 
-                  var img = tempCanvas.toDataURL("image/png");
-                  return img;
+                  const photo = snapPhoto();
+                  const photoObj = { img: photo, timeTaken: new Date() };
+                  newPhotos.push(photoObj);
+                  addPhotoToReel(locationId, photoObj);
+                  setReel(newPhotos);
+                } else {
+                  // process photos
                 }
-
-                const photo = snapPhoto();
-                newPhotos.push({ img: photo, timeTaken: new Date() });
-                setReel(newPhotos);
-              } else {
-                // process photos
-              }
-            }}
-          ></div>
-        </div>
-
-        <div
-          className=" bg-white flex flex-row justify-between items-center gap-4 p-2"
-          style={{ height: "15%" }}
-        >
-          <a href="/" className=" flex-grow">
-            <div className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono">
-              Back
-            </div>
-          </a>
-          <button
-            className="p-4 px-6 text-center bg-green-300 rounded-full h-fit font-bold font-mono flex-grow"
-            onClick={() => {
-              setProcessPhotos(true);
-            }}
-          >
-            Finish
-          </button>
+              }}
+            ></div>
+          </div>
+          <div className="flex-1 flex flex-row justify-end">
+            <button
+              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
+              style={{
+                backgroundImage: `url(cameraButton.png)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+              onClick={() => {
+                setProcessPhotos(true);
+              }}
+            >
+              Finish
+            </button>
+          </div>
         </div>
       </div>
       {processPhotos && (
@@ -340,6 +445,7 @@ export default function Page({}) {
       )}
       {showSummaryPage && (
         <ScrapbookDeskPage
+          mdx={mdx}
           collageImage={collageImage}
           locationId={locationId}
           stickerRefs={stickerRefs}

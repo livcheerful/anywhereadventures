@@ -6,13 +6,13 @@ import {
   NavigationControl,
   LngLatBounds,
 } from "maplibre-gl";
-import { locationData } from "../lib/locationHelpers";
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getMdx } from "../lib/clientPostHelper";
 import MapPin from "./MapPin";
+import { getSettings, hasLocationBeenVisited } from "../lib/storageHelpers";
 
 function updateMarkerTabAccess(visible) {
   if (visible) {
@@ -123,12 +123,21 @@ function MapManager(map, router) {
   function makeMarker(info, onClickCb, image) {
     const el = document.createElement("div");
     el.className =
-      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
+      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer border-2";
     el.style.backgroundImage = `url(${image})`;
+    el.style.backgroundPosition = "center";
     el.style.backgroundSize = `cover`;
-    el.style.borderWidth = "1px";
-    el.style.width = `3rem`;
-    el.style.height = `3rem`;
+    el.style.width = `4rem`;
+    el.style.height = `4rem`;
+
+    const hasBeenVisited = hasLocationBeenVisited(info.slug);
+    el.style.filter = hasBeenVisited ? " brightness(90%) contrast(40%)" : "";
+    el.style.borderColor = hasBeenVisited ? "gray" : "gray";
+    el.style.borderWidth = hasBeenVisited ? "1px" : "1px";
+    el.style.zIndex = hasBeenVisited ? "1" : "2";
+    el.style.boxShadow = hasBeenVisited
+      ? ""
+      : "0 0 10px 4px rgba(255, 255, 0, 0.1)";
 
     const marker = new Marker({ element: el }).setLngLat([
       info.latlon[1],
@@ -142,13 +151,23 @@ function MapManager(map, router) {
   }
 
   this.flyTo = function (center, zoom, shift = true) {
-    this.map.flyTo({
-      center: shift
-        ? shiftUp(center[1], center[0], zoom || 13)
-        : { lat: center[1], lon: center[0] },
-      zoom: zoom || 13,
-      speed: 0.9,
-    });
+    const reduceAnim = getSettings().reduceAnims;
+    if (reduceAnim) {
+      this.map.jumpTo({
+        center: shift
+          ? shiftUp(center[1], center[0], zoom || 13)
+          : { lat: center[1], lon: center[0] },
+        zoom: zoom || 13,
+      });
+    } else {
+      this.map.flyTo({
+        center: shift
+          ? shiftUp(center[1], center[0], zoom || 13)
+          : { lat: center[1], lon: center[0] },
+        zoom: zoom || 13,
+        speed: 0.9,
+      });
+    }
   };
 
   this.updatePins = function (pinCb, chosenLocation, router) {
@@ -159,7 +178,7 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
 
@@ -173,7 +192,7 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cardImage);
+      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
 
@@ -193,6 +212,7 @@ export default function MyMap({
   viewingPin,
   setViewingPin,
   chosenLocation,
+  setCurrentSlug,
 }) {
   const router = useRouter();
   const [zoom, setZoom] = useState(defaultLocation.zoom);
@@ -257,11 +277,15 @@ export default function MyMap({
       mapManager.flyTo(
         [mdxInfo.latlon[1], mdxInfo.latlon[0]],
         mdxInfo.zoom,
-        true
+        false
       );
+
+      // Update reading pane
+      setCurrentSlug(mdxInfo.slug);
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
+        console.log("Viewing pin..");
       });
     }
 
@@ -273,6 +297,7 @@ export default function MyMap({
       className="w-full overflow-clip"
       onClick={() => {
         mapClickHandler();
+        mapManager.map.dragPan.enable();
       }}
     >
       <div className="bg-slate-800 w-full h-dvh" id="map"></div>

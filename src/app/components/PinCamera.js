@@ -1,21 +1,30 @@
 "use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { getSettings } from "../lib/storageHelpers";
 export default function PinCamera({ mdx }) {
   useGSAP(() => {
     // console.log("starting animation");
+    const reduceAnim = getSettings().reduceAnims;
     const screenWidth = window.innerWidth;
     const smallScreen = screenWidth < 768;
-    gsap.fromTo(
-      "#camera",
-      { rotate: -100, left: "-30rem", bottom: smallScreen ? "20%" : "50%" },
-      {
-        rotate: smallScreen ? -9 : -13,
-        left: smallScreen ? "-3rem" : "-8rem",
-        delay: 0.2,
-        duration: 1.2,
-      }
-    );
+    if (reduceAnim) {
+      const camera = document.querySelector("#camera");
+      camera.style.right = smallScreen ? "-3rem" : "-8rem";
+      camera.style.transform = `rotate(${smallScreen ? 9 : 13}deg)`;
+      camera.style.bottom = smallScreen ? "20%" : "50%";
+    } else {
+      gsap.fromTo(
+        "#camera",
+        { rotate: 100, right: "-30rem", bottom: smallScreen ? "20%" : "50%" },
+        {
+          rotate: smallScreen ? 9 : 13,
+          right: smallScreen ? "-3rem" : "-8rem",
+          delay: 0.2,
+          duration: 1.2,
+        }
+      );
+    }
   }, []);
   return (
     <div

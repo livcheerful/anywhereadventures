@@ -1,34 +1,62 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+
+import { useState, useEffect } from "react";
+import { useSearchParams, useParams } from "next/navigation";
+
 import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
-import { useState, useEffect } from "react";
-import { updateRoute } from "../lib/routeHelpers";
+
 import { locationData, savedLocationToObj } from "../lib/locationHelpers";
-import { getHomeLocation } from "../lib/storageHelpers";
+import { getHomeLocation, setHomeLocation } from "../lib/storageHelpers";
+
 export default function BasePage({ entranceSlug }) {
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
-  const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(isNewUser);
-  const [paneOpen, setPaneOpen] = useState(!isNewUser);
+  const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(false);
+  const [paneOpen, setPaneOpen] = useState(false);
 
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
   const [exploringContent, setExploringContent] = useState(false);
-  const [post, setPost] = useState();
 
   // VVN These store the same things, just one gets initialized...?
   const [savedLocation, setSavedLocation] = useState(getHomeLocation());
-  const [chosenLocation, setChosenLocation] = useState(
-    savedLocationToObj(savedLocation) || locationData.all
-  );
+  const [chosenLocation, setChosenLocation] = useState(locationData.all);
+
+  const [welcomeScreenStartIndex, setWelcomeScreenStartIndex] = useState(0);
 
   const [mainMap, setMainMap] = useState(undefined);
   // Elements to control map
   const [viewingPin, setViewingPin] = useState(undefined);
 
+  const searchParams = useSearchParams();
+  const params = useParams();
+
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
+
+  useEffect(() => {
+    // Check query param
+    const skipWelcome = searchParams.get("skip") === "true";
+
+    if (skipWelcome) {
+      const slugParam = params.slug;
+
+      const parts = Array.isArray(slugParam)
+        ? slugParam
+        : slugParam
+        ? [slugParam]
+        : [];
+
+      const city = parts[0]; // "seattle"
+
+      console.log(locationData[city]);
+      setHomeLocation(locationData[city].name);
+      setChosenLocation(locationData[city]);
+    }
+
+    setShowingWelcomeScreen(!skipWelcome && isNewUser);
+  }, []);
 
   useEffect(() => {
     if (savedLocation && !chosenLocation) {
@@ -42,6 +70,7 @@ export default function BasePage({ entranceSlug }) {
     setMainMap(m);
   }
   function mapClickHandler() {
+    setViewingPin(undefined);
     setPaneOpen(false);
   }
 
@@ -66,61 +95,34 @@ export default function BasePage({ entranceSlug }) {
           viewingPin={viewingPin}
           setViewingPin={setViewingPin}
           chosenLocation={chosenLocation}
+          setCurrentSlug={setCurrentSlug}
         />
       }
-      {!viewingPin && (
-        <a
-          href="/journal"
-          className="absolute -right-24 md:-right-10 -bottom-32 md:bottom-0 -rotate-6 drop-shadow-xl"
-        >
-          <div
-            id="toJournal"
-            className="relative"
-            style={{
-              width: "15rem",
-              height: "25rem",
-              backgroundImage: "url(/notebook3.png)",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <div
-              className="stickyNote w-28 h-28 top-4 left-5 absolute md:bottom-14 right-7  p-2 flex flex-col justify-center  -rotate-6"
-              style={{
-                backgroundImage: `url(/stickynote.png)`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <div className="font-mono text-gray-900 font-bold text-sm text-center">
-                Travel Log
-              </div>
-            </div>
-          </div>
-        </a>
-      )}
 
-      <ContentPane
-        entranceSlug={entranceSlug}
-        chosenLocation={chosenLocation}
-        mainMap={mainMap}
-        paneOpen={paneOpen}
-        setPaneOpen={setPaneOpen}
-        exploringContent={exploringContent}
-        setExploringContent={setExploringContent}
-        currentSlug={currentSlug}
-        setCurrentSlug={setCurrentSlug}
-        post={post}
-        setPost={setPost}
-        setShowingWelcomeScreen={setShowingWelcomeScreen}
-        setViewingPin={setViewingPin}
-      />
+      {!showingWelcomeScreen && (
+        <ContentPane
+          entranceSlug={entranceSlug}
+          chosenLocation={chosenLocation}
+          mainMap={mainMap}
+          paneOpen={paneOpen}
+          setPaneOpen={setPaneOpen}
+          exploringContent={exploringContent}
+          setExploringContent={setExploringContent}
+          currentSlug={currentSlug}
+          setCurrentSlug={setCurrentSlug}
+          setShowingWelcomeScreen={setShowingWelcomeScreen}
+          setWelcomeScreenStartIndex={setWelcomeScreenStartIndex}
+          setViewingPin={setViewingPin}
+        />
+      )}
 
       {showingWelcomeScreen && (
         <WelcomeScreen
           onFinishWelcoming={finishWelcome}
           setChosenLocation={setChosenLocation}
           mainMap={mainMap}
+          setPaneOpen={setPaneOpen}
+          startIndex={welcomeScreenStartIndex}
         />
       )}
     </div>

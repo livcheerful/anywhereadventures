@@ -1,6 +1,6 @@
 ---
-title: VVN TODO need title
-locationTitle: Firestation No. 18
+title: How Two Cities Joined Together
+locationTitle: Fire Station No. 18
 address: 5427 Russell Avenue Northwest
 location: ["Seattle"] 
 latlon: [47.66825789609244, -122.38310310394768]
@@ -8,11 +8,11 @@ neighborhood: Ballard
 zoom: 15
 tags: ["built","architects"]
 cameraImage: "/loc/seattle/firestationNo18/firehorse.png"
-cardImage: "/loc/seattle/firestationNo18/station.png"
+cardImage: "/loc/seattle/firestationNo18/ballard.jpg"
 stampName:
-photoPrompt:
-blurb:
-stickers: []
+photoPrompt: "Visit the retired fire station in persion - what things still look like a fire station? What things definitely don't?"
+blurb: "Learn how the city of Ballard became a part of Seattle, and about one of the last remaining structures from historic Ballard, Fire Station No. 18."
+stickers: [{image: "/loc/seattle/firestationNo18/fireHorse.png", title: "Horse-drawn fire engine rushing to a fire", linkOut: "https://www.loc.gov/resource/cph.3a27542/"},{image: "/loc/seattle/firestationNo18/ballard.jpg", title: "Aerial view of the Ballard neighborhood north of downtown Seattle, Washington, along Elliott Bay" , linkOut: "https://www.loc.gov/resource/highsm.50268/"}, {image: "/loc/seattle/firestationNo18/ballard2.jpg", title: "Aerial view of Seattle, Washington, with a focus on the Hiram M. Chittenden Locks, or Ballard Locks, a complex of locks at the west end of Salmon Bay and the Lake Washington Ship Canal ", linkOut: "https://www.loc.gov/resource/highsm.51134/"}, {image: "/loc/seattle/firestationNo18/seaserpant.png", title: "Photo shows nine men standing with a very long driftwood sculpture of a sea serpent on a beach in the Ballard area of Seattle, Washington." , linkOut: "https://www.loc.gov/resource/cph.3b12369/"}, {image: "/loc/seattle/firestationNo18/concernHorse.png"},]
 ---
 
 Ballard wasn’t always part of Seattle - in its early days, it was an independent town.
@@ -21,13 +21,22 @@ Incorporated in 1889, they had all the things that a town would need, including 
 
 But the new town was missing one critical piece -- access to fresh water. Sitting on the saltwater sound and with no fresh water sources nearby, Ballard relied on the city of Seattle to provide them with safe drinking water. And although it was the second-largest town in King County, in 1907, Ballard became a part of the larger town.
 
-<LOCItem image="/loc/seattle/firestationNo18/ballard.png" linkOut="https://www.loc.gov/resource/sn87093407/1907-02-06/ed-1/?sp=1&q=ballard+annexation&r=0.604,0.48,0.518,0.358,0" caption="Citizens of Ballard were not happy with the decision. On the day they merged, the flag was flown at half mast."/>
+<LOCItem
+    type="newspaper"
+    image="/loc/seattle/firestationNo18/ballard.png"
+    linkOut="https://www.loc.gov/resource/sn87093407/1907-02-06/ed-1/?sp=1&q=ballard+annexation&r=0.604,0.48,0.518,0.358,0"
+    caption="Citizens of Ballard were not happy with the decision. On the day they merged, the flag was flown at half mast."/>
 
-In 1910, Seattle replaced the wooden firestation with the red brick building that still stands today. The architects for the new structure were Bebb & Mendel, who also designed the University Heights Elementary School and the Oriental Building in Downtown Seattle. Bebb later went on to design the Seattle Asian Art Museum (known at the time as the Art Institute of Seattle).
+In 1910, Seattle replaced the wooden fire station with the red brick building that still stands today. The architects for the new structure were Bebb & Mendel, who also designed the University Heights Elementary School and the Oriental Building in Downtown Seattle. Bebb later went on to design the Seattle Asian Art Museum (known at the time as the Art Institute of Seattle).
 
 At the time, fire engines were powered by horses, so the area at the back of the station contained horse stalls.
 
-<LOCItem image="/loc/seattle/firestationNo18/firehorse.png" linkOut="https://www.loc.gov/resource/cph.3a27542/" caption="Horse-drawn fire engine rushing to a fire" alt="Photograph shows three white horses rushing down city street pulling a steam fire engine carrying three fire fighters"/>
+<LOCItem
+    type="pnp"
+    image="/loc/seattle/firestationNo18/firehorse.png"
+    linkOut="https://www.loc.gov/resource/cph.3a27542/"
+    caption="Horse-drawn fire engine rushing to a fire"
+    alt="Photograph shows three white horses rushing down city street pulling a steam fire engine carrying three fire fighters"/>
 <ComicSection elements={[
     {type:"image", src:"/loc/seattle/firestationNo18/station.png", position:{col:1, row:1}, size:{width:3, height:3}},
     {type:"text", style:{outline:"box", backgroundColor:"white", fontSize:"1rem"}, src:"The front the station has four bay doors.", position:{col:1, row:1}, size:{width:3, height:1}},
@@ -40,17 +49,25 @@ At times, extra support was needed to handle some fires. In 1958, the Seattle Ce
 <ComicSection cols={5} elements={[
     {type:"text", style:{outline:"bubble"}, src:"Those stacks of wood are over 50 feet high!", position:{col:2, row:1}, size:{width:2, height:1}},
     {type:"text", style:{outline:"bubble"}, src:"It’d be really bad if a fire started here... all of the wood is so.... flammable.", position:{col:3, row:2}, size:{width:3, height:1}},
-     {type:"image", src:"/loc/seattle/firestationNo18/mill.png", position:{col:1, row:2}, size:{width:5, height:5}},
-     {type:"image", src:"/loc/seattle/firestationNo18/concernHorse.png", position:{col:4, row:4}, size:{width:2, height:2}},
+    {type:"image", src:"/loc/seattle/firestationNo18/mill.png", position:{col:1, row:2}, size:{width:5, height:5}},
+    {type:"image", src:"/loc/seattle/firestationNo18/concernHorse.png", position:{col:4, row:4}, size:{width:2, height:2}},
     {type:"text", style:{outline:"bubble"}, src:"It probably would take at least 3 days to put out...", position:{col:1, row:5}, size:{width:2, height:1}},
     {type:"text", style:{outline:"bubble"}, src:"And require a fireboat....", position:{col:3, row:6}, size:{width:1, height:1}},
+    {type: 'text', style:{outline: "box"}, src:"Unfortunately, the mill did catch on fire. The dried wood was ready fuel, and it was the largest fire Seattle had seen since the Great Fire of 1889.", position: {col: 1, row:7}, size: {width:5, height:1}}
 ]}/>
 
-Luckily, Seattle had the Fireboat Duwamish as part of its firefighting fleet. It arrived on site from its home at Fire Station 5, located north of Colman Dock in downtown, and fought the fire from the canal.
+The fire was so large that it burned for three days straight. The city had engines reporting from seven different stations around the city to come and help, and because the mill was so close to the canal, the city's fireboat was also engaged.
 
-<LOCItem image="/loc/seattle/firestationNo18/fireboat.png" linkout="https://www.loc.gov/resource/hhh.wa0746.photos/?sp=1" caption="The Fireboat Duwamish is the 'best preserved' example of an early twentieth centure fireboat. It can be seen docked at the Historic Ships Wharf in Lake Union Park." alt=""/>
+The Fireboat Duwamish is part of Seattle's firefighting fleet, and arrives when fires pop up near or on the water. For the Ballard lumber mill fire, it arrived on site from its home at Fire Station 5, located north of Colman Dock in downtown, and fought the fire from the canal.
 
-The Ballard Firehouse still stands today, even though it’s no longer used as a firestation. It’s one of the few structures remaining from historic Ballard - others are the Ballard Bridge, the Ballard Locks, and the Carnegie Library.
+<LOCItem
+    type="pnp"
+    image="/loc/seattle/firestationNo18/fireboat.png"
+    linkout="https://www.loc.gov/resource/hhh.wa0746.photos/?sp=1"
+    caption="The Fireboat Duwamish is the 'best preserved' example of an early twentieth centure fireboat. It can be seen docked at the Historic Ships Wharf in Lake Union Park."
+    alt=""/>
+
+The Ballard Firehouse still stands today, even though it’s no longer used as a fire station. It’s one of the few structures remaining from historic Ballard - others are the Ballard Bridge, the Ballard Locks, and the Carnegie Library.
 
 {/* 
 Sticker template: 

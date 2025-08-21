@@ -13,10 +13,6 @@ export default function Camera({
   const searchParams = useSearchParams();
   const cameraType = searchParams.get("type");
   const frameImage = searchParams.get("frame");
-  const imagePlacement = searchParams.get("place");
-  const imageDimensions = searchParams.get("size");
-  const [showSayCheese, setShowSayCheese] = useState(false);
-  const [countdown, setCountdown] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [height, setHeight] = useState();
   const [width, setWidth] = useState(0);
@@ -32,23 +28,6 @@ export default function Camera({
     });
   }, [cameraDirection]);
 
-  function flash() {
-    const tl = gsap.timeline();
-    tl.fromTo(
-      "#white-background",
-      {
-        backgroundColor: "#FFFFFF99",
-      },
-      {
-        duration: 0.2,
-        backgroundColor: "#FFFFFFFF",
-      }
-    );
-    tl.to("#white-background", {
-      duration: 0.5,
-      backgroundColor: "#FFFFFF99",
-    });
-  }
   useEffect(() => {
     const w = Math.min(window.innerWidth - 10, 400);
     const h = w / aspectRatio;
@@ -114,13 +93,13 @@ export default function Camera({
             <img
               id="film-left"
               className="absolute top-0 left-0"
-              style={{ height: height * 3 }}
+              style={{ height: height * 3 || 0 }}
               src="film-left.png"
             />
             <img
               id="film-right"
               className="absolute right-0 top-0"
-              style={{ height: height * 3 }}
+              style={{ height: height * 3 || 0 }}
               src="film-right.png"
             />
           </div>
@@ -131,12 +110,12 @@ export default function Camera({
   return (
     <div className="">
       <div className="hidden">{loadImageResources()}</div>
-      <div className="filmStrip  overflow-hidden">
+      <div className="filmStrip overflow-hidden">
         <div
           id="videoWrapper"
           className={`${
             picture ? "hidden" : "visible"
-          } w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
+          } w-3/5 h-md:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
             aspectRatio: aspectRatio,
           }}

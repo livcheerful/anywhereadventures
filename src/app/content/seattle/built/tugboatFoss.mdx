@@ -1,18 +1,18 @@
 ---
 title: The Little Tugboat that Could
 locationTitle: Historic Ships Wharf
-address: 860 Terry Ave N, Seattle, WA 98109
+address: 860 Terry Ave N
 location: ["Seattle"]
 latlon: [47.62791651667464, -122.3367442465739]
 neighborhood: South Lake Union
 zoom: 15
 tags: ["built"]
-cameraImage: /loc/seattle/tugboatFoss/columbiaRiver.png
+cameraImage: /loc/seattle/tugboatFoss/fossEmblem.png
 cardImage: "/loc/seattle/tugboatFoss/columbiaRiver.png"
 stampName: "/seattle-general-2.svg"
 photoPrompt: "Visit the pier and see all the different kinds of boats there are."
-blurb: "VVN TODO"
-stickers: [{image: "/loc/seattle/tugboatFoss/boat.png" }, {image: "/loc/seattle/tugboatFoss/fossEmblem.png", linkOut: "https://www.loc.gov/resource/hhh.wa0868.photos/?sp=1", title: "Foss Company motto on the side of the boat"}]
+blurb: "The oldest wooden tugboat's seen and done it all! From dangerous rapids to starring in Hollywood!"
+stickers: [{image: "/loc/seattle/tugboatFoss/fossEmblem.png", linkOut: "https://www.loc.gov/resource/hhh.wa0868.photos/?sp=1", title: "Foss Company motto on the side of the boat"},{image: "/loc/seattle/tugboatFoss/columbiaRiver.png", linkOut: "https://www.loc.gov/resource/ppmsca.18165/", title: "The Columbia River, one of the most dangerous crossings"},{image: "/loc/seattle/tugboatFoss/columbiaRiver2.jpg", title: "Columbia River, Oregon", linkOut: "https://www.loc.gov/resource/highsm.12109/?r=-0.133,-0.057,1.281,0.89,0"}, {image: "/loc/seattle/tugboatFoss/theFoss.png" },{image: "/loc/seattle/tugboatFoss/boat.png" }, {image: "/loc/seattle/tugboatFoss/fire1.png" }, ]
 ---
 
 
@@ -20,10 +20,20 @@ Historic buildings can be seen all around the world, but Seattle is special beca
 
 
 The oldest lightship:
-<LOCItem linkOut="https://www.loc.gov/resource/cph.3b19268/" image="/loc/seattle/tugboatFoss/lightboat.jpg" caption="Lightships were used as floating lighthouses" alt="photo of lightship"/>
+<LOCItem
+    type="pnp"
+    linkOut="https://www.loc.gov/resource/cph.3b19268/"
+    image="/loc/seattle/tugboatFoss/lightboat.jpg"
+    caption="Lightships were used as floating lighthouses"
+    alt="photo of lightship"/>
 
 The (second) oldest fireboat:
-<LOCItem linkOut="https://www.loc.gov/resource/hhh.wa0746.photos/?sp=1" image="/loc/seattle/tugboatFoss/fireboatDuwamish.jpg" caption="Fireboat Duwamish" alt="colored photo of red fireboat"/>
+<LOCItem
+    type="pnp"
+    linkOut="https://www.loc.gov/resource/hhh.wa0746.photos/?sp=1"
+    image="/loc/seattle/tugboatFoss/fireboatDuwamish.jpg"
+    caption="Fireboat Duwamish"
+    alt="colored photo of red fireboat"/>
 
 <ComicSection elements={[
     {type:"text", src:"and the definitive, MOST-OLDEST wooden tugboat:",position:{col: 1, row: 1}, size: {width:3, height: 2}, style:{outline: "none", fontSize: "1rem"}},
@@ -35,7 +45,11 @@ The (second) oldest fireboat:
 The *Arthur Foss* held many jobs. It started off in Astoria, Oregon, navigating the dangerous mouth of the Columbia River where it dumps into the Pacific Ocean. In the waters dubbed the “graveyard of the Pacific”, the Arthur Foss, then known as Wallowa, would act as an experienced guide and tow boats across the crossing.
 
 
-<LOCItem linkOut="https://www.loc.gov/resource/ppmsca.18165/" image="/loc/seattle/tugboatFoss/columbiaRiver.png" caption="The Columbia River"/>
+<LOCItem
+    type="pnp"
+    linkOut="https://www.loc.gov/resource/ppmsca.18165/"
+    image="/loc/seattle/tugboatFoss/columbiaRiver.png"
+    caption=""/>
 
 <ComicSection overlap={150} elements={[
     {type:"text", src:"You see that, kid? That's the Columbia River", position:{col: 2, row: 1}, size: {width:2, height: 1}, style:{outline: "bubble",}, bubbleStyle: {tailDegree: 60}},
@@ -44,15 +58,15 @@ The *Arthur Foss* held many jobs. It started off in Astoria, Oregon, navigating 
 {type:"text", src:"The waves are unforgiving. ", position:{col: 1, row: 3}, size: {width:1, height: 1}, style:{outline: "bubble",}, bubbleStyle: {tailDegree: 0}},
 {type:"text", src:"This crossing has defeated over 2,000 boats.", position:{col: 1, row: 4}, size: {width:3, height: 1}, style:{outline: "bubble",fontSize:"1rem"}, bubbleStyle: {tailDegree: 320}},
 {type:"text", src:"...", position:{col: 2, row: 5}, size: {width:1, height: 1}, style:{outline: "bubble", fontSize: "2rem"}},
-{type:"text", src:"go get 'em!",position:{col:2, row:6}, size:{width:2, height:1}, style:{outline: "bubble", fontSize:"2rem",  textAlign: "center"}},
+{type:"text", src:"go get 'em!",position:{col:2, row:6}, size:{width:2, height:1}, style:{outline: "bubble", fontSize:"2rem",  textAlign: "center"}, bubbleStyle: {tailDegree: 290}},
 
 ]}/>
 In 1929, the Foss Launch & Tug Company bought Wallowa and renamed it Arthur Foss. To help the company pay for the cost of the vessel, they leased it out to feature as the titular boat in Tugboat Annie, the first major movie filmed in Washington State. 
 
 <ComicSection elements={[
-    {type:"text", src:"You're gonna be a star, kid! Gimme your best movie star smile", position:{col: 1, row: 1}, size: {width:2, height: 1}, style:{outline: "bubble",}, },
-    {type:"image", src:"/loc/seattle/tugboatFoss/movie.png",position:{col: 1, row: 1}, size: {width:3, height: 3},},
-    {type:"text", src:"... Is that how you always smile?", position:{col: 3, row: 3}, size: {width:1, height: 1}, style:{outline: "bubble",}, },
+    {type:"text", src:"You're gonna be a star, kid! Gimme your best movie star smile", position:{col: 1, row: 1}, size: {width:2, height: 1}, style:{outline: "bubble",}, bubbleStyle: {tailDegree: 90}},
+    {type:"image", src:"/loc/seattle/tugboatFoss/movie.png",position:{col: 1, row: 2}, size: {width:3, height: 4},},
+    {type:"text", src:"... Is that how you always smile?", position:{col: 3, row: 5}, size: {width:1, height: 1}, style:{outline: "bubble",} , bubbleStyle: {tailDegree: 180}},
 ]}/>
 
 Despite becoming an A-list celebrity, the Arthur Foss continued to work as a tugboat, and found itself it many dangerous situations. 

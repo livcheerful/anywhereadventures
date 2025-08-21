@@ -36,8 +36,6 @@ function getAllPosts() {
   }
 
   let fileObj = recurseFiles(postsDirectory, "");
-  console.log(`SEATTLE FILE NAMES [${fileObj.length}]:`);
-  console.log(fileObj);
 
   const allPosts = fileObj.map((fileObj) => {
     const filePath = `${postsDirectory}/${fileObj.path}`;

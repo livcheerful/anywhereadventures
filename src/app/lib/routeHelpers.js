@@ -8,5 +8,4 @@ export function updateRoute(newPath) {
 
 export function addQueryParam(query, value) {
   var url = new URL(window.location);
-  console.log(url);
 }

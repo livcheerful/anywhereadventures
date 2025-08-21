@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { getSettings } from "../lib/storageHelpers";
 
 export function makeConfetti(element, x, y, amount = 10, emoji = "🌼") {
   for (let i = 0; i < amount; i++) {
@@ -26,7 +27,6 @@ export function makeConfetti(element, x, y, amount = 10, emoji = "🌼") {
   }
   gsap.registerPlugin(MotionPathPlugin);
   const confettis = document.querySelectorAll(".confetti");
-  console.log(confettis);
   // Give it motion
   confettis.forEach((c) => {
     // Make a set of points for it to travel along

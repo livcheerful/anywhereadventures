@@ -11,6 +11,11 @@ const scrapbookPageKey = "scrapbook";
 const userIdKey = "userId";
 const stampKey = "stamps";
 const homeLocationKey = "homeLoc";
+const journalViewedKey = "journalViewed";
+const cameraViewedKey = "cameraViewed";
+const settingsKey = "userSettings";
+const notificationsKey = "notifications";
+const photoReelKey = "photoReel";
 
 export function clearAll() {
   if (typeof window !== "undefined") {
@@ -20,7 +25,41 @@ export function clearAll() {
     localStorage.removeItem(userIdKey);
     localStorage.removeItem(stampKey);
     localStorage.removeItem(homeLocationKey);
+    localStorage.removeItem(journalViewedKey);
+    localStorage.removeItem(cameraViewedKey);
+    localStorage.removeItem(settingsKey);
+    localStorage.removeItem(photoReelKey);
+    localStorage.removeItem(notificationsKey);
   }
+}
+
+export function addPhotoToReel(locationId, photoObj) {
+  let photoData = JSON.parse(localStorage.getItem(photoReelKey));
+
+  if (!photoData || photoData.locationId != locationId) {
+    photoData = {
+      locationId: locationId,
+      photos: [],
+    };
+  }
+  console.log(photoObj);
+  photoData.photos.push(photoObj);
+
+  localStorage.setItem(photoReelKey, JSON.stringify(photoData));
+}
+
+export function getPhotoReel(locationId) {
+  let photoData = JSON.parse(localStorage.getItem(photoReelKey));
+  console.log(photoData);
+  if (!photoData || photoData.locationId != locationId) {
+    return [];
+  } else {
+    return photoData.photos;
+  }
+}
+
+export function clearPhotoReel() {
+  localStorage.removeItem(photoReelKey);
 }
 
 function getAll(key) {
@@ -39,6 +78,21 @@ export function isAdded(storageKey, key) {
   return Object.keys(locs).includes(key);
 }
 
+export function updateSettings(key, value) {
+  let settings = JSON.parse(localStorage.getItem(settingsKey)) || {};
+  settings[key] = value;
+  localStorage.setItem(settingsKey, JSON.stringify(settings));
+}
+
+export function getSettings() {
+  const mediaQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  return (
+    JSON.parse(localStorage.getItem(settingsKey)) || { reduceAnims: mediaQuery }
+  );
+}
+
 export function getAllLCItems() {
   const saved = getAll(itemsStorageKey);
   return saved;
@@ -53,6 +107,53 @@ export function removeLCItem(lcItem) {
   }
 
   return locs;
+}
+
+export function addNewNotification(type, id, details) {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  let newNotifs = { ...notifsSoFar };
+  newNotifs[id] = { type: type, id: id, ...details };
+  localStorage.setItem(notificationsKey, JSON.stringify(newNotifs));
+}
+
+export function getNotifications() {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  return notifsSoFar;
+}
+
+export function getNumNotifications() {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  if (!notifsSoFar) return 0;
+  const k = Object.keys(notifsSoFar);
+  return k.length;
+}
+
+export function removeNotification(id) {
+  const notifsSoFar = JSON.parse(localStorage.getItem(notificationsKey));
+  let newNotifs = { ...notifsSoFar };
+  delete newNotifs[id];
+
+  localStorage.setItem(notificationsKey, JSON.stringify(newNotifs));
+}
+
+export function clearNotifications() {
+  localStorage.removeItem(notificationsKey);
+}
+
+export function setHaveSeenCamera(viewed) {
+  localStorage.setItem(cameraViewedKey, viewed);
+}
+
+export function haveSeenCamera() {
+  return localStorage.getItem(cameraViewedKey);
+}
+
+export function setHaveSeenJournal(viewed) {
+  localStorage.setItem(journalViewedKey, viewed);
+}
+
+export function haveSeenJournal() {
+  return localStorage.getItem(journalViewedKey);
 }
 
 export function getAllPages() {
@@ -74,7 +175,6 @@ export function getPage(slug) {
 }
 
 export function savePage(slug, imgData, date) {
-  console.log(`in savePage(), slug: [${slug}]`);
   const pages = getAllPages();
 
   pages[slug] = { image: imgData, date: date };
@@ -82,7 +182,7 @@ export function savePage(slug, imgData, date) {
     localStorage.setItem(scrapbookPageKey, JSON.stringify(pages));
 }
 
-export function saveLCItem(lcItem, image, caption, slug) {
+export function saveLCItem(lcItem, image, caption, type, slug) {
   const locs = getAll(itemsStorageKey);
   if (!isAdded(itemsStorageKey, lcItem)) {
     locs[lcItem] = {
@@ -91,6 +191,7 @@ export function saveLCItem(lcItem, image, caption, slug) {
       caption: caption,
       fromSlug: slug,
       timeAdded: new Date(),
+      type: type,
     };
 
     if (typeof window !== "undefined")
@@ -112,7 +213,6 @@ export function getNumberOfStamps() {
 
 export function saveStamp(stampList) {
   const stampsSoFar = getAll(stampKey);
-  console.log(stampsSoFar);
   for (let i = 0; i < stampList.length; i++) {
     const currStamp = stampList[i];
     stampsSoFar[currStamp.slug] = stampList[i];

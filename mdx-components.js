@@ -23,13 +23,14 @@ export const MyMDXComponents = {
   li: ({ children }) => <li className="list-disc">{children}</li>,
   ul: ({ children }) => <ul className="list-disc">{children}</ul>,
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
-  LOCItem: ({ image, linkOut, caption, alt, allowSave, children }) => {
+  LOCItem: ({ image, linkOut, caption, alt, allowSave, type, children }) => {
     return (
       <LOCItem
         allowSave={allowSave != undefined ? allowSave : true}
         image={image}
         linkOut={linkOut}
         caption={caption}
+        type={type}
         alt={alt}
       />
     );

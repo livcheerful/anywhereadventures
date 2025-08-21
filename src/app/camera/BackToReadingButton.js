@@ -11,7 +11,7 @@ export default function BackToReadingButton() {
         router.push(`/${refSlug}`);
       }}
     >
-      Back to reading
+      Back to map
     </button>
   );
 }
