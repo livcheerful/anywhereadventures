@@ -30,6 +30,7 @@ export default function ContentPane({
   setViewingPin,
   setShowingWelcomeScreen,
   setWelcomeScreenStartIndex,
+  chosenLocation,
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
 
@@ -60,9 +61,14 @@ export default function ContentPane({
     }, 2000);
   }, [toastMessage]);
 
+  useEffect(() => {
+    setHomeLocationData(chosenLocation);
+  }, [chosenLocation]);
+
   // Load up the content based on stored home location
   useEffect(() => {
-    if (!homeLocationData) return;
+    if (!homeLocationData || Object.keys(homeLocationData).length === 0) return;
+    console.log(homeLocationData);
     const locSlugs = homeLocationData.locs.map((l) => {
       return l.slug;
     });
