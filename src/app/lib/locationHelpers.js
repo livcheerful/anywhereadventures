@@ -62,6 +62,13 @@ export const locationData = {
     zoom: 13,
     locs: chicagoLocs,
     byCategory: chicagoByCategory,
+    welcome: {
+      thumbnail: "loc/sewy/wypack.png",
+      stickers: [
+        "stickerpacks/sewy/bill.png",
+        "stickerpacks/sewy/grahamMarket.png",
+      ],
+    },
   },
   all: {
     id: "",
@@ -70,6 +77,13 @@ export const locationData = {
     zoom: 4,
     locs: allLocs,
     byCategory: allByCategory,
+    welcome: {
+      thumbnail: "loc/sewy/wypack.png",
+      stickers: [
+        "stickerpacks/sewy/bill.png",
+        "stickerpacks/sewy/grahamMarket.png",
+      ],
+    },
   },
   // All doesn't work for now. Fix this later!
 };
