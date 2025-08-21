@@ -285,6 +285,7 @@ export default function MyMap({
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
+        console.log("Viewing pin..");
       });
     }
 

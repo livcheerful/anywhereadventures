@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+
 import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";

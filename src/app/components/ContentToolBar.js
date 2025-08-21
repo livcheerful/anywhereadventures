@@ -9,7 +9,6 @@ export default function ContentToolBar({
   post,
   paneOpen,
   setPaneOpen,
-  focusOnPin,
   showingMenu,
   setShowingMenu,
   setViewingPin,

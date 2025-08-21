@@ -80,20 +80,27 @@ export default function WelcomeScreen({
 
   function StartButton() {
     return (
-      <BaseButton
-        classes={["absolute", "right-2", "px-10", "bottom-2", "bg-lime-300"]}
-        onClick={() => {
-          console.log("Hi vivian?");
-          const data = locationData[clickedLocation];
-          setChosenLocation(data);
-          setHomeLocation(data.name);
-          setPaneOpen(false);
-          mainMap.flyTo(data.center, data.zoom, false);
-          onFinishWelcoming(data);
-        }}
-      >
-        Start
-      </BaseButton>
+      <div>
+        <BaseButton
+          classes={[
+            "drop-shadow-2xl",
+            "right-2",
+            "px-10",
+            "bottom-2",
+            "bg-yellow-300",
+          ]}
+          onClick={() => {
+            const data = locationData[clickedLocation];
+            setChosenLocation(data);
+            setHomeLocation(data.name);
+            setPaneOpen(false);
+            mainMap.flyTo(data.center, data.zoom, false);
+            onFinishWelcoming(data);
+          }}
+        >
+          Start
+        </BaseButton>
+      </div>
     );
   }
 
@@ -113,13 +120,6 @@ export default function WelcomeScreen({
 
       <NextButton index={index} setIndex={setIndex} />
       {clickedLocation && <StartButton />}
-      {clickedLocation && (
-        <>
-          <Popup data={locationData[clickedLocation]} />
-          <Sticker which={0} />
-          <Sticker which={1} />
-        </>
-      )}
     </Box>,
     <Box
       isModal
@@ -143,13 +143,6 @@ export default function WelcomeScreen({
       <NextButton index={index} setIndex={setIndex} />
       <button>Back</button>
       {clickedLocation && <StartButton />}
-      {clickedLocation && (
-        <>
-          <Popup data={locationData[clickedLocation]} />
-          <Sticker which={0} />
-          <Sticker which={1} />
-        </>
-      )}
     </Box>,
 
     <Box
@@ -220,7 +213,6 @@ export default function WelcomeScreen({
       {screens[index]}
       {clickedLocation && (
         <>
-          <Popup data={locationData[clickedLocation]} />
           <Sticker which={0} />
           <Sticker which={1} />
         </>
