@@ -123,7 +123,7 @@ function MapManager(map, router) {
   function makeMarker(info, onClickCb, image) {
     const el = document.createElement("div");
     el.className =
-      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
+      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer border-2";
     el.style.backgroundImage = `url(${image})`;
     el.style.backgroundPosition = "center";
     el.style.backgroundSize = `cover`;
@@ -132,8 +132,8 @@ function MapManager(map, router) {
 
     const hasBeenVisited = hasLocationBeenVisited(info.slug);
     el.style.filter = hasBeenVisited ? " brightness(90%) contrast(40%)" : "";
-    el.style.borderColor = hasBeenVisited ? "gray" : "rgb(217 249 157)";
-    el.style.borderWidth = hasBeenVisited ? "1px" : "0px";
+    el.style.borderColor = hasBeenVisited ? "gray" : "gray";
+    el.style.borderWidth = hasBeenVisited ? "1px" : "1px";
     el.style.zIndex = hasBeenVisited ? "1" : "2";
     el.style.boxShadow = hasBeenVisited
       ? ""

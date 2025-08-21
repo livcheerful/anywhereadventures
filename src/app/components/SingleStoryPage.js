@@ -75,7 +75,7 @@ export default function SingleStoryPage({
     );
   }
 
-  if (!contentIndex) {
+  if (contentIndex == undefined) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-between">
         <div className="flex flex-col items-start w-full relative">

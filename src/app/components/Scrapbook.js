@@ -386,7 +386,13 @@ export default function Scrapbook({
     const fetchStickerInfo = async () => {
       const file = await fetch("/content/stickerinfo.json");
       const f = await file.json();
-      setDefaultStickerMetaInfo(f);
+      const home = getHomeLocation();
+      const fileNames = Object.keys(f);
+      const stickers = fileNames.map((fn, i) => {
+        return { image: fn, ...f[fn] };
+      });
+      const homeStickers = stickers.filter((o) => o.location == home);
+      setDefaultStickerMetaInfo(homeStickers);
     };
     fetchStickerInfo();
   }, []);
@@ -434,30 +440,6 @@ export default function Scrapbook({
   function handleEditingTextSticker(sticker) {
     setShowTextModal(true);
     setEditingTextSticker(sticker);
-  }
-
-  function getDefaultStickerPack() {
-    const defaultStickers = [];
-    // Get sticker packs depending on location :)
-    const home = getHomeLocation();
-    let fileNames = [];
-    switch (home) {
-      case "Southeast Wyoming":
-        fileNames = [
-          "/stickerpacks/sewy/bill.png",
-          "/stickerpacks/sewy/grahamMarket.png",
-        ];
-        break;
-      case "Seattle":
-        fileNames = ["/stickerpacks/seattle/pano.jpg"];
-        break;
-      case "Chicago":
-        break;
-    }
-    fileNames.forEach((fn, i) => {
-      defaultStickers.push({ ...defaultStickerMetaInfo[fn], img: fn });
-    });
-    return defaultStickers;
   }
 
   function makeToolbar() {
@@ -585,7 +567,7 @@ export default function Scrapbook({
         >
           {pageStickers && pageStickers.length > 0 && (
             <div>
-              <div className=" p-4 text-2xl font-bold">From the page</div>
+              <div className="p-4 pt-0 text-lg font-bold">From the story</div>
               <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
                 {pageStickers?.map((item, i) => {
                   return (
@@ -613,8 +595,10 @@ export default function Scrapbook({
               </div>
             </div>
           )}
+          <hr></hr>
+          <div className="p-4 text-lg font-bold">Home stickers</div>
           <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
-            {getDefaultStickerPack().map((stickerInfo, i) => {
+            {defaultStickerMetaInfo.map((stickerInfo, i) => {
               return (
                 <div
                   key={`myStickers-${i}`}
@@ -624,7 +608,7 @@ export default function Scrapbook({
                     e.stopPropagation();
                     e.preventDefault();
                     scrapbookPage.addNewPageSticker(
-                      stickerInfo.img,
+                      stickerInfo.image,
                       htmlEl.getBoundingClientRect().width,
                       htmlEl.getBoundingClientRect().height,
                       stickerInfo.linkOut,
@@ -633,7 +617,7 @@ export default function Scrapbook({
                     setShowStickerModal(false);
                   }}
                 >
-                  <img src={stickerInfo.img} />
+                  <img src={stickerInfo.image} />
                 </div>
               );
             })}

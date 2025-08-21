@@ -16,7 +16,9 @@ export default function LibraryIndexCard({ stickerObj }) {
     <div className="w-full h-full  bg-white border-2 border-black drop-shadow-xl">
       {makeIndexCardLines()}
       <div className=" w-full h-full absolute top-0 left-0 overflow-clip ">
-        <div className="font-mono text-gray-700 pl-3">{stickerObj.title}</div>
+        <div className="font-mono text-gray-700 pl-3 pr-3">
+          {stickerObj.title}
+        </div>
         <div className="flex flex-row gap-2">
           <img className="w-1/3" src={stickerObj.image} />
           <div className="flex flex-col overflow-y-scroll">

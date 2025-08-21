@@ -168,13 +168,6 @@ export default function ContentPane({
     setIndexFromSlug(currentSlug);
   }, [currentSlug, contentArray]);
 
-  function focusOnPin(slug, post) {
-    setPaneOpen(false);
-    const pin = mainMap.getPinFromSlug(slug);
-    mainMap.flyTo([post.latlon[1], post.latlon[0]], post.zoom, true);
-    setViewingPin({ mdx: post, pin: pin });
-  }
-
   function getPaneHeight() {
     if (!paneOpen) {
       return "20%";
@@ -344,7 +337,6 @@ export default function ContentPane({
               post={contentArray[contentIndex]}
               paneOpen={paneOpen}
               setPaneOpen={setPaneOpen}
-              focusOnPin={focusOnPin}
               showingMenu={showingMenu}
               setShowingMenu={setShowingMenu}
               setViewingPin={setViewingPin}
