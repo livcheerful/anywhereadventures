@@ -31,7 +31,7 @@ export default function WelcomeScreen({
   function NextButton() {
     return (
       <BaseButton
-        classes={["bg-lime-300 grow-0"]}
+        classes={["bg-lime-300 grow-0 active:bg-lime-500"]}
         onClick={() => {
           if (index < screens.length - 1) {
             setIndex(index + 1);
@@ -53,12 +53,19 @@ export default function WelcomeScreen({
   }
 
   function LocationButton({ data, mapKey, children }) {
-    const color = clickedLocation == mapKey ? "bg-lime-600" : "bg-lime-300";
+    const color =
+      clickedLocation == mapKey
+        ? "bg-lime-600"
+        : "bg-lime-300 active:bg-lime-500";
     return (
       <BaseButton
         classes={[color]}
         onClick={() => {
-          setClickedLocation(mapKey);
+          if (clickedLocation == mapKey) {
+            setClickedLocation(undefined);
+          } else {
+            setClickedLocation(mapKey);
+          }
         }}
       >
         <div className="font-bold">{children}</div>
@@ -80,14 +87,17 @@ export default function WelcomeScreen({
 
   function StartButton() {
     return (
-      <div>
+      <div className="relative">
         <BaseButton
           classes={[
             "drop-shadow-2xl",
             "right-2",
             "px-10",
             "bottom-2",
-            "bg-yellow-300",
+            "bg-lime-700",
+            "font-bold",
+            "text-white",
+            "active:bg-lime-900",
           ]}
           onClick={() => {
             const data = locationData[clickedLocation];
@@ -98,7 +108,7 @@ export default function WelcomeScreen({
             onFinishWelcoming(data);
           }}
         >
-          Start
+          START
         </BaseButton>
       </div>
     );
@@ -107,10 +117,13 @@ export default function WelcomeScreen({
   const screens = [
     <Box
       isModal
-      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
+      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-200`}
     >
       <div className="">
-        <img className="w-full pb-4" src="/loc/triangle.jpg"></img>
+        <img
+          className="w-full mb-4 border-b-2 border-black"
+          src="/loc/triangle.jpg"
+        ></img>
         <H1>Welcome to Anywhere Adventures!</H1>
         <p className="p-2 text-left">
           Learn local history through stories from the Library of Congress's and
@@ -123,26 +136,37 @@ export default function WelcomeScreen({
     </Box>,
     <Box
       isModal
-      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-300`}
+      className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-200`}
     >
       <div className="flex flex-col gap-2">
-        <img className="shrink" src="/illustrations/read.png"></img>
-        <div className="font-bold">Read stories</div>
-        <div className="flex flex-row">
-          <div>
-            <img className="shrink" src="/illustrations/visit.jpg"></img>
-            <div className="font-bold pl-2">Explore in person</div>
-          </div>
-          <div>
-            <img className="shrink" src="/illustrations/log.jpg"></img>
-            <div className="font-bold pr-2">Fill up your travel log</div>
-          </div>
+        <img
+          className="shrink border-b-2 border-black"
+          src="/illustrations/read.png"
+        ></img>
+        <div className="font-bold px-2">Read stories on the map</div>
+        <div className="text-left px-2">
+          Read stories to learn history where it happened through archive items.
+          Then visit those locations in person.
+        </div>
+        <img
+          src="/illustrations/visit.jpg"
+          className="w-1/2 self-center border-2 border-black"
+        />
+        <div className="text-xs italic font-serif">
+          Document your visit through photos and notes.
         </div>
       </div>
-
-      <NextButton index={index} setIndex={setIndex} />
-      <button>Back</button>
-      {clickedLocation && <StartButton />}
+      <div>
+        <NextButton index={index} setIndex={setIndex} />
+        <button
+          className="underline text-sm"
+          onClick={() => {
+            setIndex(index - 1);
+          }}
+        >
+          Back
+        </button>
+      </div>
     </Box>,
 
     <Box
@@ -150,8 +174,8 @@ export default function WelcomeScreen({
       className={`left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between pb-2 bg-yellow-200`}
     >
       <div className="flex flex-col justify-center gap-3 h-full">
-        <div>First, you have to...</div>
-        <H1 className="pb-3">Choose your location</H1>
+        <div className="italic text-sm font-serif">First, you have to...</div>
+        <H1 className="pb-3 font-black">Choose your location</H1>
         <div className="flex flex-col  gap-3 w-full">
           {Object.keys(locationData).map((name, idx) => {
             if (name === "all") {
@@ -176,7 +200,23 @@ export default function WelcomeScreen({
           Where do you live? Or where do you want to learn about?
         </div>
       </div>
-      {clickedLocation && <StartButton />}
+      {
+        <div className={`${clickedLocation ? "visible" : "hidden"}`}>
+          <StartButton />
+        </div>
+      }
+      {
+        <button
+          className={`${
+            clickedLocation ? "hidden" : "visible"
+          } underline text-sm`}
+          onClick={() => {
+            setIndex(index - 1);
+          }}
+        >
+          Back
+        </button>
+      }
     </Box>,
   ];
 
