@@ -88,7 +88,7 @@ export default function SingleStoryPage({
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 1) 90%
               ), url('${
-                homeLocationData.welcome.thumbnail ||
+                homeLocationData.welcome?.thumbnail ||
                 "/placeholderThumbnail.png"
               }')`,
             }}

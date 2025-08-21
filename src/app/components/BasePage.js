@@ -50,6 +50,7 @@ export default function BasePage({ entranceSlug }) {
 
       const city = parts[0]; // "seattle"
 
+      console.log("VVN in here");
       console.log(locationData[city]);
       setHomeLocation(locationData[city].name);
       setChosenLocation(locationData[city]);

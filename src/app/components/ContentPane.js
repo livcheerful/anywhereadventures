@@ -30,7 +30,6 @@ export default function ContentPane({
   setViewingPin,
   setShowingWelcomeScreen,
   setWelcomeScreenStartIndex,
-  chosenLocation,
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
 
@@ -50,41 +49,7 @@ export default function ContentPane({
   const [homeLoc, setHomeLoc] = useState(undefined);
   const [homeLocationData, setHomeLocationData] = useState(undefined);
 
-  useEffect(() => {
-    const loc = getHomeLocation(); // now runs only in client
-    setHomeLoc(loc);
-    setHomeLocationData(savedLocationToObj(loc));
-  }, []);
-  useEffect(() => {
-    setTimeout(() => {
-      setToastMessage(undefined);
-    }, 2000);
-  }, [toastMessage]);
-
-  useEffect(() => {
-    setHomeLocationData(chosenLocation);
-  }, [chosenLocation]);
-
-  // Load up the content based on stored home location
-  useEffect(() => {
-    if (!homeLocationData || Object.keys(homeLocationData).length === 0) return;
-    console.log(homeLocationData);
-    const locSlugs = homeLocationData.locs.map((l) => {
-      return l.slug;
-    });
-    getMdx(locSlugs, (res) => {
-      setContentArray(res);
-
-      // Find the content corresponding to the entrance slug, otherwise use the first one
-      let index = res.findIndex((content) => content.slug == entranceSlug);
-      if (index < 0) {
-        // index = 0;
-        index = undefined;
-      }
-
-      setContentIndex(index);
-    });
-
+  function setupAnimations() {
     if (!menuRef.current) return;
     menuAnimRef.current = gsap.timeline({ paused: true });
 
@@ -104,7 +69,59 @@ export default function ContentPane({
       }
     );
     setReduceAnims(getSettings().reduceAnims);
+  }
+
+  useEffect(() => {
+    const loc = getHomeLocation(); // now runs only in client
+    console.log("got home location");
+    console.log(loc);
+    const locationData = savedLocationToObj(loc);
+    console.log(locationData);
+    setHomeLoc(loc);
+    setHomeLocationData(locationData);
+
+    setupAnimations();
+  }, []);
+
+  // Load up the content based on stored home location
+  useEffect(() => {
+    if (!homeLocationData) return;
+    console.log(homeLocationData);
+
+    const locSlugs = homeLocationData.locs.map((l) => {
+      return l.slug;
+    });
+    getMdx(locSlugs, (res) => {
+      setContentArray(res);
+
+      let index = res.findIndex((content) => content.slug == entranceSlug);
+      if (index < 0) {
+        // index = 0;
+        index = undefined;
+        mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
+        updateRoute(`/${homeLocationData.id}`);
+      }
+
+      setContentIndex(index);
+    });
   }, [homeLocationData]);
+
+  useEffect(() => {
+    if (!contentArray) return;
+    if (contentIndex != undefined) {
+      const loc = contentArray[contentIndex];
+      const newSlug = loc.slug;
+      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
+      setCurrentSlug(newSlug);
+      setViewingPin(undefined);
+
+      // Update slug
+      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
+
+      // Update map
+      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
+    }
+  }, [contentIndex, contentArray]);
 
   useEffect(() => {
     if (reduceAnims) {
@@ -120,34 +137,18 @@ export default function ContentPane({
     }
   }, [showingMenu]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setToastMessage(undefined);
+    }, 2000);
+  }, [toastMessage]);
+
   function showMenuAnim(shouldShow) {
     const tl = menuAnimRef.current;
 
     if (!tl) return;
     shouldShow ? tl.play() : tl.reverse();
   }
-
-  useEffect(() => {
-    if (!contentArray) return;
-    if (contentIndex == undefined) {
-      console.log("Hello vivian...?");
-      mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
-      updateRoute(`/${homeLocationData.id}`);
-      console.log("");
-    } else {
-      const loc = contentArray[contentIndex];
-      const newSlug = loc.slug;
-      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
-      setCurrentSlug(newSlug);
-      setViewingPin(undefined);
-
-      // Update slug
-      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
-
-      // Update map
-      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
-    }
-  }, [contentIndex, contentArray]);
 
   function setIndexFromSlug(slug) {
     if (!contentArray) return;

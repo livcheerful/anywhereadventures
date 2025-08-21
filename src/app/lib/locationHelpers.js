@@ -64,6 +64,7 @@ export const locationData = {
     byCategory: chicagoByCategory,
   },
   all: {
+    id: "",
     name: "World",
     center: [-102.10712, 40.903735],
     zoom: 4,
