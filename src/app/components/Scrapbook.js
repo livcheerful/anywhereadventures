@@ -567,7 +567,7 @@ export default function Scrapbook({
         >
           {pageStickers && pageStickers.length > 0 && (
             <div>
-              <div className=" p-4 text-2xl font-bold">From the page</div>
+              <div className="p-4 pt-0 text-lg font-bold">From the story</div>
               <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
                 {pageStickers?.map((item, i) => {
                   return (
@@ -595,6 +595,8 @@ export default function Scrapbook({
               </div>
             </div>
           )}
+          <hr></hr>
+          <div className="p-4 text-lg font-bold">Home stickers</div>
           <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
             {defaultStickerMetaInfo.map((stickerInfo, i) => {
               return (
