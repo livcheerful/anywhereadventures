@@ -13,7 +13,7 @@ export default function Box({
   return (
     <div className={outerClassNames}>
       <div
-        className={`relative border-2 border-black text-center text-gray-800 ${className}`}
+        className={`relative border-2 border-black text-center text-gray-800 overflow-y-scroll ${className}`}
         style={{
           boxShadow: "5px 5px black",
         }}
