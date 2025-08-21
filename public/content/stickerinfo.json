@@ -28,5 +28,15 @@
         "title": "Main business district periscopic Seattle.",
         "linkOut": "https://www.loc.gov/resource/g4284s.pm009760/?r=0.04,-0.359,1.424,0.98,0",
         "location": "Seattle"
+    },
+    "/stickerpacks/seattle/sn.png": {
+        "title": "A look up at, not the usual down from, the iconic Space Needle",
+        "linkOut": "https://www.loc.gov/item/2018699068/",
+        "location": "Seattle"
+    },
+    "/stickerpacks/seattle/postcard.jpg": {
+        "title": "Olympic Hotel",
+        "linkOut": "https://www.loc.gov/resource/pcrd.2d07447/",
+        "location": "Seattle"
     }
 }
