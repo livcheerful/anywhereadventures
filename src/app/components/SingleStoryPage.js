@@ -87,7 +87,10 @@ export default function SingleStoryPage({
                 to bottom,
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 1) 90%
-              ), url('${homeLocationData.welcome.thumbnail}')`,
+              ), url('${
+                homeLocationData.welcome.thumbnail ||
+                "/placeholderThumbnail.png"
+              }')`,
             }}
           ></div>
           <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
