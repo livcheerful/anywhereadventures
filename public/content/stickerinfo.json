@@ -23,5 +23,10 @@
         "title": "Public Market Center",
         "linkOut": "https://www.loc.gov/resource/highsm.04426/",
         "location": "Seattle"
+    },
+    "/stickerpacks/seattle/seattleCutout.png": {
+        "title": "Main business district periscopic Seattle.",
+        "linkOut": "https://www.loc.gov/resource/g4284s.pm009760/?r=0.04,-0.359,1.424,0.98,0",
+        "location": "Seattle"
     }
 }
