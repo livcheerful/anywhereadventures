@@ -14,8 +14,8 @@ export default (phase) => {
     // Configure `pageExtensions` to include markdown and MDX files
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
     reactStrictMode: false,
-    // VVNTODO make the assetPrefix an environment variable
     assetPrefix: isDev ? undefined : "https://anywhereadventures.vercel.app/",
+    productionBrowserSourceMaps: true,
     // basePath: isDev ? undefined : "/anywhereadventures",
   };
 
