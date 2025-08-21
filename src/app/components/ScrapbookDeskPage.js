@@ -146,7 +146,7 @@ export default function ScrapbookDeskPage({
         <img
           src={collageImage}
           id="collageImage"
-          className="draggable z-20 w-1/2 absolute top-10 -rotate-6 drop-shadow-2xl border-2 border-black select-none"
+          className="draggable z-20 w-1/2 absolute top-1/3 -rotate-6 drop-shadow-2xl border-2 border-black select-none"
         />
 
         <StickyNote className="hidden md:block -rotate-6 right-0 top-10">

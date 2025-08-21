@@ -27,7 +27,16 @@ export function NotificationsProvider({ children }) {
   }, [notifications]);
 
   const addNotification = useCallback((type, id, meta) => {
-    setNotifications((prev) => [...prev, { type, id, meta }]);
+    setNotifications((prev) => {
+      const idx = prev.findIndex((item) => item.id === id);
+      if (idx !== -1) {
+        // replace existing notification
+        const updated = [...prev];
+        updated[idx] = { type, id, meta };
+        return updated;
+      }
+      return [...prev, { type, id, meta }];
+    });
   }, []);
 
   const removeNotification = useCallback((id) => {
