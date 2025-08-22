@@ -172,12 +172,12 @@ function MapManager(map, router) {
 
   this.updatePins = function (pinCb, chosenLocation, router) {
     if (!chosenLocation) return;
-    console.log(chosenLocation);
 
     const locs = chosenLocation.locs;
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
+      if (markerInfo.hidden) return;
       const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
@@ -192,6 +192,7 @@ function MapManager(map, router) {
     this.deleteAllPins();
     for (const slug in locs) {
       const markerInfo = locs[slug];
+      if (markerInfo.hidden) return;
       const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
       const layer = pin.addTo(this.map);
       const el = pin.getElement();
