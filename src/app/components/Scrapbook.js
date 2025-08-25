@@ -376,12 +376,13 @@ export default function Scrapbook({
     const lcItems = getAllLCItems();
     setStickers(Object.values(lcItems));
 
+    // Get canvas width
+    const canvas = document.querySelector("#scrapbookPlayground");
+    const picWidth = canvas.getBoundingClientRect().width * 0.6;
+    const picHeight = (picWidth * defaultStickerHeight) / defaultStickerWidth;
+
     reel.forEach((imageObj, i) => {
-      scrapbookPage.addNewSticker(
-        imageObj.img,
-        defaultStickerWidth,
-        defaultStickerHeight
-      );
+      scrapbookPage.addNewSticker(imageObj.img, picWidth, picHeight);
     });
     const fetchStickerInfo = async () => {
       const file = await fetch("/content/stickerinfo.json");

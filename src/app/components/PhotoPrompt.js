@@ -16,7 +16,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
   const isDesktop = !/iphone|ipad|ipod/.test(ua) && !/android/.test(ua);
   const genericPhotoPromptText = mdx.locationTitle
     ? `Visit ${mdx.locationTitle} in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.`
-    : "Visit this location in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
+    : "Visit this location in person and create a travel log entry of your visit. Explore your surroundings and take photos of what you notice.";
   return (
     <div className="relative bg-amber-300 p-4 overflow-clip">
       {visited ? (
