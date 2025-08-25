@@ -21,7 +21,7 @@ import {
 import { getMdx } from "../lib/clientPostHelper";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
-const cameraDirectionStates = ["user", "environment"];
+const cameraDirectionStates = ["environment", "user"];
 
 const aspectRatio = 16 / 9;
 export default function Page({}) {
@@ -143,8 +143,8 @@ export default function Page({}) {
         />
         <h1 className="font-bold text-lg">Customize</h1>
         <div className="px-2">
-          Decorate your travel log entry with text and stickers. You can save
-          archive items to use as stickers here.
+          Decorate your travel log entry with text, stickers, and photos you'd
+          like to keep. You can save archive items to use as stickers here.
         </div>
       </div>
       <div className="w-full flex flex-col items-center pb-2 gap-2">
