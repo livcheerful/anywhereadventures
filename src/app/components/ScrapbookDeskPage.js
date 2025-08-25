@@ -135,10 +135,35 @@ export default function ScrapbookDeskPage({
         </div>
       </button>
 
+      <StickyNote
+        className="-rotate-6 w-32 h-32 flex flex-col gap-2"
+        position={{ left: 0, top: 40 }}
+      >
+        <div className="font-bold uppercase leading-tight">
+          Your Travel Log Entry
+        </div>
+        <div
+          style={{ fontSize: "10px" }}
+          className="visible md:hidden font-light leading-tight italic"
+        >
+          Tap and hold the image to save to your phone
+        </div>
+        <div className="hidden md:block text-sm">
+          <a href={blobUrl} download={filename} className="underline">
+            Download
+          </a>
+        </div>
+      </StickyNote>
+      <img
+        src={blobUrl}
+        id="collageImage"
+        className="absolute z-40  w-2/3 drop-shadow-2xl select-none draggable"
+        alt="collage"
+        style={{ right: 0 }}
+      />
       <div className="flex flex-col items-center gap-2">
         {stickerRefs && stickerRefs.length > 0 && (
           <StickyNote
-            id="archiveItemsNote"
             className="-rotate-6 w-32 h-32 flex flex-col gap-2 z-10"
             position={{ left: 0, top: pageHeight / 2 - 90 }}
           >
@@ -147,7 +172,7 @@ export default function ScrapbookDeskPage({
         )}
         {stickerRefs.map((stickerObj, i) => (
           <div
-            className="indexCard z-30 absolute w-80 h-56 draggable select-none"
+            className="indexCard z-[100] absolute w-80 h-56 draggable select-none"
             key={i}
           >
             <LibraryIndexCard
@@ -157,32 +182,6 @@ export default function ScrapbookDeskPage({
           </div>
         ))}
 
-        <img
-          src={blobUrl}
-          id="collageImage"
-          className="absolute z-40  w-2/3 drop-shadow-2xl select-none draggable"
-          alt="collage"
-          style={{ right: 0 }}
-        />
-        <StickyNote
-          className="-rotate-6 w-32 h-32 flex flex-col gap-2"
-          position={{ left: 0, top: 40 }}
-        >
-          <div className="font-bold uppercase leading-tight">
-            Your Travel Log Entry
-          </div>
-          <div
-            style={{ fontSize: "10px" }}
-            className="visible md:hidden font-light leading-tight italic"
-          >
-            Tap and hold the image to save to your phone
-          </div>
-          <div className="hidden md:block text-sm">
-            <a href={blobUrl} download={filename} className="underline">
-              Download
-            </a>
-          </div>
-        </StickyNote>
         <a href={`/${mdx.location[0].toLowerCase()}/${locationId}`}>
           <div
             id="backToMap"
