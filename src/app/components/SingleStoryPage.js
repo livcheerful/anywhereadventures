@@ -104,17 +104,19 @@ export default function SingleStoryPage({
                   <hr className="border-yellow-500"></hr>
                 </div>
                 <div>Select a location on the map to get started.</div>
-                <BaseButton
-                  classes={[
-                    "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
-                  ]}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPaneOpen(false);
-                  }}
-                >
-                  Open Map
-                </BaseButton>
+                {paneOpen && (
+                  <BaseButton
+                    classes={[
+                      "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
+                    ]}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPaneOpen(false);
+                    }}
+                  >
+                    Open Map
+                  </BaseButton>
+                )}
               </Box>
             </div>
           </div>
