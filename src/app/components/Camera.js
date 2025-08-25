@@ -83,6 +83,10 @@ export default function Camera({ aspectRatio, picture, cameraDirection }) {
           >
             Video stream not available.
           </video>
+          <div
+            id="flash-box"
+            className="absolute opacity-0 w-full h-full bg-black transition-opacity"
+          ></div>
         </div>
         <canvas className="hidden" id="canvas" ref={canvas} />
       </div>
