@@ -16,7 +16,7 @@ export default function Camera({ aspectRatio, picture, cameraDirection }) {
     getMedia({
       video: {
         facingMode: {
-          exact: cameraDirection,
+          ideal: cameraDirection,
         },
       },
     });
