@@ -4,9 +4,14 @@ const fileName = process.argv[2]; // with relation to public
 const title = process.argv[3]; // What it should be called
 const lcLink = process.argv[4]; // link back to OG LC item
 const location = process.argv[5];
+
 const file = fs.readFileSync(stickerFile);
 const stickerInfo = JSON.parse(file);
-stickerInfo[fileName] = { title: title, linkOut: lcLink, location: location };
+stickerInfo[fileName] = {
+  title: title,
+  linkOut: lcLink,
+  location: location,
+};
 console.log(stickerInfo);
 fs.writeFileSync(stickerFile, JSON.stringify(stickerInfo), "utf8");
 // fs.writeFileSync(

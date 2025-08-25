@@ -415,7 +415,7 @@ export default function Page({}) {
                     flashBox.style.opacity = "1";
                     setTimeout(() => {
                       flashBox.style.opacity = "0";
-                    }, 200);
+                    }, 120);
                   }
 
                   flashCamera();
