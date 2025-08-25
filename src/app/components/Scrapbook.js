@@ -15,10 +15,6 @@ const backgroundOptions = [
     src: "/defaultpaper.png",
     snippet: "/defaultpapersnippet.png",
   },
-  { type: "color", hex: "#ffffff" },
-  { type: "color", hex: "#F5EB7E" },
-  { type: "color", hex: "#E8D7F1" },
-  { type: "color", hex: "#DBFEB8" },
   {
     type: "image",
     src: "/musicpaper.png",
@@ -34,6 +30,10 @@ const backgroundOptions = [
     src: "/magazineBack.png",
     snippet: "/magazineBacksnippet.png",
   },
+  { type: "color", hex: "#ffffff" },
+  { type: "color", hex: "#F5EB7E" },
+  { type: "color", hex: "#E8D7F1" },
+  { type: "color", hex: "#DBFEB8" },
 ];
 
 const defaultStickerWidth = 300;
