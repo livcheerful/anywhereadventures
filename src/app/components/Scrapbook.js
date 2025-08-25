@@ -100,54 +100,38 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     for (let sticker of this.elements) {
       const elem = sticker.elem;
       const box = elem.getBoundingClientRect();
-      const originalWidth = sticker.originalWidth;
-      const originalHeight = sticker.originalHeight;
-
       ctx.save();
+      ctx.translate(
+        box.left + box.width / 2 - leftOff,
+        box.top + box.height / 2 - topOff
+      );
+
       switch (sticker.type) {
-        case "sticker":
+        case "sticker": {
           const img = await loadImage(sticker.imgSrc);
-          ctx.translate(
-            box.left + box.width / 2 - leftOff,
-            box.top + box.height / 2 - topOff
-          );
-          ctx.rotate((sticker.rotation * Math.PI) / 180);
-          ctx.scale(sticker.scale, sticker.scale);
           ctx.drawImage(
             img,
-            -originalWidth / 2,
-            -originalHeight / 2,
-            originalWidth,
-            originalHeight
+            -box.width / 2,
+            -box.height / 2,
+            box.width,
+            box.height
           );
           break;
+        }
 
-        case "text":
-          ctx.translate(
-            sticker.x + originalWidth / 2,
-            sticker.y + originalHeight / 2
-          );
-          ctx.rotate((sticker.rotation * Math.PI) / 180);
-          ctx.scale(sticker.scale, sticker.scale);
-          if (sticker.props.backgroundColor) {
-            ctx.fillStyle = sticker.props.backgroundColor;
-            ctx.fillRect(
-              -originalWidth / 2,
-              -originalHeight / 2,
-              originalWidth,
-              originalHeight
-            );
-          }
-          ctx.fillStyle = sticker.props.textColor;
-          ctx.font = sticker.props.font;
-          ctx.textBaseline = "hanging";
-          ctx.fillText(
-            sticker.textSrc,
-            -originalWidth / 2 + 1,
-            -originalHeight / 2 + 4
+        case "text": {
+          // Use the DOM <canvas> you drew text onto earlier
+          ctx.drawImage(
+            elem,
+            -box.width / 2,
+            -box.height / 2,
+            box.width,
+            box.height
           );
           break;
+        }
       }
+
       ctx.restore();
     }
 
@@ -633,7 +617,6 @@ export default function Scrapbook({
             ))}
           <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
             {stickers.map((item, i) => {
-              console.log(item);
               return (
                 <div
                   key={i}
