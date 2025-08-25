@@ -127,6 +127,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
             sticker.x + originalWidth / 2,
             sticker.y + originalHeight / 2
           );
+          ctx.rotate((sticker.rotation * Math.PI) / 180);
+          ctx.scale(sticker.scale, sticker.scale);
           if (sticker.props.backgroundColor) {
             ctx.fillStyle = sticker.props.backgroundColor;
             ctx.fillRect(
