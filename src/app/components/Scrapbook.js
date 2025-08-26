@@ -42,6 +42,7 @@ const backgroundOptions = [
   { type: "color", hex: "#E8D7F1" },
   { type: "color", hex: "#DBFEB8" },
 ];
+
 function drawTextToCanvas(canvas, text, textStyle) {
   const ctx = canvas.getContext("2d");
   const dpr = window.devicePixelRatio || 1;
@@ -49,18 +50,18 @@ function drawTextToCanvas(canvas, text, textStyle) {
   ctx.font = textStyleToFont(textStyle);
   const metrics = ctx.measureText(text);
   const textWidth = metrics.width;
-
-  // Use actual font metrics for height
   const textHeight =
     metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 
-  // Set canvas size scaled by DPR
+  // Canvas size with DPR
   canvas.width = (textWidth + paddingX) * dpr;
   canvas.height = (textHeight + paddingY) * dpr;
   canvas.style.width = textWidth + paddingX + "px";
   canvas.style.height = textHeight + paddingY + "px";
 
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // scale once properly
+  // Clear and scale
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw background
   if (textStyle.backgroundColor) {
@@ -71,8 +72,11 @@ function drawTextToCanvas(canvas, text, textStyle) {
   // Draw text
   ctx.fillStyle = textStyle.textColor;
   ctx.font = textStyleToFont(textStyle);
-  ctx.textBaseline = "top"; // aligns to top correctly
-  ctx.fillText(text, paddingX / 2, paddingY / 2);
+  ctx.textBaseline = "alphabetic"; // baseline for metrics
+
+  // Shift text down by ascent + half padding
+  const y = metrics.actualBoundingBoxAscent + paddingY / 2;
+  ctx.fillText(text, paddingX / 2, y);
 
   return [textWidth + paddingX, textHeight + paddingY];
 }
