@@ -8,6 +8,7 @@ export default function TextEditor({
   setTextStyle,
   textStyle,
   handleEditingTextSticker,
+  textStyleToFont,
   drawTextToCanvas,
 }) {
   const highlightColors = [
@@ -26,15 +27,17 @@ export default function TextEditor({
     { hex: "#F64BF0" },
   ];
 
+  const fontSizes = [6, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48];
+
   const [previewText, setPreviewText] = useState(
     editingTextSticker?.textSrc || ""
   );
   const canvasRef = useRef();
 
   const fontStyles = [
-    { display: "Simple", font: "24px Arial" },
-    { display: "Serif", font: "24px Georgia" },
-    { display: "Handwritten", font: "24px VivianFont" },
+    { display: "Simple", fontFamily: "Arial" },
+    { display: "Serif", fontFamily: "Georgia" },
+    { display: "Handwritten", fontFamily: "VivianFont" },
   ];
 
   useEffect(() => {
@@ -101,9 +104,9 @@ export default function TextEditor({
           }}
           className="w-full text-center p-2 border-2 border-gray-800 "
           style={{
-            color: textStyle.textColor,
-            backgroundColor: textStyle.backgroundColor,
-            font: textStyle.font,
+            color: "black",
+            backgroundColor: "white",
+            font: `Arial`,
           }}
           defaultValue={editingTextSticker?.textSrc}
           onKeyDown={(e) => {
@@ -132,11 +135,11 @@ export default function TextEditor({
             <button
               key={i}
               className="p-2 bg-slate-100 rounded-lg"
-              style={{ font: fs.font }}
+              style={{ font: `16pt ${fs.fontFamily}` }}
               onClick={(e) => {
                 e.stopPropagation();
                 let newStyle = { ...textStyle };
-                newStyle.font = fs.font;
+                newStyle.fontFamily = fs.fontFamily;
                 setTextStyle(newStyle);
               }}
             >

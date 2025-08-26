@@ -9,8 +9,12 @@ import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems, getHomeLocation } from "../lib/storageHelpers";
 
-const paddingX = 2;
-const paddingY = 2;
+const paddingX = 4;
+const paddingY = 6;
+
+function textStyleToFont(style) {
+  return `${style.fontSize}px ${style.fontFamily}`;
+}
 
 const backgroundOptions = [
   {
@@ -44,9 +48,9 @@ function drawTextToCanvas(canvas, text, textStyle) {
   const dpr = window.devicePixelRatio || 1;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = textStyle.font;
+  ctx.font = textStyleToFont(textStyle);
   const width = ctx.measureText(text).width;
-  const height = 28;
+  const height = textStyle.fontSize;
 
   canvas.style.width = width + paddingX + "px";
 
@@ -61,10 +65,10 @@ function drawTextToCanvas(canvas, text, textStyle) {
   }
 
   ctx.fillStyle = textStyle.textColor;
-  ctx.font = textStyle.font;
+  ctx.font = textStyleToFont(textStyle);
   ctx.textBaseline = "hanging";
 
-  ctx.fillText(text, 1 * dpr, 5 * dpr);
+  ctx.fillText(text, (paddingX / 2) * dpr, (paddingY / 2) * dpr);
   return [width + paddingX, height + paddingY];
 }
 const defaultStickerWidth = 300;
@@ -162,19 +166,19 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           if (sticker.props.backgroundColor) {
             ctx.fillStyle = sticker.props.backgroundColor;
             ctx.fillRect(
-              -originalWidth / 2,
+              -originalWidth / 2, // scale width by dpr
               -originalHeight / 2,
               originalWidth,
               originalHeight
             );
           }
           ctx.fillStyle = sticker.props.textColor;
-          ctx.font = sticker.props.font;
+          ctx.font = textStyleToFont(sticker.props);
           ctx.textBaseline = "hanging";
           ctx.fillText(
             sticker.textSrc,
-            -originalWidth / 2 + 1 * dpr,
-            -originalHeight / 2 + 5 * dpr
+            -originalWidth / 2 + paddingX / 2,
+            -originalHeight / 2 + paddingY / 2
           );
           break;
       }
@@ -316,7 +320,8 @@ export default function Scrapbook({
   const [textStyle, setTextStyle] = useState({
     backgroundColor: undefined,
     textColor: "#000000",
-    font: "24px Arial",
+    fontSize: 24,
+    fontFamily: "Arial",
   });
 
   const trashRef = useRef();
@@ -685,6 +690,7 @@ export default function Scrapbook({
             handleEditingTextSticker={handleEditingTextSticker}
             paddingX={paddingX}
             paddingY={paddingY}
+            textStyleToFont={textStyleToFont}
             drawTextToCanvas={drawTextToCanvas}
           />
         </ScrapbookToolMenu>
