@@ -8,8 +8,7 @@ export default function TextEditor({
   setTextStyle,
   textStyle,
   handleEditingTextSticker,
-  paddingX,
-  paddingY,
+  drawTextToCanvas,
 }) {
   const highlightColors = [
     { hex: "#1f96ff" },
@@ -37,32 +36,6 @@ export default function TextEditor({
     { display: "Serif", font: "24px Georgia" },
     { display: "Handwritten", font: "24px VivianFont" },
   ];
-  function drawTextToCanvas(canvas, text, ts) {
-    var ctx = canvas.getContext("2d");
-    const dpr = window.devicePixelRatio || 1;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = textStyle.font;
-    const width = ctx.measureText(text).width;
-    const height = 28;
-
-    canvas.width = (width + paddingX) * dpr;
-    canvas.height = (height + paddingY) * dpr;
-
-    ctx.scale(dpr, dpr);
-    canvas.style.width = width + "px";
-
-    if (textStyle.backgroundColor) {
-      ctx.fillStyle = textStyle.backgroundColor;
-      ctx.fillRect(0, 0, width + paddingX, height + paddingY);
-    }
-
-    ctx.fillStyle = textStyle.textColor;
-    ctx.font = textStyle.font;
-    ctx.textBaseline = "hanging";
-
-    ctx.fillText(text, 1 * dpr, 5 * dpr);
-  }
 
   useEffect(() => {
     const canvas = document.getElementById("textPreview");
@@ -94,7 +67,7 @@ export default function TextEditor({
   }
   return (
     <div
-      className=" flex flex-col gap-1  items-center "
+      className="flex flex-col gap-1  items-center "
       onClick={() => {
         const textInput = document.querySelector("#textStickerInput");
         if (editingTextSticker) {

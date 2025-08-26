@@ -39,6 +39,34 @@ const backgroundOptions = [
   { type: "color", hex: "#DBFEB8" },
 ];
 
+function drawTextToCanvas(canvas, text, textStyle) {
+  var ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.font = textStyle.font;
+  const width = ctx.measureText(text).width;
+  const height = 28;
+
+  canvas.style.width = width + paddingX + "px";
+
+  canvas.width = (width + paddingX) * dpr;
+  canvas.height = (height + paddingY) * dpr;
+
+  ctx.scale(dpr, dpr);
+
+  if (textStyle.backgroundColor) {
+    ctx.fillStyle = textStyle.backgroundColor;
+    ctx.fillRect(0, 0, width + paddingX, height + paddingY);
+  }
+
+  ctx.fillStyle = textStyle.textColor;
+  ctx.font = textStyle.font;
+  ctx.textBaseline = "hanging";
+
+  ctx.fillText(text, 1 * dpr, 5 * dpr);
+  return [width + paddingX, height + paddingY];
+}
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
 function ScrapbookPage(getDraggingItem, handleDraggingItem) {
@@ -170,36 +198,6 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     draggable.remove();
     this.elements.splice(foundIndex, 1);
   };
-
-  function drawTextToCanvas(canvas, text, textStyle) {
-    var ctx = canvas.getContext("2d");
-    const dpr = window.devicePixelRatio || 1;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = textStyle.font;
-    const width = ctx.measureText(text).width;
-    const height = 28;
-
-    canvas.style.width = width + paddingX + "px";
-    canvas.style.height = height + paddingY + "px";
-
-    canvas.width = (width + paddingX) * dpr;
-    canvas.height = (height + paddingY) * dpr;
-
-    ctx.scale(dpr, dpr);
-
-    if (textStyle.backgroundColor) {
-      ctx.fillStyle = textStyle.backgroundColor;
-      ctx.fillRect(0, 0, width + paddingX, height + paddingY);
-    }
-
-    ctx.fillStyle = textStyle.textColor;
-    ctx.font = textStyle.font;
-    ctx.textBaseline = "hanging";
-
-    ctx.fillText(text, 1 * dpr, 5 * dpr);
-    return [width + paddingX, height + paddingY];
-  }
 
   this.addNewTextSticker = function (
     text,
@@ -687,6 +685,7 @@ export default function Scrapbook({
             handleEditingTextSticker={handleEditingTextSticker}
             paddingX={paddingX}
             paddingY={paddingY}
+            drawTextToCanvas={drawTextToCanvas}
           />
         </ScrapbookToolMenu>
       )}
