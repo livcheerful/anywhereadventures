@@ -8,6 +8,8 @@ export default function TextEditor({
   setTextStyle,
   textStyle,
   handleEditingTextSticker,
+  paddingX,
+  paddingY,
 }) {
   const highlightColors = [
     { hex: "#1f96ff" },
@@ -37,23 +39,29 @@ export default function TextEditor({
   ];
   function drawTextToCanvas(canvas, text, ts) {
     var ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = ts.font;
+    ctx.font = textStyle.font;
     const width = ctx.measureText(text).width;
     const height = 28;
-    canvas.width = width + 2;
-    canvas.height = height + 2;
 
-    if (ts.backgroundColor) {
-      ctx.fillStyle = ts.backgroundColor;
-      ctx.fillRect(0, 0, width + 2, height + 2);
+    canvas.width = (width + paddingX) * dpr;
+    canvas.height = (height + paddingY) * dpr;
+
+    ctx.scale(dpr, dpr);
+    canvas.style.width = width + "px";
+
+    if (textStyle.backgroundColor) {
+      ctx.fillStyle = textStyle.backgroundColor;
+      ctx.fillRect(0, 0, width + paddingX, height + paddingY);
     }
 
-    ctx.fillStyle = ts.textColor;
-    ctx.font = ts.font;
+    ctx.fillStyle = textStyle.textColor;
+    ctx.font = textStyle.font;
     ctx.textBaseline = "hanging";
 
-    ctx.fillText(text, 1, 5);
+    ctx.fillText(text, 1 * dpr, 5 * dpr);
   }
 
   useEffect(() => {

@@ -9,6 +9,9 @@ import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems, getHomeLocation } from "../lib/storageHelpers";
 
+const paddingX = 2;
+const paddingY = 2;
+
 const backgroundOptions = [
   {
     type: "image",
@@ -142,8 +145,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           ctx.textBaseline = "hanging";
           ctx.fillText(
             sticker.textSrc,
-            -originalWidth / 2 + 1,
-            -originalHeight / 2 + 4
+            -originalWidth / 2 + 1 * dpr,
+            -originalHeight / 2 + 5 * dpr
           );
           break;
       }
@@ -169,30 +172,33 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
   };
 
   function drawTextToCanvas(canvas, text, textStyle) {
+    var ctx = canvas.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
-    const ctx = canvas.getContext("2d");
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = textStyle.font;
     const width = ctx.measureText(text).width;
-    const height = parseInt(textStyle.font, 10) * 1.4; // rough line height
+    const height = 28;
 
-    canvas.width = (width + 4) * dpr;
-    canvas.height = (height + 4) * dpr;
+    canvas.style.width = width + paddingX + "px";
+    canvas.style.height = height + paddingY + "px";
 
-    canvas.style.width = width + 4 + "px";
-    canvas.style.height = height + 4 + "px";
+    canvas.width = (width + paddingX) * dpr;
+    canvas.height = (height + paddingY) * dpr;
 
     ctx.scale(dpr, dpr);
 
     if (textStyle.backgroundColor) {
       ctx.fillStyle = textStyle.backgroundColor;
-      ctx.fillRect(0, 0, width + 2, height + 2);
+      ctx.fillRect(0, 0, width + paddingX, height + paddingY);
     }
 
     ctx.fillStyle = textStyle.textColor;
     ctx.font = textStyle.font;
     ctx.textBaseline = "hanging";
-    ctx.fillText(text, 2, 2);
+
+    ctx.fillText(text, 1 * dpr, 5 * dpr);
+    return [width + paddingX, height + paddingY];
   }
 
   this.addNewTextSticker = function (
@@ -206,7 +212,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     canvas.style.position = "relative";
     canvas.id = `sticker-${this.numElems}`;
 
-    drawTextToCanvas(canvas, text, textStyle);
+    const [w, h] = drawTextToCanvas(canvas, text, textStyle);
 
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
@@ -215,8 +221,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
       htmlElem: canvas,
       id: `sticker-${this.numElems}`,
       z: this.topZ,
-      origWidth: canvas.width,
-      origHeight: canvas.height,
+      origWidth: w,
+      origHeight: h,
       textSrc: text,
       props: textStyle,
       onClick: handleEditingTextSticker,
@@ -679,6 +685,8 @@ export default function Scrapbook({
             setTextStyle={setTextStyle}
             textStyle={textStyle}
             handleEditingTextSticker={handleEditingTextSticker}
+            paddingX={paddingX}
+            paddingY={paddingY}
           />
         </ScrapbookToolMenu>
       )}

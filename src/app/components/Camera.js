@@ -5,8 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { gsap } from "gsap/gsap-core";
 export default function Camera({ aspectRatio, picture, cameraDirection }) {
   const searchParams = useSearchParams();
-  const cameraType = searchParams.get("type");
-  const frameImage = searchParams.get("frame");
   const [streaming, setStreaming] = useState(false);
   const [height, setHeight] = useState();
   const [width, setWidth] = useState(0);
