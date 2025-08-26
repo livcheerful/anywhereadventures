@@ -112,16 +112,13 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     ctx.fillStyle = placeItHere.style.backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke();
+
     // Handle background image
     const bgImgStyle = placeItHere.style.backgroundImage;
     if (bgImgStyle && bgImgStyle !== "none") {
-      // Extract URL from style string like: url(".../image.png")
       const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
       if (urlMatch) {
         const bgImgUrl = urlMatch[1];
-        console.log(
-          `trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`
-        );
         const bgImage = await new Promise((resolve, reject) => {
           const img = new Image();
           img.crossOrigin = "anonymous"; // in case it's needed
@@ -130,8 +127,11 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           img.src = bgImgUrl;
         });
 
-        // Draw background image to cover canvas
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        // canvas.width/dpr gives the CSS pixel width
+        const cssWidth = canvas.width / dpr;
+        const cssHeight = canvas.height / dpr;
+
+        ctx.drawImage(bgImage, 0, 0, cssWidth, cssHeight);
       }
     }
 
