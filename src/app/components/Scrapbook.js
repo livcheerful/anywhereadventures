@@ -176,7 +176,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           if (sticker.props.backgroundColor) {
             ctx.fillStyle = sticker.props.backgroundColor;
             ctx.fillRect(
-              -originalWidth / 2, // scale width by dpr
+              -originalWidth / 2,
               -originalHeight / 2,
               originalWidth,
               originalHeight
