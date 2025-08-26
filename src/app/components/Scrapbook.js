@@ -169,13 +169,20 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
   };
 
   function drawTextToCanvas(canvas, text, textStyle) {
-    var ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dpr = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext("2d");
+
     ctx.font = textStyle.font;
     const width = ctx.measureText(text).width;
-    const height = 28;
-    canvas.width = width + 2;
-    canvas.height = height + 2;
+    const height = parseInt(textStyle.font, 10) * 1.4; // rough line height
+
+    canvas.width = (width + 4) * dpr;
+    canvas.height = (height + 4) * dpr;
+
+    canvas.style.width = width + 4 + "px";
+    canvas.style.height = height + 4 + "px";
+
+    ctx.scale(dpr, dpr);
 
     if (textStyle.backgroundColor) {
       ctx.fillStyle = textStyle.backgroundColor;
@@ -185,8 +192,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     ctx.fillStyle = textStyle.textColor;
     ctx.font = textStyle.font;
     ctx.textBaseline = "hanging";
-
-    ctx.fillText(text, 1, 5);
+    ctx.fillText(text, 2, 2);
   }
 
   this.addNewTextSticker = function (
