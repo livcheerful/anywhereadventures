@@ -262,7 +262,10 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     sticker.textSrc = text;
     sticker.props = textStyle;
     const canvas = sticker.elem;
-    drawTextToCanvas(canvas, text, textStyle);
+    const [w, h] = drawTextToCanvas(canvas, text, textStyle);
+
+    sticker.originalWidth = w;
+    sticker.originalHeight = h;
   };
 
   this.addNewPageSticker = function (img, width, height, linkOut, title) {
