@@ -42,35 +42,41 @@ const backgroundOptions = [
   { type: "color", hex: "#E8D7F1" },
   { type: "color", hex: "#DBFEB8" },
 ];
-
 function drawTextToCanvas(canvas, text, textStyle) {
-  var ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
   const dpr = window.devicePixelRatio || 1;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.font = textStyleToFont(textStyle);
-  const width = ctx.measureText(text).width;
-  const height = textStyle.fontSize;
+  const metrics = ctx.measureText(text);
+  const textWidth = metrics.width;
 
-  canvas.style.width = width + paddingX + "px";
+  // Use actual font metrics for height
+  const textHeight =
+    metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 
-  canvas.width = (width + paddingX) * dpr;
-  canvas.height = (height + paddingY) * dpr;
+  // Set canvas size scaled by DPR
+  canvas.width = (textWidth + paddingX) * dpr;
+  canvas.height = (textHeight + paddingY) * dpr;
+  canvas.style.width = textWidth + paddingX + "px";
+  canvas.style.height = textHeight + paddingY + "px";
 
-  ctx.scale(dpr, dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // scale once properly
 
+  // Draw background
   if (textStyle.backgroundColor) {
     ctx.fillStyle = textStyle.backgroundColor;
-    ctx.fillRect(0, 0, width + paddingX, height + paddingY);
+    ctx.fillRect(0, 0, textWidth + paddingX, textHeight + paddingY);
   }
 
+  // Draw text
   ctx.fillStyle = textStyle.textColor;
   ctx.font = textStyleToFont(textStyle);
-  ctx.textBaseline = "hanging";
+  ctx.textBaseline = "top"; // aligns to top correctly
+  ctx.fillText(text, paddingX / 2, paddingY / 2);
 
-  ctx.fillText(text, (paddingX / 2) * dpr, (paddingY / 2) * dpr);
-  return [width + paddingX, height + paddingY];
+  return [textWidth + paddingX, textHeight + paddingY];
 }
+
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
 function ScrapbookPage(getDraggingItem, handleDraggingItem) {
