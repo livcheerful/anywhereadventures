@@ -95,54 +95,62 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
 
   this.flatten = async function () {
     const canvas = document.querySelector("#scrapbookCanvas");
-    const ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
 
-    const playground = document.querySelector("#scrapbookPlayground");
-    const rect = playground.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
-
+    const placeItHere = document.querySelector("#scrapbookPlayground");
+    const rect = placeItHere.getBoundingClientRect();
     // Scale canvas for high-DPI
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     canvas.style.width = rect.width + "px";
     canvas.style.height = rect.height + "px";
-
     ctx.save();
     ctx.scale(dpr, dpr); // Scale drawing so coordinates are in CSS pixels
 
-    // Fill background
-    ctx.fillStyle = playground.style.backgroundColor || "#fff";
-    ctx.fillRect(0, 0, rect.width, rect.height);
-
-    // Draw background image if any
-    const bgImgStyle = playground.style.backgroundImage;
+    ctx.beginPath();
+    ctx.fillStyle = placeItHere.style.backgroundColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.stroke();
+    // Handle background image
+    const bgImgStyle = placeItHere.style.backgroundImage;
     if (bgImgStyle && bgImgStyle !== "none") {
+      // Extract URL from style string like: url(".../image.png")
       const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
       if (urlMatch) {
+        const bgImgUrl = urlMatch[1];
+        console.log(
+          `trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`
+        );
         const bgImage = await new Promise((resolve, reject) => {
           const img = new Image();
-          img.crossOrigin = "anonymous";
+          img.crossOrigin = "anonymous"; // in case it's needed
           img.onload = () => resolve(img);
           img.onerror = reject;
-          img.src = urlMatch[1];
+          img.src = bgImgUrl;
         });
-        ctx.drawImage(bgImage, 0, 0, rect.width, rect.height);
+
+        // Draw background image to cover canvas
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
       }
     }
 
-    const leftOff = playground.getBoundingClientRect().left;
-    const topOff = playground.getBoundingClientRect().top;
-
-    function loadImage(src) {
+    const leftOff = placeItHere.getBoundingClientRect().left;
+    const topOff = placeItHere.getBoundingClientRect().top;
+    function loadImage(src, width, height) {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
-        img.onerror = reject;
+        img.onerror = (e) => {
+          reject(new Error(` Failed to load image: ${src}:`));
+        };
         img.src = src;
+        img.width = `${width}px`;
+        img.height = `${height}px`;
       });
     }
-
-    for (let sticker of this.elements) {
+    for (let i = 0; i < this.elements.length; i++) {
+      const sticker = this.elements[i];
       const elem = sticker.elem;
       const box = elem.getBoundingClientRect();
       const originalWidth = sticker.originalWidth;
