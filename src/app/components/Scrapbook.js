@@ -164,6 +164,10 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
             box.left + box.width / 2 - leftOff,
             box.top + box.height / 2 - topOff
           );
+
+          ctx.rotate((sticker.rotation * Math.PI) / 180);
+          ctx.scale(sticker.scale, sticker.scale);
+
           ctx.drawImage(
             img,
             -originalWidth / 2,
