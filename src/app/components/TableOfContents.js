@@ -20,7 +20,10 @@ export default function TableOfContents({
     setLocData(savedLocationToObj(l));
   }, []);
 
-  const allLocs = locData?.locs || [];
+  const allLocs =
+    locData?.locs.filter((l) => {
+      return !l.hidden;
+    }) || [];
 
   function isLocationNew(slug) {
     return newEntries?.some((entry) => entry.id === slug) || false;

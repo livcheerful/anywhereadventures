@@ -123,7 +123,7 @@ function MapManager(map, router) {
   function makeMarker(info, onClickCb, image) {
     const el = document.createElement("div");
     el.className =
-      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer";
+      "marker rounded-full border-gray-800 bg-white drop-shadow-2xl cursor-pointer border-2";
     el.style.backgroundImage = `url(${image})`;
     el.style.backgroundPosition = "center";
     el.style.backgroundSize = `cover`;
@@ -132,8 +132,8 @@ function MapManager(map, router) {
 
     const hasBeenVisited = hasLocationBeenVisited(info.slug);
     el.style.filter = hasBeenVisited ? " brightness(90%) contrast(40%)" : "";
-    el.style.borderColor = hasBeenVisited ? "gray" : "rgb(217 249 157)";
-    el.style.borderWidth = hasBeenVisited ? "1px" : "0px";
+    el.style.borderColor = hasBeenVisited ? "gray" : "gray";
+    el.style.borderWidth = hasBeenVisited ? "1px" : "1px";
     el.style.zIndex = hasBeenVisited ? "1" : "2";
     el.style.boxShadow = hasBeenVisited
       ? ""
@@ -172,34 +172,20 @@ function MapManager(map, router) {
 
   this.updatePins = function (pinCb, chosenLocation, router) {
     if (!chosenLocation) return;
-    console.log(chosenLocation);
 
     const locs = chosenLocation.locs;
     this.deleteAllPins();
-    for (const slug in locs) {
-      const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
-      const layer = pin.addTo(this.map);
-      const el = pin.getElement();
+    for (const idx in locs) {
+      const markerInfo = locs[idx];
+      if (markerInfo.hidden != true) {
+        const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
+        const layer = pin.addTo(this.map);
+        const el = pin.getElement();
 
-      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
-      this.currentLayers.set(slug, layer);
+        addAccessibilityAttrs(el, pin, markerInfo, pinCb);
+        this.currentLayers.set(idx, layer);
+      }
     }
-  };
-
-  this.updateStyle = function (style, pinCb, locs) {
-    // Delete all pins and replace with new style
-    this.deleteAllPins();
-    for (const slug in locs) {
-      const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
-      const layer = pin.addTo(this.map);
-      const el = pin.getElement();
-
-      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
-      this.currentLayers.set(slug, layer);
-    }
-    this.map.setStyle(style);
   };
 }
 
@@ -249,12 +235,10 @@ export default function MyMap({
     // Clean up from Explore View
     mapManager.deleteAllExploreMarkers();
 
-    // Set up My Map View
-    mapManager.updateStyle(
-      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-      myMapPinClickHandler,
-      chosenLocation.locs
+    mapManager.map.setStyle(
+      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
     );
+    mapManager.updatePins(myMapPinClickHandler, chosenLocation, router);
   }, [mapManager]);
 
   // Update Map pins based on saved locations
@@ -285,6 +269,7 @@ export default function MyMap({
 
       mapManager.map.once("moveend", () => {
         setViewingPin({ mdx: mdxInfo, pin: pin });
+        console.log("Viewing pin..");
       });
     }
 

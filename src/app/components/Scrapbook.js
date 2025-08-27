@@ -9,16 +9,19 @@ import TextEditor from "./scrapbook/TextEditor";
 
 import { getAllLCItems, getHomeLocation } from "../lib/storageHelpers";
 
+const paddingX = 4;
+const paddingY = 6;
+
+function textStyleToFont(style) {
+  return `${style.fontSize}px ${style.fontFamily}`;
+}
+
 const backgroundOptions = [
   {
     type: "image",
     src: "/defaultpaper.png",
     snippet: "/defaultpapersnippet.png",
   },
-  { type: "color", hex: "#ffffff" },
-  { type: "color", hex: "#F5EB7E" },
-  { type: "color", hex: "#E8D7F1" },
-  { type: "color", hex: "#DBFEB8" },
   {
     type: "image",
     src: "/musicpaper.png",
@@ -34,7 +37,49 @@ const backgroundOptions = [
     src: "/magazineBack.png",
     snippet: "/magazineBacksnippet.png",
   },
+  { type: "color", hex: "#ffffff" },
+  { type: "color", hex: "#F5EB7E" },
+  { type: "color", hex: "#E8D7F1" },
+  { type: "color", hex: "#DBFEB8" },
 ];
+
+function drawTextToCanvas(canvas, text, textStyle) {
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+
+  ctx.font = textStyleToFont(textStyle);
+  const metrics = ctx.measureText(text);
+  const textWidth = metrics.width;
+  const textHeight =
+    metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+
+  // Canvas size with DPR
+  canvas.width = (textWidth + paddingX) * dpr;
+  canvas.height = (textHeight + paddingY) * dpr;
+  canvas.style.width = textWidth + paddingX + "px";
+  canvas.style.height = textHeight + paddingY + "px";
+
+  // Clear and scale
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw background
+  if (textStyle.backgroundColor) {
+    ctx.fillStyle = textStyle.backgroundColor;
+    ctx.fillRect(0, 0, textWidth + paddingX, textHeight + paddingY);
+  }
+
+  // Draw text
+  ctx.fillStyle = textStyle.textColor;
+  ctx.font = textStyleToFont(textStyle);
+  ctx.textBaseline = "alphabetic"; // baseline for metrics
+
+  // Shift text down by ascent + half padding
+  const y = metrics.actualBoundingBoxAscent + paddingY / 2;
+  ctx.fillText(text, paddingX / 2, y);
+
+  return [textWidth + paddingX, textHeight + paddingY];
+}
 
 const defaultStickerWidth = 300;
 const defaultStickerHeight = 168.75;
@@ -52,23 +97,29 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     const canvas = document.querySelector("#scrapbookCanvas");
     var ctx = canvas.getContext("2d");
 
+    const dpr = window.devicePixelRatio || 1;
     const placeItHere = document.querySelector("#scrapbookPlayground");
-    canvas.width = placeItHere.getBoundingClientRect().width;
-    canvas.height = placeItHere.getBoundingClientRect().height;
+    const rect = placeItHere.getBoundingClientRect();
+    // Scale canvas for high-DPI
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+
+    ctx.save();
+    ctx.scale(dpr, dpr); // Scale drawing so coordinates are in CSS pixels
+
     ctx.beginPath();
     ctx.fillStyle = placeItHere.style.backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke();
+
     // Handle background image
     const bgImgStyle = placeItHere.style.backgroundImage;
     if (bgImgStyle && bgImgStyle !== "none") {
-      // Extract URL from style string like: url(".../image.png")
       const urlMatch = bgImgStyle.match(/url\("?([^")]+)"?\)/);
       if (urlMatch) {
         const bgImgUrl = urlMatch[1];
-        console.log(
-          `trying to load ${bgImgUrl}. match: ${urlMatch}, from: ${bgImgStyle}`
-        );
         const bgImage = await new Promise((resolve, reject) => {
           const img = new Image();
           img.crossOrigin = "anonymous"; // in case it's needed
@@ -77,8 +128,11 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           img.src = bgImgUrl;
         });
 
-        // Draw background image to cover canvas
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        // canvas.width/dpr gives the CSS pixel width
+        const cssWidth = canvas.width / dpr;
+        const cssHeight = canvas.height / dpr;
+
+        ctx.drawImage(bgImage, 0, 0, cssWidth, cssHeight);
       }
     }
 
@@ -96,44 +150,41 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
         img.height = `${height}px`;
       });
     }
-
     for (let i = 0; i < this.elements.length; i++) {
       const sticker = this.elements[i];
-      const element = sticker.elem;
-      const box = element.getBoundingClientRect();
+      const elem = sticker.elem;
+      const box = elem.getBoundingClientRect();
       const originalWidth = sticker.originalWidth;
       const originalHeight = sticker.originalHeight;
+
       ctx.save();
       switch (sticker.type) {
         case "sticker":
-          const imgSrc = await loadImage(
-            sticker.imgSrc,
-            originalWidth,
-            originalHeight
-          );
-
+          const img = await loadImage(sticker.imgSrc);
           ctx.translate(
             box.left + box.width / 2 - leftOff,
             box.top + box.height / 2 - topOff
           );
+
           ctx.rotate((sticker.rotation * Math.PI) / 180);
           ctx.scale(sticker.scale, sticker.scale);
 
           ctx.drawImage(
-            imgSrc,
+            img,
             -originalWidth / 2,
             -originalHeight / 2,
             originalWidth,
             originalHeight
           );
-
           break;
+
         case "text":
           ctx.translate(
             sticker.x + originalWidth / 2,
             sticker.y + originalHeight / 2
           );
-
+          ctx.rotate((sticker.rotation * Math.PI) / 180);
+          ctx.scale(sticker.scale, sticker.scale);
           if (sticker.props.backgroundColor) {
             ctx.fillStyle = sticker.props.backgroundColor;
             ctx.fillRect(
@@ -143,34 +194,31 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
               originalHeight
             );
           }
-
           ctx.fillStyle = sticker.props.textColor;
+          ctx.font = textStyleToFont(sticker.props);
+          ctx.textBaseline = "alphabetic";
 
-          ctx.textBaseline = "hanging";
+          const metrics = ctx.measureText(sticker.textSrc);
+          const textWidth = metrics.width;
 
-          ctx.font = sticker.props.font;
+          const y = metrics.actualBoundingBoxAscent + paddingY / 2;
           ctx.fillText(
             sticker.textSrc,
-            -originalWidth / 2 + 1,
-            -originalHeight / 2 + 4
+            -originalWidth / 2 + paddingX / 2,
+            y - originalHeight / 2
           );
           break;
-        default:
-          console.log("Default");
-          break;
       }
-
       ctx.restore();
     }
 
-    const dataURL = document
-      .getElementById("scrapbookCanvas")
-      .toDataURL("image/jpeg", 1);
+    ctx.restore(); // restore after scaling
 
-    const dataURLCompressed = document
-      .getElementById("scrapbookCanvas")
-      .toDataURL("image/jpeg", 0.8);
+    const dataURL = canvas.toDataURL("image/jpeg", 1);
+    const dataURLCompressed = canvas.toDataURL("image/jpeg", 0.8);
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     return [dataURL, dataURLCompressed];
   };
 
@@ -181,27 +229,6 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     draggable.remove();
     this.elements.splice(foundIndex, 1);
   };
-
-  function drawTextToCanvas(canvas, text, textStyle) {
-    var ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = textStyle.font;
-    const width = ctx.measureText(text).width;
-    const height = 28;
-    canvas.width = width + 2;
-    canvas.height = height + 2;
-
-    if (textStyle.backgroundColor) {
-      ctx.fillStyle = textStyle.backgroundColor;
-      ctx.fillRect(0, 0, width + 2, height + 2);
-    }
-
-    ctx.fillStyle = textStyle.textColor;
-    ctx.font = textStyle.font;
-    ctx.textBaseline = "hanging";
-
-    ctx.fillText(text, 1, 5);
-  }
 
   this.addNewTextSticker = function (
     text,
@@ -214,7 +241,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     canvas.style.position = "relative";
     canvas.id = `sticker-${this.numElems}`;
 
-    drawTextToCanvas(canvas, text, textStyle);
+    const [w, h] = drawTextToCanvas(canvas, text, textStyle);
 
     const stick = new ScrapbookElem({
       handleDraggingItem: handleDraggingItem,
@@ -223,8 +250,8 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
       htmlElem: canvas,
       id: `sticker-${this.numElems}`,
       z: this.topZ,
-      origWidth: canvas.width,
-      origHeight: canvas.height,
+      origWidth: w,
+      origHeight: h,
       textSrc: text,
       props: textStyle,
       onClick: handleEditingTextSticker,
@@ -234,13 +261,19 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     this.numElems++;
 
     placeItHere.appendChild(canvas);
+    canvas.style.position = "absolute";
+    canvas.style.top = "0px";
+    canvas.style.left = "0px";
   };
 
   this.updateTextSticker = function (sticker, text, textStyle) {
     sticker.textSrc = text;
     sticker.props = textStyle;
     const canvas = sticker.elem;
-    drawTextToCanvas(canvas, text, textStyle);
+    const [w, h] = drawTextToCanvas(canvas, text, textStyle);
+
+    sticker.originalWidth = w;
+    sticker.originalHeight = h;
   };
 
   this.addNewPageSticker = function (img, width, height, linkOut, title) {
@@ -296,6 +329,13 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
   };
 }
 
+const defaultTextStyle = {
+  backgroundColor: undefined,
+  textColor: "#000000",
+  fontSize: 24,
+  fontFamily: "Arial",
+};
+
 export default function Scrapbook({
   reel,
   slug,
@@ -317,11 +357,7 @@ export default function Scrapbook({
   const draggingItemRef = useRef(undefined);
   const [scrapbookBackgroundIdx, setScrapbookBackgroundIdx] = useState(0);
 
-  const [textStyle, setTextStyle] = useState({
-    backgroundColor: undefined,
-    textColor: "#000000",
-    font: "24px Arial",
-  });
+  const [textStyle, setTextStyle] = useState(defaultTextStyle);
 
   const trashRef = useRef();
   function getDraggingItem() {
@@ -337,7 +373,27 @@ export default function Scrapbook({
     },
     {
       title: "Stickers",
-      image: "/tempStickerImage.png",
+      display: (
+        <button
+          className="h-36 w-44 overflow-clip relative "
+          onClick={() => {
+            setShowStickerModal(true);
+          }}
+        >
+          <img
+            className="absolute w-24 top-1 -rotate-2 left-0 drop-shadow-lg"
+            src="/illustrations/sticker1.png"
+          />
+          <img
+            className="absolute w-28 rotate-3 -top-2 right-0 drop-shadow-lg"
+            src="/illustrations/sticker2.png"
+          />
+          <img
+            className="absolute w-28 rotate-3 bottom-10 right-3 drop-shadow-lg"
+            src="/illustrations/sticker3.png"
+          />
+        </button>
+      ),
       onClickHandler: () => {
         setShowStickerModal(true);
       },
@@ -356,17 +412,24 @@ export default function Scrapbook({
     const lcItems = getAllLCItems();
     setStickers(Object.values(lcItems));
 
+    // Get canvas width
+    const canvas = document.querySelector("#scrapbookPlayground");
+    const picWidth = canvas.getBoundingClientRect().width * 0.6;
+    const picHeight = (picWidth * defaultStickerHeight) / defaultStickerWidth;
+
     reel.forEach((imageObj, i) => {
-      scrapbookPage.addNewSticker(
-        imageObj.img,
-        defaultStickerWidth,
-        defaultStickerHeight
-      );
+      scrapbookPage.addNewSticker(imageObj.img, picWidth, picHeight);
     });
     const fetchStickerInfo = async () => {
       const file = await fetch("/content/stickerinfo.json");
       const f = await file.json();
-      setDefaultStickerMetaInfo(f);
+      const home = getHomeLocation();
+      const fileNames = Object.keys(f);
+      const stickers = fileNames.map((fn, i) => {
+        return { image: fn, ...f[fn] };
+      });
+      const homeStickers = stickers.filter((o) => o.location == home);
+      setDefaultStickerMetaInfo(homeStickers);
     };
     fetchStickerInfo();
   }, []);
@@ -412,42 +475,23 @@ export default function Scrapbook({
   }
 
   function handleEditingTextSticker(sticker) {
+    // Pull sticker style
+    setTextStyle(sticker.props);
+
     setShowTextModal(true);
     setEditingTextSticker(sticker);
-  }
-
-  function getDefaultStickerPack() {
-    const defaultStickers = [];
-    // Get sticker packs depending on location :)
-    const home = getHomeLocation();
-    let fileNames = [];
-    switch (home) {
-      case "Southeast Wyoming":
-        fileNames = [
-          "/stickerpacks/sewy/bill.png",
-          "/stickerpacks/sewy/grahamMarket.png",
-        ];
-        break;
-      case "Seattle":
-        fileNames = ["/stickerpacks/seattle/pano.jpg"];
-        break;
-      case "Chicago":
-        break;
-    }
-    fileNames.forEach((fn, i) => {
-      defaultStickers.push({ ...defaultStickerMetaInfo[fn], img: fn });
-    });
-    return defaultStickers;
   }
 
   function makeToolbar() {
     return (
       <div
-        className="w-full overflow-x-auto flex flex-row gap-2 pl-2"
+        className="w-full overflow-x-auto flex flex-row  gap-2 pl-2"
         id="scrapbook-tool-wheel"
       >
         {itemsOnWheel.map((item, i) => {
-          return (
+          return item.display ? (
+            item.display
+          ) : (
             <button
               key={i}
               className="h-36 w-36 flex flex-col pt-2 "
@@ -514,7 +558,7 @@ export default function Scrapbook({
             backgroundImage,
             backgroundSize: "cover",
           }}
-          className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
+          className="relative w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
         ></div>
         <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl text-gray-800">
           Create your travel log entry
@@ -522,7 +566,7 @@ export default function Scrapbook({
       </div>
       {showMyPhotos && (
         <ScrapbookToolMenu
-          title={"Your Photos"}
+          title={"Your photos"}
           onClose={(e) => {
             setShowMyPhotos(false);
             e.stopPropagation();
@@ -563,7 +607,7 @@ export default function Scrapbook({
         >
           {pageStickers && pageStickers.length > 0 && (
             <div>
-              <div className=" p-4 text-2xl font-bold">From the page</div>
+              <div className="p-4 pt-0 text-lg font-bold">From the story</div>
               <div className="flex flex-row flex-wrap gap-2 px-4 pb-4">
                 {pageStickers?.map((item, i) => {
                   return (
@@ -576,7 +620,7 @@ export default function Scrapbook({
                         e.preventDefault();
                         scrapbookPage.addNewPageSticker(
                           item.image,
-                          200,
+                          htmlEl.getBoundingClientRect().width,
                           htmlEl.getBoundingClientRect().height,
                           item.linkOut,
                           item.title
@@ -591,8 +635,10 @@ export default function Scrapbook({
               </div>
             </div>
           )}
+          <hr></hr>
+          <div className="p-4 text-lg font-bold">Home stickers</div>
           <div className="px-4 pb-4 flex flex-row flex-wrap gap-2 ">
-            {getDefaultStickerPack().map((stickerInfo, i) => {
+            {defaultStickerMetaInfo.map((stickerInfo, i) => {
               return (
                 <div
                   key={`myStickers-${i}`}
@@ -602,8 +648,8 @@ export default function Scrapbook({
                     e.stopPropagation();
                     e.preventDefault();
                     scrapbookPage.addNewPageSticker(
-                      stickerInfo.img,
-                      200,
+                      stickerInfo.image,
+                      htmlEl.getBoundingClientRect().width,
                       htmlEl.getBoundingClientRect().height,
                       stickerInfo.linkOut,
                       stickerInfo.title
@@ -611,7 +657,7 @@ export default function Scrapbook({
                     setShowStickerModal(false);
                   }}
                 >
-                  <img src={stickerInfo.img} />
+                  <img src={stickerInfo.image} />
                 </div>
               );
             })}
@@ -646,7 +692,14 @@ export default function Scrapbook({
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    scrapbookPage.addNewSticker(item.image, 200);
+                    const htmlEl = e.target;
+                    scrapbookPage.addNewSticker(
+                      item.image,
+                      htmlEl.getBoundingClientRect().width,
+                      htmlEl.getBoundingClientRect().height,
+                      item.linkOut,
+                      item.title
+                    );
                     setShowStickerModal(false);
                   }}
                 >
@@ -659,7 +712,7 @@ export default function Scrapbook({
       )}
       {showTextModal && (
         <ScrapbookToolMenu
-          title="Add Text"
+          title="Add text"
           onClose={(e) => {
             setShowTextModal(false);
             setEditingTextSticker(undefined);
@@ -673,6 +726,10 @@ export default function Scrapbook({
             setTextStyle={setTextStyle}
             textStyle={textStyle}
             handleEditingTextSticker={handleEditingTextSticker}
+            paddingX={paddingX}
+            paddingY={paddingY}
+            textStyleToFont={textStyleToFont}
+            drawTextToCanvas={drawTextToCanvas}
           />
         </ScrapbookToolMenu>
       )}
