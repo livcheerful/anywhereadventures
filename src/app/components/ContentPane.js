@@ -49,36 +49,7 @@ export default function ContentPane({
   const [homeLoc, setHomeLoc] = useState(undefined);
   const [homeLocationData, setHomeLocationData] = useState(undefined);
 
-  useEffect(() => {
-    const loc = getHomeLocation(); // now runs only in client
-    setHomeLoc(loc);
-    setHomeLocationData(savedLocationToObj(loc));
-  }, []);
-  useEffect(() => {
-    setTimeout(() => {
-      setToastMessage(undefined);
-    }, 2000);
-  }, [toastMessage]);
-
-  // Load up the content based on stored home location
-  useEffect(() => {
-    if (!homeLocationData) return;
-    const locSlugs = homeLocationData.locs.map((l) => {
-      return l.slug;
-    });
-    getMdx(locSlugs, (res) => {
-      setContentArray(res);
-
-      // Find the content corresponding to the entrance slug, otherwise use the first one
-      let index = res.findIndex((content) => content.slug == entranceSlug);
-      if (index < 0) {
-        // index = 0;
-        index = undefined;
-      }
-
-      setContentIndex(index);
-    });
-
+  function setupAnimations() {
     if (!menuRef.current) return;
     menuAnimRef.current = gsap.timeline({ paused: true });
 
@@ -98,7 +69,59 @@ export default function ContentPane({
       }
     );
     setReduceAnims(getSettings().reduceAnims);
+  }
+
+  useEffect(() => {
+    const loc = getHomeLocation(); // now runs only in client
+    console.log("got home location");
+    console.log(loc);
+    const locationData = savedLocationToObj(loc);
+    console.log(locationData);
+    setHomeLoc(loc);
+    setHomeLocationData(locationData);
+
+    setupAnimations();
+  }, []);
+
+  // Load up the content based on stored home location
+  useEffect(() => {
+    if (!homeLocationData) return;
+    console.log(homeLocationData);
+
+    const locSlugs = homeLocationData.locs.map((l) => {
+      return l.slug;
+    });
+    getMdx(locSlugs, (res) => {
+      setContentArray(res);
+
+      let index = res.findIndex((content) => content.slug == entranceSlug);
+      if (index < 0) {
+        // index = 0;
+        index = undefined;
+        mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
+        updateRoute(`/${homeLocationData.id}`);
+      }
+
+      setContentIndex(index);
+    });
   }, [homeLocationData]);
+
+  useEffect(() => {
+    if (!contentArray) return;
+    if (contentIndex != undefined) {
+      const loc = contentArray[contentIndex];
+      const newSlug = loc.slug;
+      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
+      setCurrentSlug(newSlug);
+      setViewingPin(undefined);
+
+      // Update slug
+      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
+
+      // Update map
+      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
+    }
+  }, [contentIndex, contentArray]);
 
   useEffect(() => {
     if (reduceAnims) {
@@ -114,34 +137,18 @@ export default function ContentPane({
     }
   }, [showingMenu]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setToastMessage(undefined);
+    }, 2000);
+  }, [toastMessage]);
+
   function showMenuAnim(shouldShow) {
     const tl = menuAnimRef.current;
 
     if (!tl) return;
     shouldShow ? tl.play() : tl.reverse();
   }
-
-  useEffect(() => {
-    if (!contentArray) return;
-    if (contentIndex == undefined) {
-      console.log("Hello vivian...?");
-      mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
-      updateRoute(`/${homeLocationData.id}`);
-      console.log("");
-    } else {
-      const loc = contentArray[contentIndex];
-      const newSlug = loc.slug;
-      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
-      setCurrentSlug(newSlug);
-      setViewingPin(undefined);
-
-      // Update slug
-      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
-
-      // Update map
-      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
-    }
-  }, [contentIndex, contentArray]);
 
   function setIndexFromSlug(slug) {
     if (!contentArray) return;
@@ -167,13 +174,6 @@ export default function ContentPane({
   useEffect(() => {
     setIndexFromSlug(currentSlug);
   }, [currentSlug, contentArray]);
-
-  function focusOnPin(slug, post) {
-    setPaneOpen(false);
-    const pin = mainMap.getPinFromSlug(slug);
-    mainMap.flyTo([post.latlon[1], post.latlon[0]], post.zoom, true);
-    setViewingPin({ mdx: post, pin: pin });
-  }
 
   function getPaneHeight() {
     if (!paneOpen) {
@@ -261,9 +261,26 @@ export default function ContentPane({
                 <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm font-normal">
                   <h1 className=" py-2 font-bold">Try doing research</h1>
                   <hr className="w-full border-lime-300 pb-2"></hr>
-                  <div>words words words words words words words words </div>
-                  <a className="underline font-light pt-2">
-                    Link to research guide
+                  <div>
+                    Want to find some cool items in the Library of Congress for
+                    yourself?{" "}
+                    <a
+                      className="underline"
+                      href="https://www.loc.gov/collections/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      The library has a lot of items online,
+                    </a>{" "}
+                    and you can use this research guide to help.
+                  </div>
+                  <a
+                    className="underline font-light pt-2"
+                    href="/researchGuide.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open guide
                   </a>
                 </div>
               </div>
@@ -274,7 +291,10 @@ export default function ContentPane({
                     Have a story you want to share?
                   </h1>
                   <hr className="w-full border-lime-300 pb-2"></hr>
-                  <div>words words words words words words words words </div>
+                  <div>
+                    Share items you've found or travel log entries you created
+                    online and tag the Library of Congress.
+                  </div>
                 </div>
               </div>
               <div className="px-2">
@@ -283,8 +303,16 @@ export default function ContentPane({
                     Nominate your hometown
                   </h1>
                   <hr className="w-full border-lime-600 pb-2"></hr>
-                  <div>words words words words words words words words </div>
-                  <a className="underline font-light pt-2">
+                  <div>
+                    Anywhere Adventures is growing! Comment on our blog post to
+                    nominate your town.
+                  </div>
+                  <a
+                    className="underline font-light pt-2"
+                    href="https://blogs.loc.gov/thesignal/2025/07/anywhere-adventures-is-live/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Nominate your hometown
                   </a>
                 </div>
@@ -344,7 +372,6 @@ export default function ContentPane({
               post={contentArray[contentIndex]}
               paneOpen={paneOpen}
               setPaneOpen={setPaneOpen}
-              focusOnPin={focusOnPin}
               showingMenu={showingMenu}
               setShowingMenu={setShowingMenu}
               setViewingPin={setViewingPin}

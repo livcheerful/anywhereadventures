@@ -1,11 +1,15 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+
+import { useState, useEffect } from "react";
+import { useSearchParams, useParams } from "next/navigation";
+
 import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
-import { useState, useEffect } from "react";
+
 import { locationData, savedLocationToObj } from "../lib/locationHelpers";
-import { getHomeLocation } from "../lib/storageHelpers";
+import { getHomeLocation, setHomeLocation } from "../lib/storageHelpers";
+
 export default function BasePage({ entranceSlug }) {
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(false);
@@ -24,19 +28,40 @@ export default function BasePage({ entranceSlug }) {
   // Elements to control map
   const [viewingPin, setViewingPin] = useState(undefined);
 
+  const searchParams = useSearchParams();
+  const params = useParams();
+
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
 
   useEffect(() => {
-    setShowingWelcomeScreen(isNewUser);
+    // Check query param
+    const skipWelcome = searchParams.get("skip") === "true";
+
+    if (skipWelcome) {
+      const slugParam = params.slug;
+
+      const parts = Array.isArray(slugParam)
+        ? slugParam
+        : slugParam
+        ? [slugParam]
+        : [];
+
+      const city = parts[0]; // "seattle"
+
+      console.log("VVN in here");
+      console.log(locationData[city]);
+      setHomeLocation(locationData[city].name);
+      setChosenLocation(locationData[city]);
+    }
+
+    setShowingWelcomeScreen(!skipWelcome && isNewUser);
   }, []);
 
   useEffect(() => {
     if (savedLocation && !chosenLocation) {
       const locObj = savedLocationToObj(savedLocation);
-      console.log("Hello, vivian");
-      console.log(locObj);
       setChosenLocation(locObj);
       mainMap?.flyTo(locObj.center, locObj.zoom);
     }

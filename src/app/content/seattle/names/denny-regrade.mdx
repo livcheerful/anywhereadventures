@@ -1,32 +1,33 @@
 ---
 title: Why is Seattle so hilly?
-locationTitle: Washington Hotel
+locationTitle: The Washington Hotel
 location: ["Seattle"]
-address: 233 1st Ave W
+address: 3rd and Virginia
+hidden: true
 neighborhood: "Belltown"
-latlon: [47.620815, -122.358086]
+latlon: [47.612442249588334, -122.34076636007634]
 zoom: 15
 tags: ["names"]
 cardImage: "/loc/regrade-results.jpg"
+cameraImage: "/loc/regrade-results.jpg"
 stampName: "regrade.svg"
+blurb: "Seattle is a hilly city, but it used to be much hillier. Powerful jets of water were used to carve into Seattle's hills and create the cityscape we recognize today."
+photoPrompt: "The old Washington Hotel stood on the block between Stewart and Virginia, and you can walk two blocks up 3rd to find the old Cornelius Hotel, whose height matched the peak of the old Denny Hill. Take pictures along the way."
 stickers: [{image: "/loc/cutting-hill.jpg", linkOut: "https://www.loc.gov/item/2015646669/"},{image: "/loc/regrade-results.jpg", linkOut: "https://www.loc.gov/item/2024693820/"},{image: "/comics/denny-regrade/arthur-3.png"},]
 ---
 
 
 # The Denny Regrades
 
-When Arthur Denny lived in Seattle, he lived on a hill named after him -- Denny Hill. 
-<ComicSection elements={[
-    {type:"image", src:"/comics/denny-regrade/citizen-1.png", position:{col:1, row:1}, size:{width:1, height:1}},
-    {type:"text", src:"You must be mistaken. Seattle doesn't have a *Denny Hill.*", position:{col:2, row:1}, size:{width:2, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 180}},
-    {type:"image", src:"/comics/denny-regrade/citizen-2.png", position:{col:1, row:3}, size:{width:1, height:1}},
-    {type:"text", src:"We have First Hill, Capitol Hill", position:{col:2, row:3}, size:{width:2, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 180}},
-    {type:"text", src:"Cherry Hill, Beacon Hill, and even a slight deceptive slope up Ballard.", position:{col:2, row:4}, size:{width:2, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 180}},
-    {type:"image", src:"/comics/denny-regrade/citizen-3.png", position:{col:1, row:5}, size:{width:1, height:1}},
-    {type:"text", src:"But no Denny Hill.", position:{col:2, row:5}, size:{width:1, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 180}},
+When Arthur Denny lived in Seattle, he lived on a hill named after him -- Denny Hill. But that is an unfamiliar name to anybody living in Seattle in the 21st century because it was leveled in the Seattle regrades in the early 1900s.
 
-    {type:"image", src:"/comics/denny-regrade/arthur-1.png", position:{col:3, row:6}, size:{width:1, height:1}},
-    {type:"text", src:"That's right! Because we tore it down!", position:{col:2, row:6}, size:{width:1, height:2}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 350}},
+<ComicSection cols={9}  elements={[
+    {type:"text", style:{outline:"bubble"}, src:"These hills are tearing the city apart! People in Rainier valley can’t get to downtown and the horses are getting tired.", position: {col: 3, row:1}, size: {width:5, height:1}, bubbleStyle: {tailDegree: 30}},
+    {type:"image", src:"/loc/seattle/dennyRegrade/RHThomson.png", position:{col:7, row:2}, size:{width:3, height:3}},
+    {type:"image", src:"/loc/seattle/dennyRegrade/otherGuy.png", position:{col:1, row:3}, size:{width:3, height:3}},
+    {type: "text", style:{outline:"bubble"}, src:"But Reginald - they’re mountains! You can’t just *move* them.", position: {col:3, row:2}, size:{width:3, height:2}, bubbleStyle: {tailDegree: 150}},
+    {type: "text", style:{outline:"bubble"}, src:"My man, you have no imagination.", position: {col:5, row:4}, size:{width:3, height:1}, bubbleStyle: {tailDegree: 320}},
+    {type: "text", style:{outline:"bubble"}, src:"We’ll just *blast ‘em with water!*", position: {col:6, row:5}, size:{width:3, height:1}, bubbleStyle: {tailDegree: 290}},
 
 ]}/> 
 
@@ -49,13 +50,4 @@ The water was pumped from Lake Union - over *20,000 gallons* of water were used 
     linkOut="https://www.loc.gov/item/2024693820/"
     caption="The Washington Hotel, where Theodore Roosevelt stayed when he visited Seattle"/>
 
-
-<ComicSection elements={[
-    {type:"image", src:"/comics/denny-regrade/arthur-2.png", position:{col:3, row:1}, size:{width:1, height:1}},
-    {type:"text", src:"It was a lot of work, but at least we made a beautiful capitol.", position:{col:1, row:1}, size:{width:2, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 10}},
-
-    {type:"image", src:"/comics/denny-regrade/citizen-4.png", position:{col:1, row:2}, size:{width:1, height:1}},
-
-    {type:"image", src:"/comics/denny-regrade/arthur-3.png", position:{col:3, row:4}, size:{width:1, height:1}},
-    {type:"text", src:"... what?", position:{col:2, row:4}, size:{width:1, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 10}},
-]}/>
+<ComicSection rowHeight="4rem" cols={5} elements={[{type:"image",src:"/loc/seattle/dennyRegrade/roosevelt.png",  position:{col:1, row:2}, size:{width:2, height:4}},{type:"image", src:"/loc/seattle/dennyRegrade/poofyHairGuy.png", position:{col:4,row:6}, size:{width:2, height:3}}]}/>

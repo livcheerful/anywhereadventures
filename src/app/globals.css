@@ -42,3 +42,59 @@ body {
 .pinned {
    fill: #ff2233;
 }
+
+
+.chunky-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent; /* let the pseudo-element handle it */
+  cursor: pointer;
+}
+
+/* Track (Chrome/Safari) */
+.chunky-slider::-webkit-slider-runnable-track {
+  height: 14px;
+  background: #facc15; /* yellow */
+  border-radius: 6px;
+  border: 3px solid #000;
+}
+
+/* Track (Firefox) */
+.chunky-slider::-moz-range-track {
+  height: 14px;
+  background: #facc15;
+  border-radius: 6px;
+  border: 3px solid #000;
+}
+
+/* Thumb */
+.chunky-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  background: #1f96ff;
+  border: 3px solid #000;
+  border-radius: 6px;
+  margin-top: -10px; /* centers thumb on track */
+  cursor: grab;
+  box-shadow: 2px 2px 0px #000;
+  transition: transform 0.1s;
+}
+.chunky-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1) rotate(3deg);
+}
+.chunky-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  background: #1f96ff;
+  border: 3px solid #000;
+  border-radius: 6px;
+  cursor: grab;
+  box-shadow: 2px 2px 0px #000;
+  transition: transform 0.1s;
+}
+.chunky-slider::-moz-range-thumb:active {
+  transform: scale(1.1) rotate(3deg);
+}

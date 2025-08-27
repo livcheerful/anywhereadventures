@@ -6,13 +6,27 @@ export default function Footer() {
           <img src="/LClogo.jpg" className="border-2 border-black" />
         </div>
         <div className="flex flex-col gap-3 items-end justify-end shrink-0 text-sm font-bold">
-          <div>Privacy Policy</div>
-          <div>Terms of Use</div>
+          <a
+            className="underline"
+            href="https://www.loc.gov/legal/privacy-policy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Privacy Policy
+          </a>
+          <a
+            className="underline"
+            href="https://www.loc.gov/legal/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Legal
+          </a>
         </div>
       </div>
-      <div className="text-sm text-center text-pretty italic">
+      <div className="text-sm text-center text-pretty italic font-bold">
         Anywhere Adventures is a project from the 2025 Innovator in Residence at
-        the Library of Congress, Vivian Li and the Library of Congress's Labs
+        the Library of Congress, Vivian Li, and the Library of Congress's Labs
         team.
       </div>
     </div>
