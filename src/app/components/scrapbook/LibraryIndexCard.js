@@ -31,6 +31,7 @@ export default function LibraryIndexCard({ stickerObj }) {
               <a
                 className="underline font-bold text-black bg-lime-200 active:bg-lime-400 px-2"
                 target="_blank"
+                rel="noopener noreferrer"
                 href={stickerObj.linkOut}
               >
                 {"View source >"}

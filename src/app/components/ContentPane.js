@@ -268,6 +268,7 @@ export default function ContentPane({
                       className="underline"
                       href="https://www.loc.gov/collections/"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       The library has a lot of items online,
                     </a>{" "}
@@ -277,6 +278,7 @@ export default function ContentPane({
                     className="underline font-light pt-2"
                     href="/researchGuide.pdf"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Open guide
                   </a>
@@ -309,6 +311,7 @@ export default function ContentPane({
                     className="underline font-light pt-2"
                     href="https://blogs.loc.gov/thesignal/2025/07/anywhere-adventures-is-live/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Nominate your hometown
                   </a>
