@@ -34,6 +34,10 @@ export default function Camera({ aspectRatio, picture, cameraDirection }) {
 
     const video = document.getElementById("video");
 
+    if (video.srcObject) {
+      video.srcObject.getTracks().forEach(track => track.stop());
+    }
+
     const cameraScreen = document.getElementById("cameraScreen");
     video.controls = false;
     video.addEventListener(
@@ -62,9 +66,8 @@ export default function Camera({ aspectRatio, picture, cameraDirection }) {
       <div className="filmStrip overflow-hidden">
         <div
           id="videoWrapper"
-          className={`${
-            picture ? "hidden" : "visible"
-          } w-3/5 h-md:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
+          className={`${picture ? "hidden" : "visible"
+            } w-3/5 h-md:w-full camera overflow-hidden relative flex flex-col items-center justify-center `}
           style={{
             aspectRatio: aspectRatio,
           }}
@@ -77,9 +80,8 @@ export default function Camera({ aspectRatio, picture, cameraDirection }) {
             muted
             loop
             id="video"
-            className={` transform ${
-              cameraDirection == "user" ? "scale-x-[-1]" : ""
-            }`}
+            className={` transform ${cameraDirection == "user" ? "scale-x-[-1]" : ""
+              }`}
           >
             Video stream not available.
           </video>
