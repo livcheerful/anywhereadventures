@@ -325,6 +325,13 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
   };
 }
 
+const defaultTextStyle = {
+  backgroundColor: undefined,
+  textColor: "#000000",
+  fontSize: 24,
+  fontFamily: "Arial",
+};
+
 export default function Scrapbook({
   reel,
   slug,
@@ -346,12 +353,7 @@ export default function Scrapbook({
   const draggingItemRef = useRef(undefined);
   const [scrapbookBackgroundIdx, setScrapbookBackgroundIdx] = useState(0);
 
-  const [textStyle, setTextStyle] = useState({
-    backgroundColor: undefined,
-    textColor: "#000000",
-    fontSize: 24,
-    fontFamily: "Arial",
-  });
+  const [textStyle, setTextStyle] = useState(defaultTextStyle);
 
   const trashRef = useRef();
   function getDraggingItem() {
@@ -469,6 +471,9 @@ export default function Scrapbook({
   }
 
   function handleEditingTextSticker(sticker) {
+    // Pull sticker style
+    setTextStyle(sticker.props);
+
     setShowTextModal(true);
     setEditingTextSticker(sticker);
   }

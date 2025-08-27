@@ -8,7 +8,6 @@ export default function TextEditor({
   setTextStyle,
   textStyle,
   handleEditingTextSticker,
-  textStyleToFont,
   drawTextToCanvas,
 }) {
   const highlightColors = [
@@ -68,6 +67,12 @@ export default function TextEditor({
     setShowTextModal(false);
     setEditingTextSticker(undefined);
   }
+
+  const incomingFontSize = fontSizes.findIndex(
+    (value) => value == textStyle.fontSize
+  );
+  console.log(textStyle);
+  console.log(incomingFontSize);
   return (
     <div
       className="flex flex-col gap-1  items-center "
@@ -128,6 +133,34 @@ export default function TextEditor({
           Done
         </button>
       </div>
+
+      <div className="font-bold py-2">Text Size</div>
+      <input
+        type="range"
+        min="0"
+        max={fontSizes.length - 1}
+        step="1"
+        className="chunky-slider px-2 pb-4"
+        defaultValue={incomingFontSize}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        onChange={(e) => {
+          const idx = parseInt(e.target.value, 10);
+
+          let newStyle = { ...textStyle };
+          newStyle.fontSize = fontSizes[idx];
+          setTextStyle(newStyle);
+        }}
+        list="steplist"
+      />
+
+      <datalist id="steplist">
+        {fontSizes.map((size, i) => (
+          <option key={i} value={i} />
+        ))}
+      </datalist>
+      <hr className="w-full"></hr>
       <div className="font-bold">Font</div>
       <div className="flex flex-row gap-2">
         {fontStyles.map((fs, i) => {
