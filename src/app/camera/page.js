@@ -71,9 +71,9 @@ export default function Page({}) {
         <h1 className="font-bold text-lg">
           Visit the location and create your travel log entry
         </h1>
-        <div className="px-2">
-          Fill up your camera roll with photos and then collage and save your
-          page to your travel log
+        <div className="px-2 text-pretty">
+          Your camera roll can hold up to five photos. Choose which ones to use
+          in your travel log entry.
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -105,7 +105,7 @@ export default function Page({}) {
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">Gather photos</h1>
-        <div className="px-2">
+        <div className="px-2 text-pretty">
           Take pictures according to the prompt or just capture anything you
           want to remember.
         </div>
@@ -142,9 +142,10 @@ export default function Page({}) {
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">Customize</h1>
-        <div className="px-2">
+        <div className="px-2 text-pretty">
           Decorate your travel log entry with text, stickers, and photos you'd
-          like to keep. You can save archive items to use as stickers here.
+          like to keep. Your saved archive items will be available to use as
+          stickers here.
         </div>
       </div>
       <div className="w-full flex flex-col items-center pb-2 gap-2">
