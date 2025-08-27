@@ -91,7 +91,7 @@ export default function TextEditor({
         setEditingTextSticker(undefined);
       }}
     >
-      <canvas className="pb-3" id="textPreview" ref={canvasRef}></canvas>
+      <canvas className="" id="textPreview" ref={canvasRef}></canvas>
       <div className="w-full flex flex-row gap-2 px-2 items-center">
         <input
           type="text"

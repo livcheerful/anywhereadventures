@@ -136,7 +136,7 @@ export default function ScrapbookDeskPage({
       </button>
 
       <StickyNote
-        className="-rotate-6 w-32 h-32 flex flex-col gap-2"
+        className="-rotate-6 w-32 h-32 flex flex-col gap-2 select-none"
         position={{ left: 0, top: 40 }}
       >
         <div className="font-bold uppercase leading-tight">

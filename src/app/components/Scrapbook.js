@@ -178,6 +178,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           break;
 
         case "text":
+          // VVN HERE
           console.log(sticker);
           ctx.translate(
             sticker.x + originalWidth / 2,
@@ -256,6 +257,9 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     this.numElems++;
 
     placeItHere.appendChild(canvas);
+    canvas.style.position = "absolute";
+    canvas.style.top = "0px";
+    canvas.style.left = "0px";
   };
 
   this.updateTextSticker = function (sticker, text, textStyle) {
