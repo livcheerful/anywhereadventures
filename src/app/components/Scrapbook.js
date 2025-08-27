@@ -105,6 +105,7 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
     canvas.height = rect.height * dpr;
     canvas.style.width = rect.width + "px";
     canvas.style.height = rect.height + "px";
+
     ctx.save();
     ctx.scale(dpr, dpr); // Scale drawing so coordinates are in CSS pixels
 
@@ -178,8 +179,6 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           break;
 
         case "text":
-          // VVN HERE
-          console.log(sticker);
           ctx.translate(
             sticker.x + originalWidth / 2,
             sticker.y + originalHeight / 2
@@ -197,11 +196,16 @@ function ScrapbookPage(getDraggingItem, handleDraggingItem) {
           }
           ctx.fillStyle = sticker.props.textColor;
           ctx.font = textStyleToFont(sticker.props);
-          ctx.textBaseline = "hanging";
+          ctx.textBaseline = "alphabetic";
+
+          const metrics = ctx.measureText(sticker.textSrc);
+          const textWidth = metrics.width;
+
+          const y = metrics.actualBoundingBoxAscent + paddingY / 2;
           ctx.fillText(
             sticker.textSrc,
             -originalWidth / 2 + paddingX / 2,
-            -originalHeight / 2 + paddingY / 2
+            y - originalHeight / 2
           );
           break;
       }
