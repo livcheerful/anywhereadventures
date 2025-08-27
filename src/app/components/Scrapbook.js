@@ -549,7 +549,7 @@ export default function Scrapbook({
             backgroundImage,
             backgroundSize: "cover",
           }}
-          className=" w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
+          className="relative w-11/12 h-fit overflow-clip z-10 touch-none select-none  drop-shadow-2xl"
         ></div>
         <div className="text-lg font-bold px-5 p-2 rounded-lg bg-white uppercase drop-shadow-2xl text-gray-800">
           Create your travel log entry
