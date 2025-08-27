@@ -43,9 +43,14 @@ export default function TextEditor({
     const canvas = document.getElementById("textPreview");
     drawTextToCanvas(canvas, previewText, textStyle);
   }, [previewText, textStyle]);
+
   useEffect(() => {
     const textInput = document.getElementById("textStickerInput");
-    textInput.focus();
+    const timer = setTimeout(() => {
+      textInput?.focus({ preventScroll: true });
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, []);
 
   function onDone() {
