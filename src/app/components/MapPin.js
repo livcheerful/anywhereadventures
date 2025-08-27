@@ -35,7 +35,7 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
           onClick={() => {
             onCloseCB();
           }}
-          className="absolute w-8 h-8 p-1 flex items-center justify-center bg-white text-black border-gray-900 border-2  -right-3 -top-3 rounded-full z-20"
+          className="absolute w-8 h-8 p-1 flex items-center justify-center active:bg-gray-200 bg-white text-black border-gray-900 border-2  -right-3 -top-3 rounded-full z-20"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

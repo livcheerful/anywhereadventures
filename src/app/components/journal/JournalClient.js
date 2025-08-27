@@ -257,7 +257,10 @@ export default function JournalClient({}) {
 
   function makeJournalPages() {
     if (!locData?.locs) return [];
-    const allLocs = locData.locs;
+    const allLocs = locData.locs.filter((f) => {
+      return !f.hidden;
+    });
+
     let pageCount = 1;
     const pages = [];
 

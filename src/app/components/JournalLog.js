@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { hasLocationBeenVisited, getPage } from "../lib/storageHelpers";
 
 export function JournalHeader({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   return [
@@ -27,6 +28,7 @@ export function JournalHeader({ mdx }) {
 }
 
 export function JournalLog({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   return (
@@ -61,6 +63,7 @@ export function JournalLog({ mdx }) {
 }
 
 export function JournalLogInfo({ mdx }) {
+  if (!mdx) return;
   const slug = mdx.slug;
   const visited = hasLocationBeenVisited(slug);
   const router = useRouter();
@@ -69,7 +72,7 @@ export function JournalLogInfo({ mdx }) {
   return (
     <div className="w-full h-full relative bg-lime-100 shrink-0 border-2 border-lime-200 rounded-md flex flex-col gap-1 drop-shadow-sm">
       {visited && (
-        <div className="absolute top-1/3 -right-16 mix-blend-hard-light rotate-12 opacity-20">
+        <div className="absolute top-1/3 right-0 translate-x-1/3 rotate-12 opacity-40">
           <img className="w-36 h-fit" src={mdx.stampName} />
         </div>
       )}
