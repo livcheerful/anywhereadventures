@@ -8,6 +8,7 @@ export default function TextEditor({
   setTextStyle,
   textStyle,
   handleEditingTextSticker,
+  drawTextToCanvas,
 }) {
   const highlightColors = [
     { hex: "#1f96ff" },
@@ -25,44 +26,31 @@ export default function TextEditor({
     { hex: "#F64BF0" },
   ];
 
+  const fontSizes = [6, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48];
+
   const [previewText, setPreviewText] = useState(
     editingTextSticker?.textSrc || ""
   );
   const canvasRef = useRef();
 
   const fontStyles = [
-    { display: "Simple", font: "24px Arial" },
-    { display: "Serif", font: "24px Georgia" },
-    { display: "Handwritten", font: "24px VivianFont" },
+    { display: "Simple", fontFamily: "Arial" },
+    { display: "Serif", fontFamily: "Georgia" },
+    { display: "Handwritten", fontFamily: "VivianFont" },
   ];
-  function drawTextToCanvas(canvas, text, ts) {
-    var ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = ts.font;
-    const width = ctx.measureText(text).width;
-    const height = 28;
-    canvas.width = width + 2;
-    canvas.height = height + 2;
-
-    if (ts.backgroundColor) {
-      ctx.fillStyle = ts.backgroundColor;
-      ctx.fillRect(0, 0, width + 2, height + 2);
-    }
-
-    ctx.fillStyle = ts.textColor;
-    ctx.font = ts.font;
-    ctx.textBaseline = "hanging";
-
-    ctx.fillText(text, 1, 5);
-  }
 
   useEffect(() => {
     const canvas = document.getElementById("textPreview");
     drawTextToCanvas(canvas, previewText, textStyle);
   }, [previewText, textStyle]);
+
   useEffect(() => {
     const textInput = document.getElementById("textStickerInput");
-    textInput.focus();
+    const timer = setTimeout(() => {
+      textInput?.focus({ preventScroll: true });
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, []);
 
   function onDone() {
@@ -84,9 +72,15 @@ export default function TextEditor({
     setShowTextModal(false);
     setEditingTextSticker(undefined);
   }
+
+  const incomingFontSize = fontSizes.findIndex(
+    (value) => value == textStyle.fontSize
+  );
+  console.log(textStyle);
+  console.log(incomingFontSize);
   return (
     <div
-      className=" flex flex-col gap-1  items-center "
+      className="flex flex-col gap-1  items-center "
       onClick={() => {
         const textInput = document.querySelector("#textStickerInput");
         if (editingTextSticker) {
@@ -107,7 +101,7 @@ export default function TextEditor({
         setEditingTextSticker(undefined);
       }}
     >
-      <canvas className="pb-3" id="textPreview" ref={canvasRef}></canvas>
+      <canvas className="" id="textPreview" ref={canvasRef}></canvas>
       <div className="w-full flex flex-row gap-2 px-2 items-center">
         <input
           type="text"
@@ -120,9 +114,9 @@ export default function TextEditor({
           }}
           className="w-full text-center p-2 border-2 border-gray-800 "
           style={{
-            color: textStyle.textColor,
-            backgroundColor: textStyle.backgroundColor,
-            font: textStyle.font,
+            color: "black",
+            backgroundColor: "white",
+            font: `Arial`,
           }}
           defaultValue={editingTextSticker?.textSrc}
           onKeyDown={(e) => {
@@ -144,6 +138,34 @@ export default function TextEditor({
           Done
         </button>
       </div>
+
+      <div className="font-bold py-2">Text Size</div>
+      <input
+        type="range"
+        min="0"
+        max={fontSizes.length - 1}
+        step="1"
+        className="chunky-slider px-2 pb-4"
+        defaultValue={incomingFontSize}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        onChange={(e) => {
+          const idx = parseInt(e.target.value, 10);
+
+          let newStyle = { ...textStyle };
+          newStyle.fontSize = fontSizes[idx];
+          setTextStyle(newStyle);
+        }}
+        list="steplist"
+      />
+
+      <datalist id="steplist">
+        {fontSizes.map((size, i) => (
+          <option key={i} value={i} />
+        ))}
+      </datalist>
+      <hr className="w-full"></hr>
       <div className="font-bold">Font</div>
       <div className="flex flex-row gap-2">
         {fontStyles.map((fs, i) => {
@@ -151,11 +173,11 @@ export default function TextEditor({
             <button
               key={i}
               className="p-2 bg-slate-100 rounded-lg"
-              style={{ font: fs.font }}
+              style={{ font: `16pt ${fs.fontFamily}` }}
               onClick={(e) => {
                 e.stopPropagation();
                 let newStyle = { ...textStyle };
-                newStyle.font = fs.font;
+                newStyle.fontFamily = fs.fontFamily;
                 setTextStyle(newStyle);
               }}
             >

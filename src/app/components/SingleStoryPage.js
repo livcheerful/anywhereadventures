@@ -87,7 +87,10 @@ export default function SingleStoryPage({
                 to bottom,
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 1) 90%
-              ), url('${homeLocationData.welcome.thumbnail}')`,
+              ), url('${
+                homeLocationData.welcome?.thumbnail ||
+                "/placeholderThumbnail.png"
+              }')`,
             }}
           ></div>
           <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
@@ -101,17 +104,19 @@ export default function SingleStoryPage({
                   <hr className="border-yellow-500"></hr>
                 </div>
                 <div>Select a location on the map to get started.</div>
-                <BaseButton
-                  classes={[
-                    "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
-                  ]}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPaneOpen(false);
-                  }}
-                >
-                  Open Map
-                </BaseButton>
+                {paneOpen && (
+                  <BaseButton
+                    classes={[
+                      "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
+                    ]}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPaneOpen(false);
+                    }}
+                  >
+                    Open Map
+                  </BaseButton>
+                )}
               </Box>
             </div>
           </div>
@@ -150,7 +155,11 @@ export default function SingleStoryPage({
         mainMap={mainMap}
       />
 
-      <div className={`flex justify-between gap-1 pt-4 bg-white px-2 `}>
+      <div
+        className={`${
+          paneOpen ? "" : "hidden"
+        } flex justify-between gap-1 pt-4 bg-white px-2 `}
+      >
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>

@@ -172,34 +172,20 @@ function MapManager(map, router) {
 
   this.updatePins = function (pinCb, chosenLocation, router) {
     if (!chosenLocation) return;
-    console.log(chosenLocation);
 
     const locs = chosenLocation.locs;
     this.deleteAllPins();
-    for (const slug in locs) {
-      const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
-      const layer = pin.addTo(this.map);
-      const el = pin.getElement();
+    for (const idx in locs) {
+      const markerInfo = locs[idx];
+      if (markerInfo.hidden != true) {
+        const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
+        const layer = pin.addTo(this.map);
+        const el = pin.getElement();
 
-      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
-      this.currentLayers.set(slug, layer);
+        addAccessibilityAttrs(el, pin, markerInfo, pinCb);
+        this.currentLayers.set(idx, layer);
+      }
     }
-  };
-
-  this.updateStyle = function (style, pinCb, locs) {
-    // Delete all pins and replace with new style
-    this.deleteAllPins();
-    for (const slug in locs) {
-      const markerInfo = locs[slug];
-      const pin = makeMarker(markerInfo, pinCb, markerInfo.cameraImage);
-      const layer = pin.addTo(this.map);
-      const el = pin.getElement();
-
-      addAccessibilityAttrs(el, pin, markerInfo, pinCb);
-      this.currentLayers.set(slug, layer);
-    }
-    this.map.setStyle(style);
   };
 }
 
@@ -249,12 +235,10 @@ export default function MyMap({
     // Clean up from Explore View
     mapManager.deleteAllExploreMarkers();
 
-    // Set up My Map View
-    mapManager.updateStyle(
-      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
-      myMapPinClickHandler,
-      chosenLocation.locs
+    mapManager.map.setStyle(
+      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
     );
+    mapManager.updatePins(myMapPinClickHandler, chosenLocation, router);
   }, [mapManager]);
 
   // Update Map pins based on saved locations

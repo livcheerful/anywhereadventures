@@ -45,6 +45,9 @@ export default function ScrapbookToolMenu({ title, onClose, children }) {
     >
       <div
         ref={menuRef}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
         className="rounded-t-lg relative bg-white h-[90%] w-full overflow-y-auto dark:text-black border-4 border-gray-900 border-b-0"
       >
         <div className="w-full sticky top-0 p-2 mb-2 border-b-2 border-gray-800 flex flex-row bg-lime-200 justify-between items-start">

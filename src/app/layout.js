@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
           name="description"
           content="Learn local history through archival items."
         />
+        <meta property="og:image" content="/illustrations/travellog.jpg" />
         <script
           src="https://assets.adobedtm.com/f94f5647937d/624e2240e90d/launch-0610ec681aff.min.js"
           async
