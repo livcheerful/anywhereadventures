@@ -48,7 +48,6 @@ export default function StickyHeader({
       onTouchMove={(e) => {
         const currentY = e.touches[0].clientY;
         const deltaY = currentY - startY.current;
-        console.log("DeltaY");
         if (deltaY > 30) {
           setPaneOpen(false);
         }
