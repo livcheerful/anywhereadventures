@@ -9,16 +9,16 @@ zoom: 13
 cameraImage: "/loc/occidental.png"
 cardImage: "/loc/triangle.jpg"
 tags: [ "built"]
-photoPrompt: "Find the best and worst angles of the garage."
+photoPrompt: "The garage looks cool from some viewpoints, but normal from others. Find the best and worst angles of the garage."
 blurb: "At the corner of Yesler, 1, and James sits the Sinking Ship Parking Garage, which was voted the coolest parking garage in the country. But before it was a parking garage, a famous hotel sat here."
-stampName: "/seattle-general-2.svg"
+stampName: "/illustrations/seattleStamp2.png"
 stickers: [{image: "/loc/seattle/seattle-hotel.png", title: "Hotel Seattle", linkOut: "https://www.loc.gov/resource/gdcmassbookdig.metropolitanseat00unse/?sp=19&r=-0.073,0.224,0.854,0.482,0"},{image: "/loc/seattle/sinkingShip/skeptic.png"}]
 ---
 
 <LOCItem
     type="map"
     linkOut="https://www.loc.gov/item/75696663/"
-    alt="crowded illustrated map of downtown Seattle"
+    alt="Color map showing an aerial view of Seattle in the 1890s with street names."
     image="/loc/triangle.jpg"
     caption="Map of Seattle in 1891"/>
 
@@ -29,22 +29,23 @@ Before this parking garage was built here, it was the site of three Seattle hote
 <LOCItem
     type="book"
     linkOut="https://www.loc.gov/resource/gdcmassbookdig.seattlememories00redf/?sp=21"
-    alt="photograph of a two story, medium building with a crowd outside"
+    alt="A black and white photograph of the Occidental Hotel. There is a crowd and horse-drawn carriages surrounding the hotel, which is decorated with a striped banner. "
     image="/loc/occidental.png"
     caption="Occidental Hotel"/>
 <ComicSection cols={4} elements={[
-    {type: "image", src:"/comics/sinking-ship/g1.png", position:{col:4, row:1}, size:{width:1, height:2}},
+    {type: "image", alt:"A comic panel showing a man in glasses mid-sentence.",src:"/comics/sinking-ship/g1.png", position:{col:4, row:1}, size:{width:1, height:2}},
     {type:"text", src:'*This* was the first "fancy" hotel in Seattle.', position:{col:2, row: 1},size:{width: 2, height: 1}, style:{outline: "bubble",}, bubbleStyle: {tailDegree: 10}}]}/>
 {/* <Comic alt="illustration of an old-timey man with glasses" caption="Doc Maynard, believer of the 'Seattle streets should follow the compass' system" position="right" speechBubbles={[{ text: '*This* was the first "fancy" hotel in Seattle.' }]} image="/comics/sinking-ship/g1.png" overlap={100} absoluteHeight={200}/> */}
 <LOCItem
     type="book"
     linkOut="https://www.loc.gov/resource/gdcmassbookdig.metropolitanseat00unse/?sp=19&r=-0.073,0.224,0.854,0.482,0"
-    alt="photograph of a five story large building shaped like a wedge"
+    alt="A black and white photograph showing a front-view of the Hotel Seattle which is shaped like a wedge. There are people walking, and horses pulling carriages on the streets on either side of the hotel. "
+    caption="Hotel Seattle"
     image="/loc/seattle/seattle-hotel.png"/>
 <ComicSection cols={5} elements={[
-    {type: "image", src:"/comics/sinking-ship/g2.png", position:{col:1, row:2}, size:{width:2, height:2} },
-    {type:"text", src:"But it’s cursed! how many hotels stood here before?", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:2, height:1}, bubbleStyle: {tailDegree: 90}},
-    {type: "image", src:"/loc/seattle/sinkingShip/skeptic.png", position:{col:4, row:3}, size:{width:2, height:2} },
+    {type: "image", alt: "A comic panel showing a bearded man mid-sentence.",src:"/comics/sinking-ship/g2.png", position:{col:1, row:2}, size:{width:2, height:2} },
+    {type:"text", src:"But it’s cursed! How many hotels stood here before?", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:2, height:1}, bubbleStyle: {tailDegree: 90}},
+    {type: "image", alt:"A comic panel showing a sad man with glasses mid-sentence",src:"/loc/seattle/sinkingShip/skeptic.png", position:{col:4, row:3}, size:{width:2, height:2} },
     {type:"text", src:"...", style:{outline: "bubble"},position:{col:4, row:2}, size:{width:1, height:1}, bubbleStyle: {tailDegree: 80}},
     {type:"text", src:"Three...", style:{outline: "bubble"},position:{col:5, row:2}, size:{width:1, height:1}, bubbleStyle: {tailDegree: 100}},
     {type:"text", src:"And how many got taken out by disasters?", style:{outline: "bubble"},position:{col:2, row:3}, size:{width:2, height:1}, bubbleStyle: {tailDegree: 225}},
@@ -58,21 +59,19 @@ The Occidental II was burned down by the Great Seattle Fire, only 4 years after 
 
 The Hotel Seattle, which was built to replace it, was also unlucky. In 1949, when a huge earthquake shook Olympia, many buildings in Pioneer Square also were damaged. This led to the Hotel Seattle falling into disrepair, and it was the first building to be torn down as part of a larger plan to renovate Pioneer Square.
 
-If you see a building in Pioneer Square that was around for the 1949 earthquake, you can probably find signs of earthquake damage.
+If you see a building in Pioneer Square that survived the 1949 earthquake, you can probably find signs of earthquake damage.
 
 <LOCItem
     type="manuscript"
     linkOut="https://www.loc.gov/resource/mss11049.mss11049-001_00683_00886/?sp=159"
-    alt="two page spread of a notebook with cursive"
+    alt="A photograph of an opened journal with cursive writing filling both pages."
     image="/loc/susan-journal.png"
     caption="Page from Susan B. Anthony's journal"/>
  
 <ComicSection elements={[
-    {type: "image", src:"/comics/sinking-ship/g3.png", position:{col:3, row:1}, size:{width:1, height:2}, alt:"Doc Maynard is standing looking proud"},
-    {type:"text", src:"When Susan B. Anthony Visited Seattle, She stayed at the Occidental I.", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:2, height:2}, bubbleStyle: {tailDegree: 0}},
+    {type: "image", alt:"Comic image of bearded guy standing in front of the journal page.", src:"/comics/sinking-ship/g3.png", position:{col:3, row:1}, size:{width:1, height:2}, alt:"Doc Maynard is standing looking proud"},
+    {type:"text", src:"When Susan B. Anthony visited Seattle, she stayed at the Occidental I.", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:2, height:2}, bubbleStyle: {tailDegree: 0}},
     {type:"text", src:"That's pretty cool", style:{outline: "bubble"},position:{col:2, row:3}, size:{width:1, height:1}, bubbleStyle: {tailDegree: 310}},
-    
-
 ]}/>
 
 
