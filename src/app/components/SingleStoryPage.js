@@ -11,8 +11,6 @@ import BaseButton from "./ui/BaseButton";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
 import * as storageHelpers from "../lib/storageHelpers";
-import TableOfContents from "./TableOfContents";
-import Footer from "./Footer";
 
 function Button(label, enabled, action) {
   const classList = [
@@ -125,7 +123,6 @@ export default function SingleStoryPage({
           </div>
           {/* <TableOfContents /> */}
         </div>
-        <Footer />
       </div>
     );
   }
@@ -144,7 +141,12 @@ export default function SingleStoryPage({
   }
 
   return (
-    <div key={contentIndex} className="article" id={slug} articleslug={slug}>
+    <div
+      key={contentIndex}
+      className="article snap-mandatory snap-y"
+      id={slug}
+      articleslug={slug}
+    >
       <StickyHeader
         post={post}
         contentSlug={slug}
@@ -197,7 +199,7 @@ export default function SingleStoryPage({
       </div>
 
       <hr className="border-amber-500"></hr>
-      <div className="flex justify-between gap-1 py-4 px-2 bg-amber-100">
+      <div className="flex justify-between gap-1 py-4 px-2 bg-amber-100 snap-always">
         {Button("PREVIOUS STORY", hasPrevious, goToPrevious)}
         {Button("NEXT STORY", hasNext, goToNext)}
       </div>

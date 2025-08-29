@@ -422,6 +422,7 @@ export default function ContentPane({
             homeLocationData={homeLocationData}
           />
           {toastMessage && <Toast message={toastMessage} />}
+          <Footer />
         </div>
       </div>
     </div>

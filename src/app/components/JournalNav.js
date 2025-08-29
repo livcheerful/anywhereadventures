@@ -310,11 +310,15 @@ export default function JournalNav({
         <div className="flex flex-row w-full h-72 overflow-y-clip overflow-x-auto snap-x snap-mandatory ">
           {!savedLcItems ||
             (savedLcItems.length == 0 && (
-              <div className="text-black h-full w-full grow shrink-0 snap-start flex flex-col p-2">
+              <div className="text-black h-full w-full grow shrink-0 snap-start flex flex-col gap-2 p-2 items-center">
+                <img
+                  src="/illustrations/saveitems.png"
+                  className="w-52 rounded-2xl opacity-35"
+                />
                 <div className="w-full text-center font-bold">
                   You don't have any saved items yet!
                 </div>
-                <div>
+                <div className="text-sm italic">
                   Read stories and collect archives items here to use them in
                   your travel log entries and for easy reference later.
                 </div>

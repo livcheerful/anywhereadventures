@@ -673,7 +673,7 @@ export default function Scrapbook({
                   You don't have any saved items yet.
                 </div>
                 <img
-                  src="/illustrations/saveItems.png"
+                  src="/illustrations/saveitems.png"
                   className="w-60 rounded-2xl"
                 />
 
