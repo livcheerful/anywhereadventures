@@ -198,6 +198,7 @@ export default function MyMap({
   setViewingPin,
   chosenLocation,
   setCurrentSlug,
+  setShowLoadingTransition,
 }) {
   const router = useRouter();
   const [zoom, setZoom] = useState(defaultLocation.zoom);
@@ -282,6 +283,7 @@ export default function MyMap({
         <MapPin
           mdx={viewingPin.mdx}
           setPaneOpen={setPaneOpen}
+          setShowLoadingTransition={setShowLoadingTransition}
           onCloseCB={() => {
             setViewingPin(undefined);
             mapManager.map.dragPan.enable();

@@ -8,6 +8,7 @@ import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
 import Box from "./ui/Box";
 import BaseButton from "./ui/BaseButton";
+import LoadingAnimation from "./LoadingAnimation";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
 import * as storageHelpers from "../lib/storageHelpers";
@@ -64,13 +65,13 @@ export default function SingleStoryPage({
     (contentIndex != undefined && !contentArray[contentIndex])
   ) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center w-32">
-          <div>
-            <img src="/mapAnim.png" />
-          </div>
-          <div className="font-black text-gray-600">Loading...</div>
-        </div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        className="w-full h-fit"
+      >
+        <LoadingAnimation />
       </div>
     );
   }

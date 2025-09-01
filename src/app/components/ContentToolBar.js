@@ -11,8 +11,7 @@ export default function ContentToolBar({
   setPaneOpen,
   showingMenu,
   setShowingMenu,
-  setViewingPin,
-  mainMap,
+  setShowLoadingTransition,
 }) {
   const menuAnimRef = useRef();
   const [focusOnMapSwitcher, setFocusOnMapSwitcher] = useState(false);
@@ -45,7 +44,10 @@ export default function ContentToolBar({
             <a
               className="relative w-1/2 pb-1 flex flex-col justify-end items-center text-green-100 bg-green-800 active:bg-green-900 border-2 border-t-0 border-gray-800 rounded-b-2xl text-center"
               href="/journal"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowLoadingTransition(true);
+              }}
             >
               <div className="overflow-clip">
                 <div style={{ fontSize: "30px" }}>📒</div>

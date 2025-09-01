@@ -29,11 +29,11 @@ export default function ContentPane({
   setCurrentSlug,
   setViewingPin,
   setShowingWelcomeScreen,
+  setShowLoadingTransition,
   setWelcomeScreenStartIndex,
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
   const [contentIndex, setContentIndex] = useState(undefined);
-  const scrollValue = useRef();
   const [contentArray, setContentArray] = useState(undefined);
   const [reduceAnims, setReduceAnims] = useState(false);
 
@@ -390,13 +390,12 @@ export default function ContentPane({
         <div className="w-full text-2xl font-bold fixed z-40">
           {contentArray && (
             <ContentToolBar
+              setShowLoadingTransition={setShowLoadingTransition}
               post={contentArray[contentIndex]}
               paneOpen={paneOpen}
               setPaneOpen={setPaneOpen}
               showingMenu={showingMenu}
               setShowingMenu={setShowingMenu}
-              setViewingPin={setViewingPin}
-              mainMap={mainMap}
             />
           )}
         </div>
