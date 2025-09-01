@@ -10,7 +10,6 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { getMdx } from "../lib/clientPostHelper";
 import MapPin from "./MapPin";
 import { getSettings, hasLocationBeenVisited } from "../lib/storageHelpers";
 
@@ -254,26 +253,20 @@ export default function MyMap({
   }, [paneOpen]);
 
   function myMapPinClickHandler(info, pin) {
-    function cb(mdxArr) {
-      setViewingPin(undefined);
-      const mdxInfo = mdxArr[0];
-      mapManager.map.dragPan.disable();
-      mapManager.flyTo(
-        [mdxInfo.latlon[1], mdxInfo.latlon[0]],
-        mdxInfo.zoom,
-        false
-      );
+    const mdxInfo = info;
+    mapManager.map.dragPan.disable();
+    mapManager.flyTo(
+      [mdxInfo.latlon[1], mdxInfo.latlon[0]],
+      mdxInfo.zoom,
+      false
+    );
 
-      // Update reading pane
-      setCurrentSlug(mdxInfo.slug);
+    // Update reading pane
+    setCurrentSlug(mdxInfo.slug);
 
-      mapManager.map.once("moveend", () => {
-        setViewingPin({ mdx: mdxInfo, pin: pin });
-        console.log("Viewing pin..");
-      });
-    }
-
-    getMdx([info.slug], cb);
+    mapManager.map.once("moveend", () => {
+      setViewingPin({ mdx: mdxInfo, pin: pin });
+    });
   }
 
   return (

@@ -52,30 +52,19 @@ export default function SingleStoryPage({
   contentArray,
   paneOpen,
   setPaneOpen,
-  scrollRef,
   contentIndex,
   setContentIndex,
-  setViewingPin,
+  setContentSlug,
   mainMap,
   setToastMessage,
   homeLocationData,
 }) {
-  if (!contentArray) {
+  if (
+    !contentArray ||
+    (contentIndex != undefined && !contentArray[contentIndex])
+  ) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center">
-        {paneOpen && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setPaneOpen(false);
-            }}
-            style={{ alignSelf: "end" }}
-            className="fixed top-0 right-0 bg-white/80 w-8 h-8 p-2 flex items-center justify-center text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
-          >
-            <img src="/x.svg" alt="Close" />
-          </button>
-        )}
         <div className="flex flex-col items-center w-32">
           <div>
             <img src="/mapAnim.png" />
@@ -152,6 +141,7 @@ export default function SingleStoryPage({
   function goToNext() {
     hasNext && setContentIndex(contentIndex + 1);
   }
+  console.log("hi");
 
   return (
     <div
@@ -164,7 +154,6 @@ export default function SingleStoryPage({
         post={post}
         contentSlug={slug}
         isAdded={true}
-        scrollRef={scrollRef}
         paneOpen={paneOpen}
         setPaneOpen={setPaneOpen}
         mainMap={mainMap}
