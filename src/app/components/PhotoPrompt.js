@@ -22,7 +22,7 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
       {visited ? (
         <div>
           <img
-            src="/seattle-general-2.svg"
+            src={mdx.stampName}
             className="absolute w-36 top-0 -left-16 mix-blend-hard-light rotate-12 opacity-30"
           />
           <div className="z-10 ">
