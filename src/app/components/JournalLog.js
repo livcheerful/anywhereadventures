@@ -35,9 +35,9 @@ export function JournalLog({ mdx }) {
     <div className="flex flex-col items-center justify-between w-full h-full">
       {/* Show the image */}
       {visited ? (
-        <div className="relative font-mono text-xs justify-center grow w-fit h-0">
+        <div className="relative font-mono text-xs justify-center grow w-full flex">
           <img
-            className="top-0 right-0 inset-0 max-w-full max-h-full object-contain drop-shadow-lg rotate-3"
+            className="max-w-full h-auto object-contain drop-shadow-lg rotate-3"
             src={getPage(slug).image}
           />
           <div className="absolute left-1 bottom-0 text-gray-400 text-right">
