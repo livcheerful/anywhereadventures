@@ -40,7 +40,7 @@ export function JournalLog({ mdx }) {
             className="max-w-full h-auto object-contain drop-shadow-lg rotate-3"
             src={getPage(slug).image}
           />
-          <div className="absolute left-1 bottom-0 text-gray-400 text-right">
+          <div className="absolute left-1 bottom-0 text-gray-400 bg-white/80 text-right">
             Tap and hold to save to your photos
           </div>
         </div>
