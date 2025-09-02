@@ -86,8 +86,7 @@ export default function ContentPane({
     }
   }, [entranceSlug]);
 
-  function vvTemp(loc) {
-    console.log(loc);
+  function handleRouteAndSlugs(loc) {
     const newSlug = loc.slug;
     updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
     setCurrentSlug(newSlug);
@@ -109,7 +108,7 @@ export default function ContentPane({
             newArray[contentIndex] = mdx[0];
             return newArray;
           });
-          vvTemp(mdx[0]);
+          handleRouteAndSlugs(mdx[0]);
           // Update map
           mainMap.flyTo(
             [locationInfo.latlon[1], locationInfo.latlon[0]],
@@ -119,13 +118,12 @@ export default function ContentPane({
         });
         return;
       } else {
-        vvTemp(contentArray[contentIndex]);
+        handleRouteAndSlugs(contentArray[contentIndex]);
       }
     }
   }, [contentIndex]);
 
   useEffect(() => {
-    console.log("VVN in setIndexFromSlug");
     if (!homeLocationData) return;
     if (
       !contentIndex ||
@@ -420,7 +418,6 @@ export default function ContentPane({
             const currentY = e.touches[0].clientY;
             const deltaY = currentY - startY.current;
             if (deltaY > 30) {
-              console.log(deltaY);
               if (isAtTop.current && deltaY > 10) setPaneOpen(false);
             }
           }}

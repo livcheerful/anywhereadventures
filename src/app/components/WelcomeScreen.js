@@ -91,6 +91,7 @@ export default function WelcomeScreen({
             const data = locationData[clickedLocation];
             setChosenLocation(data);
             setHomeLocation(data.name);
+            console.log("Set home location");
             setPaneOpen(false);
             mainMap.flyTo(data.center, data.zoom, false);
             onFinishWelcoming(data);
