@@ -33,6 +33,7 @@ export default function BasePage({ entranceSlug }) {
   const searchParams = useSearchParams();
   const params = useParams();
 
+  const homeLocation = getHomeLocation();
   function finishWelcome() {
     setShowingWelcomeScreen(false);
   }
@@ -52,8 +53,6 @@ export default function BasePage({ entranceSlug }) {
 
       const city = parts[0]; // "seattle"
 
-      console.log("VVN in here");
-      console.log(locationData[city]);
       setHomeLocation(locationData[city].name);
       setChosenLocation(locationData[city]);
     }
@@ -104,7 +103,7 @@ export default function BasePage({ entranceSlug }) {
       }
       {showLoadingTransition && <LoadingTransitionPage />}
 
-      {!showingWelcomeScreen && (
+      {!showingWelcomeScreen && homeLocation && (
         <ContentPane
           setShowLoadingTransition={setShowLoadingTransition}
           entranceSlug={entranceSlug}
