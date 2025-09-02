@@ -8,6 +8,7 @@ import PhotoPrompt from "./PhotoPrompt";
 import UnstickyHeader from "./UnstickyHeader";
 import Box from "./ui/Box";
 import BaseButton from "./ui/BaseButton";
+import LoadingAnimation from "./LoadingAnimation";
 import { hasLocationBeenVisited } from "../lib/storageHelpers";
 
 import * as storageHelpers from "../lib/storageHelpers";
@@ -52,36 +53,25 @@ export default function SingleStoryPage({
   contentArray,
   paneOpen,
   setPaneOpen,
-  scrollRef,
   contentIndex,
   setContentIndex,
-  setViewingPin,
+  setContentSlug,
   mainMap,
   setToastMessage,
   homeLocationData,
 }) {
-  if (!contentArray) {
+  if (
+    !contentArray ||
+    (contentIndex != undefined && !contentArray[contentIndex])
+  ) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center">
-        {paneOpen && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setPaneOpen(false);
-            }}
-            style={{ alignSelf: "end" }}
-            className="fixed top-0 right-0 bg-white/80 w-8 h-8 p-2 flex items-center justify-center text-black border-gray-900 mt-1 mr-1 rounded-full z-20"
-          >
-            <img src="/x.svg" alt="Close" />
-          </button>
-        )}
-        <div className="flex flex-col items-center w-32">
-          <div>
-            <img src="/mapAnim.png" />
-          </div>
-          <div className="font-black text-gray-600">Loading...</div>
-        </div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        className="w-full h-fit"
+      >
+        <LoadingAnimation />
       </div>
     );
   }
@@ -152,6 +142,7 @@ export default function SingleStoryPage({
   function goToNext() {
     hasNext && setContentIndex(contentIndex + 1);
   }
+  console.log("hi");
 
   return (
     <div
@@ -164,7 +155,6 @@ export default function SingleStoryPage({
         post={post}
         contentSlug={slug}
         isAdded={true}
-        scrollRef={scrollRef}
         paneOpen={paneOpen}
         setPaneOpen={setPaneOpen}
         mainMap={mainMap}

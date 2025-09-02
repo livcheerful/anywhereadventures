@@ -1,7 +1,11 @@
 import { getPage } from "../lib/storageHelpers";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-export default function PhotoPrompt({ mdx, visited, fill }) {
+export default function PhotoPrompt({
+  mdx,
+  visited,
+  setShowLoadingTransition,
+}) {
   const [copiedAlert, setCopiedAlert] = useState(false);
 
   useEffect(() => {
@@ -115,6 +119,9 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
           <div className="flex flex-col items-center pt-2">
             <Link
               href={`/camera?locationId=${mdx.slug}`}
+              onClick={() => {
+                setShowLoadingTransition(true);
+              }}
               className="border-gray-900 border-2 text-black bg-amber-100 active:bg-amber-200 px-4 py-2 font-black text-sm rounded-full"
             >
               I'M HERE

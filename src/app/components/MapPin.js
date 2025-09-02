@@ -4,7 +4,12 @@ import PinCamera from "./PinCamera";
 import PinJournal from "./PinJournal";
 import PhotoPrompt from "./PhotoPrompt";
 
-export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
+export default function MapPin({
+  mdx,
+  setShowLoadingTransition,
+  setPaneOpen,
+  onCloseCB,
+}) {
   const visited = hasLocationBeenVisited(mdx.slug);
   return (
     <div className="absolute w-full flex flex-col items-center justify-start z-10 left-0 top-4 h-lg:top-32 h-full overflow-visible">
@@ -99,7 +104,11 @@ export default function MapPin({ mdx, setPaneOpen, onCloseCB }) {
               </button>
             </div>
             <div className="w-full h-full relative pt-2 bg-amber-300">
-              <PhotoPrompt mdx={mdx} visited={visited} />
+              <PhotoPrompt
+                mdx={mdx}
+                visited={visited}
+                setShowLoadingTransition={setShowLoadingTransition}
+              />
               <div className=" absolute -top-3 left-0 flex flex-row ">
                 <div className="h-fit absolute top-1 left-0 pr-5 pl-4 text-yellow-800 font-bold text-nowrap bg-amber-100 text-sm  flex flex-row gap-2">
                   <div className="">2:</div>

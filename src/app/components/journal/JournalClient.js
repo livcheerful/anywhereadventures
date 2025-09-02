@@ -5,6 +5,7 @@ import SearchParamHandler from "../SearchParamHandler";
 import Box from "../ui/Box";
 import BaseButton from "../ui/BaseButton";
 import TableOfContents from "../TableOfContents";
+import LoadingTransitionPage from "../LoadingTransitionPage";
 import Toast from "../Toast";
 import JournalNav from "../JournalNav";
 import gsap from "gsap";
@@ -32,6 +33,7 @@ export default function JournalClient({}) {
   const [homeLoc, setHomeLoc] = useState(undefined);
   const [locData, setLocData] = useState(undefined);
   const [reduceAnim, setReduceAnim] = useState(true);
+  const [showLoadingTransition, setShowLoadingTransition] = useState(false);
 
   const { notifications } = useNotifications();
 
@@ -293,6 +295,7 @@ export default function JournalClient({}) {
 
   return (
     <div className="h-dvh w-full relative bg-white overflow-y-hidden">
+      {showLoadingTransition && <LoadingTransitionPage />}
       {showIntro && (
         <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-20 border-2 border-black">
           <Box
@@ -354,6 +357,7 @@ export default function JournalClient({}) {
       </div>
       {copiedAlert && <Toast message={copiedAlert} />}
       <JournalNav
+        setShowLoadingTransition={setShowLoadingTransition}
         notifications={notifications}
         showToc={showToc}
         setShowToc={setShowToc}

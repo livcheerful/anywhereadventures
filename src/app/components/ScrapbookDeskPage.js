@@ -54,6 +54,7 @@ export default function ScrapbookDeskPage({
   locationId,
   stickerRefs,
   setShowSummaryPage,
+  setShowLoadingTransition,
 }) {
   const [showToast, setShowToast] = useState(false);
   const [pageHeight, setPageHeight] = useState(100);
@@ -124,6 +125,7 @@ export default function ScrapbookDeskPage({
       className="w-full h-full absolute top-0 left-0 z-20 overflow-clip touch-none select-none flex flex-col items-center"
       style={{
         backgroundImage: "url(woodendesk.jpg)",
+        backgroundColor: "#CA8A4E",
         backgroundSize: "cover",
       }}
     >
@@ -194,7 +196,12 @@ export default function ScrapbookDeskPage({
               backgroundRepeat: "no-repeat",
             }}
           ></div>
-          <div className="bg-lime-300 absolute font-bold w-44 px-2 py-1 text-black border-2 border-black z-40 -right-2 bottom-3 drop-shadow-xl">
+          <div
+            onClick={() => {
+              setShowLoadingTransition(true);
+            }}
+            className="bg-lime-300 absolute font-bold w-44 px-2 py-1 text-black border-2 border-black z-40 -right-2 bottom-3 drop-shadow-xl"
+          >
             Return to the map
           </div>
         </a>
