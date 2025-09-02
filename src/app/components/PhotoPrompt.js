@@ -1,7 +1,11 @@
 import { getPage } from "../lib/storageHelpers";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-export default function PhotoPrompt({ mdx, visited, fill }) {
+export default function PhotoPrompt({
+  mdx,
+  visited,
+  setShowLoadingTransition,
+}) {
   const [copiedAlert, setCopiedAlert] = useState(false);
 
   useEffect(() => {
@@ -15,14 +19,14 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
   const ua = navigator.userAgent.toLowerCase();
   const isDesktop = !/iphone|ipad|ipod/.test(ua) && !/android/.test(ua);
   const genericPhotoPromptText = mdx.locationTitle
-    ? `Visit ${mdx.locationTitle} in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.`
-    : "Visit this location in person and create a travel log of your visit. Explore your surroundings and take photos of what you notice.";
+    ? `Visit ${mdx.locationTitle} in person and create an entry about your visit for your travel log. Explore your surroundings and take photos of what you notice.`
+    : "Visit this location in person and create an entry about your visit for your travel log. Explore your surroundings and take photos of what you notice.";
   return (
     <div className="relative bg-amber-300 p-4 overflow-clip">
       {visited ? (
         <div>
           <img
-            src="/seattle-general-2.svg"
+            src={mdx.stampName}
             className="absolute w-36 top-0 -left-16 mix-blend-hard-light rotate-12 opacity-30"
           />
           <div className="z-10 ">
@@ -115,6 +119,9 @@ export default function PhotoPrompt({ mdx, visited, fill }) {
           <div className="flex flex-col items-center pt-2">
             <Link
               href={`/camera?locationId=${mdx.slug}`}
+              onClick={() => {
+                setShowLoadingTransition(true);
+              }}
               className="border-gray-900 border-2 text-black bg-amber-100 active:bg-amber-200 px-4 py-2 font-black text-sm rounded-full"
             >
               I'M HERE

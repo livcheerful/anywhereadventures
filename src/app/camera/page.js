@@ -9,6 +9,7 @@ import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
 import ScrapbookDeskPage from "../components/ScrapbookDeskPage";
+import LoadingTransitionPage from "../components/LoadingTransitionPage";
 
 import {
   savePage,
@@ -21,7 +22,7 @@ import {
 import { getMdx } from "../lib/clientPostHelper";
 
 const cameraPermissionStates = ["prompt", "granted", "denied"]; // https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus/state
-const cameraDirectionStates = ["user", "environment"];
+const cameraDirectionStates = ["environment", "user"];
 
 const aspectRatio = 16 / 9;
 export default function Page({}) {
@@ -37,6 +38,7 @@ export default function Page({}) {
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const [mdx, setMdx] = useState(undefined);
   const [introIdx, setIntroIdx] = useState(0);
+  const [showLoadingTransition, setShowLoadingTransition] = useState(false);
 
   useEffect(() => {
     setHaveShownHelp(haveSeenCamera());
@@ -54,8 +56,6 @@ export default function Page({}) {
     });
   }, [locationId]);
 
-  //VVN TODO FIX TEXT HERE FOR DARK MODE
-
   const screens = [
     <Box
       isModal
@@ -71,9 +71,9 @@ export default function Page({}) {
         <h1 className="font-bold text-lg">
           Visit the location and create your travel log entry
         </h1>
-        <div className="px-2">
-          Fill up your camera roll with photos and then collage and save your
-          page to your travel log
+        <div className="px-2 text-pretty">
+          Your camera roll can hold up to five photos. Choose which ones to use
+          in your travel log entry.
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -105,7 +105,7 @@ export default function Page({}) {
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">Gather photos</h1>
-        <div className="px-2">
+        <div className="px-2 text-pretty">
           Take pictures according to the prompt or just capture anything you
           want to remember.
         </div>
@@ -142,9 +142,10 @@ export default function Page({}) {
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">Customize</h1>
-        <div className="px-2">
-          Decorate your travel log entry with text and stickers. You can save
-          archive items to use as stickers here.
+        <div className="px-2 text-pretty">
+          Decorate your travel log entry with text, stickers, and photos you'd
+          like to keep. Your saved archive items will be available to use as
+          stickers here.
         </div>
       </div>
       <div className="w-full flex flex-col items-center pb-2 gap-2">
@@ -215,6 +216,7 @@ export default function Page({}) {
       setCameraPermissionState(res.state);
     });
   }, []);
+
   return (
     <div className="relative h-dvh w-screen md:w-limiter bg-white overflow-hidden">
       <div
@@ -281,6 +283,9 @@ export default function Page({}) {
       <a
         href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
         className="fixed left-0 top-4"
+        onClick={() => {
+          setShowLoadingTransition(true);
+        }}
       >
         <div className="py-1 px-6 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
           Back
@@ -302,7 +307,7 @@ export default function Page({}) {
               </div>
             </button>
             <button
-              className="bg-gray-500 px-3 rounded-lg py-1 scale-y-75"
+              className="bg-gray-500 px-3 rounded-lg py-1 scale-y-75  active:brightness-75 active:shadow-inner"
               onClick={() => {
                 setReel([]);
               }}
@@ -338,12 +343,7 @@ export default function Page({}) {
         <div className="flex flex-row shrink-0 w-full grow px-3 justify-between items-center">
           <div className="flex-1 ">
             <button
-              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
-              style={{
-                backgroundImage: `url(cameraButton.png)`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-              }}
+              className=" h-12 w-24  cursor-pointer bg-slate-600 active:bg-slate-800 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
               onClick={() => {
                 setCameraDirectionIdx(
                   (cameraDirectionIdx + 1) % cameraDirectionStates.length
@@ -353,7 +353,10 @@ export default function Page({}) {
               Flip
             </button>
           </div>
-          <div className="flex flex-col gap-2 flex-1 shrink-0 items-center w-fit">
+          <div
+            className="flex 
+             active:scale-90 active:brightness-75 flex-col gap-2 flex-1 shrink-0 items-center w-fit"
+          >
             <div
               className=" bg-purple-400 rounded-full cursor-pointer w-24 h-24"
               style={{
@@ -407,6 +410,15 @@ export default function Page({}) {
                     return img;
                   }
 
+                  function flashCamera() {
+                    const flashBox = document.getElementById("flash-box");
+                    flashBox.style.opacity = "1";
+                    setTimeout(() => {
+                      flashBox.style.opacity = "0";
+                    }, 120);
+                  }
+
+                  flashCamera();
                   const photo = snapPhoto();
                   const photoObj = { img: photo, timeTaken: new Date() };
                   newPhotos.push(photoObj);
@@ -420,12 +432,7 @@ export default function Page({}) {
           </div>
           <div className="flex-1 flex flex-row justify-end">
             <button
-              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
-              style={{
-                backgroundImage: `url(cameraButton.png)`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-              }}
+              className=" h-12 w-24 cursor-pointer bg-slate-600 active:bg-slate-800 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
               onClick={() => {
                 setProcessPhotos(true);
               }}
@@ -445,6 +452,7 @@ export default function Page({}) {
       )}
       {showSummaryPage && (
         <ScrapbookDeskPage
+          setShowLoadingTransition={setShowLoadingTransition}
           mdx={mdx}
           collageImage={collageImage}
           locationId={locationId}
@@ -452,6 +460,7 @@ export default function Page({}) {
           setShowSummaryPage={setShowSummaryPage}
         />
       )}
+      {showLoadingTransition && <LoadingTransitionPage />}
     </div>
   );
 }

@@ -38,5 +38,11 @@
         "title": "Olympic Hotel",
         "linkOut": "https://www.loc.gov/resource/pcrd.2d07447/",
         "location": "Seattle"
+    },
+    "/illustrations/aaSeattleStamp.png": {
+        "location": "Seattle"
+    },
+    "/illustrations/seattleStamp2.png": {
+        "location": "Seattle"
     }
 }

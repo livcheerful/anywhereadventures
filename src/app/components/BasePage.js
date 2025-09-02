@@ -7,6 +7,7 @@ import MyMap from "./MyMap";
 import ContentPane from "./ContentPane";
 import WelcomeScreen from "./WelcomeScreen";
 
+import LoadingTransitionPage from "./LoadingTransitionPage";
 import { locationData, savedLocationToObj } from "../lib/locationHelpers";
 import { getHomeLocation, setHomeLocation } from "../lib/storageHelpers";
 
@@ -14,6 +15,7 @@ export default function BasePage({ entranceSlug }) {
   const [isNewUser, setIsNewUser] = useState(!getHomeLocation());
   const [showingWelcomeScreen, setShowingWelcomeScreen] = useState(false);
   const [paneOpen, setPaneOpen] = useState(false);
+  const [showLoadingTransition, setShowLoadingTransition] = useState(false);
 
   const [currentSlug, setCurrentSlug] = useState(entranceSlug);
   const [exploringContent, setExploringContent] = useState(false);
@@ -50,6 +52,7 @@ export default function BasePage({ entranceSlug }) {
 
       const city = parts[0]; // "seattle"
 
+      console.log("VVN in here");
       console.log(locationData[city]);
       setHomeLocation(locationData[city].name);
       setChosenLocation(locationData[city]);
@@ -96,11 +99,14 @@ export default function BasePage({ entranceSlug }) {
           setViewingPin={setViewingPin}
           chosenLocation={chosenLocation}
           setCurrentSlug={setCurrentSlug}
+          setShowLoadingTransition={setShowLoadingTransition}
         />
       }
+      {showLoadingTransition && <LoadingTransitionPage />}
 
       {!showingWelcomeScreen && (
         <ContentPane
+          setShowLoadingTransition={setShowLoadingTransition}
           entranceSlug={entranceSlug}
           chosenLocation={chosenLocation}
           mainMap={mainMap}

@@ -10,6 +10,7 @@ export default function JournalNav({
   showToc,
   setShowToc,
   showSavedItems,
+  setShowLoadingTransition,
   setShowSavedItems,
 }) {
   const [savedLcItems, setSavedLcItems] = useState(undefined);
@@ -164,7 +165,13 @@ export default function JournalNav({
     <div className="absolute bottom-0 h-14 overflow-clip z-10 w-full md:w-limiter">
       <div className="absolute bottom-0 flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-green-800 border-t-black border-2 z-10">
         <div className="text-sm font-black grow text-white underline">
-          <a className="" href="/">
+          <a
+            className=""
+            onClick={() => {
+              setShowLoadingTransition(true);
+            }}
+            href="/"
+          >
             BACK TO MAP
           </a>
         </div>
@@ -310,11 +317,15 @@ export default function JournalNav({
         <div className="flex flex-row w-full h-72 overflow-y-clip overflow-x-auto snap-x snap-mandatory ">
           {!savedLcItems ||
             (savedLcItems.length == 0 && (
-              <div className="text-black h-full w-full grow shrink-0 snap-start flex flex-col p-2">
+              <div className="text-black h-full w-full grow shrink-0 snap-start flex flex-col gap-2 p-2 items-center">
+                <img
+                  src="/illustrations/saveitems.png"
+                  className="w-52 rounded-2xl opacity-35"
+                />
                 <div className="w-full text-center font-bold">
                   You don't have any saved items yet!
                 </div>
-                <div>
+                <div className="text-sm italic">
                   Read stories and collect archives items here to use them in
                   your travel log entries and for easy reference later.
                 </div>
@@ -336,6 +347,7 @@ export default function JournalNav({
                       className="flex flex-col items-center justify-center  underline decoration-white bg-emerald-700 font-mono text-xs font-bold text-white p-1 border-2 border-gray-900 drop-shadow-sm rounded-b-lg"
                       href={item.link}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <div>source</div>
                     </a>

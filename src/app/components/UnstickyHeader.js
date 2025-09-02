@@ -1,5 +1,3 @@
-import { categoryInfo } from "../content/meta";
-
 export default function UnstickyHeader({
   post,
   setToastMessage,
@@ -58,8 +56,11 @@ export default function UnstickyHeader({
             </button>
             <button
               onClick={() => {
+                console.log(post);
                 navigator.clipboard.writeText(
-                  `${window.location.origin}/${post.slug}`
+                  `${
+                    window.location.origin
+                  }/${post.location[0].toLowerCase()}/${post.slug}`
                 );
                 setToastMessage("Copied URL to clipboard");
               }}

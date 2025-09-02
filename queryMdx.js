@@ -74,14 +74,20 @@ function splitPostsByCategory(posts, location) {
 
 // =====================START HERE=========================== //
 
-const posts = getAllPosts();
-const seattleLocs = getAllPostsByLocation(posts, "Seattle");
+const posts = getAllPosts().filter((p) => p.hidden != true);
+const seattleLocs = getAllPostsByLocation(posts, "Seattle").filter(
+  (p) => p.hidden != true
+);
 const seattleByCategory = splitPostsByCategory(seattleLocs, "Seattle");
 
-const chicagoLocs = getAllPostsByLocation(posts, "Chicago");
+const chicagoLocs = getAllPostsByLocation(posts, "Chicago").filter(
+  (p) => p.hidden != true
+);
 const chicagoByCategory = splitPostsByCategory(chicagoLocs, "Chicago");
 
-const seWYLocs = getAllPostsByLocation(posts, "SEWY");
+const seWYLocs = getAllPostsByLocation(posts, "SEWY").filter(
+  (p) => p.hidden != true
+);
 const seWYByCategory = splitPostsByCategory(seWYLocs, "SEWY");
 
 const allPostsByCategory = [

@@ -8,11 +8,11 @@ neighborhood: Greenwood
 zoom: 15
 tags: ["names"]
 cameraImage: "/loc/seattle/aliceBall/daguerreotype.jpg"
-cardImage: "/placeholderThumbnail.png"
-stampName:
+cardImage: "/loc/seattle/aliceBall/daguerreotype.jpg"
+stampName: "/illustrations/seattleStamp2.png"
 photoPrompt:
-blurb:
-stickers: []
+blurb: "This Greenwood park has a connection to the cure for leprosy, the University of Hawai'i, and a pioneering scientist. Read on to see how they all connect."
+stickers: [{image: "/loc/seattle/aliceBall/sticker.png", title: "Frame of John Presley Ball photograph", linkOut: "https://www.loc.gov/resource/ppmsca.80088"},{image: "/loc/seattle/aliceBall/khi.png", title: "Kalaupapa Social Hall in the Historic American Buildings Survey", linkOut: "https://www.loc.gov/resource/hhh.hi0098.sheet/?sp=1"},{image: "/loc/seattle/aliceBall/tree.png"},{image: "/loc/seattle/aliceBall/injest2.png"},]
 ---
 
 Leprosy is a bacterial disease that has been devastating humans for thousands of years. In the past, there was nothing you could do if you got it. You would just be shipped off to live with other people with the disease and be legally considered dead.
@@ -21,56 +21,59 @@ Leprosy is a bacterial disease that has been devastating humans for thousands of
     type="pnp"
     image="/loc/seattle/aliceBall/kaluapapa.jpg"
     linkOut="https://www.loc.gov/resource/hhh.hi0098.sheet/?sp=1"
-    caption=""
-    alt=""/>
+    caption="Architectural survey drawing of the Kalaupapa Social Hall that was a part of the Kalaupapa Settlement for leprosy patients."
+    alt="A composite black and white drawing showing a side view of the Kalupapa Social Hall, an aerial sketch of the peninsula the hall is located on, and map drawing indicating where on hall is located on the peninsula. "/>
 
 That was, until this photo... kinda.
 
 <LOCItem
     type="pnp"
     image="/loc/seattle/aliceBall/daguerreotype.jpg"
+    caption="Daguerreotype by John Presley Ball"
+    alt="A black and white daguerreotype portrait of a woman in a long-sleeved dress, seated and posed with her arm on a side table. The portrait is inside the right side of an opened case, the left side of the case is lined with red velvet."
     linkOut="https://www.loc.gov/resource/ppmsca.80088/"/>
 
-This photo was taken by John Presley Bell, and was produced via daguerreotype, which was the first popular process to capture photographs in the mid-1800s. It uses a chemical process that exposes light on a plate coated in silver. Bell was an accomplished daguerreotypist, opening studios across the country, and eventually settling in Seattle.
+This photo was taken by John Presley Ball, and was produced via daguerreotype, which was the first popular process to capture photographs in the mid-1800s. It uses a chemical process that exposes light on a plate coated in silver. Ball was an accomplished daguerreotypist, opening studios across the country, and eventually settling in Seattle.
 
 Alice Ball was born in 1892 in Seattle, WA into a family of photographers - John Presley Ball was her grandfather - and, perhaps inspired by the photography process, she studied chemistry at the University of Washington.
 
-She then got her master’s in chemistry at the University of Hawai’i, where her thesis explored the chemical makeup of a plant that could be used to treat many illnesses, from anxiety to kidney disorders. She was both the first woman and the first African American to get a master’s from UH.
+She then got her master’s in chemistry at the University of Hawai’i (UH), where her thesis explored the chemical makeup of the Ava Root, which could be used to treat many illnesses, from anxiety to kidney disorders. She was both the first woman and the first African American to get a master’s from UH.
 
 <ComicSection cols={5} rowHeight="2rem" elements={[
     {type:"text", src:"When I saw Alice Ball’s work, I thought she’d be the perfect person to work on researching chaulmoogra oil, which also was extracted from a plant.",style:{outline: "bubble"}, position:{col:1, row:1}, size:{width:5, height:3}},
-    {type:"image", src:"/loc/seattle/aliceBall/tree.png", position:{col:2, row:3}, size:{width:3, height:7}},
-    {type:"image", src:"/loc/seattle/aliceBall/hollmann1.png", position:{col:4, row:5}, size:{width:2, height:5}},
-    {type:"text", style:{outline: "bubble"}, position:{col:1, row:8}, size:{width:3, height:3},src:"Using this oil as treatment was the most effective way to treat leprosy, and it had been a method since the 1300s, ..."},
-    {type:"text",style:{outline: "bubble"}, position:{col:4, row:10}, size:{width:2, height:2}, src:"but there was no good way to administer it to patients."},
+    {type:"image", src:"/loc/seattle/aliceBall/tree.png", position:{col:2, row:3}, size:{width:3, height:7}, alt:"Brightly colored comic panel showing a flowering tree"},
+    {type:"text", src:"Dr. Harry Hollmann, US public health official",style:{outline: "box", backgroundColor: "white"}, position:{col:3, row:4}, size:{width:5, height:3}},
+    {type:"image", src:"/loc/seattle/aliceBall/hollmann1.png", position:{col:4, row:5}, size:{width:2, height:5}, alt:"Brightly colored comic panel showing a Harry Hollmann speaking and gesturing towards the tree."},
+    {type:"text", style:{outline: "bubble"}, position:{col:1, row:8}, size:{width:3, height:3},src:"Using this oil as treatment was the most effective way to treat leprosy, and has been used since the 1300s, ..."},
+    {type:"text",style:{outline: "bubble"}, position:{col:4, row:10}, size:{width:2, height:2}, src:"...but there was no good way to administer it to patients."},
     {type:"text", style:{outline: "box"},position:{col:1, row:13}, size:{width:2, height:2},src:"It was too sticky to be applied to skin directly"},
-    {type:"image", src:"/loc/seattle/aliceBall/sticky.png", position:{col:1, row:14}, size:{width:2, height:5}},{type:"text", style:{outline: "box"},position:{col:4, row:13}, size:{width:2, height:2},src:"If we gave it via injection, their skin would react with rows and rows of blisters"},
-    {type:"image", src:"/loc/seattle/aliceBall/bumps.png", position:{col:4, row:14}, size:{width:2, height:5}},
+    {type:"image", src:"/loc/seattle/aliceBall/sticky.png", alt: "A brightly colored comic panel showing an index finger touching a very sticky substance which forms a string as the index finger pulls away.", position:{col:1, row:14}, size:{width:2, height:5}},{type:"text", style:{outline: "box"},position:{col:4, row:13}, size:{width:2, height:2},src:"If we gave it via injection, their skin would react with rows and rows of blisters"},
+    {type:"image", src:"/loc/seattle/aliceBall/bumps.png", alt:"A brightly colored comic showing a syringe injecting a substance in a patch of skin that is covered in red bumps. ", position:{col:4, row:14}, size:{width:2, height:5}},
 
-    {type:"text", style:{outline: "bubble"},position:{col:3, row:20}, size:{width:2, height:2},src:"And if people injested it..."},
-    {type:"image", src:"/loc/seattle/aliceBall/injest1.png", position:{col:2, row:21}, size:{width:1, height:5}},
-    {type:"image", src:"/loc/seattle/aliceBall/hollmann2.png", position:{col:4, row:22}, size:{width:2, height:4}},
-    {type:"image", src:"/loc/seattle/aliceBall/injest2.png", position:{col:2, row:27}, size:{width:1, height:5}},
-    {type:"image", src:"/loc/seattle/aliceBall/hollmann3.png", position:{col:4, row:28}, size:{width:2, height:4}},
-    {type:"image", src:"/loc/seattle/aliceBall/injest3.png", position:{col:1, row:36}, size:{width:2, height:5}},
+    {type:"text", style:{outline: "bubble"},position:{col:3, row:20}, size:{width:2, height:2},src:"And if people ingested it..."},
+    {type:"image", src:"/loc/seattle/aliceBall/injest1.png", alt: "A brightly colored comic panel showing a figure drinking a substance",position:{col:2, row:21}, size:{width:1, height:5}},
+    {type:"image", src:"/loc/seattle/aliceBall/hollmann2.png", alt:"Hollmann in mid-sentence, looking at the reader", position:{col:4, row:22}, size:{width:2, height:4}},
+    {type:"image", src:"/loc/seattle/aliceBall/injest2.png", alt:"A brightly colored comic panel showing a figure with an empty cup and mouthful of liquid, their cheeks flushed red",position:{col:2, row:27}, size:{width:1, height:5}},
+    {type:"image", src:"/loc/seattle/aliceBall/hollmann3.png", alt:"Hollmann is looking at the figure", position:{col:4, row:28}, size:{width:2, height:4}},
+    {type:"image", src:"/loc/seattle/aliceBall/injest3.png", alt:"The figure runs off the page and tosses the empty cup behind them", position:{col:1, row:36}, size:{width:2, height:5}},
     {type:"text", style:{outline: "bubble"},position:{col:4, row:34}, size:{width:2, height:2},src:"well, it wouldn't stay down"},
-    {type:"image", src:"/loc/seattle/aliceBall/hollmann4.png", position:{col:4, row:36}, size:{width:2, height:5}},
+    {type:"image", src:"/loc/seattle/aliceBall/hollmann4.png", alt:"Hollmann's arms are up, mid-shrug", position:{col:4, row:36}, size:{width:2, height:5}},
 ]}/> 
-So even though there had a medicine to treat leprosy for centuries, there was no way to give it to patients. But Alice Ball, at age 23, developed a chemical method so that the water insoluble acid could be suspended in water and injected comfortably.
+So even though there had been a medicine to treat leprosy for centuries, there was no way to give it to patients. Dr. Hollmann, who worked at the Leprosy Investigation Station in Kalawao, Hawai'i, recruited Ball to tackle the problem. At age 23, Ball developed a chemical method so that the water insoluble acid in the chaulmoogra oil could be suspended in water and injected comfortably.
 
 When she died less than a year later at the age of 24, the dean of medicine (coincidentally named Arthur Dean) at the university took over her research and eventually published it as the “Dean method”.
 
 <ComicSection cols={4} elements={[
-    {type:"text", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:3, height:1},src:"Sure, sure, Alice did some work, but I improved it so much that we should really call it the Dean method."},
-    {type:"image", src:"/loc/seattle/aliceBall/dean.png", position:{col:1, row:2}, size:{width:2, height:2}},
-    {type:"text", style:{outline: "bubble"},position:{col:3, row:2}, size:{width:2, height:1},src:"All you did was make it more difficult by using fancy equipment that’s harder to get access to."},
-    {type:"image", src:"/loc/seattle/aliceBall/hollmann5.png", position:{col:3, row:3}, size:{width:2, height:2}},
-    {type:"text", style:{outline: "bubble"},position:{col:1, row:4}, size:{width:2, height:1},src:"With the Ball method, doctors all around the world can easily compound chaulmoogric acid."},
+    {type:"text", style:{outline: "bubble"},position:{col:1, row:1}, size:{width:3, height:1},src:"Sure, sure, Alice did some work, but I improved it so much that we should really call it the Dean method.", bubbleStyle: {tailDegree:100}},
+    {type:"image", src:"/loc/seattle/aliceBall/dean.png", alt:"A brightly colored comic panel showing Arthur Dean in a graduation cap and gown mid-sentence and mid-shrug", position:{col:1, row:2}, size:{width:2, height:2}},
+    {type:"image", alt: "Hollmann stands to his right and points at him angrily.", src:"/loc/seattle/aliceBall/hollmann5.png", position:{col:3, row:3}, size:{width:2, height:2}},
+    {type:"text", style:{outline: "bubble"},position:{col:3, row:2}, size:{width:2, height:1},src:"All you did was make it more difficult by using fancy equipment that’s harder to get access to.", bubbleStyle: {tailDegree:80}},
+    {type:"text", style:{outline: "bubble"},position:{col:2, row:4}, size:{width:2, height:1},src:"With the Ball method, doctors all around the world can easily compound chaulmoogric acid.", bubbleStyle: {tailDegree:340}},
 
 ]}/> 
 Despite Hollmann’s best efforts, it was still considered the “Dean method” until the 1970s, when two professors at the University of Hawai’i rediscovered the story of Ball’s work.
 
-The Ball Method was the only way to treat leprosy until antibiotics were popularized in the 1940s, and Alice Ball Park celebrates her nearly forgotten legacy as a professor and pioneering scientist.
+The Ball method was the only way to treat leprosy until antibiotics were popularized in the 1940s, and Alice Ball Park celebrates her nearly forgotten legacy as a professor and pioneering scientist.
 {/* <ComicSection elements={[
     {type:"image", src:"", position:{col:1, row:1}, size:{width:1, height:1}},
     {type:"text", src:"", position:{col:1, row:1}, size:{width:1, height:1}, style:{outline: "bubble"}, bubbleStyle: {tailDegree: 0}},

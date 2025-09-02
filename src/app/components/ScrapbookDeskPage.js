@@ -8,6 +8,23 @@ import LibraryIndexCard from "./scrapbook/LibraryIndexCard";
 import { getSettings, clearPhotoReel } from "../lib/storageHelpers";
 import { useNotifications } from "../lib/NotificationsContext";
 
+function createDownloadableImage(dataUrl, filename) {
+  // Convert base64/URL-encoded data to raw binary
+  const byteString = atob(dataUrl.split(",")[1]);
+  const mimeString = dataUrl.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([ab], { type: mimeString });
+  const blobUrl = URL.createObjectURL(blob);
+
+  return { blobUrl, filename };
+}
+
 function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
   this.x = x0;
   this.y = y0;
@@ -37,46 +54,33 @@ export default function ScrapbookDeskPage({
   locationId,
   stickerRefs,
   setShowSummaryPage,
+  setShowLoadingTransition,
 }) {
   const [showToast, setShowToast] = useState(false);
+  const [pageHeight, setPageHeight] = useState(100);
   const { addNotification } = useNotifications();
+  const { blobUrl, filename } = createDownloadableImage(
+    collageImage,
+    `anywhere-adventures-${locationId}.png`
+  );
 
   // Animate desk + collage
   useEffect(() => {
     const reduceAnims = getSettings().reduceAnims;
     const tl = gsap.timeline();
-    new ScrapbookDeskItem(document.querySelector("#collageImage"), -6, 0, 0);
 
-    tl.fromTo(
-      "#pens",
-      { top: "-33rem", delay: 1 },
-      { top: "-4rem", duration: reduceAnims ? 0 : 0.5 }
-    );
-
-    tl.fromTo(
-      "#backToMap",
-      { bottom: "-30rem" },
-      { bottom: "-10rem", duration: reduceAnims ? 0 : 0.5 }
-    );
-
-    tl.fromTo(
-      ".stickyNote",
-      { zoom: 2, visibility: "hidden" },
-      {
-        zoom: 1,
-        visibility: "visible",
-        stagger: 0.1,
-        duration: reduceAnims ? 0 : 0.5,
-      }
-    );
+    new ScrapbookDeskItem(document.querySelector("#collageImage"), 0, 0, 0);
 
     tl.fromTo(
       "#collageImage",
-      { scale: 4, display: "none" },
+      { scale: 1.3, display: "block", rotate: -50 },
       {
         scale: 1,
         display: "block",
+        rotate: 0,
         duration: reduceAnims ? 0 : 0.5,
+        top: 20,
+        right: 10,
         onComplete: () => {
           // Show toast and add notification in context
           setShowToast(true);
@@ -86,21 +90,33 @@ export default function ScrapbookDeskPage({
         },
       }
     );
+    tl.fromTo(
+      "#backToMap",
+      { bottom: "-30rem" },
+      { bottom: "-15rem", duration: reduceAnims ? 0 : 0.5 }
+    );
   }, [locationId, addNotification]);
+
+  useEffect(() => {
+    const h = window.innerHeight;
+    setPageHeight(h);
+  }, []);
 
   // Animate sticker index cards
   useEffect(() => {
     const tl = gsap.timeline();
     const indexCards = document.querySelectorAll(".indexCard");
 
-    indexCards.forEach((ic) => {
-      const rotation = Math.random() * 10 - 5;
+    indexCards.forEach((ic, i) => {
+      const rotation = i * 3 - 10;
+      const x = i * 30;
+      const y = i * 30 + pageHeight / 2;
+      new ScrapbookDeskItem(ic, rotation, x, y);
       tl.fromTo(
         ic,
-        { opacity: 0, rotate: 0 },
-        { rotate: rotation, opacity: 1 }
+        { opacity: 0, rotate: 0, x: 0, y: 600 },
+        { rotate: rotation, opacity: 1, x: x, y: y, duration: 0.4 }
       );
-      new ScrapbookDeskItem(ic, rotation, 0, 0);
     });
   }, [stickerRefs]);
 
@@ -109,68 +125,69 @@ export default function ScrapbookDeskPage({
       className="w-full h-full absolute top-0 left-0 z-20 overflow-clip touch-none select-none flex flex-col items-center"
       style={{
         backgroundImage: "url(woodendesk.jpg)",
+        backgroundColor: "#CA8A4E",
         backgroundSize: "cover",
       }}
     >
       {showToast && <Toast message="Travel log saved" />}
 
       <button onClick={() => setShowSummaryPage(false)}>
-        <div
-          id="pens"
-          className="absolute left-5 w-40 h-96 z-30 -top-24 rotate-12"
-          style={{
-            backgroundImage: `url(/pens.png)`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></div>
-        <StickyNote className="rotate-6 top-4 left-0">
+        <div className="fixed z-[100] left-0 top-4 py-1 px-3 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
           Back to editing
-        </StickyNote>
+        </div>
       </button>
 
+      <StickyNote
+        className="-rotate-6 w-32 h-32 flex flex-col gap-2 select-none"
+        position={{ left: 0, top: 40 }}
+      >
+        <div className="font-bold uppercase leading-tight">
+          Your Travel Log Entry
+        </div>
+        <div
+          style={{ fontSize: "10px" }}
+          className="visible md:hidden font-light leading-tight italic"
+        >
+          Tap and hold the image to save to your phone
+        </div>
+        <div className="hidden md:block text-sm">
+          <a href={blobUrl} download={filename} className="underline">
+            Download
+          </a>
+        </div>
+      </StickyNote>
+      <img
+        src={blobUrl}
+        id="collageImage"
+        className="absolute z-40  w-2/3 drop-shadow-2xl select-none draggable"
+        alt="collage"
+        style={{ right: 0 }}
+      />
       <div className="flex flex-col items-center gap-2">
+        {stickerRefs && stickerRefs.length > 0 && (
+          <StickyNote
+            className="-rotate-6 w-32 h-32 flex flex-col gap-2 z-10"
+            position={{ left: 0, top: pageHeight / 2 - 90 }}
+          >
+            <div className="font-bold  leading-tight">Archive items used</div>
+          </StickyNote>
+        )}
         {stickerRefs.map((stickerObj, i) => (
           <div
-            className="indexCard z-10 absolute w-96 h-64 draggable select-none"
+            className="indexCard z-[100] absolute w-80 h-56 draggable select-none"
             key={i}
-            style={{
-              top: `${Math.random() * 300 + 30}px`,
-              left: `${Math.random() * 40}px`,
-            }}
           >
-            <LibraryIndexCard stickerObj={stickerObj} />
+            <LibraryIndexCard
+              stickerObj={stickerObj}
+              locationRef={locationId}
+            />
           </div>
         ))}
-
-        <img
-          src={collageImage}
-          id="collageImage"
-          className="draggable z-20 w-1/2 absolute top-1/3 -rotate-6 drop-shadow-2xl border-2 border-black select-none"
-        />
-
-        <StickyNote className="hidden md:block -rotate-6 right-0 top-10">
-          Save your travel log
-          <a
-            href={collageImage}
-            download={`anywhere-adventures-${locationId}`}
-            className="underline"
-          >
-            <div>Download</div>
-          </a>
-        </StickyNote>
-
-        <StickyNote
-          className="visible md:hidden -rotate-6 w-32 h-32"
-          position={{ right: 10, top: 10 }}
-        >
-          <div>Tap and hold the image to save to your phone</div>
-        </StickyNote>
 
         <a href={`/${mdx.location[0].toLowerCase()}/${locationId}`}>
           <div
             id="backToMap"
-            className="absolute z-30 -right-10 -rotate-6 drop-shadow-xl"
+            className="absolute z-30 -right-32 -rotate-6 drop-shadow-xl border-2 border-black"
             style={{
               width: "15rem",
               height: "25rem",
@@ -179,9 +196,14 @@ export default function ScrapbookDeskPage({
               backgroundRepeat: "no-repeat",
             }}
           ></div>
-          <StickyNote className="bottom-4 right-0 -rotate-6">
+          <div
+            onClick={() => {
+              setShowLoadingTransition(true);
+            }}
+            className="bg-lime-300 absolute font-bold w-44 px-2 py-1 text-black border-2 border-black z-40 -right-2 bottom-3 drop-shadow-xl"
+          >
             Return to the map
-          </StickyNote>
+          </div>
         </a>
       </div>
     </div>

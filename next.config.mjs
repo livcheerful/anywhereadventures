@@ -2,6 +2,7 @@ import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 import createMDX from "@next/mdx";
 export default (phase) => {
   const isDev = phase === PHASE_DEVELOPMENT_SERVER;
+  const isProd = process.env.VERCEL_ENV === "production";
   /**
    * @type {import('next').NextConfig}
    */
@@ -14,8 +15,8 @@ export default (phase) => {
     // Configure `pageExtensions` to include markdown and MDX files
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
     reactStrictMode: false,
-    // VVNTODO make the assetPrefix an environment variable
-    assetPrefix: isDev ? undefined : "https://anywhereadventures.vercel.app/",
+    assetPrefix: isProd ? process.env.ASSET_PREFIX ?? "" : "",
+    productionBrowserSourceMaps: false,
     // basePath: isDev ? undefined : "/anywhereadventures",
   };
 
