@@ -10,6 +10,7 @@ export default function JournalNav({
   showToc,
   setShowToc,
   showSavedItems,
+  setShowLoadingTransition,
   setShowSavedItems,
 }) {
   const [savedLcItems, setSavedLcItems] = useState(undefined);
@@ -164,7 +165,13 @@ export default function JournalNav({
     <div className="absolute bottom-0 h-14 overflow-clip z-10 w-full md:w-limiter">
       <div className="absolute bottom-0 flex flex-row justify-between gap-20 pr-5 p-2 w-full md:w-limiter h-10 bg-green-800 border-t-black border-2 z-10">
         <div className="text-sm font-black grow text-white underline">
-          <a className="" href="/">
+          <a
+            className=""
+            onClick={() => {
+              setShowLoadingTransition(true);
+            }}
+            href="/"
+          >
             BACK TO MAP
           </a>
         </div>

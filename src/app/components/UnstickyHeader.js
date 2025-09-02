@@ -1,5 +1,3 @@
-import { categoryInfo } from "../content/meta";
-
 export default function UnstickyHeader({
   post,
   setToastMessage,

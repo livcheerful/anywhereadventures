@@ -32,7 +32,7 @@ export default function PinJournal({ page, slug }) {
       style={{ transform: `rotate(20deg)`, bottom: "20%", right: "-12rem" }}
     >
       <a href={`/journal?id=${slug}`}>
-        {page ? <img src={page.image} /> : <img src="/defaultpaper.png" />}
+        {page ? <img src={page.image} /> : <img src="/defaultpaper.jpg" />}
       </a>
     </div>
   );

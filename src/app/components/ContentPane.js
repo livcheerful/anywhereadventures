@@ -29,25 +29,135 @@ export default function ContentPane({
   setCurrentSlug,
   setViewingPin,
   setShowingWelcomeScreen,
+  setShowLoadingTransition,
   setWelcomeScreenStartIndex,
 }) {
   const [paneHeight, setPaneHeight] = useState(getPaneHeight());
-
   const [contentIndex, setContentIndex] = useState(undefined);
-  const scrollValue = useRef();
-  const contentPaneRef = useRef(null);
   const [contentArray, setContentArray] = useState(undefined);
   const [reduceAnims, setReduceAnims] = useState(false);
 
   const [showingMenu, setShowingMenu] = useState(false);
   const [showClearWarning, setShowClearWarning] = useState(false);
   const [toastMessage, setToastMessage] = useState(undefined);
+  const [homeLoc, setHomeLoc] = useState(undefined);
+  const [homeLocationData, setHomeLocationData] = useState(undefined);
+
   const menuRef = useRef();
   const menuAnimRef = useRef();
   const startY = useRef();
   const isAtTop = useRef();
-  const [homeLoc, setHomeLoc] = useState(undefined);
-  const [homeLocationData, setHomeLocationData] = useState(undefined);
+  const contentPaneRef = useRef(null);
+
+  useEffect(() => {
+    const loc = getHomeLocation(); // now runs only in client
+    const locationData = savedLocationToObj(loc);
+    setHomeLoc(loc);
+    setHomeLocationData(locationData);
+
+    setContentArray(new Array(locationData.locs.length));
+    setupAnimations();
+  }, []);
+
+  // Load up the content based on stored home location
+  useEffect(() => {
+    if (!homeLocationData) return;
+
+    const locSlugs = homeLocationData.locs.map((l) => {
+      return l.slug;
+    });
+
+    let index = locSlugs.findIndex((slug) => slug == entranceSlug);
+    if (index < 0) {
+      index = undefined;
+      mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
+      updateRoute(`/${homeLocationData.id}`);
+    }
+
+    setContentIndex(index);
+  }, [homeLocationData]);
+
+  useEffect(() => {
+    if (entranceSlug) {
+      setIndexFromSlug(entranceSlug);
+    } else if (contentArray) {
+      setContentIndex(undefined);
+      setCurrentSlug(undefined);
+    }
+  }, [entranceSlug]);
+
+  function vvTemp(loc) {
+    console.log(loc);
+    const newSlug = loc.slug;
+    updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
+    setCurrentSlug(newSlug);
+    setViewingPin(undefined);
+
+    // Update slug
+    contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
+  }
+
+  useEffect(() => {
+    if (!contentArray) return;
+    if (contentIndex != undefined) {
+      // Check if we have to fetch the content
+      const locationInfo = homeLocationData.locs[contentIndex];
+      if (!contentArray[contentIndex]) {
+        getMdx([locationInfo.slug], (mdx) => {
+          setContentArray((prev) => {
+            const newArray = [...prev];
+            newArray[contentIndex] = mdx[0];
+            return newArray;
+          });
+          vvTemp(mdx[0]);
+          // Update map
+          mainMap.flyTo(
+            [locationInfo.latlon[1], locationInfo.latlon[0]],
+            locationInfo.zoom,
+            false
+          );
+        });
+        return;
+      } else {
+        vvTemp(contentArray[contentIndex]);
+      }
+    }
+  }, [contentIndex]);
+
+  useEffect(() => {
+    console.log("VVN in setIndexFromSlug");
+    if (!homeLocationData) return;
+    if (
+      !contentIndex ||
+      homeLocationData.locs[contentIndex].slug != currentSlug
+    ) {
+      setIndexFromSlug(currentSlug);
+    }
+  }, [currentSlug]);
+
+  useEffect(() => {
+    setPaneHeight(getPaneHeight());
+  }, [paneOpen]);
+
+  useEffect(() => {
+    if (reduceAnims) {
+      if (showingMenu) {
+        menuRef.current.style.visibility = "visible";
+        menuRef.current.style.transform = "translateY(0%)";
+      } else {
+        menuRef.current.style.visibility = "hidden";
+        menuRef.current.style.transform = "translateY(-100%)";
+      }
+    } else {
+      showMenuAnim(showingMenu);
+    }
+  }, [showingMenu]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setToastMessage(undefined);
+    }, 2000);
+  }, [toastMessage]);
 
   function setupAnimations() {
     if (!menuRef.current) return;
@@ -71,78 +181,6 @@ export default function ContentPane({
     setReduceAnims(getSettings().reduceAnims);
   }
 
-  useEffect(() => {
-    const loc = getHomeLocation(); // now runs only in client
-    console.log("got home location");
-    console.log(loc);
-    const locationData = savedLocationToObj(loc);
-    console.log(locationData);
-    setHomeLoc(loc);
-    setHomeLocationData(locationData);
-
-    setupAnimations();
-  }, []);
-
-  // Load up the content based on stored home location
-  useEffect(() => {
-    if (!homeLocationData) return;
-    console.log(homeLocationData);
-
-    const locSlugs = homeLocationData.locs.map((l) => {
-      return l.slug;
-    });
-    getMdx(locSlugs, (res) => {
-      setContentArray(res);
-
-      let index = res.findIndex((content) => content.slug == entranceSlug);
-      if (index < 0) {
-        // index = 0;
-        index = undefined;
-        mainMap.flyTo(homeLocationData.center, homeLocationData.zoom, false);
-        updateRoute(`/${homeLocationData.id}`);
-      }
-
-      setContentIndex(index);
-    });
-  }, [homeLocationData]);
-
-  useEffect(() => {
-    if (!contentArray) return;
-    if (contentIndex != undefined) {
-      const loc = contentArray[contentIndex];
-      const newSlug = loc.slug;
-      updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
-      setCurrentSlug(newSlug);
-      setViewingPin(undefined);
-
-      // Update slug
-      contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
-
-      // Update map
-      mainMap.flyTo([loc.latlon[1], loc.latlon[0]], loc.zoom, false);
-    }
-  }, [contentIndex, contentArray]);
-
-  useEffect(() => {
-    if (reduceAnims) {
-      if (showingMenu) {
-        menuRef.current.style.visibility = "visible";
-        menuRef.current.style.transform = "translateY(0%)";
-      } else {
-        menuRef.current.style.visibility = "hidden";
-        menuRef.current.style.transform = "translateY(-100%)";
-      }
-    } else {
-      showMenuAnim(showingMenu);
-    }
-  }, [showingMenu]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setToastMessage(undefined);
-    }, 2000);
-  }, [toastMessage]);
-
   function showMenuAnim(shouldShow) {
     const tl = menuAnimRef.current;
 
@@ -156,24 +194,11 @@ export default function ContentPane({
       setContentIndex(undefined);
       return;
     }
-    const index = contentArray.findIndex((content) => content.slug == slug);
+    const index = homeLocationData.locs.findIndex((loc) => loc.slug == slug);
     if (index >= 0) {
       setContentIndex(index);
     }
   }
-
-  useEffect(() => {
-    if (entranceSlug) {
-      setIndexFromSlug(entranceSlug);
-    } else if (contentArray) {
-      setContentIndex(undefined);
-      setCurrentSlug(undefined);
-    }
-  }, [entranceSlug, contentArray]);
-
-  useEffect(() => {
-    setIndexFromSlug(currentSlug);
-  }, [currentSlug, contentArray]);
 
   function getPaneHeight() {
     if (!paneOpen) {
@@ -182,10 +207,6 @@ export default function ContentPane({
       return "100%";
     }
   }
-
-  useEffect(() => {
-    setPaneHeight(getPaneHeight());
-  }, [paneOpen]);
 
   return (
     <div
@@ -369,13 +390,12 @@ export default function ContentPane({
         <div className="w-full text-2xl font-bold fixed z-40">
           {contentArray && (
             <ContentToolBar
+              setShowLoadingTransition={setShowLoadingTransition}
               post={contentArray[contentIndex]}
               paneOpen={paneOpen}
               setPaneOpen={setPaneOpen}
               showingMenu={showingMenu}
               setShowingMenu={setShowingMenu}
-              setViewingPin={setViewingPin}
-              mainMap={mainMap}
             />
           )}
         </div>
@@ -410,7 +430,6 @@ export default function ContentPane({
             setCurrentSlug={setCurrentSlug}
             entranceSlug={entranceSlug}
             setPaneOpen={setPaneOpen}
-            scrollRef={scrollValue}
             paneOpen={paneOpen}
             contentPaneRef={contentPaneRef}
             contentIndex={contentIndex}

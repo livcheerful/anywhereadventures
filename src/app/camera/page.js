@@ -9,6 +9,7 @@ import Camera from "../components/Camera";
 import SearchParamHandler from "../components/SearchParamHandler";
 import Scrapbook from "../components/Scrapbook";
 import ScrapbookDeskPage from "../components/ScrapbookDeskPage";
+import LoadingTransitionPage from "../components/LoadingTransitionPage";
 
 import {
   savePage,
@@ -37,6 +38,7 @@ export default function Page({}) {
   const [stickerRefs, setStickerRefs] = useState([]); // links to the stickers used
   const [mdx, setMdx] = useState(undefined);
   const [introIdx, setIntroIdx] = useState(0);
+  const [showLoadingTransition, setShowLoadingTransition] = useState(false);
 
   useEffect(() => {
     setHaveShownHelp(haveSeenCamera());
@@ -53,8 +55,6 @@ export default function Page({}) {
       setMdx(res[0]);
     });
   }, [locationId]);
-
-  //VVN TODO FIX TEXT HERE FOR DARK MODE
 
   const screens = [
     <Box
@@ -216,6 +216,7 @@ export default function Page({}) {
       setCameraPermissionState(res.state);
     });
   }, []);
+
   return (
     <div className="relative h-dvh w-screen md:w-limiter bg-white overflow-hidden">
       <div
@@ -282,6 +283,9 @@ export default function Page({}) {
       <a
         href={`/${mdx?.location[0].toLowerCase()}/${locationId}`}
         className="fixed left-0 top-4"
+        onClick={() => {
+          setShowLoadingTransition(true);
+        }}
       >
         <div className="py-1 px-6 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
           Back
@@ -339,12 +343,7 @@ export default function Page({}) {
         <div className="flex flex-row shrink-0 w-full grow px-3 justify-between items-center">
           <div className="flex-1 ">
             <button
-              className=" h-12 w-24  cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
-              style={{
-                backgroundImage: `url(cameraButton.png)`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-              }}
+              className=" h-12 w-24  cursor-pointer bg-slate-600 active:bg-slate-800 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
               onClick={() => {
                 setCameraDirectionIdx(
                   (cameraDirectionIdx + 1) % cameraDirectionStates.length
@@ -433,12 +432,7 @@ export default function Page({}) {
           </div>
           <div className="flex-1 flex flex-row justify-end">
             <button
-              className=" h-12 w-24 cursor-pointer bg-slate-600 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
-              style={{
-                backgroundImage: `url(cameraButton.png)`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-              }}
+              className=" h-12 w-24 cursor-pointer bg-slate-600 active:bg-slate-800 px-4 rounded-full text-slate-50 text-lg font-mono font-bold "
               onClick={() => {
                 setProcessPhotos(true);
               }}
@@ -458,6 +452,7 @@ export default function Page({}) {
       )}
       {showSummaryPage && (
         <ScrapbookDeskPage
+          setShowLoadingTransition={setShowLoadingTransition}
           mdx={mdx}
           collageImage={collageImage}
           locationId={locationId}
@@ -465,6 +460,7 @@ export default function Page({}) {
           setShowSummaryPage={setShowSummaryPage}
         />
       )}
+      {showLoadingTransition && <LoadingTransitionPage />}
     </div>
   );
 }
