@@ -18,6 +18,7 @@ export default (phase) => {
     assetPrefix: isProd ? process.env.ASSET_PREFIX ?? "" : "",
     productionBrowserSourceMaps: false,
     // basePath: isDev ? undefined : "/anywhereadventures",
+    trailingSlash: true,
   };
 
   const withMDX = createMDX({});
