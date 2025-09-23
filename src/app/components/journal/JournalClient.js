@@ -118,6 +118,7 @@ export default function JournalClient({}) {
       <div className="flex flex-col">
         <img
           src="/illustrations/travellog.jpg"
+          alt="illustration of a journal over a road with pins coming out of the ground. with each pin is a rectangle photograph hovering above it"
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">
@@ -148,6 +149,7 @@ export default function JournalClient({}) {
         <img
           src="/illustrations/swipe.gif"
           className="border-b-2 border-gray-800"
+          alt="animated image of a finger swiping a travel log page"
         />
         <div className="p-2">
           <h1 className="font-bold text-lg">
@@ -180,6 +182,7 @@ export default function JournalClient({}) {
         <img
           src="/illustrations/saveitems.png"
           className="border-b-2 border-gray-800"
+          alt="illustration of a book mostly closed lying on its spine. many archive items are flying into it"
         />
         <div className="p-2">
           <h1 className="font-bold text-lg">Save archive items for later</h1>
