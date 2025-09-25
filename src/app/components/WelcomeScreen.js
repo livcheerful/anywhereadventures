@@ -31,6 +31,7 @@ export default function WelcomeScreen({
   function NextButton() {
     return (
       <BaseButton
+        label={"Next"}
         classes={["bg-lime-300 grow-0 active:bg-lime-500"]}
         onClick={() => {
           if (index < screens.length - 1) {
@@ -59,6 +60,7 @@ export default function WelcomeScreen({
         : "bg-lime-300 active:bg-lime-500";
     return (
       <BaseButton
+        label={data.name}
         classes={[color]}
         onClick={() => {
           if (clickedLocation == mapKey) {
@@ -77,6 +79,7 @@ export default function WelcomeScreen({
     return (
       <div className="relative">
         <BaseButton
+          label={"Start"}
           classes={[
             "drop-shadow-2xl",
             "right-2",
