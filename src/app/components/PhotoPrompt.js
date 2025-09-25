@@ -70,6 +70,7 @@ export default function PhotoPrompt({
                   </div>
                   {!isDesktop && (
                     <button
+                      aria-label="Open address in external map app"
                       className="underline font-bold font-sm text-black"
                       onClick={() => {
                         if (/iphone|ipad|ipod/.test(ua)) {

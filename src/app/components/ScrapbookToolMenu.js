@@ -53,6 +53,7 @@ export default function ScrapbookToolMenu({ title, onClose, children }) {
         <div className="w-full sticky top-0 p-2 mb-2 border-b-2 border-gray-800 flex flex-row bg-lime-200 justify-between items-start">
           <div className=" text-lg font-bold">{title}</div>
           <button
+            aria-label="Close menu"
             onClick={(e) => {
               onClose(e);
               menuAnim.current.reverse();

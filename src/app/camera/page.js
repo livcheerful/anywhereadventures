@@ -125,6 +125,7 @@ export default function Page({}) {
           Next
         </BaseButton>
         <button
+          aria-label="Back"
           onClick={() => {
             setIntroIdx(introIdx - 1);
           }}

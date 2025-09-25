@@ -131,7 +131,7 @@ export default function JournalClient({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
-          label={"Next"}
+          label={"Next tutorial step"}
           onClick={() => setScreenIdx(screenIdx + 1)}
           classes={["bg-lime-200", "active:bg-lime-300"]}
         >
@@ -164,7 +164,7 @@ export default function JournalClient({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
-          label={"Next"}
+          label={"Next tutorial step"}
           onClick={() => setScreenIdx(screenIdx + 1)}
           classes={["bg-lime-200", "active:bg-lime-300"]}
         >

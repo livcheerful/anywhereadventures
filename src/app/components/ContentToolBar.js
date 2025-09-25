@@ -66,6 +66,7 @@ export default function ContentToolBar({
 
         {paneOpen && !showingMenu && (
           <button
+            aria-label="Close reading pane"
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();

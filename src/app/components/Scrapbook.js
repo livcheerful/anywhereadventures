@@ -375,6 +375,7 @@ export default function Scrapbook({
       title: "Stickers",
       display: (
         <button
+          aria-label="Add a sticker to your collage"
           className="h-36 w-44 overflow-clip relative "
           onClick={() => {
             setShowStickerModal(true);
@@ -493,6 +494,7 @@ export default function Scrapbook({
             item.display
           ) : (
             <button
+              aria-label={item.title}
               key={i}
               className="h-36 w-36 flex flex-col pt-2 "
               style={{
@@ -743,6 +745,9 @@ export default function Scrapbook({
               {backgroundOptions.map((op, i) => {
                 return (
                   <button
+                    aria-label={`Set collage background to ${
+                      op.type === "color" ? op.hex : "image"
+                    }`}
                     key={i}
                     className="w-10 h-10 shrink-0 rounded-full border-2"
                     style={{
