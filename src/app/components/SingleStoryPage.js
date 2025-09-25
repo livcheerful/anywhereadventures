@@ -107,6 +107,7 @@ export default function SingleStoryPage({
                 <div>Select a location on the map to get started.</div>
                 {paneOpen && (
                   <BaseButton
+                    label={"Open Map"}
                     classes={[
                       "bg-lime-300 grow-0 text-sm uppercase font-bold text-black",
                     ]}

@@ -57,6 +57,7 @@ export default function MapBrochure({
     >
       <div className="w-full flex flex-row items-center justify-end pr-4 p-2">
         <button
+          aria-label="Close brochure"
           className=" text-gray-400"
           onClick={() => {
             handleCloseBrochureView();
