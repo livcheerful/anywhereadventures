@@ -28,6 +28,7 @@ export default function ContentToolBar({
       <div className="absolute w-full gap-2 h-10 left-0 flex flex-row justify-between pl-2 items-stretch cursor-default">
         <div className="w-3/4 gap-2 flex flex-row">
           <button
+            aria-label="Open Menu"
             onClick={() => setShowingMenu(!showingMenu)}
             className="p-2 bg-lime-200 active:bg-lime-300 text-black flex flex-col items-stretch justify-center overflow-clip border-b-2 border-l-2 border-r-2 border-gray-800 rounded-b-xl text-center text-xs drop-shadow-2xl fill-black"
           >
