@@ -44,5 +44,15 @@
     },
     "/illustrations/seattleStamp2.png": {
         "location": "Seattle"
-    }
+    },
+    "/loc/chicago/greetingsFromChicago.jpg": {
+        "location": "Chicago",
+        "title": "Greetings from Chicago postcard",
+        "linkOut": "https://www.loc.gov/resource/pcrd.1d01009/"
+    },
+    "/loc/chicago/chicagoVolume21.png": {
+        "location": "Chicago",
+        "title": "Sanborn Fire Insurance Map from Chicago",
+        "linkOut": "https://www.loc.gov/resource/g4104cm.g01790195121/?sp=4&st=image&r=0.037,-0.087,1.007,0.693,0"
+    },
 }
