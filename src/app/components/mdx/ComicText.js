@@ -219,6 +219,7 @@ export default function ComicText({ textInfo }) {
         <div
           className="w-fit h-fit text-pretty"
           style={{
+            ...textInfo.style,
             fontSize: textInfo.style.fontSize || ".8rem",
             fontFamily: textInfo.style.fontFamily || "",
             lineHeight: textInfo.style.fontSize || ".8rem",
