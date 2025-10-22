@@ -55,4 +55,9 @@
         "title": "Sanborn Fire Insurance Map from Chicago",
         "linkOut": "https://www.loc.gov/resource/g4104cm.g01790195121/?sp=4&st=image&r=0.037,-0.087,1.007,0.693,0"
     },
+    "/loc/chicago/lincolnPark.png": {
+        "location": "Chicago",
+        "title": "1897 Postcard of Chicago",
+        "linkOut": "https://www.loc.gov/resource/pcrd.1a03882/"
+    },
 }
