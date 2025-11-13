@@ -60,4 +60,9 @@
         "title": "1897 Postcard of Chicago",
         "linkOut": "https://www.loc.gov/resource/pcrd.1a03882/"
     },
+    "/stickerpacks/chicago/stamp.png": {
+        "location": "Chicago",
+        "title": "Stamp square from postcard",
+        "linkOut": "https://www.loc.gov/resource/pcrd.2a03991/"
+    }
 }
