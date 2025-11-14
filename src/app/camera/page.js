@@ -66,6 +66,7 @@ export default function Page({}) {
       <div className="flex flex-col gap-2">
         <img
           src="/illustrations/t1.jpg"
+          alt="comic illustration of someone taking photos with their phone and pictures flying out of it"
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">
@@ -78,6 +79,7 @@ export default function Page({}) {
       </div>
       <div className="flex flex-col gap-2">
         <BaseButton
+          label={"Next"}
           classes={["bg-yellow-300 active:bg-yellow-400 grow-0 "]}
           onClick={() => {
             setIntroIdx(introIdx + 1);
@@ -103,6 +105,7 @@ export default function Page({}) {
         <img
           src="/illustrations/t2.jpg"
           className="w-full border-b-2 border-b-black"
+          alt="drawing of a bridge with three illustrated photos laying over it, highlighting details that could be captured of the bridge"
         />
         <h1 className="font-bold text-lg">Gather photos</h1>
         <div className="px-2 text-pretty">
@@ -113,6 +116,7 @@ export default function Page({}) {
 
       <div className="flex flex-col gap-2">
         <BaseButton
+          label={"Next"}
           classes={["bg-yellow-300 grow-0"]}
           onClick={() => {
             setIntroIdx(introIdx + 1);
@@ -121,6 +125,7 @@ export default function Page({}) {
           Next
         </BaseButton>
         <button
+          aria-label="Back"
           onClick={() => {
             setIntroIdx(introIdx - 1);
           }}
@@ -139,6 +144,7 @@ export default function Page({}) {
       <div className="flex flex-col gap-2">
         <img
           src="/illustrations/t3.jpg"
+          alt="illustration of a phone being held as shapes are being collaged on screen"
           className="w-full border-b-2 border-b-black"
         />
         <h1 className="font-bold text-lg">Customize</h1>

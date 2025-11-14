@@ -241,6 +241,18 @@ export default function MyMap({
     mapManager.updatePins(myMapPinClickHandler, chosenLocation, router);
   }, [mapManager]);
 
+  useEffect(() => {
+    if (mapManager) {
+      mapManager.currentLayers.forEach((marker) => {
+        const el = marker.getElement?.();
+        console.log(el);
+        if (el) {
+          el.tabIndex = viewingPin ? -1 : 0;
+        }
+      });
+    }
+  }, [viewingPin]);
+
   // Update Map pins based on saved locations
   useEffect(() => {
     if (!mapManager) return;

@@ -20,8 +20,12 @@ export const MyMDXComponents = {
   h2: ({ children }) => (
     <h2 className="pb-1 px-2 text-lg font-bold">{children}</h2>
   ),
-  li: ({ children }) => <li className="list-disc">{children}</li>,
-  ul: ({ children }) => <ul className="list-disc">{children}</ul>,
+  li: ({ children }) => (
+    <li className="pb-3 px-2 font-medium pl-5 list-disc">{children}</li>
+  ),
+  ul: ({ children }) => (
+    <ul className="pb-3 px-2 font-medium pl-5  list-disc">{children}</ul>
+  ),
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
   LOCItem: ({ image, linkOut, caption, alt, allowSave, type, children }) => {
     return (

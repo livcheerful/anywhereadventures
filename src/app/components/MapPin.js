@@ -37,6 +37,7 @@ export default function MapPin({
         }}
       >
         <button
+          aria-label="Close location details"
           onClick={() => {
             onCloseCB();
           }}
@@ -52,6 +53,7 @@ export default function MapPin({
         </button>
         <div className=" overflow-y-auto overflow-x-visible flex flex-col">
           <button
+            aria-label={`Open ${mdx.locationTitle} in reading pane`}
             className="w-full"
             onClick={(e) => {
               const article = document.querySelector(`#${mdx.slug}`);

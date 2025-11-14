@@ -196,6 +196,7 @@ export default function JournalNav({
           )}
         </button>
         <button
+          aria-label="Table of Contents"
           onClick={(e) => {
             setShowToc(!showToc);
             setShowSavedItems(false);
@@ -256,6 +257,7 @@ export default function JournalNav({
         <div className="sticky h-10 font-bold p-1 px-2 border-y-2 border-black flex flex-row justify-between items-center bg-lime-200 w-full text-black">
           <div className="text-md">SAVED ITEMS</div>
           <button
+            aria-label="Close saved items"
             className="w-4 h-4"
             onClick={() => {
               setShowSavedItems(false);

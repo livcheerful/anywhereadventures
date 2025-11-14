@@ -31,6 +31,7 @@ export default function WelcomeScreen({
   function NextButton() {
     return (
       <BaseButton
+        label={"Next"}
         classes={["bg-lime-300 grow-0 active:bg-lime-500"]}
         onClick={() => {
           if (index < screens.length - 1) {
@@ -59,6 +60,7 @@ export default function WelcomeScreen({
         : "bg-lime-300 active:bg-lime-500";
     return (
       <BaseButton
+        label={data.name}
         classes={[color]}
         onClick={() => {
           if (clickedLocation == mapKey) {
@@ -77,6 +79,7 @@ export default function WelcomeScreen({
     return (
       <div className="relative">
         <BaseButton
+          label={"Start"}
           classes={[
             "drop-shadow-2xl",
             "right-2",
@@ -91,7 +94,6 @@ export default function WelcomeScreen({
             const data = locationData[clickedLocation];
             setChosenLocation(data);
             setHomeLocation(data.name);
-            console.log("Set home location");
             setPaneOpen(false);
             mainMap.flyTo(data.center, data.zoom, false);
             onFinishWelcoming(data);
@@ -111,6 +113,7 @@ export default function WelcomeScreen({
       <div className="">
         <img
           className="w-full mb-4 border-b-2 border-black"
+          alt="1891 birds-eye-vview map of Seattle"
           src="/loc/triangle.jpg"
         ></img>
         <H1>Welcome to Anywhere Adventures!</H1>
@@ -131,6 +134,7 @@ export default function WelcomeScreen({
         <img
           className="shrink border-b-2 border-black"
           src="/illustrations/read.png"
+          alt="illustrated cartoon figure with empty speech bubble over a historic newspaper page"
         ></img>
         <div className="font-bold px-2">Read stories on the map</div>
         <div className="text-left px-2">
@@ -139,6 +143,7 @@ export default function WelcomeScreen({
         </div>
         <img
           src="/illustrations/visit.jpg"
+          alt="cartoon illustration of two people on a beach. One is posing for a photograph while the other snaps a picture on their phone."
           className="w-1/2 self-center border-2 border-black"
         />
         <div className="text-xs italic font-serif">
@@ -214,8 +219,8 @@ export default function WelcomeScreen({
     const src = locationData[clickedLocation]?.welcome?.stickers?.[which];
     const className =
       which == 0
-        ? "absolute left-0 top-0 h-1/4"
-        : "absolute right-0 bottom-0 h-1/4";
+        ? "absolute left-0 top-0 h-1/5"
+        : "absolute right-0 bottom-0 h-1/5";
 
     const animA = {
       rotation: -10,

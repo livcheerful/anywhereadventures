@@ -59,14 +59,14 @@ export const locationData = {
     id: "chicago",
     name: "Chicago",
     center: [-87.633226, 41.871438],
-    zoom: 13,
+    zoom: 11,
     locs: chicagoLocs,
     byCategory: chicagoByCategory,
     welcome: {
       thumbnail: "loc/sewy/wypack.png",
       stickers: [
-        "stickerpacks/sewy/bill.png",
-        "stickerpacks/sewy/grahamMarket.png",
+        "loc/chicago/greetingsFromChicago.jpg",
+        "loc/chicago/onLeong/eastElevation.png",
       ],
     },
   },
