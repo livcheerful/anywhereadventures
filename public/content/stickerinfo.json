@@ -14,6 +14,16 @@
         "location": "SEWY",
         "linkOut": "https://www.loc.gov/resource/gdcmassbookdig.laramiewyomingin00webs/?sp=1&r=-0.66,-0.082,2.32,1.643,0"
     },
+    "/stickerpacks/sewy/map.png": {
+        "title": "Railroad map highlighting Laramie's location",
+        "location": "SEWY",
+        "linkOut": "https://www.loc.gov/resource/gdcmassbookdig.albanycountywyo00wyom/?sp=20&st=image"
+    },
+    "/stickerpacks/sewy/up.png": {
+        "title": "Map of the Union Pacific Railway",
+        "location": "SEWY",
+        "linkOut": "https://www.loc.gov/resource/g3701p.rr005950/?r=0.322,0.256,0.095,0.066,0"
+    },
     "/stickerpacks/seattle/cranes.jpg": {
         "title": "The Port of Seattle cranes load freighters near Colman Ferry Terminal on Elliott Bay in the Seattle Harbor.",
         "location": "Seattle",
