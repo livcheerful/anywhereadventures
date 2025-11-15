@@ -181,11 +181,6 @@ export default function WelcomeScreen({
                 <LocationButton key={idx} mapKey={name} data={data}>
                   {data.name}
                 </LocationButton>
-                {data.name != "Seattle" && (
-                  <div className="absolute bg-orange-400 top-0 right-1/2 -rotate-6 text-sm drop-shadow-2xl flex flex-col px-4 py-1">
-                    <div className="font-bold">Under construction</div>
-                  </div>
-                )}
               </div>
             );
           })}
