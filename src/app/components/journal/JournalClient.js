@@ -102,7 +102,7 @@ export default function JournalClient({}) {
             </CornerTape>
           </div>,
           <div
-            className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 font-bold text-lg"
+            className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 font-bold text-lg text-black"
             key={2}
           >
             Wyoming
