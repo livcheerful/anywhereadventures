@@ -12,6 +12,7 @@ export default function LOCItem({
   allowSave,
   type,
   alt,
+  children,
 }) {
   const { addNotification } = useNotifications();
   const [showToast, setShowToast] = useState(false);
@@ -61,6 +62,7 @@ export default function LOCItem({
           )}
         </div>
       )}
+      <div className="italic font-serif text-sm p-2">{children}</div>
       {showToast && <Toast message="Saved to travel log" />}
     </div>
   );

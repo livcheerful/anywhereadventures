@@ -48,6 +48,7 @@ export const MyMDXComponents = {
         licenseLink={licenseLink}
         licenseText={licenseText}
         alt={alt}
+        children={children}
       />
     );
   },
