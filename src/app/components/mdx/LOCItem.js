@@ -7,6 +7,8 @@ export default function LOCItem({
   image,
   linkOut,
   caption,
+  licenseLink,
+  licenseText,
   allowSave,
   type,
   alt,
@@ -50,7 +52,14 @@ export default function LOCItem({
         )}
       </div>
       {caption && (
-        <div className="italic font-serif text-sm p-2">{caption}</div>
+        <div className="italic font-serif text-sm p-2">
+          {caption}{" "}
+          {licenseText && licenseLink && (
+            <a className="blue-500" href={licenseLink}>
+              {licenseText}
+            </a>
+          )}
+        </div>
       )}
       {showToast && <Toast message="Saved to travel log" />}
     </div>
