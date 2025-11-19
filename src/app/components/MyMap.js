@@ -100,11 +100,12 @@ function MapManager(map, router) {
       cb(markerInfo, marker);
     });
     marker.addTo(this.map);
-    addAccessibilityAttrs(el, marker, markerInfo, cb);
+    addAccessibilityAttrs(this, el, marker, markerInfo, cb);
     this.exploreMarkers.set(slug, marker);
   };
 
-  function addAccessibilityAttrs(el, pin, markerInfo, onClickFunc) {
+  function addAccessibilityAttrs(mapManager, el, pin, markerInfo, onClickFunc) {
+    console.log(mapManager);
     el.setAttribute(
       "aria-label",
       `${markerInfo.title}${
@@ -112,6 +113,13 @@ function MapManager(map, router) {
       }}`
     );
     el.setAttribute("role", "button");
+    el.addEventListener("focus", (e) => {
+      mapManager.flyTo(
+        [markerInfo.latlon[1], markerInfo.latlon[0]],
+        markerInfo.zoom,
+        false
+      );
+    });
     el.addEventListener("keydown", (e) => {
       if (e.code == "Enter") {
         onClickFunc(markerInfo, pin);
@@ -181,7 +189,7 @@ function MapManager(map, router) {
         const layer = pin.addTo(this.map);
         const el = pin.getElement();
 
-        addAccessibilityAttrs(el, pin, markerInfo, pinCb);
+        addAccessibilityAttrs(this, el, pin, markerInfo, pinCb);
         this.currentLayers.set(idx, layer);
       }
     }
@@ -245,7 +253,6 @@ export default function MyMap({
     if (mapManager) {
       mapManager.currentLayers.forEach((marker) => {
         const el = marker.getElement?.();
-        console.log(el);
         if (el) {
           el.tabIndex = viewingPin ? -1 : 0;
         }
