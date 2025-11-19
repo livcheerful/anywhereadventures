@@ -381,96 +381,101 @@ export default function ContentPane({
         </div>
       </FocusLock>
       {showClearWarning && (
-        <div className="fixed bg-white/90 w-full h-full flex flex-col items-center justify-center z-50 p-4 text-black">
-          <div className="bg-white flex flex-col gap-2 w-4/5 p-3 border-2 border-gray-800 ">
-            <div className="font-bold text-center text-xl pb-2">
-              Are you sure you want to clear all your data?
-            </div>
-            <div>
-              This action cannot be undone. All your saved visits and archive
-              items will be deleted.
-            </div>
-            <div className="flex flex-row gap-2 w-full">
-              <button
-                className="bg-red-600 active:bg-red-700 font-bold text-white py-1 px-2 grow border-2 border-gray-800 rounded-lg"
-                onClick={() => {
-                  clearAll();
-                  setShowingMenu(false);
-                  setShowingWelcomeScreen(true);
-                  setShowClearWarning(false);
-                  updateRoute(`/`);
-                }}
-              >
-                Yes, delete
-              </button>
-              <button
-                onClick={() => {
-                  setShowClearWarning(false);
-                }}
-                className="bg-white active:bg-lime-100 font-bold grow py-1 px-2 border-2 border-gray-400 rounded-lg"
-              >
-                No, take me back
-              </button>
+        <FocusLock returnFocus>
+          <div className="fixed bg-white/90 w-full h-full flex flex-col items-center justify-center z-50 p-4 text-black">
+            <div className="bg-white flex flex-col gap-2 w-4/5 p-3 border-2 border-gray-800 ">
+              <div className="font-bold text-center text-xl pb-2">
+                Are you sure you want to clear all your data?
+              </div>
+              <div>
+                This action cannot be undone. All your saved visits and archive
+                items will be deleted.
+              </div>
+              <div className="flex flex-row gap-2 w-full">
+                <button
+                  className="bg-red-600 active:bg-red-700 font-bold text-white py-1 px-2 grow border-2 border-gray-800 rounded-lg"
+                  onClick={() => {
+                    clearAll();
+                    setShowingMenu(false);
+                    setShowingWelcomeScreen(true);
+                    setShowClearWarning(false);
+                    updateRoute(`/`);
+                  }}
+                >
+                  Yes, delete
+                </button>
+                <button
+                  onClick={() => {
+                    setShowClearWarning(false);
+                  }}
+                  className="bg-white active:bg-lime-100 font-bold grow py-1 px-2 border-2 border-gray-400 rounded-lg"
+                >
+                  No, take me back
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </FocusLock>
       )}
       <div className="h-full w-full">
-        <div className="w-full text-2xl font-bold fixed z-40">
-          {contentArray && (
-            <ContentToolBar
-              setShowLoadingTransition={setShowLoadingTransition}
-              post={contentArray[contentIndex]}
-              paneOpen={paneOpen}
+        <FocusLock disabled={!paneOpen} className="h-full w-full">
+          <div className="w-full text-2xl font-bold fixed z-40">
+            {contentArray && (
+              <ContentToolBar
+                setShowLoadingTransition={setShowLoadingTransition}
+                post={contentArray[contentIndex]}
+                paneOpen={paneOpen}
+                setPaneOpen={setPaneOpen}
+                showingMenu={showingMenu}
+                setShowingMenu={setShowingMenu}
+              />
+            )}
+          </div>
+          <div
+            aria-disabled={!paneOpen}
+            inert={!paneOpen}
+            className={`w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10`}
+            style={{ paddingTop: "0rem" }}
+            id="content-pane"
+            ref={contentPaneRef}
+            onDrag={(e) => {
+              e.preventDefault();
+              setPaneOpen(true);
+            }}
+            onClick={() => {
+              setPaneOpen(true);
+            }}
+            onTouchStart={(e) => {
+              startY.current = e.touches[0].clientY;
+              isAtTop.current = contentPaneRef.current.scrollTop === 0;
+            }}
+            onTouchMove={(e) => {
+              const currentY = e.touches[0].clientY;
+              const deltaY = currentY - startY.current;
+              if (deltaY > 30) {
+                if (isAtTop.current && deltaY > 10) setPaneOpen(false);
+              }
+            }}
+          >
+            <SingleStoryPage
+              currentSlug={currentSlug}
+              setCurrentSlug={setCurrentSlug}
+              entranceSlug={entranceSlug}
               setPaneOpen={setPaneOpen}
-              showingMenu={showingMenu}
-              setShowingMenu={setShowingMenu}
+              paneOpen={paneOpen}
+              contentPaneRef={contentPaneRef}
+              contentIndex={contentIndex}
+              contentArray={contentArray}
+              setContentIndex={setContentIndex}
+              setViewingPin={setViewingPin}
+              mainMap={mainMap}
+              setToastMessage={setToastMessage}
+              homeLocationData={homeLocationData}
             />
-          )}
-        </div>
-        <div
-          aria-disabled={!paneOpen}
-          className={`w-full h-full  overflow-x-hidden overflow-y-auto flex flex-col z-10`}
-          style={{ paddingTop: "0rem" }}
-          id="content-pane"
-          ref={contentPaneRef}
-          onDrag={(e) => {
-            e.preventDefault();
-            setPaneOpen(true);
-          }}
-          onClick={() => {
-            setPaneOpen(true);
-          }}
-          onTouchStart={(e) => {
-            startY.current = e.touches[0].clientY;
-            isAtTop.current = contentPaneRef.current.scrollTop === 0;
-          }}
-          onTouchMove={(e) => {
-            const currentY = e.touches[0].clientY;
-            const deltaY = currentY - startY.current;
-            if (deltaY > 30) {
-              if (isAtTop.current && deltaY > 10) setPaneOpen(false);
-            }
-          }}
-        >
-          <SingleStoryPage
-            currentSlug={currentSlug}
-            setCurrentSlug={setCurrentSlug}
-            entranceSlug={entranceSlug}
-            setPaneOpen={setPaneOpen}
-            paneOpen={paneOpen}
-            contentPaneRef={contentPaneRef}
-            contentIndex={contentIndex}
-            contentArray={contentArray}
-            setContentIndex={setContentIndex}
-            setViewingPin={setViewingPin}
-            mainMap={mainMap}
-            setToastMessage={setToastMessage}
-            homeLocationData={homeLocationData}
-          />
-          {toastMessage && <Toast message={toastMessage} />}
-          <Footer />
-        </div>
+            {toastMessage && <Toast message={toastMessage} />}
+            <Footer />
+          </div>
+        </FocusLock>
       </div>
     </div>
   );
