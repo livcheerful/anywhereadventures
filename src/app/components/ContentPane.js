@@ -44,6 +44,7 @@ export default function ContentPane({
   const [homeLocationData, setHomeLocationData] = useState(undefined);
 
   const menuRef = useRef();
+  const menuHeaderRef = useRef();
   const menuAnimRef = useRef();
   const startY = useRef();
   const isAtTop = useRef();
@@ -142,12 +143,26 @@ export default function ContentPane({
       if (showingMenu) {
         menuRef.current.style.visibility = "visible";
         menuRef.current.style.transform = "translateY(0%)";
+
+        menuHeaderRef.current.focus();
       } else {
         menuRef.current.style.visibility = "hidden";
         menuRef.current.style.transform = "translateY(-100%)";
       }
     } else {
       showMenuAnim(showingMenu);
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
+        setShowingMenu(!showingMenu);
+      }
+    }
+
+    if (showingMenu) {
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("keydown", handleKeyDown);
     }
   }, [showingMenu]);
 
@@ -170,6 +185,9 @@ export default function ContentPane({
         ease: "power2.out",
         onReverseComplete: () => {
           menuRef.current.style.visibility = "hidden";
+        },
+        onComplete: () => {
+          menuHeaderRef.current.focus();
         },
         onStart: () => {
           menuRef.current.style.visibility = "visible";
@@ -223,7 +241,13 @@ export default function ContentPane({
       >
         <div className="bg-white flex flex-col justify-between h-full gap-8 text-black font-bold overflow-y-auto">
           <div className="flex flex-col pb-3">
-            <div className="w-full text-center text-lg">Menu</div>
+            <div
+              ref={menuHeaderRef}
+              tabIndex={-1}
+              className="w-full text-center text-lg"
+            >
+              Menu
+            </div>
             <hr></hr>
             <div>
               <div className=" bg-lime-100 px-2 pt-3">Settings</div>
