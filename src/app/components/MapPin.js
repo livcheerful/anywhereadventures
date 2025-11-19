@@ -11,6 +11,19 @@ export default function MapPin({
   onCloseCB,
 }) {
   const visited = hasLocationBeenVisited(mdx.slug);
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
+        onCloseCB();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <div className="absolute w-full flex flex-col items-center justify-start z-10 left-0 top-4 h-lg:top-32 h-full overflow-visible">
       <div
