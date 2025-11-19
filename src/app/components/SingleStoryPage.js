@@ -143,7 +143,6 @@ export default function SingleStoryPage({
   function goToNext() {
     hasNext && setContentIndex(contentIndex + 1);
   }
-  console.log("hi");
 
   return (
     <div
