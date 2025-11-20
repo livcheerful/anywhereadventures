@@ -27,7 +27,17 @@ export const MyMDXComponents = {
     <ul className="pb-3 px-2 font-medium pl-5  list-disc">{children}</ul>
   ),
   p: ({ children }) => <div className="pb-3 px-2 font-medium ">{children}</div>,
-  LOCItem: ({ image, linkOut, caption, alt, allowSave, type, children }) => {
+  LOCItem: ({
+    image,
+    linkOut,
+    caption,
+    alt,
+    allowSave,
+    type,
+    licenseText,
+    licenseLink,
+    children,
+  }) => {
     return (
       <LOCItem
         allowSave={allowSave != undefined ? allowSave : true}
@@ -35,7 +45,10 @@ export const MyMDXComponents = {
         linkOut={linkOut}
         caption={caption}
         type={type}
+        licenseLink={licenseLink}
+        licenseText={licenseText}
         alt={alt}
+        children={children}
       />
     );
   },
