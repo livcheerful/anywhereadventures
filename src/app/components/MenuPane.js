@@ -217,6 +217,7 @@ export default function MenuPane({
                 </div>
               </div>
             </div>
+
             <button
               className="p-2 m-2 bg-red-600 active:bg-red-700 text-white rounded-lg border-2 border-gray-800"
               onClick={() => {
@@ -225,6 +226,9 @@ export default function MenuPane({
             >
               <div>Clear all data</div>
             </button>
+            <div className="font-mono text-gray-400 text-xs font-light p-1 self-end">
+              VERSION 0.0.1
+            </div>
           </div>
         </div>
       </div>
