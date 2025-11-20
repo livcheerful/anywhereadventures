@@ -34,15 +34,18 @@ export default function LOCItem({
       <img src={image} id={`lcitem-${image}`} alt={alt} />
       <div className="absolute right-2 top-0 flex flex-row gap-2">
         {linkOut && (
-          <a href={linkOut} target="_blank" rel="noopener noreferrer">
-            <button className="h-full relative cursor-pointer font-mono bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg text-sm">
-              source
-            </button>
+          <a
+            href={linkOut}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-full relative !text-white visited:text-white cursor-pointer font-mono bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold underline decoration-white rounded-b-lg text-sm"
+          >
+            source
           </a>
         )}
         {allowSave && (
           <button
-            className="font-bold cursor-pointer relative bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl text-white rounded-b-lg h-fit"
+            className="font-bold cursor-pointer relative bg-emerald-700 active:bg-emerald-800 p-1 px-2 -top-1 drop-shadow-2xl text-white rounded-b-lg h-fit"
             onClick={handleSave}
           >
             save

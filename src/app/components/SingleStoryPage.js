@@ -143,7 +143,6 @@ export default function SingleStoryPage({
   function goToNext() {
     hasNext && setContentIndex(contentIndex + 1);
   }
-  console.log("hi");
 
   return (
     <div
@@ -151,6 +150,7 @@ export default function SingleStoryPage({
       className="article snap-mandatory snap-y"
       id={slug}
       articleslug={slug}
+      inert={!paneOpen}
     >
       <StickyHeader
         post={post}

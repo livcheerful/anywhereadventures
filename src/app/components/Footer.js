@@ -1,6 +1,9 @@
-export default function Footer() {
+export default function Footer({ paneOpen }) {
   return (
-    <div className="relative w-full flex flex-col bg-green-900 text-white font-light gap-2 p-2 border-black border-t-2 ">
+    <div
+      inert={!paneOpen}
+      className="relative w-full flex flex-col bg-green-900 text-white font-light gap-2 p-2 border-black border-t-2 "
+    >
       <div className="flex flex-row justify-between w-full h-auto">
         <div className="w-1/3">
           <a href="https://loc.gov/" target="_blank" rel="noopener noreferrer">
