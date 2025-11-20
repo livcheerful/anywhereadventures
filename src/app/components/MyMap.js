@@ -105,7 +105,6 @@ function MapManager(map, router) {
   };
 
   function addAccessibilityAttrs(mapManager, el, pin, markerInfo, onClickFunc) {
-    console.log(mapManager);
     el.setAttribute(
       "aria-label",
       `${markerInfo.title}${

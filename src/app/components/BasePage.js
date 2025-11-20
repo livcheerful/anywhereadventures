@@ -61,7 +61,10 @@ export default function BasePage({ entranceSlug }) {
   }, []);
 
   useEffect(() => {
-    if (savedLocation && !chosenLocation) {
+    if (
+      savedLocation &&
+      (!chosenLocation || chosenLocation == locationData.all)
+    ) {
       const locObj = savedLocationToObj(savedLocation);
       setChosenLocation(locObj);
       mainMap?.flyTo(locObj.center, locObj.zoom);
