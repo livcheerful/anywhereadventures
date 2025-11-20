@@ -150,6 +150,7 @@ export default function SingleStoryPage({
       className="article snap-mandatory snap-y"
       id={slug}
       articleslug={slug}
+      inert={!paneOpen}
     >
       <StickyHeader
         post={post}
