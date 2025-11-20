@@ -227,7 +227,7 @@ export default function MenuPane({
               <div>Clear all data</div>
             </button>
             <div className="font-mono text-gray-400 text-xs font-light p-1 self-end">
-              VERSION 0.0.1
+              VERSION 0.0.2
             </div>
           </div>
         </div>

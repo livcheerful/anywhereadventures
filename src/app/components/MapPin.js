@@ -39,11 +39,6 @@ export default function MapPin({
               "linear-gradient(to bottom, black 50%, transparent 100%)",
           }}
         ></div>
-        {visited ? (
-          <PinJournal page={getPage(mdx.slug)} slug={mdx.slug} />
-        ) : (
-          <PinCamera mdx={mdx} />
-        )}
         <div
           className="absolute flex flex-col w-11/12 md:w-4/5 h-fit  bg-white drop-shadow-2xl border-2 border-gray-900  overflow-visible"
           style={{ maxHeight: "66%" }}
