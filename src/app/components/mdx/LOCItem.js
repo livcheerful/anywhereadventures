@@ -38,7 +38,7 @@ export default function LOCItem({
             href={linkOut}
             target="_blank"
             rel="noopener noreferrer"
-            className="h-full relative visited:text-white cursor-pointer font-mono bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold text-white underline decoration-white rounded-b-lg text-sm"
+            className="h-full relative !text-white visited:text-white cursor-pointer font-mono bg-emerald-700 active:bg-emerald-800 p-2 -top-1 drop-shadow-2xl font-bold underline decoration-white rounded-b-lg text-sm"
           >
             source
           </a>
