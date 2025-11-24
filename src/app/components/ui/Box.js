@@ -1,3 +1,4 @@
+import FocusLock from "react-focus-lock";
 export default function Box({
   children,
   className,
@@ -11,15 +12,17 @@ export default function Box({
     outerClassNames += " pointer-events-none";
   }
   return (
-    <div className={outerClassNames}>
-      <div
-        className={`relative border-2 border-black text-center text-gray-800 overflow-y-auto ${className}`}
-        style={{
-          boxShadow: "5px 5px black",
-        }}
-      >
-        {children}
+    <FocusLock>
+      <div className={outerClassNames}>
+        <div
+          className={`relative border-2 border-black text-center text-gray-800 overflow-y-auto ${className}`}
+          style={{
+            boxShadow: "5px 5px black",
+          }}
+        >
+          {children}
+        </div>
       </div>
-    </div>
+    </FocusLock>
   );
 }
