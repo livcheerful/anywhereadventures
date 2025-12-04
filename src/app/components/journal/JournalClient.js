@@ -69,6 +69,26 @@ export default function JournalClient({}) {
 
   function addHomeLocationStickers() {
     switch (homeLoc) {
+      case "Chicago":
+        return [
+          <div
+            className="rotate-3 w-48 h-fit bottom-20 absolute left-3"
+            key={1}
+          >
+            <CornerTape directions={{ nw: true, se: true }}>
+              <img src="/loc/chicago/lincolnPark.png" />
+            </CornerTape>
+          </div>,
+          <div
+            className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 text-black font-bold"
+            key={2}
+          >
+            Chicago
+          </div>,
+          <div className="-rotate-6 w-48 h-fit top-10 absolute left-0" key={3}>
+            <img src="/loc/chicago/ashland/rockisland.png" />
+          </div>,
+        ];
       case "Seattle":
         return [
           <div
