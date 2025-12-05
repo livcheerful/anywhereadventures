@@ -239,13 +239,13 @@ export default function WelcomeScreen({
 
   return (
     <div className="w-full h-full absolute top-0 left-0 bg-white/40 z-30">
-      {screens[index]}
       {clickedLocation && (
         <>
           <Sticker which={0} />
           <Sticker which={1} />
         </>
       )}
+      {screens[index]}
     </div>
   );
 }

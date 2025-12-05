@@ -29,6 +29,12 @@
         "location": "SEWY",
         "linkOut": "https://www.loc.gov/resource/g3701p.rr005950/?r=0.322,0.256,0.095,0.066,0"
     },
+    "/loc/sewy/misc/cheyennestamp.png": {
+        "location": "SEWY"
+    },
+    "/loc/sewy/misc/laramiestamp.png": {
+        "location": "SEWY"
+    },
     "/stickerpacks/seattle/cranes.jpg": {
         "title": "The Port of Seattle cranes load freighters near Colman Ferry Terminal on Elliott Bay in the Seattle Harbor.",
         "location": "Seattle",
@@ -84,5 +90,8 @@
         "location": "Chicago",
         "title": "Stamp square from postcard",
         "linkOut": "https://www.loc.gov/resource/pcrd.2a03991/"
+    },
+    "/loc/chicago/generalstamp.png": {
+        "location": "Chicago"
     }
 }
