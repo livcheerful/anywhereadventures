@@ -22,7 +22,7 @@
     "interactjs": "^1.10.27",
     "maplibre-gl": "^4.7.1",
     "marked": "^15.0.3",
-    "next": "15.1.7",
+    "next": "15.1.9",
     "next-mdx-remote-client": "^2.0.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
