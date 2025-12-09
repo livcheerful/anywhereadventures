@@ -157,44 +157,45 @@ export default function MenuPane({
             </div>
             <div className="flex flex-col gap-4">
               <div className="px-2">
-                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm  font-normal">
-                  <h1 className="py-2 font-bold">
-                    Share your adventures online
-                  </h1>
+                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm font-normal">
+                  <h1 className=" py-2 font-bold">Try doing research</h1>
                   <hr className="w-full border-lime-300 pb-2"></hr>
                   <div>
-                    Share the travel log entries you've created by posting them
-                    online and tagging the{" "}
+                    Want to find some cool items in the Library of Congress for
+                    yourself?{" "}
                     <a
-                      className="underline font-light pt-2"
-                      href="https://www.instagram.com/librarycongress/"
+                      className="underline"
+                      href="https://www.loc.gov/collections/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Library of Congress
-                    </a>
-                    .
+                      The library has a lot of items online,
+                    </a>{" "}
+                    and you can use this research guide to help.
                   </div>
-                </div>
-              </div>
-              <div className="px-2">
-                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm font-normal">
-                  <h1 className=" py-2 font-bold">Get in touch</h1>
-                  <hr className="w-full border-lime-300 pb-2"></hr>
-                  <div>
-                    Have something you want to share? Have a note about one of
-                    the stories? Send us a message! Email Vivian at{" "}
-                    <a
-                      className="underline font-light pt-2"
-                      href="mailto:vli@loc.gov"
-                    >
-                      vli@loc.gov
-                    </a>
-                    .
-                  </div>
+                  <a
+                    className="underline font-light pt-2"
+                    href="/researchGuide.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open guide
+                  </a>
                 </div>
               </div>
 
+              <div className="px-2">
+                <div className=" bg-white border-lime-300 p-2  rounded-lg border-2 flex flex-col items-center drop-shadow-sm  font-normal">
+                  <h1 className="py-2 font-bold">
+                    Have a story you want to share?
+                  </h1>
+                  <hr className="w-full border-lime-300 pb-2"></hr>
+                  <div>
+                    Share items you've found or travel log entries you created
+                    online and tag the Library of Congress.
+                  </div>
+                </div>
+              </div>
               <div className="px-2">
                 <div className="bg-lime-300 p-2  rounded-lg border-2 border-gray-800 flex flex-col items-center drop-shadow-sm">
                   <h1 className="text-2xl py-3 font-bold text-black">
@@ -207,7 +208,7 @@ export default function MenuPane({
                   </div>
                   <a
                     className="underline font-light pt-2"
-                    href="https://blogs.loc.gov/thesignal/?p=35873&preview=true"
+                    href="https://blogs.loc.gov/thesignal/2025/07/anywhere-adventures-is-live/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
