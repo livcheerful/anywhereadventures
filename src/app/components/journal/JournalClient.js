@@ -114,12 +114,15 @@ export default function JournalClient({}) {
       case "Southeast Wyoming":
         return [
           <div className="absolute left-3 bottom-1/3" key={1}>
-            <CornerTape>
+            <CornerTape directions={{ nw: true, se: true }}>
               <img
                 className="w-56 h-auto rotate-2 drop-shadow-2xl text-black"
                 src="/loc/sewy/wypack.png"
               />
             </CornerTape>
+          </div>,
+          <div className="-rotate-6 w-48 h-fit top-10 absolute right-0" key={3}>
+            <img src="/loc/sewy/lightplant/sanborn.png" />
           </div>,
           <div
             className="bg-yellow-300 p-2 px-8 absolute -rotate-12 right-7 bottom-1/3 font-bold text-lg text-black"
