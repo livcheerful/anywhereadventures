@@ -22,7 +22,7 @@ function createDownloadableImage(dataUrl, filename) {
   const blob = new Blob([ab], { type: mimeString });
   const blobUrl = URL.createObjectURL(blob);
 
-  return { blob, blobUrl, filename };
+  return { blobUrl, filename };
 }
 
 function ScrapbookDeskItem(htmlElem, rotation, x0, y0) {
@@ -59,7 +59,7 @@ export default function ScrapbookDeskPage({
   const [showToast, setShowToast] = useState(false);
   const [pageHeight, setPageHeight] = useState(100);
   const { addNotification } = useNotifications();
-  const { blob, blobUrl, filename } = createDownloadableImage(
+  const { blobUrl, filename } = createDownloadableImage(
     collageImage,
     `anywhere-adventures-${locationId}.png`
   );
@@ -83,9 +83,9 @@ export default function ScrapbookDeskPage({
         right: 10,
         onComplete: () => {
           // Show toast and add notification in context
-          setShowToast("Travel log saved");
+          setShowToast(true);
           addNotification("entry", locationId, { id: locationId });
-          setTimeout(() => setShowToast(undefined), 1500);
+          setTimeout(() => setShowToast(false), 1500);
           clearPhotoReel();
         },
       }
@@ -129,7 +129,7 @@ export default function ScrapbookDeskPage({
         backgroundSize: "cover",
       }}
     >
-      {showToast && <Toast message={showToast} />}
+      {showToast && <Toast message="Travel log saved" />}
 
       <button onClick={() => setShowSummaryPage(false)}>
         <div className="fixed z-[100] left-0 top-4 py-1 px-3 text-center text-black bg-amber-300 border-t-2 border-r-2 border-b-2 border-black h-fit font-bold font-mono drop-shadow-lg">
@@ -139,7 +139,7 @@ export default function ScrapbookDeskPage({
 
       <StickyNote
         className="-rotate-6 w-32 h-32 flex flex-col gap-2 select-none"
-        position={{ left: 4, top: 50 }}
+        position={{ left: 0, top: 40 }}
       >
         <div className="font-bold uppercase leading-tight">
           Your Travel Log Entry
@@ -148,51 +148,13 @@ export default function ScrapbookDeskPage({
           style={{ fontSize: "10px" }}
           className="visible md:hidden font-light leading-tight italic"
         >
-          Tap and hold the image to save to your phone.
+          Tap and hold the image to save to your phone
         </div>
         <div className="hidden md:block text-sm">
           <a href={blobUrl} download={filename} className="underline">
             Download
           </a>
         </div>
-        <button
-          style={{ border: "1px solid" }}
-          className=" border-gray-800 text-xs rounded-md w-full px-2 py-1 align-self-center"
-          aria-label="Copy travel log entry to clipboard"
-          onClick={async () => {
-            async function convertImageUrlToPngBlob(url) {
-              const img = await new Promise((resolve, reject) => {
-                const i = new Image();
-                i.onload = () => resolve(i);
-                i.onerror = reject;
-                i.src = url;
-              });
-
-              const canvas = document.createElement("canvas");
-              canvas.width = img.width;
-              canvas.height = img.height;
-              const ctx = canvas.getContext("2d");
-              ctx.drawImage(img, 0, 0);
-
-              return new Promise((resolve) =>
-                canvas.toBlob(resolve, "image/png")
-              );
-            }
-
-            setShowToast("Copied to clipboard");
-            setTimeout(() => setShowToast(undefined), 1500);
-
-            const pngBlob = await convertImageUrlToPngBlob(blobUrl);
-
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                "image/png": pngBlob,
-              }),
-            ]);
-          }}
-        >
-          Copy Image
-        </button>
       </StickyNote>
       <img
         src={blobUrl}
