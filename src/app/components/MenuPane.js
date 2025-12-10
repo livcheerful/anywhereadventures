@@ -186,9 +186,9 @@ export default function MenuPane({
                     the stories? Send us a message! Email Vivian at{" "}
                     <a
                       className="underline font-light pt-2"
-                      href="mailto:vli@loc.gov"
+                      href="mailto:lc-labs@loc.gov"
                     >
-                      vli@loc.gov
+                      lc-labs@loc.gov
                     </a>
                     .
                   </div>
