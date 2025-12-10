@@ -56,7 +56,7 @@ export default function Footer({ paneOpen }) {
         >
           Library of Congress
         </a>{" "}
-        and the Library of Congress's Labs team.
+        and the LC Labs team.
       </div>
     </div>
   );
