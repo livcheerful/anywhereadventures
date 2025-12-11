@@ -32,11 +32,6 @@ const backgroundOptions = [
     src: "/loc/sba-journal-blank.jpg",
     snippet: "/loc/sba-journal-blank.jpg",
   },
-  {
-    type: "image",
-    src: "/magazineBack.png",
-    snippet: "/magazineBacksnippet.png",
-  },
   { type: "color", hex: "#ffffff" },
   { type: "color", hex: "#F5EB7E" },
   { type: "color", hex: "#E8D7F1" },
