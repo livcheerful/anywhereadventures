@@ -338,7 +338,7 @@ export default function JournalClient({}) {
       <Suspense>
         <SearchParamHandler paramsToFetch={["id"]} cb={handleSearchParams} />
       </Suspense>
-      <div>
+      <div aria-disabled={showIntro}>
         <div
           id="journal-holder"
           className="flex flex-row snap-x snap-mandatory overflow-x-auto pb-20 gap-4"
