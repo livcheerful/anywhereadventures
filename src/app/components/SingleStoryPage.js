@@ -54,8 +54,7 @@ export default function SingleStoryPage({
   paneOpen,
   setPaneOpen,
   contentIndex,
-  setContentIndex,
-  setContentSlug,
+  setCurrentSlug,
   mainMap,
   setToastMessage,
   homeLocationData,
@@ -138,10 +137,16 @@ export default function SingleStoryPage({
   const hasNext = contentIndex < contentArray.length - 1;
 
   function goToPrevious() {
-    hasPrevious && setContentIndex(contentIndex - 1);
+    if (hasPrevious) {
+      const locationInfo = homeLocationData.locs[contentIndex - 1];
+      setCurrentSlug(locationInfo.slug);
+    }
   }
   function goToNext() {
-    hasNext && setContentIndex(contentIndex + 1);
+    if (hasNext) {
+      const locationInfo = homeLocationData.locs[contentIndex + 1];
+      setCurrentSlug(locationInfo.slug);
+    }
   }
 
   return (
