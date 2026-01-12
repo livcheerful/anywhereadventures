@@ -6,9 +6,14 @@ import { setHomeLocation } from "../lib/storageHelpers";
 import Box from "./ui/Box";
 import BaseButton from "./ui/BaseButton";
 
-function H1({ children }) {
+function H1({ children, headingRef }) {
   return (
-    <h1 id="dialogTitle" className="font-bold text-2xl">
+    <h1
+      id="dialogTitle"
+      headingRef={headingRef}
+      tabIndex={-1}
+      className="font-bold text-2xl"
+    >
       {children}
     </h1>
   );
@@ -23,6 +28,7 @@ export default function WelcomeScreen({
 }) {
   const [index, setIndex] = useState(startIndex);
   const [clickedLocation, setClickedLocation] = useState();
+  const headingRef = useRef(null);
 
   useEffect(() => {
     mainMap.flyTo(
@@ -31,6 +37,12 @@ export default function WelcomeScreen({
       false
     );
   }, []);
+
+  useEffect(() => {
+    if (headingRef.current) {
+      headingRef.current.focus();
+    }
+  }, [index]);
 
   function NextButton() {
     return (
@@ -120,7 +132,7 @@ export default function WelcomeScreen({
           alt="1891 birds-eye-vview map of Seattle"
           src="/loc/triangle.jpg"
         ></img>
-        <H1>Welcome to Anywhere Adventures!</H1>
+        <H1 headingRef={headingRef}>Welcome to Anywhere Adventures!</H1>
         <p className="p-2 text-left">
           Learn local history through stories from the Library of Congress's and
           other digital collections.
@@ -140,7 +152,7 @@ export default function WelcomeScreen({
           src="/illustrations/read.png"
           alt="illustrated cartoon figure with empty speech bubble over a historic newspaper page"
         ></img>
-        <H1>Read stories on the map</H1>
+        <H1 headingRef={headingRef}>Read stories on the map</H1>
         <div className="text-left px-2">
           Read stories to learn history where it happened through archive items.
           Then visit those locations in person.
@@ -173,7 +185,9 @@ export default function WelcomeScreen({
     >
       <div className="flex flex-col justify-center gap-3 h-full">
         <div className="italic text-sm font-serif">First, you have to...</div>
-        <H1 className="pb-3 font-black">Choose your location</H1>
+        <H1 headingRef={headingRef} className="pb-3 font-black">
+          Choose your location
+        </H1>
         <div className="flex flex-col  gap-3 w-full">
           {Object.keys(locationData).map((name, idx) => {
             if (name === "all") {
