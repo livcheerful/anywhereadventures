@@ -14,9 +14,9 @@ export default function Box({
   return (
     <FocusLock>
       <div
-        role="dialog"
-        aria-labelledby="dialogTitle"
-        aria-modal="true"
+        role={isModal ? "dialog" : ""}
+        aria-labelledby={isModal ? "dialogTitle" : ""}
+        aria-modal={isModal ? "true" : ""}
         className={outerClassNames}
       >
         <div
