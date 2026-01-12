@@ -145,7 +145,9 @@ export default function JournalClient({}) {
           className="border-b-2 border-gray-800"
         />
         <div className="p-2">
-          <h1 className="font-bold text-lg">This is your travel log</h1>
+          <h1 className="font-bold text-lg" id="dialogTitle">
+            This is your travel log
+          </h1>
           <div>
             As you visit story locations, collect photos and create entries for
             your visits.
@@ -176,7 +178,7 @@ export default function JournalClient({}) {
           alt="animated image of a finger swiping a travel log page"
         />
         <div className="p-2">
-          <h1 className="font-bold text-lg">
+          <h1 id="dialogTitle" className="font-bold text-lg">
             See where you haven't visited yet
           </h1>
           <div>
@@ -210,7 +212,9 @@ export default function JournalClient({}) {
           alt="illustration of a book mostly closed lying on its spine. many archive items are flying into it"
         />
         <div className="p-2">
-          <h1 className="font-bold text-lg">Save archive items for later</h1>
+          <h1 id="dialogTitle" className="font-bold text-lg">
+            Save archive items for later
+          </h1>
           <div>
             You can also see all your saved archives items here for easy
             reference later. You can also use them in your entries as stickers.
@@ -338,7 +342,7 @@ export default function JournalClient({}) {
       <Suspense>
         <SearchParamHandler paramsToFetch={["id"]} cb={handleSearchParams} />
       </Suspense>
-      <div>
+      <div aria-disabled={showIntro}>
         <div
           id="journal-holder"
           className="flex flex-row snap-x snap-mandatory overflow-x-auto pb-20 gap-4"

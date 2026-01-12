@@ -54,8 +54,7 @@ export default function SingleStoryPage({
   paneOpen,
   setPaneOpen,
   contentIndex,
-  setContentIndex,
-  setContentSlug,
+  setCurrentSlug,
   mainMap,
   setToastMessage,
   homeLocationData,
@@ -97,6 +96,7 @@ export default function SingleStoryPage({
           <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
             <div className="relative p-2 w-full h-fit z-10">
               <Box
+                isModal={false}
                 float={true}
                 className="bg-yellow-200 gap-2 flex flex-col p-2"
               >
@@ -138,10 +138,16 @@ export default function SingleStoryPage({
   const hasNext = contentIndex < contentArray.length - 1;
 
   function goToPrevious() {
-    hasPrevious && setContentIndex(contentIndex - 1);
+    if (hasPrevious) {
+      const locationInfo = homeLocationData.locs[contentIndex - 1];
+      setCurrentSlug(locationInfo.slug);
+    }
   }
   function goToNext() {
-    hasNext && setContentIndex(contentIndex + 1);
+    if (hasNext) {
+      const locationInfo = homeLocationData.locs[contentIndex + 1];
+      setCurrentSlug(locationInfo.slug);
+    }
   }
 
   return (

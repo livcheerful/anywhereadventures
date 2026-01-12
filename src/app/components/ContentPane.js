@@ -81,11 +81,24 @@ export default function ContentPane({
   function handleRouteAndSlugs(loc) {
     const newSlug = loc.slug;
     updateRoute(`/${loc.location[0].toLowerCase()}/${newSlug}`);
-    setCurrentSlug(newSlug);
     setViewingPin(undefined);
+
+    const fireVirtualPageView = () => {
+      const s = window.s;
+      if (!s || typeof s.t !== "function") return;
+
+      s.pageName = `Story:${newSlug}`;
+      s.pageURL = window.location.href;
+
+      s.prop1 = newSlug;
+      s.eVar1 = newSlug;
+
+      s.t();
+    };
 
     // Update slug
     contentPaneRef.current?.scroll({ top: 0, behavior: "smooth" });
+    fireVirtualPageView();
   }
 
   useEffect(() => {
@@ -226,7 +239,6 @@ export default function ContentPane({
               contentPaneRef={contentPaneRef}
               contentIndex={contentIndex}
               contentArray={contentArray}
-              setContentIndex={setContentIndex}
               setViewingPin={setViewingPin}
               mainMap={mainMap}
               setToastMessage={setToastMessage}

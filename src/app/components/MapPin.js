@@ -117,17 +117,17 @@ export default function MapPin({
                 </button>
               </div>
               <div className="w-full h-full relative pt-2 bg-amber-300">
-                <PhotoPrompt
-                  mdx={mdx}
-                  visited={visited}
-                  setShowLoadingTransition={setShowLoadingTransition}
-                />
                 <div className=" absolute -top-3 left-0 flex flex-row ">
                   <div className="h-fit absolute top-1 left-0 pr-5 pl-4 text-yellow-800 font-bold text-nowrap bg-amber-100 text-sm  flex flex-row gap-2">
                     <div className="">2:</div>
                     <div className="font-black">VISIT</div>
                   </div>
                 </div>
+                <PhotoPrompt
+                  mdx={mdx}
+                  visited={visited}
+                  setShowLoadingTransition={setShowLoadingTransition}
+                />
               </div>
             </div>
           </div>

@@ -12,8 +12,13 @@ export default function Box({
     outerClassNames += " pointer-events-none";
   }
   return (
-    <FocusLock>
-      <div className={outerClassNames}>
+    <FocusLock autoFocus={false} returnFocus={false}>
+      <div
+        role={isModal ? "dialog" : ""}
+        aria-labelledby={isModal ? "dialog-heading" : ""}
+        aria-modal={isModal ? "true" : ""}
+        className={outerClassNames}
+      >
         <div
           className={`relative border-2 border-black text-center text-gray-800 overflow-y-auto ${className}`}
           style={{
