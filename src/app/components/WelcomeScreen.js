@@ -9,10 +9,10 @@ import BaseButton from "./ui/BaseButton";
 function H1({ children, headingRef }) {
   return (
     <h1
-      id="dialogTitle"
-      headingRef={headingRef}
+      id="dialog-heading"
+      ref={headingRef}
       tabIndex={-1}
-      className="font-bold text-2xl"
+      className="font-bold text-xl px-2"
     >
       {children}
     </h1>
@@ -39,7 +39,10 @@ export default function WelcomeScreen({
   }, []);
 
   useEffect(() => {
+    console.log("changed index of welcome screen modal");
+    console.log(headingRef);
     if (headingRef.current) {
+      console.log("We want to mov focus");
       headingRef.current.focus();
     }
   }, [index]);
