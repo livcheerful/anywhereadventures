@@ -7,7 +7,11 @@ import Box from "./ui/Box";
 import BaseButton from "./ui/BaseButton";
 
 function H1({ children }) {
-  return <h1 className="font-bold text-2xl">{children}</h1>;
+  return (
+    <h1 id="dialogTitle" className="font-bold text-2xl">
+      {children}
+    </h1>
+  );
 }
 
 export default function WelcomeScreen({
@@ -136,7 +140,7 @@ export default function WelcomeScreen({
           src="/illustrations/read.png"
           alt="illustrated cartoon figure with empty speech bubble over a historic newspaper page"
         ></img>
-        <div className="font-bold px-2">Read stories on the map</div>
+        <H1>Read stories on the map</H1>
         <div className="text-left px-2">
           Read stories to learn history where it happened through archive items.
           Then visit those locations in person.

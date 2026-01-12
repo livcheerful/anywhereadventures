@@ -13,7 +13,12 @@ export default function Box({
   }
   return (
     <FocusLock>
-      <div role="dialog" aria-modal="true" className={outerClassNames}>
+      <div
+        role="dialog"
+        aria-labelledby="dialogTitle"
+        aria-modal="true"
+        className={outerClassNames}
+      >
         <div
           className={`relative border-2 border-black text-center text-gray-800 overflow-y-auto ${className}`}
           style={{

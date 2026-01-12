@@ -69,7 +69,7 @@ export default function Page({}) {
           alt="comic illustration of someone taking photos with their phone and pictures flying out of it"
           className="w-full border-b-2 border-b-black"
         />
-        <h1 className="font-bold text-lg">
+        <h1 className="font-bold text-lg" id="dialogTitle">
           Visit the location and create your travel log entry
         </h1>
         <div className="px-2 text-pretty">
@@ -107,7 +107,9 @@ export default function Page({}) {
           className="w-full border-b-2 border-b-black"
           alt="drawing of a bridge with three illustrated photos laying over it, highlighting details that could be captured of the bridge"
         />
-        <h1 className="font-bold text-lg">Gather photos</h1>
+        <h1 id="dialogTitle" className="font-bold text-lg">
+          Gather photos
+        </h1>
         <div className="px-2 text-pretty">
           Take pictures according to the prompt or just capture anything you
           want to remember.
@@ -137,6 +139,7 @@ export default function Page({}) {
     </Box>,
     <Box
       isModal={true}
+      id="dialogTitle"
       className={
         "left-[12.5%] top-[18%] h-2/3 w-3/4 flex flex-col justify-between bg-lime-200"
       }

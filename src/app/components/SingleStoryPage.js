@@ -96,6 +96,7 @@ export default function SingleStoryPage({
           <div className=" px-2 absolute pt-10 text-lg text-pretty text-black font-bold text-center w-full flex flex-col items-center">
             <div className="relative p-2 w-full h-fit z-10">
               <Box
+                id="dialogTitle"
                 float={true}
                 className="bg-yellow-200 gap-2 flex flex-col p-2"
               >
