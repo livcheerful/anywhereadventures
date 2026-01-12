@@ -12,7 +12,7 @@ export default function Box({
     outerClassNames += " pointer-events-none";
   }
   return (
-    <FocusLock>
+    <FocusLock autoFocus={false} returnFocus={false}>
       <div
         role={isModal ? "dialog" : ""}
         aria-labelledby={isModal ? "dialog-heading" : ""}
