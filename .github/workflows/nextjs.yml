@@ -68,6 +68,8 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Run MDX build
+        env:
+          ASSET_PREFIX: ${{https://livcheerful.github.io/anywhereadventures/}}
         run: npm run mdx
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
