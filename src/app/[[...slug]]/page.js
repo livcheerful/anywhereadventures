@@ -4,7 +4,7 @@ import { locationData } from "../lib/locationHelpers";
 import BasePage from "../components/BasePage.js";
 
 export async function generateStaticParams() {
-  const slugs = [{ slug: [""] }, { slug: ["journal"] }, { slug: ["camera"] }];
+  const slugs = [{ slug: [""] }];
   allLocs.forEach((l, i) => {
     slugs.push({ slug: [l.location[0].toLowerCase(), l.slug] });
   });
@@ -12,7 +12,6 @@ export async function generateStaticParams() {
   Object.keys(locationData).forEach((l) => {
     slugs.push({ slug: [l] });
   });
-
   return slugs;
 }
 
