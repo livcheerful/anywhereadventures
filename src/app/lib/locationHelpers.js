@@ -33,10 +33,10 @@ export const locationData = {
     locs: seattleLocs,
     byCategory: seattleByCategory,
     welcome: {
-      thumbnail: "loc/triangle.jpg",
+      thumbnail: "/loc/triangle.jpg",
       stickers: [
-        "loc/seattle/bridgeAndTunnel/seattleMap.png",
-        "loc/seattle/montlakeBridge/tower.png",
+        "/loc/seattle/bridgeAndTunnel/seattleMap.png",
+        "/loc/seattle/montlakeBridge/tower.png",
       ],
     },
   },
