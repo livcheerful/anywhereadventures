@@ -9,6 +9,14 @@ export default function UnstickyHeader({
       <h1 className=" font-bold text-2xl px-2 text-black text-center text-pretty">
         {post?.title}
       </h1>
+      {post?.author && (
+        <div className="w-full">
+          <hr></hr>
+          <div className="w-full py-2 text-sm text-center text-black italic font-serif">
+            Story from {post.author}
+          </div>
+        </div>
+      )}
       <div className="relative flex flex-col pt-4 px-2">
         <div className="border-2 border-lime-400 text-black rounded-lg text-md bg-white drop-shadow-lg">
           <div className="p-2 px-4 pt-4 text-sm flex flex-col gap-2">
@@ -17,7 +25,7 @@ export default function UnstickyHeader({
             <div className="font-mono text-xs flex flex-row justify-between  text-gray-400 ">
               <div>{post.neighborhood}</div>
               <div>{`${post.latlon[0].toFixed(4)}, ${post.latlon[1].toFixed(
-                4
+                4,
               )}`}</div>
             </div>
             <div>{post.address}</div>
@@ -38,7 +46,7 @@ export default function UnstickyHeader({
                 mainMap.flyTo(
                   [post.latlon[1], post.latlon[0]],
                   post.zoom,
-                  false
+                  false,
                 );
               }}
               className="bg-yellow-300 text-black  active:bg-yellow-400 rounded-2xl drop-shadow-md px-4 py-2"
@@ -60,7 +68,7 @@ export default function UnstickyHeader({
                 navigator.clipboard.writeText(
                   `${
                     window.location.origin
-                  }/${post.location[0].toLowerCase()}/${post.slug}`
+                  }/${post.location[0].toLowerCase()}/${post.slug}`,
                 );
                 setToastMessage("Copied URL to clipboard");
               }}
