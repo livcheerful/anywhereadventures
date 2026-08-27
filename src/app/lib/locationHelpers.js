@@ -81,8 +81,8 @@ export const locationData = {
     welcome: {
       thumbnail: "loc/sewy/wypack.png",
       stickers: [
-        "stickerpacks/sewy/bill.png",
-        "stickerpacks/sewy/grahamMarket.png",
+        "stickerpacks/ms/river.png",
+        "stickerpacks/ms/biloxiLight.jpg",
       ],
     },
   },
@@ -96,7 +96,6 @@ export const locationData = {
       thumbnail: "loc/sewy/wypack.png",
       stickers: [
         "stickerpacks/pittsburgh/citySeal.jpg",
-        "stickerpacks/pittsburgh/grahamMarket.jpg",
         "stickerpacks/pittsburgh/thePoint.jpg",
       ],
     },
