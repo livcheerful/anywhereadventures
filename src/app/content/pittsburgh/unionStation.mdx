@@ -9,7 +9,7 @@ zoom: 15
 tags: [""]
 cameraImage: "/placeholderThumbnail.png"
 cardImage: "/placeholderThumbnail.png"
-stampName:
+stampName: "/illustrations/citySeal.png"
 photoPrompt:
 blurb: Your eyes aren't playing tricks on you! Read on to learn why sometimes the city's name looks like it's missing something.
 stickers: [{image: "/loc/pittsburgh/anderson/pittsburg1.jpg"}, {image: "/loc/pittsburgh/anderson/card.jpg", linkOut: "https://www.loc.gov/resource/ppmsca.85111/", title: "Nick Maddox, Pittsburgh Pirates, with mitt, baseball card portrait"}]
@@ -29,17 +29,17 @@ Sticker template:
 If you're looking at old documents about Pittsburgh, or even in some places around town, you might see some spellings of the city that look...*mistaken*.
 
 For example, in the Rotunda of the Union Station.
-<LOCItem type="pnp" image="/loc/pittsburgh/unionStation/rotunda.jpg" caption="Photograph of the rotunda of Union Station (commonly called Penn Station by locals), a historic train station in Pittsburgh, Pennsylvania." linkOut="https://www.loc.gov/resource/highsm.58660/"/>
-<LOCItem type="pnp" image="/loc/pittsburgh/unionStation/unionStation.jpg" caption="A postcard depicting the exterior of Union Station in Pittsburgh, Pennsylvania in 1905." linkOut="https://www.loc.gov/resource/pcrd.1a13036/"/>
+<LOCItem type="pnp" caption="Photograph of the rotunda of Union Station (commonly called Penn Station by locals), a historic train station in Pittsburgh, Pennsylvania" image="/loc/pittsburgh/unionStation/rotunda.jpg" linkOut="https://www.loc.gov/resource/highsm.58660/" alt="A color photograph of a vaulted celing and arches in a historic train station, with brown terracotta marble and ornate skylight."/>
+<LOCItem type="pnp" caption="A postcard depicting the exterior of Union Station in Pittsburgh, Pennsylvania in 1905.  " image="/loc/pittsburgh/unionStation/unionStation.jpg" linkOut="https://www.loc.gov/resource/pcrd.1a13036/" alt="A black and white image of the exterior of a historic train station, with horses and carriages and people in early twentieth century fashion walking on the streets. And industrial stack, buildings on a faraway hill, and a billboard advertising flour are in the background. "/>
 
 <ComicSection elements={[
-{type:"image", size:{width:3, height:4}, position:{col:1, row:1}, src:"/loc/pittsburgh/unionStation/pittsburg1.jpg"},
+{type:"image", size:{width:3, height:4}, position:{col:1, row:1}, src:"/loc/pittsburgh/unionStation/pittsburg1.jpg", alt:"Comic drawing of wall molding with the text 'Pittsburg', missing the 'H'"},
 {type:"text", style:{outline: "bubble"}, src: "Did the H just....fall off?", size:{width:2, height:1}, position:{col:2, row:5}},
-{type:"image", size:{width:3, height:4}, position:{col:1, row:5}, src:"/loc/pittsburgh/unionStation/pittsburg2.jpg"},
+{type:"image", size:{width:3, height:4}, position:{col:1, row:5}, src:"/loc/pittsburgh/unionStation/pittsburg2.jpg", alt: "Comic drawing of a person looking up at the molding, skeptical"},
 
 ]}/>
 
-**Nope!**
+## **Nope!**
 
 Pittsburgh was named after William Pitt, and “burgh” is a shortening of the word “borough” (which is a word from Old English burg or burh, meaning “fortified settlement”). Most places in the US spell it as “burg” (sans H), such as Schaumburg, Williamsburg, and Ellensburg. 
 
@@ -49,7 +49,7 @@ In the 1890s, the federal government began an effort to standardize place names 
 
 But that’s not how it shook out for Pittsbugh! The city had so much momentum in its original name - many local organizations had established themselves with the original name, such as the Pittsburgh Gazette and the University of Pittsburgh. No matter how much the federal government pushed, the local community continued on with the historical sticky “H” spelling.
 
-<LOCItem type="pnp" image="/loc/pittsburgh/unionStation/card.jpg" caption="A baseball card of Pittsburgh Pirates player Nick Maddox. Notice the missing letter h." linkOut="https://www.loc.gov/resource/ppmsca.85111/"/>
+<LOCItem type="pnp" image="/loc/pittsburgh/unionStation/card.jpg" linkOut="https://www.loc.gov/resource/ppmsca.85111/" alt="Image of a baseball card encased in a protective shell. The card is captioned 'MADDOX, Pittsburg', with a man wearing a blue baseball cap and a jersey with the uncommon spelling of the city mid throw."/>
 
 Finally in 1911, an exception for the “burg” rule was made, and the name “Pittsburgh” was recognized nationwide.
 
