@@ -5,6 +5,8 @@ import {
   chicagoByCategory,
   seWYByCategory,
   seWYLocs,
+  msLocs,
+  pittsburghLocs,
   allLocs,
   allByCategory,
 } from "./MdxQueries";
@@ -67,6 +69,34 @@ export const locationData = {
       stickers: [
         "loc/chicago/greetingsFromChicago.jpg",
         "loc/chicago/onLeong/eastElevation.png",
+      ],
+    },
+  },
+  ms: {
+    id: "ms",
+    name: "Mississippi Sound",
+    center: [-88.9230477473981, 30.401829792956097],
+    zoom: 7,
+    locs: msLocs,
+    welcome: {
+      thumbnail: "loc/sewy/wypack.png",
+      stickers: [
+        "stickerpacks/ms/river.png",
+        "stickerpacks/ms/biloxiLight.jpg",
+      ],
+    },
+  },
+  pittsburgh: {
+    id: "pittsburgh",
+    name: "Pittsburgh",
+    center: [-79.9757641895949, 40.44508029800718],
+    zoom: 12,
+    locs: pittsburghLocs,
+    welcome: {
+      thumbnail: "loc/sewy/wypack.png",
+      stickers: [
+        "stickerpacks/pittsburgh/citySeal.jpg",
+        "stickerpacks/pittsburgh/thePoint.jpg",
       ],
     },
   },

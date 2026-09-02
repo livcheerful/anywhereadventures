@@ -93,5 +93,25 @@
     },
     "/loc/chicago/generalstamp.png": {
         "location": "Chicago"
+    },
+    "/stickerpacks/ms/river.png": {
+        "location": "Mississippi Sound",
+        "title": "Mississippi River from 1900 map",
+        "linkOut": "https://www.loc.gov/resource/g4014n.ct000713/?r=0.13,0.232,0.765,0.542,0"
+    },
+    "/stickerpacks/ms/fromBook.png": {
+        "location": "Mississippi Sound",
+        "title": "The Story of the Chevalier des Grieux and of Manon Lescaut.",
+        "linkOut": "https://www.loc.gov/resource/gdcwdl.wdl_15522_001/?sp=13&r=-0.975,-0.13,2.951,2.089,0"
+    },
+    "/stickerpacks/pittsburgh/clarke.jpg": {
+        "location": "Pittsburgh",
+        "title": "Clarke, Pittsburgh Pirates, baseball card portrait",
+        "linkOut": "https://www.loc.gov/resource/bbc.0842f/"
+    },
+    "/stickerpacks/pittsburgh/stamp.png": {
+        "location": "Pittsburgh",
+        "title": "From a postcard of Union Station, Pittsburgh",
+        "linkOut": "https://www.loc.gov/resource/pcrd.2a13036/"
     }
 }

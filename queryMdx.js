@@ -9,7 +9,7 @@ function getAllPosts() {
   function recurseFiles(folder, prepend) {
     let fileNames = fs.readdirSync(folder);
     fileNames = fileNames.filter((s) => {
-      return s != "meta.js";
+      return s != "meta.js" && s != ".DS_Store";
     });
 
     let folderNames = fileNames.filter((name) => {
@@ -28,8 +28,8 @@ function getAllPosts() {
       fileObj.push(
         ...recurseFiles(
           `${folder}/${file}`,
-          prepend ? `${prepend}/${file}` : file
-        )
+          prepend ? `${prepend}/${file}` : file,
+        ),
       );
     });
     return fileObj;
@@ -76,20 +76,28 @@ function splitPostsByCategory(posts, location) {
 
 const posts = getAllPosts().filter((p) => p.hidden != true);
 const seattleLocs = getAllPostsByLocation(posts, "Seattle").filter(
-  (p) => p.hidden != true
+  (p) => p.hidden != true,
 );
 const seattleByCategory = splitPostsByCategory(seattleLocs, "Seattle");
 
 const chicagoLocs = getAllPostsByLocation(posts, "Chicago").filter(
-  (p) => p.hidden != true
+  (p) => p.hidden != true,
 );
 const chicagoByCategory = splitPostsByCategory(chicagoLocs, "Chicago");
 
-const seWYLocs = getAllPostsByLocation(posts, "SEWY").filter(
-  (p) => p.hidden != true
+const msLocs = getAllPostsByLocation(posts, "MS").filter(
+  (p) => p.hidden != true,
 );
+const seWYLocs = getAllPostsByLocation(posts, "SEWY").filter(
+  (p) => p.hidden != true,
+);
+
 const seWYByCategory = splitPostsByCategory(seWYLocs, "SEWY");
 
+const pittsburghLocs = getAllPostsByLocation(posts, "Pittsburgh").filter(
+  (p) => p.hidden != true,
+);
+const pittsburghByCategory = splitPostsByCategory(pittsburghLocs, "Pittsburgh");
 const allPostsByCategory = [
   ...seattleByCategory,
   ...chicagoByCategory,
@@ -107,6 +115,8 @@ export const seWYLocs = ${JSON.stringify(seWYLocs, null, 2)}
 export const seWYByCategory=${JSON.stringify(seWYByCategory)}
 export const chicagoByCategory=${JSON.stringify(chicagoByCategory)}
 export const chicagoLocs = ${JSON.stringify(chicagoLocs, null, 2)}
+export const msLocs = ${JSON.stringify(msLocs, null, 2)}
+export const pittsburghLocs = ${JSON.stringify(pittsburghLocs, null, 2)}
 `;
 
 fs.writeFileSync(`./src/app/lib/MdxQueries.js`, outputData, "utf8");
@@ -120,6 +130,6 @@ posts.forEach(async (mdx, idx) => {
   fs.writeFileSync(
     `./public/content/generated/${mdx.slug}.json`,
     JSON.stringify(post),
-    "utf-8"
+    "utf-8",
   );
 });
